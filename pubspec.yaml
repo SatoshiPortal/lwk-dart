@@ -1,0 +1,31 @@
+name: lwk_dart
+description: "Dart/Flutter language bindings for Liquid Wallet Kit"
+
+publish_to: 'none'
+
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  rust_builder:
+    path: rust_builder
+  flutter_rust_bridge: 2.0.0-dev.22
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+  integration_test:
+    sdk: flutter
+
+
+flutter:
+  uses-material-design: true
+

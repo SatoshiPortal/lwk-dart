@@ -1,0 +1,28 @@
+[package]
+name = "lwk-dart"
+authors = ["i5hi <ishi@satoshiportal.com>, mocodesmo <morteza@satoshiportal.com>"]
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "lwkdart"
+doctest = false
+crate-type = ["staticlib", "cdylib", "lib"] 
+
+[dependencies]
+lwk_wollet = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_wollet" }
+# lwk_signer = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_signer" }
+# lwk_common = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_common" }
+
+flutter_rust_bridge = "1.82.2"
+anyhow = "1.0.68"
+
+[build-dependencies]
+flutter_rust_bridge_codegen = { version = "= 1.82.6"  }
+
+[build]
+profiler = true
+
+
+
+
