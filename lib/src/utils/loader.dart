@@ -13,8 +13,8 @@ class Dylib {
   static String get remoteUrl =>
       "${_config!['REPOSITORY_URL']}${_config!['TAG_VERSION']}/$libName.zip";
   static Future<void> _loadJsonAsset() async {
-    final String content =
-        await rootBundle.loadString("packages/boltz_flutter/assets/release.config.txt");
+    final String content = await rootBundle
+        .loadString("packages/boltz_flutter/assets/release.config.txt");
     Map<String, dynamic> configMap = {};
     List<String> lines = content.split('\n');
 
@@ -84,4 +84,4 @@ class Dylib {
   }
 }
 
-final ffi = BoltzDartImpl(Dylib.getDylib());
+// final ffi = BoltzDartImpl(Dylib.getDylib());

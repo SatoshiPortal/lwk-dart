@@ -11,9 +11,8 @@ crate-type = ["staticlib", "cdylib", "lib"]
 
 [dependencies]
 lwk_wollet = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_wollet" }
-# lwk_signer = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_signer" }
-# lwk_common = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_common" }
-
+lwk_signer = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_signer" }
+lwk_common = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_common" }
 flutter_rust_bridge = "1.82.2"
 anyhow = "1.0.68"
 
@@ -23,6 +22,5 @@ flutter_rust_bridge_codegen = { version = "= 1.82.6"  }
 [build]
 profiler = true
 
-
-
-
+[patch.crates-io]
+elements-miniscript = { git = "https://github.com/ElementsProject/elements-miniscript.git", rev = "31fbf2748e6649790a0cf1e4d0f972b3ff1db171" }
