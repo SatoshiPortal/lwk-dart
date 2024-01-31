@@ -13,6 +13,8 @@ crate-type = ["staticlib", "cdylib", "lib"]
 lwk_wollet = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_wollet" }
 lwk_signer = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_signer" }
 lwk_common = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_common" }
+thiserror = "1.0.50"
+elements = "0.24.0"
 flutter_rust_bridge = "1.82.2"
 anyhow = "1.0.68"
 
