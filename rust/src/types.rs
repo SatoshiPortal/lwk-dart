@@ -23,16 +23,17 @@ impl TryInto<Wollet> for Wallet {
 #[derive(Clone, Debug, PartialEq)]
 pub struct Tx {
     pub kind: String,
-    pub balance: u64,
+    pub amount: u64,
     pub txid: String,
     pub address: String,
+    pub fee: u64,
 }
 
 impl From<WalletTx> for Tx {
     fn from(wallet_tx: WalletTx) -> Self {
         Tx {
             kind: wallet_tx.type_,
-            balance: wallet_tx
+            amount: wallet_tx
                 .balance
                 .get(&AssetId::from_str(TLBTC_ASSET_ID).unwrap())
                 .unwrap_or(&0)
@@ -40,8 +41,14 @@ impl From<WalletTx> for Tx {
                 .abs() as u64,
             txid: wallet_tx.tx.txid().to_string(),
             address: "".to_string(),
+            fee: wallet_tx.fee,
         }
     }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct DecodedTx {
+    pub outputs: HashMap<String, u64>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
