@@ -26,13 +26,324 @@ class LwkDartImpl implements LwkDart {
   factory LwkDartImpl.wasm(FutureOr<WasmModule> module) =>
       LwkDartImpl(module as ExternalLibrary);
   LwkDartImpl.raw(this._platform);
+  Future<Wallet> newWalletStaticMethodApi(
+      {required String mnemonic,
+      required LiquidNetwork network,
+      required String electrumUrl,
+      required String dbPath,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(mnemonic);
+    var arg1 = api2wire_liquid_network(network);
+    var arg2 = _platform.api2wire_String(electrumUrl);
+    var arg3 = _platform.api2wire_String(dbPath);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_new_wallet__static_method__Api(port_, arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_wallet,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kNewWalletStaticMethodApiConstMeta,
+      argValues: [mnemonic, network, electrumUrl, dbPath],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kNewWalletStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "new_wallet__static_method__Api",
+        argNames: ["mnemonic", "network", "electrumUrl", "dbPath"],
+      );
+
+  Future<void> syncStaticMethodApi(
+      {required String electrumUrl, required Wallet wallet, dynamic hint}) {
+    var arg0 = _platform.api2wire_String(electrumUrl);
+    var arg1 = _platform.api2wire_box_autoadd_wallet(wallet);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_sync__static_method__Api(port_, arg0, arg1),
+      parseSuccessData: _wire2api_unit,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kSyncStaticMethodApiConstMeta,
+      argValues: [electrumUrl, wallet],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kSyncStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "sync__static_method__Api",
+        argNames: ["electrumUrl", "wallet"],
+      );
+
+  Future<String> addressStaticMethodApi(
+      {required Wallet wallet, dynamic hint}) {
+    var arg0 = _platform.api2wire_box_autoadd_wallet(wallet);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_address__static_method__Api(port_, arg0),
+      parseSuccessData: _wire2api_String,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kAddressStaticMethodApiConstMeta,
+      argValues: [wallet],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kAddressStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "address__static_method__Api",
+        argNames: ["wallet"],
+      );
+
+  Future<Balance> balanceStaticMethodApi(
+      {required Wallet wallet, dynamic hint}) {
+    var arg0 = _platform.api2wire_box_autoadd_wallet(wallet);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_balance__static_method__Api(port_, arg0),
+      parseSuccessData: _wire2api_balance,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kBalanceStaticMethodApiConstMeta,
+      argValues: [wallet],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kBalanceStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "balance__static_method__Api",
+        argNames: ["wallet"],
+      );
+
+  Future<List<Tx>> txsStaticMethodApi({required Wallet wallet, dynamic hint}) {
+    var arg0 = _platform.api2wire_box_autoadd_wallet(wallet);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_txs__static_method__Api(port_, arg0),
+      parseSuccessData: _wire2api_list_tx,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kTxsStaticMethodApiConstMeta,
+      argValues: [wallet],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kTxsStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "txs__static_method__Api",
+        argNames: ["wallet"],
+      );
+
+  Future<String> buildTxStaticMethodApi(
+      {required Wallet wallet,
+      required int sats,
+      required String outAddress,
+      double? absFee,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_box_autoadd_wallet(wallet);
+    var arg1 = _platform.api2wire_u64(sats);
+    var arg2 = _platform.api2wire_String(outAddress);
+    var arg3 = _platform.api2wire_opt_box_autoadd_f32(absFee);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_build_tx__static_method__Api(port_, arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_String,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kBuildTxStaticMethodApiConstMeta,
+      argValues: [wallet, sats, outAddress, absFee],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kBuildTxStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "build_tx__static_method__Api",
+        argNames: ["wallet", "sats", "outAddress", "absFee"],
+      );
+
+  Future<PsetAmounts> decodeTxStaticMethodApi(
+      {required Wallet wallet, required String pset, dynamic hint}) {
+    var arg0 = _platform.api2wire_box_autoadd_wallet(wallet);
+    var arg1 = _platform.api2wire_String(pset);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_decode_tx__static_method__Api(port_, arg0, arg1),
+      parseSuccessData: _wire2api_pset_amounts,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kDecodeTxStaticMethodApiConstMeta,
+      argValues: [wallet, pset],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDecodeTxStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "decode_tx__static_method__Api",
+        argNames: ["wallet", "pset"],
+      );
+
+  Future<Uint8List> signTxStaticMethodApi(
+      {required Wallet wallet,
+      required String pset,
+      required String mnemonic,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_box_autoadd_wallet(wallet);
+    var arg1 = _platform.api2wire_String(pset);
+    var arg2 = _platform.api2wire_String(mnemonic);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_sign_tx__static_method__Api(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_uint_8_list,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kSignTxStaticMethodApiConstMeta,
+      argValues: [wallet, pset, mnemonic],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kSignTxStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "sign_tx__static_method__Api",
+        argNames: ["wallet", "pset", "mnemonic"],
+      );
+
+  Future<String> broadcastTxStaticMethodApi(
+      {required String electrumUrl, required Uint8List txBytes, dynamic hint}) {
+    var arg0 = _platform.api2wire_String(electrumUrl);
+    var arg1 = _platform.api2wire_uint_8_list(txBytes);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_broadcast_tx__static_method__Api(port_, arg0, arg1),
+      parseSuccessData: _wire2api_String,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kBroadcastTxStaticMethodApiConstMeta,
+      argValues: [electrumUrl, txBytes],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kBroadcastTxStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "broadcast_tx__static_method__Api",
+        argNames: ["electrumUrl", "txBytes"],
+      );
+
   void dispose() {
     _platform.dispose();
   }
 // Section: wire2api
+
+  String _wire2api_String(dynamic raw) {
+    return raw as String;
+  }
+
+  Balance _wire2api_balance(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return Balance(
+      lbtc: _wire2api_u64(arr[0]),
+    );
+  }
+
+  int _wire2api_i32(dynamic raw) {
+    return raw as int;
+  }
+
+  LiquidNetwork _wire2api_liquid_network(dynamic raw) {
+    return LiquidNetwork.values[raw as int];
+  }
+
+  List<Tx> _wire2api_list_tx(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_tx).toList();
+  }
+
+  LwkError _wire2api_lwk_error(dynamic raw) {
+    switch (raw[0]) {
+      case 0:
+        return LwkError_Generic(
+          msg: _wire2api_String(raw[1]),
+        );
+      case 1:
+        return LwkError_PoisonError(
+          msg: _wire2api_String(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  PsetAmounts _wire2api_pset_amounts(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return PsetAmounts(
+      fee: _wire2api_u64(arr[0]),
+      balances: _wire2api_balance(arr[1]),
+    );
+  }
+
+  Tx _wire2api_tx(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return Tx(
+      kind: _wire2api_String(arr[0]),
+      amount: _wire2api_u64(arr[1]),
+      txid: _wire2api_String(arr[2]),
+      address: _wire2api_String(arr[3]),
+      fee: _wire2api_u64(arr[4]),
+    );
+  }
+
+  int _wire2api_u64(dynamic raw) {
+    return castInt(raw);
+  }
+
+  int _wire2api_u8(dynamic raw) {
+    return raw as int;
+  }
+
+  Uint8List _wire2api_uint_8_list(dynamic raw) {
+    return raw as Uint8List;
+  }
+
+  void _wire2api_unit(dynamic raw) {
+    return;
+  }
+
+  Wallet _wire2api_wallet(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return Wallet(
+      network: _wire2api_liquid_network(arr[0]),
+      dbpath: _wire2api_String(arr[1]),
+      desc: _wire2api_String(arr[2]),
+    );
+  }
 }
 
 // Section: api2wire
+
+@protected
+double api2wire_f32(double raw) {
+  return raw;
+}
+
+@protected
+int api2wire_i32(int raw) {
+  return raw;
+}
+
+@protected
+int api2wire_liquid_network(LiquidNetwork raw) {
+  return api2wire_i32(raw.index);
+}
+
+@protected
+int api2wire_u8(int raw) {
+  return raw;
+}
 
 // Section: finalizer
 
@@ -41,9 +352,54 @@ class LwkDartPlatform extends FlutterRustBridgeBase<LwkDartWire> {
 
 // Section: api2wire
 
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_String(String raw) {
+    return api2wire_uint_8_list(utf8.encoder.convert(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Float> api2wire_box_autoadd_f32(double raw) {
+    return inner.new_box_autoadd_f32_0(api2wire_f32(raw));
+  }
+
+  @protected
+  ffi.Pointer<wire_Wallet> api2wire_box_autoadd_wallet(Wallet raw) {
+    final ptr = inner.new_box_autoadd_wallet_0();
+    _api_fill_to_wire_wallet(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<ffi.Float> api2wire_opt_box_autoadd_f32(double? raw) {
+    return raw == null ? ffi.nullptr : api2wire_box_autoadd_f32(raw);
+  }
+
+  @protected
+  int api2wire_u64(int raw) {
+    return raw;
+  }
+
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_uint_8_list(Uint8List raw) {
+    final ans = inner.new_uint_8_list_0(raw.length);
+    ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
+    return ans;
+  }
+
 // Section: finalizer
 
 // Section: api_fill_to_wire
+
+  void _api_fill_to_wire_box_autoadd_wallet(
+      Wallet apiObj, ffi.Pointer<wire_Wallet> wireObj) {
+    _api_fill_to_wire_wallet(apiObj, wireObj.ref);
+  }
+
+  void _api_fill_to_wire_wallet(Wallet apiObj, wire_Wallet wireObj) {
+    wireObj.network = api2wire_liquid_network(apiObj.network);
+    wireObj.dbpath = api2wire_String(apiObj.dbpath);
+    wireObj.desc = api2wire_String(apiObj.desc);
+  }
 }
 
 // ignore_for_file: camel_case_types, non_constant_identifier_names, avoid_positional_boolean_parameters, annotate_overrides, constant_identifier_names
@@ -142,6 +498,249 @@ class LwkDartWire implements FlutterRustBridgeWireBase {
   late final _init_frb_dart_api_dl = _init_frb_dart_api_dlPtr
       .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
+  void wire_new_wallet__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> mnemonic,
+    int network,
+    ffi.Pointer<wire_uint_8_list> electrum_url,
+    ffi.Pointer<wire_uint_8_list> db_path,
+  ) {
+    return _wire_new_wallet__static_method__Api(
+      port_,
+      mnemonic,
+      network,
+      electrum_url,
+      db_path,
+    );
+  }
+
+  late final _wire_new_wallet__static_method__ApiPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Int64,
+                  ffi.Pointer<wire_uint_8_list>,
+                  ffi.Int32,
+                  ffi.Pointer<wire_uint_8_list>,
+                  ffi.Pointer<wire_uint_8_list>)>>(
+      'wire_new_wallet__static_method__Api');
+  late final _wire_new_wallet__static_method__Api =
+      _wire_new_wallet__static_method__ApiPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_uint_8_list>, int,
+              ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_sync__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> electrum_url,
+    ffi.Pointer<wire_Wallet> wallet,
+  ) {
+    return _wire_sync__static_method__Api(
+      port_,
+      electrum_url,
+      wallet,
+    );
+  }
+
+  late final _wire_sync__static_method__ApiPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_Wallet>)>>('wire_sync__static_method__Api');
+  late final _wire_sync__static_method__Api =
+      _wire_sync__static_method__ApiPtr.asFunction<
+          void Function(
+              int, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Wallet>)>();
+
+  void wire_address__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_Wallet> wallet,
+  ) {
+    return _wire_address__static_method__Api(
+      port_,
+      wallet,
+    );
+  }
+
+  late final _wire_address__static_method__ApiPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64,
+              ffi.Pointer<wire_Wallet>)>>('wire_address__static_method__Api');
+  late final _wire_address__static_method__Api =
+      _wire_address__static_method__ApiPtr
+          .asFunction<void Function(int, ffi.Pointer<wire_Wallet>)>();
+
+  void wire_balance__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_Wallet> wallet,
+  ) {
+    return _wire_balance__static_method__Api(
+      port_,
+      wallet,
+    );
+  }
+
+  late final _wire_balance__static_method__ApiPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64,
+              ffi.Pointer<wire_Wallet>)>>('wire_balance__static_method__Api');
+  late final _wire_balance__static_method__Api =
+      _wire_balance__static_method__ApiPtr
+          .asFunction<void Function(int, ffi.Pointer<wire_Wallet>)>();
+
+  void wire_txs__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_Wallet> wallet,
+  ) {
+    return _wire_txs__static_method__Api(
+      port_,
+      wallet,
+    );
+  }
+
+  late final _wire_txs__static_method__ApiPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64,
+              ffi.Pointer<wire_Wallet>)>>('wire_txs__static_method__Api');
+  late final _wire_txs__static_method__Api = _wire_txs__static_method__ApiPtr
+      .asFunction<void Function(int, ffi.Pointer<wire_Wallet>)>();
+
+  void wire_build_tx__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_Wallet> wallet,
+    int sats,
+    ffi.Pointer<wire_uint_8_list> out_address,
+    ffi.Pointer<ffi.Float> abs_fee,
+  ) {
+    return _wire_build_tx__static_method__Api(
+      port_,
+      wallet,
+      sats,
+      out_address,
+      abs_fee,
+    );
+  }
+
+  late final _wire_build_tx__static_method__ApiPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_Wallet>,
+              ffi.Uint64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<ffi.Float>)>>('wire_build_tx__static_method__Api');
+  late final _wire_build_tx__static_method__Api =
+      _wire_build_tx__static_method__ApiPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_Wallet>, int,
+              ffi.Pointer<wire_uint_8_list>, ffi.Pointer<ffi.Float>)>();
+
+  void wire_decode_tx__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_Wallet> wallet,
+    ffi.Pointer<wire_uint_8_list> pset,
+  ) {
+    return _wire_decode_tx__static_method__Api(
+      port_,
+      wallet,
+      pset,
+    );
+  }
+
+  late final _wire_decode_tx__static_method__ApiPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_Wallet>,
+                  ffi.Pointer<wire_uint_8_list>)>>(
+      'wire_decode_tx__static_method__Api');
+  late final _wire_decode_tx__static_method__Api =
+      _wire_decode_tx__static_method__ApiPtr.asFunction<
+          void Function(
+              int, ffi.Pointer<wire_Wallet>, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_sign_tx__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_Wallet> wallet,
+    ffi.Pointer<wire_uint_8_list> pset,
+    ffi.Pointer<wire_uint_8_list> mnemonic,
+  ) {
+    return _wire_sign_tx__static_method__Api(
+      port_,
+      wallet,
+      pset,
+      mnemonic,
+    );
+  }
+
+  late final _wire_sign_tx__static_method__ApiPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Int64,
+                  ffi.Pointer<wire_Wallet>,
+                  ffi.Pointer<wire_uint_8_list>,
+                  ffi.Pointer<wire_uint_8_list>)>>(
+      'wire_sign_tx__static_method__Api');
+  late final _wire_sign_tx__static_method__Api =
+      _wire_sign_tx__static_method__ApiPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_Wallet>,
+              ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_broadcast_tx__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> electrum_url,
+    ffi.Pointer<wire_uint_8_list> tx_bytes,
+  ) {
+    return _wire_broadcast_tx__static_method__Api(
+      port_,
+      electrum_url,
+      tx_bytes,
+    );
+  }
+
+  late final _wire_broadcast_tx__static_method__ApiPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_uint_8_list>,
+                  ffi.Pointer<wire_uint_8_list>)>>(
+      'wire_broadcast_tx__static_method__Api');
+  late final _wire_broadcast_tx__static_method__Api =
+      _wire_broadcast_tx__static_method__ApiPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>)>();
+
+  ffi.Pointer<ffi.Float> new_box_autoadd_f32_0(
+    double value,
+  ) {
+    return _new_box_autoadd_f32_0(
+      value,
+    );
+  }
+
+  late final _new_box_autoadd_f32_0Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Float> Function(ffi.Float)>>(
+          'new_box_autoadd_f32_0');
+  late final _new_box_autoadd_f32_0 = _new_box_autoadd_f32_0Ptr
+      .asFunction<ffi.Pointer<ffi.Float> Function(double)>();
+
+  ffi.Pointer<wire_Wallet> new_box_autoadd_wallet_0() {
+    return _new_box_autoadd_wallet_0();
+  }
+
+  late final _new_box_autoadd_wallet_0Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_Wallet> Function()>>(
+          'new_box_autoadd_wallet_0');
+  late final _new_box_autoadd_wallet_0 = _new_box_autoadd_wallet_0Ptr
+      .asFunction<ffi.Pointer<wire_Wallet> Function()>();
+
+  ffi.Pointer<wire_uint_8_list> new_uint_8_list_0(
+    int len,
+  ) {
+    return _new_uint_8_list_0(
+      len,
+    );
+  }
+
+  late final _new_uint_8_list_0Ptr = _lookup<
+          ffi
+          .NativeFunction<ffi.Pointer<wire_uint_8_list> Function(ffi.Int32)>>(
+      'new_uint_8_list_0');
+  late final _new_uint_8_list_0 = _new_uint_8_list_0Ptr
+      .asFunction<ffi.Pointer<wire_uint_8_list> Function(int)>();
+
   void free_WireSyncReturn(
     WireSyncReturn ptr,
   ) {
@@ -158,6 +757,22 @@ class LwkDartWire implements FlutterRustBridgeWireBase {
 }
 
 final class _Dart_Handle extends ffi.Opaque {}
+
+final class wire_uint_8_list extends ffi.Struct {
+  external ffi.Pointer<ffi.Uint8> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_Wallet extends ffi.Struct {
+  @ffi.Int32()
+  external int network;
+
+  external ffi.Pointer<wire_uint_8_list> dbpath;
+
+  external ffi.Pointer<wire_uint_8_list> desc;
+}
 
 typedef DartPostCObjectFnType = ffi.Pointer<
     ffi.NativeFunction<

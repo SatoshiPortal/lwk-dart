@@ -7,5 +7,123 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:uuid/uuid.dart';
+import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 
-abstract class LwkDart {}
+part 'bridge_definitions.freezed.dart';
+
+abstract class LwkDart {
+  Future<Wallet> newWalletStaticMethodApi(
+      {required String mnemonic,
+      required LiquidNetwork network,
+      required String electrumUrl,
+      required String dbPath,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kNewWalletStaticMethodApiConstMeta;
+
+  Future<void> syncStaticMethodApi(
+      {required String electrumUrl, required Wallet wallet, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kSyncStaticMethodApiConstMeta;
+
+  Future<String> addressStaticMethodApi({required Wallet wallet, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kAddressStaticMethodApiConstMeta;
+
+  Future<Balance> balanceStaticMethodApi(
+      {required Wallet wallet, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kBalanceStaticMethodApiConstMeta;
+
+  Future<List<Tx>> txsStaticMethodApi({required Wallet wallet, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kTxsStaticMethodApiConstMeta;
+
+  Future<String> buildTxStaticMethodApi(
+      {required Wallet wallet,
+      required int sats,
+      required String outAddress,
+      double? absFee,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kBuildTxStaticMethodApiConstMeta;
+
+  Future<PsetAmounts> decodeTxStaticMethodApi(
+      {required Wallet wallet, required String pset, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDecodeTxStaticMethodApiConstMeta;
+
+  Future<Uint8List> signTxStaticMethodApi(
+      {required Wallet wallet,
+      required String pset,
+      required String mnemonic,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kSignTxStaticMethodApiConstMeta;
+
+  Future<String> broadcastTxStaticMethodApi(
+      {required String electrumUrl, required Uint8List txBytes, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kBroadcastTxStaticMethodApiConstMeta;
+}
+
+class Balance {
+  final int lbtc;
+
+  const Balance({
+    required this.lbtc,
+  });
+}
+
+enum LiquidNetwork {
+  Mainnet,
+  Testnet,
+}
+
+@freezed
+sealed class LwkError with _$LwkError implements FrbException {
+  const factory LwkError.generic({
+    required String msg,
+  }) = LwkError_Generic;
+  const factory LwkError.poisonError({
+    required String msg,
+  }) = LwkError_PoisonError;
+}
+
+class PsetAmounts {
+  final int fee;
+  final Balance balances;
+
+  const PsetAmounts({
+    required this.fee,
+    required this.balances,
+  });
+}
+
+class Tx {
+  final String kind;
+  final int amount;
+  final String txid;
+  final String address;
+  final int fee;
+
+  const Tx({
+    required this.kind,
+    required this.amount,
+    required this.txid,
+    required this.address,
+    required this.fee,
+  });
+}
+
+class Wallet {
+  final LiquidNetwork network;
+  final String dbpath;
+  final String desc;
+
+  const Wallet({
+    required this.network,
+    required this.dbpath,
+    required this.desc,
+  });
+}

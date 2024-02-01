@@ -50,15 +50,11 @@ impl From<WalletTx> for Tx {
 #[derive(Clone, Debug, PartialEq)]
 pub struct PsetAmounts {
     pub fee: u64,
-    pub balances: HashMap<String, i64>,
+    pub balances: Balance,
 }
 impl From<PsetBalance> for PsetAmounts {
     fn from(balance: PsetBalance) -> Self {
-        let mut balances = HashMap::new();
-        for (asset_id, value) in balance.balances {
-            let asset_id_string = asset_id.to_string();
-            balances.insert(asset_id_string, value);
-        }
+        let balances = Balance::from(balance.balances);
         PsetAmounts {
             fee: balance.fee,
             balances,

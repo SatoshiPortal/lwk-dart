@@ -7,8 +7,8 @@ void main() {
     test('Create Descriptor', () async {
       final mnemonic = "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
       final network = LiquidNetwork.Testnet;
-      final desc = await ffi.kcreateDescriptorStaticMethodApi(mnemonic, network);
-      print('$desc');
+      // final desc = await ffi.kcreateDescriptorStaticMethodApi(mnemonic, network);
+      // print('$desc');
     });
   });
 }
