@@ -121,3 +121,57 @@ impl Api {
         Ok(txid.to_string())
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_api() {
+        let mnemonic = "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon".to_string();
+        let network = LiquidNetwork::Testnet;
+        //println!("DESC: {}", desc);
+
+        // use lwk
+        let electrum_url = "blockstream.info:465".to_string();
+        let _electrum_client: ElectrumClient =
+            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url.clone(), false))
+                .unwrap();
+        let dbpath = "/tmp/lwk".to_string();
+        let wallet =
+            Api::new_wallet(mnemonic.clone(), network, electrum_url.clone(), dbpath).unwrap();
+
+        Api::sync(electrum_url.clone(), wallet.clone()).unwrap();
+        // let wollet: Wollet = Wollet::new(network.into(), Some(&dbpath), &desc).unwrap();
+        let address = Api::address(wallet.clone()).unwrap();
+        println!("ADDRESS: {:#?}", address);
+        let pre_balance: Balance = Api::balance(wallet.clone()).unwrap();
+        println!("BALANCE: {:#?}", pre_balance.lbtc);
+
+        // build tx
+        let sats = 10000;
+        let out_address="tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu".to_string();
+        let abs_fee = 300.0;
+        let pset = Api::build_tx(wallet.clone(), sats, out_address, Some(abs_fee)).unwrap();
+        let decoded = Api::decode_tx(wallet.clone(), pset.clone()).unwrap();
+        println!("DECODED TX: {:#?}", decoded);
+        // sign tx
+        let tx = Api::sign_tx(wallet.clone(), pset, mnemonic).unwrap();
+        // println!("RAW TX: {:#?}", tx);
+
+        // broadcast tx
+        let txid = Api::broadcast_tx(electrum_url.clone(), tx).unwrap();
+        println!("SEND: TXID: {:#?}", txid);
+        Api::sync(electrum_url.clone(), wallet.clone()).unwrap();
+        let txs = Api::txs(wallet.clone()).unwrap();
+        for tx in txs {
+            if tx.txid == txid {
+                let fees = tx.fee;
+                let post_balance: Balance = Api::balance(wallet.clone()).unwrap();
+                assert_eq!(
+                    (post_balance.lbtc),
+                    (pre_balance.lbtc - (sats as i64 + fees as i64))
+                );
+            }
+        }
+    }
+}

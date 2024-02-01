@@ -241,12 +241,16 @@ class LwkDartImpl implements LwkDart {
     if (arr.length != 1)
       throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
     return Balance(
-      lbtc: _wire2api_u64(arr[0]),
+      lbtc: _wire2api_i64(arr[0]),
     );
   }
 
   int _wire2api_i32(dynamic raw) {
     return raw as int;
+  }
+
+  int _wire2api_i64(dynamic raw) {
+    return castInt(raw);
   }
 
   LiquidNetwork _wire2api_liquid_network(dynamic raw) {

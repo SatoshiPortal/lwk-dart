@@ -7,6 +7,6 @@ import '../generated/bindings.dart';
 // export 'bridge_generated.dart';
 
 final _api = DynamicLibrary.open(
-  './test/liblwkdart${Platform.operatingSystem == 'linux' ? '.so' : '.dylib'}',
+  './test/liblwk_dart${Platform.operatingSystem == 'linux' ? '.so' : '.dylib'}',
 );
 final ffi = LwkDartImpl(_api);

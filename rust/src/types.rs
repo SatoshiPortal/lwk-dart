@@ -63,9 +63,19 @@ impl From<PsetBalance> for PsetAmounts {
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct Balance {
-    pub lbtc: u64,
+    pub lbtc: i64,
     // lcad: u32,
     // usdt: u32,
+}
+
+impl From<HashMap<AssetId, i64>> for Balance {
+    fn from(balance: HashMap<AssetId, i64>) -> Self {
+        let lbtc_balance: i64 = balance
+            .get(&AssetId::from_str(TLBTC_ASSET_ID).unwrap())
+            .unwrap_or(&0)
+            .to_owned();
+        Balance { lbtc: lbtc_balance }
+    }
 }
 
 impl From<HashMap<AssetId, u64>> for Balance {
@@ -74,6 +84,8 @@ impl From<HashMap<AssetId, u64>> for Balance {
             .get(&AssetId::from_str(TLBTC_ASSET_ID).unwrap())
             .unwrap_or(&0)
             .to_owned();
-        Balance { lbtc: lbtc_balance }
+        Balance {
+            lbtc: lbtc_balance as i64,
+        }
     }
 }
