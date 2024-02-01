@@ -1,5 +1,6 @@
 use crate::{error::LwkError, network::LiquidNetwork};
 use elements::AssetId;
+use lwk_common::PsetBalance;
 use lwk_wollet::{WalletTx, Wollet};
 use std::collections::HashMap;
 use std::str::FromStr;
@@ -47,10 +48,23 @@ impl From<WalletTx> for Tx {
 }
 
 #[derive(Clone, Debug, PartialEq)]
-pub struct DecodedTx {
-    pub outputs: HashMap<String, u64>,
+pub struct PsetAmounts {
+    pub fee: u64,
+    pub balances: HashMap<String, i64>,
 }
-
+impl From<PsetBalance> for PsetAmounts {
+    fn from(balance: PsetBalance) -> Self {
+        let mut balances = HashMap::new();
+        for (asset_id, value) in balance.balances {
+            let asset_id_string = asset_id.to_string();
+            balances.insert(asset_id_string, value);
+        }
+        PsetAmounts {
+            fee: balance.fee,
+            balances,
+        }
+    }
+}
 #[derive(Clone, Debug, PartialEq)]
 pub struct Balance {
     pub lbtc: u64,

@@ -1,11 +1,11 @@
 use crate::error::LwkError;
 use crate::network::LiquidNetwork;
-use crate::types::{Balance, DecodedTx, Tx, Wallet};
+use crate::types::{Balance, PsetAmounts, Tx, Wallet};
 use elements::hashes::hash160::Hash;
 use elements::hex::ToHex;
 use elements::pset::serialize::{Deserialize, Serialize};
 use elements::pset::PartiallySignedTransaction;
-use elements::{Address, Txid};
+use elements::{Address, AddressParams, Txid};
 use elements::{AssetId, Transaction};
 use lwk_common::Signer;
 use lwk_signer::{bip39::Mnemonic, SwSigner};
@@ -32,7 +32,7 @@ trait RustApi {
         out_address: String,
         abs_fee: Option<f32>,
     ) -> anyhow::Result<String, LwkError>;
-    fn decode_tx(pset: String) -> anyhow::Result<DecodedTx, LwkError>;
+    fn decode_tx(wallet: Wallet, pset: String) -> anyhow::Result<PsetAmounts, LwkError>;
     fn sign_tx(wallet: Wallet, pset: String, mnemonic: String)
         -> anyhow::Result<Vec<u8>, LwkError>;
     fn broadcast_tx(electrum_url: String, tx_bytes: Vec<u8>) -> anyhow::Result<String, LwkError>;
@@ -107,17 +107,12 @@ impl RustApi for Api {
         Ok(pset.to_string())
     }
 
-    fn decode_tx(pset: String) -> anyhow::Result<DecodedTx, LwkError> {
-        let pset = PartiallySignedTransaction::from_str(&pset)?;
-        let outputs = pset.extract_tx().unwrap().output;
-        let inputs = pset.extract_tx().unwrap().input;
-        let mut out_map = HashMap::new();
-        for output in outputs {
-            let value = output.value.explicit().unwrap_or(0);
-            let script_pubkey = output.script_pubkey.to_string();
-            out_map.insert(script_pubkey, value);
-        }
-        Ok(DecodedTx { outputs: out_map })
+    fn decode_tx(wallet: Wallet, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
+        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
+        let wallet: Wollet = wallet.try_into()?;
+        // wallet.add_details(&mut pset);
+        let pset_details = wallet.get_details(&mut pset)?;
+        Ok(PsetAmounts::from(pset_details.balance))
     }
 
     fn sign_tx(
@@ -175,9 +170,8 @@ mod tests {
         let out_address="tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu".to_string();
         let abs_fee = 300.0;
         let pset = Api::build_tx(wallet.clone(), sats, out_address, Some(abs_fee)).unwrap();
-
-        // println!("PSET: {:#?}", pset);
-
+        let decoded = Api::decode_tx(wallet.clone(), pset.clone()).unwrap();
+        println!("DECODED TX: {:#?}", decoded);
         // sign tx
         let tx = Api::sign_tx(wallet.clone(), pset, mnemonic).unwrap();
         // println!("RAW TX: {:#?}", tx);
