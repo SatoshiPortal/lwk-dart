@@ -1,113 +1,67 @@
 use crate::error::LwkError;
 use crate::network::LiquidNetwork;
-use crate::types::{Balance, PsetAmounts, Tx, Wallet};
-use elements::hashes::hash160::Hash;
-use elements::hex::ToHex;
-use elements::pset::serialize::{Deserialize, Serialize};
-use elements::pset::PartiallySignedTransaction;
-use elements::{Address, AddressParams, Txid};
-use elements::{AssetId, Transaction};
-use lwk_common::Signer;
-use lwk_signer::{bip39::Mnemonic, SwSigner};
-use lwk_wollet::{
-    AddressResult, BlockchainBackend, ElectrumClient, ElementsNetwork, Update, Wollet,
-};
-use std::collections::HashMap;
-use std::str::FromStr;
+use crate::types::{Balance, PsetAmounts, Tx};
+pub use crate::wallet::Wallet;
+use elements::pset::serialize::Deserialize;
+
+use elements::Transaction;
+use elements::Txid;
+use flutter_rust_bridge::RustOpaque;
+use lwk_wollet::{BlockchainBackend, ElectrumClient};
 pub struct Api {}
 
 impl Api {
     pub fn new_wallet(
         mnemonic: String,
         network: LiquidNetwork,
-        electrum_url: String,
         db_path: String,
-    ) -> anyhow::Result<Wallet, LwkError> {
-        let el_network: ElementsNetwork = network.into();
-        let is_mainnet = el_network == ElementsNetwork::Liquid;
-        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?.into();
-        let script_variant = lwk_common::Singlesig::Wpkh;
-        let blinding_variant = lwk_common::DescriptorBlindingKey::Slip77;
-        let desc_str =
-            lwk_common::singlesig_desc(&signer, script_variant, blinding_variant, is_mainnet)?
-                .into();
-        let _electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url.clone(), false))
-                .unwrap();
-        Ok(Wallet {
-            dbpath: db_path.clone(),
-            desc: desc_str,
-            network: network,
-        })
-    }
-    pub fn sync(electrum_url: String, wallet: Wallet) -> anyhow::Result<(), LwkError> {
-        let mut electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
-        let mut wallet: Wollet = wallet.try_into()?;
-        let update: Update = if let Some(value) = electrum_client.full_scan(&mut wallet)? {
-            value
-        } else {
-            return Ok(());
-        };
-        let _ = wallet.apply_update(update)?;
-        Ok(())
+    ) -> anyhow::Result<RustOpaque<Wallet>, LwkError> {
+        Ok(RustOpaque::new(Wallet::new(network, &db_path, &mnemonic)?))
     }
 
-    pub fn address(wallet: Wallet) -> anyhow::Result<String, LwkError> {
-        let wallet: Wollet = wallet.try_into()?;
-        let address: AddressResult = wallet.address(None)?.into();
-        Ok(address.address().to_string())
+    pub fn sync(wallet: RustOpaque<Wallet>, electrum_url: String) -> anyhow::Result<(), LwkError> {
+        wallet.sync(electrum_url)
     }
 
-    pub fn balance(wallet: Wallet) -> anyhow::Result<Balance, LwkError> {
-        let wallet: Wollet = wallet.try_into()?;
-        let balance: HashMap<AssetId, u64> = wallet.balance()?.into();
-        Ok(Balance::from(balance))
+    pub fn descriptor(wallet: RustOpaque<Wallet>) -> anyhow::Result<String, LwkError> {
+        wallet.descriptor()
     }
 
-    pub fn txs(wallet: Wallet) -> anyhow::Result<Vec<Tx>, LwkError> {
-        let wallet: Wollet = wallet.try_into()?;
-        let txs = wallet
-            .transactions()?
-            .iter()
-            .map(|x| Tx::from(x.to_owned()))
-            .collect();
-        Ok(txs)
+    pub fn address(wallet: RustOpaque<Wallet>) -> anyhow::Result<String, LwkError> {
+        wallet.address()
+    }
+
+    pub fn balance(wallet: RustOpaque<Wallet>) -> anyhow::Result<Balance, LwkError> {
+        wallet.balance()
+    }
+
+    pub fn txs(wallet: RustOpaque<Wallet>) -> anyhow::Result<Vec<Tx>, LwkError> {
+        wallet.txs()
     }
 
     pub fn build_tx(
-        wallet: Wallet,
+        wallet: RustOpaque<Wallet>,
         sats: u64,
         out_address: String,
         abs_fee: f32,
     ) -> anyhow::Result<String, LwkError> {
-        let wallet: Wollet = wallet.try_into()?;
-        let pset: PartiallySignedTransaction =
-            wallet.send_lbtc(sats, &out_address, Some(abs_fee))?;
-        Ok(pset.to_string())
+        wallet.build_tx(sats, out_address, abs_fee)
     }
 
-    pub fn decode_tx(wallet: Wallet, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
-        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-        let wallet: Wollet = wallet.try_into()?;
-        // wallet.add_details(&mut pset);
-        let pset_details = wallet.get_details(&mut pset)?;
-        Ok(PsetAmounts::from(pset_details.balance))
+    pub fn decode_tx(
+        wallet: RustOpaque<Wallet>,
+        pset: String,
+    ) -> anyhow::Result<PsetAmounts, LwkError> {
+        wallet.decode_tx(pset)
     }
 
     pub fn sign_tx(
-        wallet: Wallet,
+        wallet: RustOpaque<Wallet>,
+        network: LiquidNetwork,
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<Vec<u8>, LwkError> {
-        let network = wallet.network;
-        let wallet: Wollet = wallet.try_into()?;
-        let is_mainnet = network == LiquidNetwork::Testnet;
-        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
-        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-        let _ = signer.sign(&mut pset);
-        let tx = wallet.finalize(&mut pset)?;
-        Ok(tx.serialize())
+        wallet.sign_tx(network, pset, mnemonic)
     }
 
     pub fn broadcast_tx(
@@ -137,10 +91,9 @@ mod test {
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url.clone(), false))
                 .unwrap();
         let dbpath = "/tmp/lwk".to_string();
-        let wallet =
-            Api::new_wallet(mnemonic.clone(), network, electrum_url.clone(), dbpath).unwrap();
+        let wallet = Api::new_wallet(mnemonic.clone(), network, dbpath).unwrap();
 
-        Api::sync(electrum_url.clone(), wallet.clone()).unwrap();
+        Api::sync(wallet.clone(), electrum_url.clone()).unwrap();
         // let wollet: Wollet = Wollet::new(network.into(), Some(&dbpath), &desc).unwrap();
         let address = Api::address(wallet.clone()).unwrap();
         println!("ADDRESS: {:#?}", address);
@@ -155,13 +108,13 @@ mod test {
         let decoded = Api::decode_tx(wallet.clone(), pset.clone()).unwrap();
         println!("DECODED TX: {:#?}", decoded);
         // sign tx
-        let tx = Api::sign_tx(wallet.clone(), pset, mnemonic).unwrap();
+        let tx = Api::sign_tx(wallet.clone(), network, pset, mnemonic).unwrap();
         // println!("RAW TX: {:#?}", tx);
 
         // broadcast tx
         let txid = Api::broadcast_tx(electrum_url.clone(), tx).unwrap();
         println!("SEND: TXID: {:#?}", txid);
-        Api::sync(electrum_url.clone(), wallet.clone()).unwrap();
+        Api::sync(wallet.clone(), electrum_url.clone()).unwrap();
         let txs = Api::txs(wallet.clone()).unwrap();
         for tx in txs {
             if tx.txid == txid {

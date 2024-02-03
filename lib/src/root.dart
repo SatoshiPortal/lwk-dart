@@ -22,14 +22,12 @@ class LiquidWallet {
   static Future<LiquidWallet> create(
       {required String mnemonic,
       required LiquidNetwork network,
-      required String electrumUrl,
       required String dbPath,
       dynamic hint}) async {
     try {
       final res = await ffi.newWalletStaticMethodApi(
           mnemonic: mnemonic,
           network: network,
-          electrumUrl: electrumUrl,
           dbPath: dbPath);
       return LiquidWallet._(res);
     } catch (e) {
@@ -42,8 +40,8 @@ class LiquidWallet {
   ) async {
     try {
       final res = await ffi.syncStaticMethodApi(
-        electrumUrl: electrumUrl,
         wallet: _liquidWallet,
+        electrumUrl: electrumUrl,
       );
       return res;
     } catch (e) {
@@ -62,13 +60,15 @@ class LiquidWallet {
     }
   }
 
-  String descriptor() {
-    try {
-      return liquidWallet.desc;
-    } catch (e) {
-      rethrow;
-    }
-  }
+//   String descriptor() {
+//     try {
+// final res = await ffi.descriptor(
+//         wallet: _liquidWallet,
+//       );
+//       return res;    } catch (e) {
+//       rethrow;
+//     }
+//   }
 
   Future<Balance> balance() async {
     try {
@@ -115,10 +115,10 @@ class LiquidWallet {
   }
 
   Future<Uint8List> sign(
-      {required String pset, required String mnemonic}) async {
+      {required LiquidNetwork network,  required String pset, required String mnemonic}) async {
     try {
       final res = await ffi.signTxStaticMethodApi(
-          wallet: _liquidWallet, pset: pset, mnemonic: mnemonic);
+          wallet: _liquidWallet, network: network, pset: pset, mnemonic: mnemonic);
       return res;
     } catch (e) {
       rethrow;

@@ -15,9 +15,7 @@ typedef struct wire_uint_8_list {
 } wire_uint_8_list;
 
 typedef struct wire_Wallet {
-  int32_t network;
-  struct wire_uint_8_list *dbpath;
-  struct wire_uint_8_list *desc;
+  const void *ptr;
 } wire_Wallet;
 
 typedef struct DartCObject *WireSyncReturn;
@@ -35,31 +33,33 @@ intptr_t init_frb_dart_api_dl(void *obj);
 void wire_new_wallet__static_method__Api(int64_t port_,
                                          struct wire_uint_8_list *mnemonic,
                                          int32_t network,
-                                         struct wire_uint_8_list *electrum_url,
                                          struct wire_uint_8_list *db_path);
 
 void wire_sync__static_method__Api(int64_t port_,
-                                   struct wire_uint_8_list *electrum_url,
-                                   struct wire_Wallet *wallet);
+                                   struct wire_Wallet wallet,
+                                   struct wire_uint_8_list *electrum_url);
 
-void wire_address__static_method__Api(int64_t port_, struct wire_Wallet *wallet);
+void wire_descriptor__static_method__Api(int64_t port_, struct wire_Wallet wallet);
 
-void wire_balance__static_method__Api(int64_t port_, struct wire_Wallet *wallet);
+void wire_address__static_method__Api(int64_t port_, struct wire_Wallet wallet);
 
-void wire_txs__static_method__Api(int64_t port_, struct wire_Wallet *wallet);
+void wire_balance__static_method__Api(int64_t port_, struct wire_Wallet wallet);
+
+void wire_txs__static_method__Api(int64_t port_, struct wire_Wallet wallet);
 
 void wire_build_tx__static_method__Api(int64_t port_,
-                                       struct wire_Wallet *wallet,
+                                       struct wire_Wallet wallet,
                                        uint64_t sats,
                                        struct wire_uint_8_list *out_address,
                                        float abs_fee);
 
 void wire_decode_tx__static_method__Api(int64_t port_,
-                                        struct wire_Wallet *wallet,
+                                        struct wire_Wallet wallet,
                                         struct wire_uint_8_list *pset);
 
 void wire_sign_tx__static_method__Api(int64_t port_,
-                                      struct wire_Wallet *wallet,
+                                      struct wire_Wallet wallet,
+                                      int32_t network,
                                       struct wire_uint_8_list *pset,
                                       struct wire_uint_8_list *mnemonic);
 
@@ -67,9 +67,13 @@ void wire_broadcast_tx__static_method__Api(int64_t port_,
                                            struct wire_uint_8_list *electrum_url,
                                            struct wire_uint_8_list *tx_bytes);
 
-struct wire_Wallet *new_box_autoadd_wallet_0(void);
+struct wire_Wallet new_Wallet(void);
 
 struct wire_uint_8_list *new_uint_8_list_0(int32_t len);
+
+void drop_opaque_Wallet(const void *ptr);
+
+const void *share_opaque_Wallet(const void *ptr);
 
 void free_WireSyncReturn(WireSyncReturn ptr);
 
@@ -77,6 +81,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
     dummy_var ^= ((int64_t) (void*) wire_new_wallet__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_sync__static_method__Api);
+    dummy_var ^= ((int64_t) (void*) wire_descriptor__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_address__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_balance__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_txs__static_method__Api);
@@ -84,8 +89,10 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_decode_tx__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_sign_tx__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_broadcast_tx__static_method__Api);
-    dummy_var ^= ((int64_t) (void*) new_box_autoadd_wallet_0);
+    dummy_var ^= ((int64_t) (void*) new_Wallet);
     dummy_var ^= ((int64_t) (void*) new_uint_8_list_0);
+    dummy_var ^= ((int64_t) (void*) drop_opaque_Wallet);
+    dummy_var ^= ((int64_t) (void*) share_opaque_Wallet);
     dummy_var ^= ((int64_t) (void*) free_WireSyncReturn);
     dummy_var ^= ((int64_t) (void*) store_dart_post_cobject);
     dummy_var ^= ((int64_t) (void*) get_dart_object);

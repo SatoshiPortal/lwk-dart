@@ -11,20 +11,24 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 
 part 'bridge_definitions.freezed.dart';
 
-abstract class LwkDart {
+abstract class LwkBridge {
   Future<Wallet> newWalletStaticMethodApi(
       {required String mnemonic,
       required LiquidNetwork network,
-      required String electrumUrl,
       required String dbPath,
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kNewWalletStaticMethodApiConstMeta;
 
   Future<void> syncStaticMethodApi(
-      {required String electrumUrl, required Wallet wallet, dynamic hint});
+      {required Wallet wallet, required String electrumUrl, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kSyncStaticMethodApiConstMeta;
+
+  Future<String> descriptorStaticMethodApi(
+      {required Wallet wallet, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDescriptorStaticMethodApiConstMeta;
 
   Future<String> addressStaticMethodApi({required Wallet wallet, dynamic hint});
 
@@ -55,6 +59,7 @@ abstract class LwkDart {
 
   Future<Uint8List> signTxStaticMethodApi(
       {required Wallet wallet,
+      required LiquidNetwork network,
       required String pset,
       required String mnemonic,
       dynamic hint});
@@ -65,6 +70,24 @@ abstract class LwkDart {
       {required String electrumUrl, required Uint8List txBytes, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kBroadcastTxStaticMethodApiConstMeta;
+
+  DropFnType get dropOpaqueWallet;
+  ShareFnType get shareOpaqueWallet;
+  OpaqueTypeFinalizer get WalletFinalizer;
+}
+
+@sealed
+class Wallet extends FrbOpaque {
+  final LwkBridge bridge;
+  Wallet.fromRaw(int ptr, int size, this.bridge) : super.unsafe(ptr, size);
+  @override
+  DropFnType get dropFn => bridge.dropOpaqueWallet;
+
+  @override
+  ShareFnType get shareFn => bridge.shareOpaqueWallet;
+
+  @override
+  OpaqueTypeFinalizer get staticFinalizer => bridge.WalletFinalizer;
 }
 
 class Balance {
@@ -113,17 +136,5 @@ class Tx {
     required this.txid,
     required this.address,
     required this.fee,
-  });
-}
-
-class Wallet {
-  final LiquidNetwork network;
-  final String dbpath;
-  final String desc;
-
-  const Wallet({
-    required this.network,
-    required this.dbpath,
-    required this.desc,
   });
 }

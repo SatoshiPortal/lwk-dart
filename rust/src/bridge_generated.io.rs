@@ -6,40 +6,44 @@ pub extern "C" fn wire_new_wallet__static_method__Api(
     port_: i64,
     mnemonic: *mut wire_uint_8_list,
     network: i32,
-    electrum_url: *mut wire_uint_8_list,
     db_path: *mut wire_uint_8_list,
 ) {
-    wire_new_wallet__static_method__Api_impl(port_, mnemonic, network, electrum_url, db_path)
+    wire_new_wallet__static_method__Api_impl(port_, mnemonic, network, db_path)
 }
 
 #[no_mangle]
 pub extern "C" fn wire_sync__static_method__Api(
     port_: i64,
+    wallet: wire_Wallet,
     electrum_url: *mut wire_uint_8_list,
-    wallet: *mut wire_Wallet,
 ) {
-    wire_sync__static_method__Api_impl(port_, electrum_url, wallet)
+    wire_sync__static_method__Api_impl(port_, wallet, electrum_url)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_address__static_method__Api(port_: i64, wallet: *mut wire_Wallet) {
+pub extern "C" fn wire_descriptor__static_method__Api(port_: i64, wallet: wire_Wallet) {
+    wire_descriptor__static_method__Api_impl(port_, wallet)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_address__static_method__Api(port_: i64, wallet: wire_Wallet) {
     wire_address__static_method__Api_impl(port_, wallet)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_balance__static_method__Api(port_: i64, wallet: *mut wire_Wallet) {
+pub extern "C" fn wire_balance__static_method__Api(port_: i64, wallet: wire_Wallet) {
     wire_balance__static_method__Api_impl(port_, wallet)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_txs__static_method__Api(port_: i64, wallet: *mut wire_Wallet) {
+pub extern "C" fn wire_txs__static_method__Api(port_: i64, wallet: wire_Wallet) {
     wire_txs__static_method__Api_impl(port_, wallet)
 }
 
 #[no_mangle]
 pub extern "C" fn wire_build_tx__static_method__Api(
     port_: i64,
-    wallet: *mut wire_Wallet,
+    wallet: wire_Wallet,
     sats: u64,
     out_address: *mut wire_uint_8_list,
     abs_fee: f32,
@@ -50,7 +54,7 @@ pub extern "C" fn wire_build_tx__static_method__Api(
 #[no_mangle]
 pub extern "C" fn wire_decode_tx__static_method__Api(
     port_: i64,
-    wallet: *mut wire_Wallet,
+    wallet: wire_Wallet,
     pset: *mut wire_uint_8_list,
 ) {
     wire_decode_tx__static_method__Api_impl(port_, wallet, pset)
@@ -59,11 +63,12 @@ pub extern "C" fn wire_decode_tx__static_method__Api(
 #[no_mangle]
 pub extern "C" fn wire_sign_tx__static_method__Api(
     port_: i64,
-    wallet: *mut wire_Wallet,
+    wallet: wire_Wallet,
+    network: i32,
     pset: *mut wire_uint_8_list,
     mnemonic: *mut wire_uint_8_list,
 ) {
-    wire_sign_tx__static_method__Api_impl(port_, wallet, pset, mnemonic)
+    wire_sign_tx__static_method__Api_impl(port_, wallet, network, pset, mnemonic)
 }
 
 #[no_mangle]
@@ -78,8 +83,8 @@ pub extern "C" fn wire_broadcast_tx__static_method__Api(
 // Section: allocate functions
 
 #[no_mangle]
-pub extern "C" fn new_box_autoadd_wallet_0() -> *mut wire_Wallet {
-    support::new_leak_box_ptr(wire_Wallet::new_with_null_ptr())
+pub extern "C" fn new_Wallet() -> wire_Wallet {
+    wire_Wallet::new_with_null_ptr()
 }
 
 #[no_mangle]
@@ -93,6 +98,21 @@ pub extern "C" fn new_uint_8_list_0(len: i32) -> *mut wire_uint_8_list {
 
 // Section: related functions
 
+#[no_mangle]
+pub extern "C" fn drop_opaque_Wallet(ptr: *const c_void) {
+    unsafe {
+        Arc::<Wallet>::decrement_strong_count(ptr as _);
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn share_opaque_Wallet(ptr: *const c_void) -> *const c_void {
+    unsafe {
+        Arc::<Wallet>::increment_strong_count(ptr as _);
+        ptr
+    }
+}
+
 // Section: impl Wire2Api
 
 impl Wire2Api<String> for *mut wire_uint_8_list {
@@ -101,10 +121,9 @@ impl Wire2Api<String> for *mut wire_uint_8_list {
         String::from_utf8_lossy(&vec).into_owned()
     }
 }
-impl Wire2Api<Wallet> for *mut wire_Wallet {
-    fn wire2api(self) -> Wallet {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Wallet>::wire2api(*wrap).into()
+impl Wire2Api<RustOpaque<Wallet>> for wire_Wallet {
+    fn wire2api(self) -> RustOpaque<Wallet> {
+        unsafe { support::opaque_from_dart(self.ptr as _) }
     }
 }
 
@@ -116,30 +135,19 @@ impl Wire2Api<Vec<u8>> for *mut wire_uint_8_list {
         }
     }
 }
-impl Wire2Api<Wallet> for wire_Wallet {
-    fn wire2api(self) -> Wallet {
-        Wallet {
-            network: self.network.wire2api(),
-            dbpath: self.dbpath.wire2api(),
-            desc: self.desc.wire2api(),
-        }
-    }
-}
 // Section: wire structs
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_Wallet {
+    ptr: *const core::ffi::c_void,
+}
 
 #[repr(C)]
 #[derive(Clone)]
 pub struct wire_uint_8_list {
     ptr: *mut u8,
     len: i32,
-}
-
-#[repr(C)]
-#[derive(Clone)]
-pub struct wire_Wallet {
-    network: i32,
-    dbpath: *mut wire_uint_8_list,
-    desc: *mut wire_uint_8_list,
 }
 
 // Section: impl NewWithNullPtr
@@ -157,16 +165,8 @@ impl<T> NewWithNullPtr for *mut T {
 impl NewWithNullPtr for wire_Wallet {
     fn new_with_null_ptr() -> Self {
         Self {
-            network: Default::default(),
-            dbpath: core::ptr::null_mut(),
-            desc: core::ptr::null_mut(),
+            ptr: core::ptr::null(),
         }
-    }
-}
-
-impl Default for wire_Wallet {
-    fn default() -> Self {
-        Self::new_with_null_ptr()
     }
 }
 

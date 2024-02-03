@@ -3,7 +3,7 @@ description: "Dart/Flutter language bindings for Liquid Wallet Kit"
 
 publish_to: 'none'
 
-version: 0.1.0+1
+version: 0.1.0
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -11,16 +11,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.2
   ffi: ^2.0.1
-  flutter_rust_bridge: ^1.82.5
+  flutter_rust_bridge: ^1.82.6
   meta: ^1.8.0
   uuid: ^4.1.0
   dio: ^5.4.0
-  freezed: ^2.3.5
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   archive: ^3.4.10
   http: ^1.2.0
+
 
 dev_dependencies:
   flutter_test:
@@ -28,7 +29,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   ffigen: ^9.0.0
   test: ^1.24.3
-  build_runner: ^2.4.6
+  build_runner: ^2.4.8
   json_serializable: ^6.7.1
   lints: ^3.0.0
 

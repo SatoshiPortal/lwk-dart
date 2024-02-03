@@ -1,33 +1,11 @@
 use crate::{error::LwkError, network::LiquidNetwork};
 use elements::AssetId;
 use lwk_common::PsetBalance;
-use lwk_wollet::{EncryptedFsPersister, FsPersister, Persister, WolletDescriptor};
-use lwk_wollet::{WalletTx, Wollet};
+use lwk_wollet::{EncryptedFsPersister, WalletTx, Wollet, WolletDescriptor};
 use std::collections::HashMap;
 use std::str::FromStr;
 
 const TLBTC_ASSET_ID: &str = "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
-
-#[derive(Clone, Debug, PartialEq)]
-pub struct Wallet {
-    pub network: LiquidNetwork,
-    pub dbpath: String,
-    pub desc: String,
-}
-
-impl TryInto<Wollet> for Wallet {
-    type Error = LwkError;
-    fn try_into(self) -> Result<Wollet, Self::Error> {
-        let descriptor = WolletDescriptor::from_str(&self.desc).unwrap();
-
-        Ok(Wollet::new(
-            self.network.into(),
-            EncryptedFsPersister::new(self.dbpath, (self.network).into(), &descriptor)?,
-            &self.desc,
-        )?
-        .into())
-    }
-}
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Tx {

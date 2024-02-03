@@ -15,6 +15,7 @@ foreach(line IN LISTS lines)
     endif()
 endforeach()
 
+
 set(LIB_NAME "liblwk.${TAG_VERSION}")
 set(URL "${REPOSITORY_URL}/${TAG_VERSION}/${LIB_NAME}.zip")
 set(OUTPUT_PATH "${CMAKE_PARENT_DIR}/${LIB_NAME}.zip")
@@ -26,18 +27,21 @@ if(NOT EXISTS "${CMAKE_PARENT_DIR}/${LIB_NAME}")
         if(NOT STATUS_CODE EQUAL 0)
             message(FATAL_ERROR "Download failed: ${DOWNLOAD_STATUS}")
         endif()
-        execute_process(
-                COMMAND ${CMAKE_COMMAND} -E tar xvf ${OUTPUT_PATH}
-                WORKING_DIRECTORY ${CMAKE_PARENT_DIR}
-        )
+        if(WIN32)
+                execute_process(
+                        COMMAND ${CMAKE_COMMAND} -E tar xvf ${OUTPUT_PATH}
+                        WORKING_DIRECTORY ${CMAKE_PARENT_DIR}
+                )
+        else()
+                execute_process(
+                        COMMAND ${CMAKE_COMMAND} -E tar xvf ${OUTPUT_PATH}
+                        WORKING_DIRECTORY ${CMAKE_PARENT_DIR}
+                )
+        endif()
         file(REMOVE_RECURSE "${CMAKE_PARENT_DIR}/__MACOSX" )
         file(REMOVE "${OUTPUT_PATH}" )
 endif()
-
-if( NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/linux" )
-    if(EXISTS "${CMAKE_PARENT_DIR}/${LIB_NAME}/linux")
-        file(COPY "${CMAKE_PARENT_DIR}/${LIB_NAME}/linux" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/" )
-    else()
-        message(FATAL_ERROR "Linux library not found.")
-    endif()
+if( NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs" )
+    file(COPY "${CMAKE_PARENT_DIR}/${LIB_NAME}/jniLibs" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/src/main/" )
+    file(REMOVE_RECURSE "${CMAKE_PARENT_DIR}/${LIB_NAME}/jniLibs")
 endif()
