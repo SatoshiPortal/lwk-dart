@@ -124,7 +124,7 @@ fn wire_build_tx__static_method__Api_impl(
     wallet: impl Wire2Api<Wallet> + UnwindSafe,
     sats: impl Wire2Api<u64> + UnwindSafe,
     out_address: impl Wire2Api<String> + UnwindSafe,
-    abs_fee: impl Wire2Api<Option<f32>> + UnwindSafe,
+    abs_fee: impl Wire2Api<f32> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
         WrapInfo {
@@ -239,7 +239,6 @@ impl Wire2Api<LiquidNetwork> for i32 {
         }
     }
 }
-
 impl Wire2Api<u64> for u64 {
     fn wire2api(self) -> u64 {
         self

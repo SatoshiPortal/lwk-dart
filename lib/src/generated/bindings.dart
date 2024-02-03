@@ -137,12 +137,12 @@ class LwkDartImpl implements LwkDart {
       {required Wallet wallet,
       required int sats,
       required String outAddress,
-      double? absFee,
+      required double absFee,
       dynamic hint}) {
     var arg0 = _platform.api2wire_box_autoadd_wallet(wallet);
     var arg1 = _platform.api2wire_u64(sats);
     var arg2 = _platform.api2wire_String(outAddress);
-    var arg3 = _platform.api2wire_opt_box_autoadd_f32(absFee);
+    var arg3 = api2wire_f32(absFee);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner
           .wire_build_tx__static_method__Api(port_, arg0, arg1, arg2, arg3),
@@ -362,20 +362,10 @@ class LwkDartPlatform extends FlutterRustBridgeBase<LwkDartWire> {
   }
 
   @protected
-  ffi.Pointer<ffi.Float> api2wire_box_autoadd_f32(double raw) {
-    return inner.new_box_autoadd_f32_0(api2wire_f32(raw));
-  }
-
-  @protected
   ffi.Pointer<wire_Wallet> api2wire_box_autoadd_wallet(Wallet raw) {
     final ptr = inner.new_box_autoadd_wallet_0();
     _api_fill_to_wire_wallet(raw, ptr.ref);
     return ptr;
-  }
-
-  @protected
-  ffi.Pointer<ffi.Float> api2wire_opt_box_autoadd_f32(double? raw) {
-    return raw == null ? ffi.nullptr : api2wire_box_autoadd_f32(raw);
   }
 
   @protected
@@ -611,7 +601,7 @@ class LwkDartWire implements FlutterRustBridgeWireBase {
     ffi.Pointer<wire_Wallet> wallet,
     int sats,
     ffi.Pointer<wire_uint_8_list> out_address,
-    ffi.Pointer<ffi.Float> abs_fee,
+    double abs_fee,
   ) {
     return _wire_build_tx__static_method__Api(
       port_,
@@ -629,11 +619,11 @@ class LwkDartWire implements FlutterRustBridgeWireBase {
               ffi.Pointer<wire_Wallet>,
               ffi.Uint64,
               ffi.Pointer<wire_uint_8_list>,
-              ffi.Pointer<ffi.Float>)>>('wire_build_tx__static_method__Api');
+              ffi.Float)>>('wire_build_tx__static_method__Api');
   late final _wire_build_tx__static_method__Api =
       _wire_build_tx__static_method__ApiPtr.asFunction<
           void Function(int, ffi.Pointer<wire_Wallet>, int,
-              ffi.Pointer<wire_uint_8_list>, ffi.Pointer<ffi.Float>)>();
+              ffi.Pointer<wire_uint_8_list>, double)>();
 
   void wire_decode_tx__static_method__Api(
     int port_,
@@ -705,20 +695,6 @@ class LwkDartWire implements FlutterRustBridgeWireBase {
       _wire_broadcast_tx__static_method__ApiPtr.asFunction<
           void Function(int, ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>)>();
-
-  ffi.Pointer<ffi.Float> new_box_autoadd_f32_0(
-    double value,
-  ) {
-    return _new_box_autoadd_f32_0(
-      value,
-    );
-  }
-
-  late final _new_box_autoadd_f32_0Ptr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Float> Function(ffi.Float)>>(
-          'new_box_autoadd_f32_0');
-  late final _new_box_autoadd_f32_0 = _new_box_autoadd_f32_0Ptr
-      .asFunction<ffi.Pointer<ffi.Float> Function(double)>();
 
   ffi.Pointer<wire_Wallet> new_box_autoadd_wallet_0() {
     return _new_box_autoadd_wallet_0();

@@ -43,7 +43,7 @@ abstract class LwkDart {
       {required Wallet wallet,
       required int sats,
       required String outAddress,
-      double? absFee,
+      required double absFee,
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kBuildTxStaticMethodApiConstMeta;

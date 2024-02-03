@@ -1,6 +1,7 @@
 use crate::{error::LwkError, network::LiquidNetwork};
 use elements::AssetId;
 use lwk_common::PsetBalance;
+use lwk_wollet::{EncryptedFsPersister, FsPersister, Persister, WolletDescriptor};
 use lwk_wollet::{WalletTx, Wollet};
 use std::collections::HashMap;
 use std::str::FromStr;
@@ -17,7 +18,14 @@ pub struct Wallet {
 impl TryInto<Wollet> for Wallet {
     type Error = LwkError;
     fn try_into(self) -> Result<Wollet, Self::Error> {
-        Ok(Wollet::new(self.network.into(), Some(&self.dbpath), &self.desc)?.into())
+        let descriptor = WolletDescriptor::from_str(&self.desc).unwrap();
+
+        Ok(Wollet::new(
+            self.network.into(),
+            EncryptedFsPersister::new(self.dbpath, (self.network).into(), &descriptor)?,
+            &self.desc,
+        )?
+        .into())
     }
 }
 

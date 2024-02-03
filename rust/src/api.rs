@@ -14,7 +14,6 @@ use lwk_wollet::{
 };
 use std::collections::HashMap;
 use std::str::FromStr;
-
 pub struct Api {}
 
 impl Api {
@@ -80,10 +79,11 @@ impl Api {
         wallet: Wallet,
         sats: u64,
         out_address: String,
-        abs_fee: Option<f32>,
+        abs_fee: f32,
     ) -> anyhow::Result<String, LwkError> {
         let wallet: Wollet = wallet.try_into()?;
-        let pset: PartiallySignedTransaction = wallet.send_lbtc(sats, &out_address, abs_fee)?;
+        let pset: PartiallySignedTransaction =
+            wallet.send_lbtc(sats, &out_address, Some(abs_fee))?;
         Ok(pset.to_string())
     }
 
@@ -150,8 +150,8 @@ mod test {
         // build tx
         let sats = 10000;
         let out_address="tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu".to_string();
-        let abs_fee = 300.0;
-        let pset = Api::build_tx(wallet.clone(), sats, out_address, Some(abs_fee)).unwrap();
+        let fee_rate = 300.0;
+        let pset = Api::build_tx(wallet.clone(), sats, out_address, fee_rate).unwrap();
         let decoded = Api::decode_tx(wallet.clone(), pset.clone()).unwrap();
         println!("DECODED TX: {:#?}", decoded);
         // sign tx

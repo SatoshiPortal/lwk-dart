@@ -9,9 +9,9 @@ doctest = false
 crate-type = ["staticlib", "cdylib"] 
 
 [dependencies]
-lwk_wollet = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_wollet" }
-lwk_signer = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_signer" }
-lwk_common = { git = "https://github.com/Blockstream/lwk.git", package = "lwk_common" }
+lwk_wollet = "0.2.0"
+lwk_signer = "0.2.0"
+lwk_common = "0.2.0"
 thiserror = "1.0.50"
 elements = "0.24.0"
 flutter_rust_bridge = "1.82.2"
@@ -27,6 +27,3 @@ opt-level = "z"
 lto = true
 codegen-units = 1
 panic = "abort"
-
-[patch.crates-io]
-elements-miniscript = { git = "https://github.com/ElementsProject/elements-miniscript.git", rev = "31fbf2748e6649790a0cf1e4d0f972b3ff1db171" }

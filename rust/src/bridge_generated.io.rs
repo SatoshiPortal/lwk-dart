@@ -42,7 +42,7 @@ pub extern "C" fn wire_build_tx__static_method__Api(
     wallet: *mut wire_Wallet,
     sats: u64,
     out_address: *mut wire_uint_8_list,
-    abs_fee: *mut f32,
+    abs_fee: f32,
 ) {
     wire_build_tx__static_method__Api_impl(port_, wallet, sats, out_address, abs_fee)
 }
@@ -78,11 +78,6 @@ pub extern "C" fn wire_broadcast_tx__static_method__Api(
 // Section: allocate functions
 
 #[no_mangle]
-pub extern "C" fn new_box_autoadd_f32_0(value: f32) -> *mut f32 {
-    support::new_leak_box_ptr(value)
-}
-
-#[no_mangle]
 pub extern "C" fn new_box_autoadd_wallet_0() -> *mut wire_Wallet {
     support::new_leak_box_ptr(wire_Wallet::new_with_null_ptr())
 }
@@ -104,11 +99,6 @@ impl Wire2Api<String> for *mut wire_uint_8_list {
     fn wire2api(self) -> String {
         let vec: Vec<u8> = self.wire2api();
         String::from_utf8_lossy(&vec).into_owned()
-    }
-}
-impl Wire2Api<f32> for *mut f32 {
-    fn wire2api(self) -> f32 {
-        unsafe { *support::box_from_leak_ptr(self) }
     }
 }
 impl Wire2Api<Wallet> for *mut wire_Wallet {

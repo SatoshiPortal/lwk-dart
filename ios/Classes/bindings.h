@@ -52,7 +52,7 @@ void wire_build_tx__static_method__Api(int64_t port_,
                                        struct wire_Wallet *wallet,
                                        uint64_t sats,
                                        struct wire_uint_8_list *out_address,
-                                       float *abs_fee);
+                                       float abs_fee);
 
 void wire_decode_tx__static_method__Api(int64_t port_,
                                         struct wire_Wallet *wallet,
@@ -66,8 +66,6 @@ void wire_sign_tx__static_method__Api(int64_t port_,
 void wire_broadcast_tx__static_method__Api(int64_t port_,
                                            struct wire_uint_8_list *electrum_url,
                                            struct wire_uint_8_list *tx_bytes);
-
-float *new_box_autoadd_f32_0(float value);
 
 struct wire_Wallet *new_box_autoadd_wallet_0(void);
 
@@ -86,7 +84,6 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_decode_tx__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_sign_tx__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_broadcast_tx__static_method__Api);
-    dummy_var ^= ((int64_t) (void*) new_box_autoadd_f32_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_wallet_0);
     dummy_var ^= ((int64_t) (void*) new_uint_8_list_0);
     dummy_var ^= ((int64_t) (void*) free_WireSyncReturn);
