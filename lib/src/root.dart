@@ -4,13 +4,13 @@ import 'package:lwk_dart/src/utils/loader.dart';
 import 'generated/bridge_definitions.dart' as bridge;
 import 'generated/bridge_definitions.dart';
 
-// Future<void> setCurrentDirectory() async {
-//   try {
-//     await Dylib.downloadUnitTestDylib(Directory.current.path);
-//   } catch (e) {
-//     print(e.toString());
-//   }
-// }
+Future<void> setCurrentDirectory() async {
+  try {
+    await Dylib.downloadUnitTestDylib(Directory.current.path);
+  } catch (e) {
+    print(e.toString());
+  }
+}
 
 class LiquidWallet {
   final bridge.Wallet _liquidWallet;
@@ -26,9 +26,7 @@ class LiquidWallet {
       dynamic hint}) async {
     try {
       final res = await ffi.newWalletStaticMethodApi(
-          mnemonic: mnemonic,
-          network: network,
-          dbPath: dbPath);
+          mnemonic: mnemonic, network: network, dbPath: dbPath);
       return LiquidWallet._(res);
     } catch (e) {
       rethrow;
@@ -115,10 +113,15 @@ class LiquidWallet {
   }
 
   Future<Uint8List> sign(
-      {required LiquidNetwork network,  required String pset, required String mnemonic}) async {
+      {required LiquidNetwork network,
+      required String pset,
+      required String mnemonic}) async {
     try {
       final res = await ffi.signTxStaticMethodApi(
-          wallet: _liquidWallet, network: network, pset: pset, mnemonic: mnemonic);
+          wallet: _liquidWallet,
+          network: network,
+          pset: pset,
+          mnemonic: mnemonic);
       return res;
     } catch (e) {
       rethrow;

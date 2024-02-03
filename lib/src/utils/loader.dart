@@ -16,7 +16,7 @@ class Dylib {
       "${_config!['REPOSITORY_URL']}${_config!['TAG_VERSION']}/$libName.zip";
   static Future<void> _loadJsonAsset() async {
     final String content = await rootBundle
-        .loadString("packages/boltz_flutter/assets/release.config.txt");
+        .loadString("packages/lwk_dart/assets/release.config.txt");
     Map<String, dynamic> configMap = {};
     List<String> lines = content.split('\n');
 
