@@ -11,7 +11,7 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 
 part 'bridge_definitions.freezed.dart';
 
-abstract class LwkDart {
+abstract class LwkBridge {
   Future<Wallet> newWalletStaticMethodApi(
       {required String mnemonic,
       required LiquidNetwork network,

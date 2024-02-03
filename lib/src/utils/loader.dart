@@ -11,7 +11,7 @@ const name = "liblwkbridge";
 
 class Dylib {
   static Map<String, dynamic>? _config;
-  static String get libName => "unittest.libboltz.${_config!['TAG_VERSION']}";
+  static String get libName => "unittest.$name.${_config!['TAG_VERSION']}";
   static String get remoteUrl =>
       "${_config!['REPOSITORY_URL']}${_config!['TAG_VERSION']}/$libName.zip";
   static Future<void> _loadJsonAsset() async {
@@ -91,4 +91,4 @@ class Dylib {
   }
 }
 
-final ffi = BoltzDartImpl(Dylib.getDylib());
+final ffi = LwkBridgeImpl(Dylib.getDylib());
