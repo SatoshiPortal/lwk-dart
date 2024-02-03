@@ -1,6 +1,6 @@
-use crate::error::LwkError;
-use crate::network::LiquidNetwork;
-use crate::types::{Balance, PsetAmounts, Tx};
+pub use crate::error::LwkError;
+pub use crate::network::LiquidNetwork;
+pub use crate::types::{Balance, PsetAmounts, Tx};
 pub use crate::wallet::Wallet;
 use elements::pset::serialize::Deserialize;
 

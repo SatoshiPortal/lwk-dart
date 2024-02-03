@@ -282,18 +282,12 @@ class LwkBridgeImpl implements LwkBridge {
   }
 
   LwkError _wire2api_lwk_error(dynamic raw) {
-    switch (raw[0]) {
-      case 0:
-        return LwkError_Generic(
-          msg: _wire2api_String(raw[1]),
-        );
-      case 1:
-        return LwkError_PoisonError(
-          msg: _wire2api_String(raw[1]),
-        );
-      default:
-        throw Exception("unreachable");
-    }
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return LwkError(
+      msg: _wire2api_String(arr[0]),
+    );
   }
 
   PsetAmounts _wire2api_pset_amounts(dynamic raw) {

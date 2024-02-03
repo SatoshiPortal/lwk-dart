@@ -279,11 +279,7 @@ impl rust2dart::IntoIntoDart<Balance> for Balance {
 
 impl support::IntoDart for LwkError {
     fn into_dart(self) -> support::DartAbi {
-        match self {
-            Self::Generic { msg } => vec![0.into_dart(), msg.into_into_dart().into_dart()],
-            Self::PoisonError { msg } => vec![1.into_dart(), msg.into_into_dart().into_dart()],
-        }
-        .into_dart()
+        vec![self.msg.into_into_dart().into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for LwkError {}

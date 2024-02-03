@@ -3,18 +3,14 @@ use std::sync::{MutexGuard, PoisonError};
 use elements::pset::ParseError;
 
 /// Possible errors emitted
-#[derive(thiserror::Error, Debug)]
-pub enum LwkError {
-    #[error("{msg}")]
-    Generic { msg: String },
-
-    #[error("Poison error: {msg}")]
-    PoisonError { msg: String },
+#[derive(Debug,)]
+pub struct LwkError {
+    pub msg: String
 }
 
 impl From<lwk_wollet::Error> for LwkError {
     fn from(value: lwk_wollet::Error) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -22,7 +18,7 @@ impl From<lwk_wollet::Error> for LwkError {
 
 impl From<ParseError> for LwkError {
     fn from(value: ParseError) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -30,7 +26,7 @@ impl From<ParseError> for LwkError {
 
 impl From<elements::pset::Error> for LwkError {
     fn from(value: elements::pset::Error) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -38,7 +34,7 @@ impl From<elements::pset::Error> for LwkError {
 
 impl From<elements::encode::Error> for LwkError {
     fn from(value: elements::encode::Error) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -46,7 +42,7 @@ impl From<elements::encode::Error> for LwkError {
 
 impl From<elements::bitcoin::transaction::ParseOutPointError> for LwkError {
     fn from(value: elements::bitcoin::transaction::ParseOutPointError) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -54,7 +50,7 @@ impl From<elements::bitcoin::transaction::ParseOutPointError> for LwkError {
 
 impl From<elements::hashes::hex::HexToBytesError> for LwkError {
     fn from(value: elements::hashes::hex::HexToBytesError) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -62,7 +58,7 @@ impl From<elements::hashes::hex::HexToBytesError> for LwkError {
 
 impl From<elements::hashes::hex::HexToArrayError> for LwkError {
     fn from(value: elements::hashes::hex::HexToArrayError) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -70,7 +66,7 @@ impl From<elements::hashes::hex::HexToArrayError> for LwkError {
 
 impl From<elements::AddressError> for LwkError {
     fn from(value: elements::AddressError) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -78,7 +74,7 @@ impl From<elements::AddressError> for LwkError {
 
 impl From<lwk_signer::bip39::Error> for LwkError {
     fn from(value: lwk_signer::bip39::Error) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -86,7 +82,7 @@ impl From<lwk_signer::bip39::Error> for LwkError {
 
 impl From<lwk_signer::NewError> for LwkError {
     fn from(value: lwk_signer::NewError) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -94,7 +90,7 @@ impl From<lwk_signer::NewError> for LwkError {
 
 impl From<lwk_signer::SignError> for LwkError {
     fn from(value: lwk_signer::SignError) -> Self {
-        LwkError::Generic {
+        LwkError{
             msg: format!("{:?}", value),
         }
     }
@@ -102,12 +98,12 @@ impl From<lwk_signer::SignError> for LwkError {
 
 impl From<String> for LwkError {
     fn from(msg: String) -> Self {
-        LwkError::Generic { msg }
+        LwkError{ msg }
     }
 }
 
 impl<T> From<PoisonError<MutexGuard<'_, T>>> for LwkError {
     fn from(e: PoisonError<MutexGuard<'_, T>>) -> Self {
-        LwkError::PoisonError { msg: e.to_string() }
+        LwkError { msg: e.to_string() }
     }
 }

@@ -7,9 +7,6 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:uuid/uuid.dart';
-import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
-
-part 'bridge_definitions.freezed.dart';
 
 abstract class LwkBridge {
   Future<Wallet> newWalletStaticMethodApi(
@@ -103,14 +100,13 @@ enum LiquidNetwork {
   Testnet,
 }
 
-@freezed
-sealed class LwkError with _$LwkError implements FrbException {
-  const factory LwkError.generic({
-    required String msg,
-  }) = LwkError_Generic;
-  const factory LwkError.poisonError({
-    required String msg,
-  }) = LwkError_PoisonError;
+/// Possible errors emitted
+class LwkError implements FrbException {
+  final String msg;
+
+  const LwkError({
+    required this.msg,
+  });
 }
 
 class PsetAmounts {

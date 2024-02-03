@@ -18,9 +18,7 @@ void main() {
       const absFee = 300.0;
 
       final wallet = await LiquidWallet.create(
-          mnemonic: mnemonic,
-          network: network,
-          dbPath: dbPath);
+          mnemonic: mnemonic, network: network, dbPath: dbPath);
       await wallet.sync(electrumUrl);
       final address = await wallet.address();
       print(address);
@@ -35,7 +33,8 @@ void main() {
           sats: outAmount, outAddress: outAddress, absFee: absFee);
       final decodedPset = await wallet.decode(pset: pset);
       print("Amount: ${decodedPset.balances.lbtc} , Fee: ${decodedPset.fee}");
-      final signedTxBytes = await wallet.sign(network:network, pset:pset, mnemonic: mnemonic);
+      final signedTxBytes =
+          await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
       final tx = await wallet.broadcast(
           electrumUrl: electrumUrl, txBytes: signedTxBytes);
       print(tx);
