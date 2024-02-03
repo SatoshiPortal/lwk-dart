@@ -1,0 +1,2 @@
+TAG_VERSION=0.1.0
+REPOSITORY_URL=https://github.com/SatoshiPortal/lwk-dart/releases/download

@@ -1,4 +1,5 @@
 #!/bin/bash
+CORES=8
 # Setup jniLibs directory
 ROOT="target"
 VERSION=$1

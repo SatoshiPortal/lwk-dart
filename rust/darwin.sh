@@ -1,5 +1,5 @@
 #!/bin/bash
-
+CORES=8
 # Setup
 ROOT="target"
 VERSION=$1
@@ -33,7 +33,7 @@ for TARGET in \
     aarch64-apple-darwin
 do
     rustup target add $TARGET
-    cargo build -r --target=$TARGET
+    cargo build -j $CORES -r --target=$TARGET
 done
 
 cargo install cargo-lipo
