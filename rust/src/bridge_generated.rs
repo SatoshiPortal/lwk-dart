@@ -25,7 +25,6 @@ use crate::network::LiquidNetwork;
 use crate::types::Balance;
 use crate::types::PsetAmounts;
 use crate::types::Tx;
-use crate::types::Wallet;
 
 // Section: wire functions
 
@@ -33,10 +32,9 @@ fn wire_new_wallet__static_method__Api_impl(
     port_: MessagePort,
     mnemonic: impl Wire2Api<String> + UnwindSafe,
     network: impl Wire2Api<LiquidNetwork> + UnwindSafe,
-    electrum_url: impl Wire2Api<String> + UnwindSafe,
     db_path: impl Wire2Api<String> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Wallet, _>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, RustOpaque<Wallet>, _>(
         WrapInfo {
             debug_name: "new_wallet__static_method__Api",
             port: Some(port_),
@@ -45,18 +43,15 @@ fn wire_new_wallet__static_method__Api_impl(
         move || {
             let api_mnemonic = mnemonic.wire2api();
             let api_network = network.wire2api();
-            let api_electrum_url = electrum_url.wire2api();
             let api_db_path = db_path.wire2api();
-            move |task_callback| {
-                Api::new_wallet(api_mnemonic, api_network, api_electrum_url, api_db_path)
-            }
+            move |task_callback| Api::new_wallet(api_mnemonic, api_network, api_db_path)
         },
     )
 }
 fn wire_sync__static_method__Api_impl(
     port_: MessagePort,
+    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
     electrum_url: impl Wire2Api<String> + UnwindSafe,
-    wallet: impl Wire2Api<Wallet> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, (), _>(
         WrapInfo {
@@ -65,15 +60,31 @@ fn wire_sync__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_electrum_url = electrum_url.wire2api();
             let api_wallet = wallet.wire2api();
-            move |task_callback| Api::sync(api_electrum_url, api_wallet)
+            let api_electrum_url = electrum_url.wire2api();
+            move |task_callback| Api::sync(api_wallet, api_electrum_url)
+        },
+    )
+}
+fn wire_descriptor__static_method__Api_impl(
+    port_: MessagePort,
+    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
+        WrapInfo {
+            debug_name: "descriptor__static_method__Api",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_wallet = wallet.wire2api();
+            move |task_callback| Api::descriptor(api_wallet)
         },
     )
 }
 fn wire_address__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<Wallet> + UnwindSafe,
+    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
         WrapInfo {
@@ -89,7 +100,7 @@ fn wire_address__static_method__Api_impl(
 }
 fn wire_balance__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<Wallet> + UnwindSafe,
+    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Balance, _>(
         WrapInfo {
@@ -105,7 +116,7 @@ fn wire_balance__static_method__Api_impl(
 }
 fn wire_txs__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<Wallet> + UnwindSafe,
+    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Vec<Tx>, _>(
         WrapInfo {
@@ -121,10 +132,10 @@ fn wire_txs__static_method__Api_impl(
 }
 fn wire_build_tx__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<Wallet> + UnwindSafe,
+    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
     sats: impl Wire2Api<u64> + UnwindSafe,
     out_address: impl Wire2Api<String> + UnwindSafe,
-    abs_fee: impl Wire2Api<Option<f32>> + UnwindSafe,
+    abs_fee: impl Wire2Api<f32> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
         WrapInfo {
@@ -143,7 +154,7 @@ fn wire_build_tx__static_method__Api_impl(
 }
 fn wire_decode_tx__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<Wallet> + UnwindSafe,
+    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
     pset: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, PsetAmounts, _>(
@@ -161,7 +172,8 @@ fn wire_decode_tx__static_method__Api_impl(
 }
 fn wire_sign_tx__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<Wallet> + UnwindSafe,
+    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+    network: impl Wire2Api<LiquidNetwork> + UnwindSafe,
     pset: impl Wire2Api<String> + UnwindSafe,
     mnemonic: impl Wire2Api<String> + UnwindSafe,
 ) {
@@ -173,9 +185,10 @@ fn wire_sign_tx__static_method__Api_impl(
         },
         move || {
             let api_wallet = wallet.wire2api();
+            let api_network = network.wire2api();
             let api_pset = pset.wire2api();
             let api_mnemonic = mnemonic.wire2api();
-            move |task_callback| Api::sign_tx(api_wallet, api_pset, api_mnemonic)
+            move |task_callback| Api::sign_tx(api_wallet, api_network, api_pset, api_mnemonic)
         },
     )
 }
@@ -239,7 +252,6 @@ impl Wire2Api<LiquidNetwork> for i32 {
         }
     }
 }
-
 impl Wire2Api<u64> for u64 {
     fn wire2api(self) -> u64 {
         self
@@ -260,22 +272,6 @@ impl support::IntoDart for Balance {
 }
 impl support::IntoDartExceptPrimitive for Balance {}
 impl rust2dart::IntoIntoDart<Balance> for Balance {
-    fn into_into_dart(self) -> Self {
-        self
-    }
-}
-
-impl support::IntoDart for LiquidNetwork {
-    fn into_dart(self) -> support::DartAbi {
-        match self {
-            Self::Mainnet => 0,
-            Self::Testnet => 1,
-        }
-        .into_dart()
-    }
-}
-impl support::IntoDartExceptPrimitive for LiquidNetwork {}
-impl rust2dart::IntoIntoDart<LiquidNetwork> for LiquidNetwork {
     fn into_into_dart(self) -> Self {
         self
     }
@@ -327,23 +323,6 @@ impl support::IntoDart for Tx {
 }
 impl support::IntoDartExceptPrimitive for Tx {}
 impl rust2dart::IntoIntoDart<Tx> for Tx {
-    fn into_into_dart(self) -> Self {
-        self
-    }
-}
-
-impl support::IntoDart for Wallet {
-    fn into_dart(self) -> support::DartAbi {
-        vec![
-            self.network.into_into_dart().into_dart(),
-            self.dbpath.into_into_dart().into_dart(),
-            self.desc.into_into_dart().into_dart(),
-        ]
-        .into_dart()
-    }
-}
-impl support::IntoDartExceptPrimitive for Wallet {}
-impl rust2dart::IntoIntoDart<Wallet> for Wallet {
     fn into_into_dart(self) -> Self {
         self
     }

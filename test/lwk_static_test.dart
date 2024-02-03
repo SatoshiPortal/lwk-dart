@@ -13,7 +13,6 @@ void main() {
       final wallet = await ffi.newWalletStaticMethodApi(
         mnemonic: mnemonic,
         network: network,
-        electrumUrl: electrumUrl,
         dbPath: dbPath,
       );
       print('$wallet');
@@ -48,7 +47,7 @@ void main() {
       print('-------------------------------------');
 
       final signedTxBytes = await ffi.signTxStaticMethodApi(
-          wallet: wallet, pset: pset, mnemonic: mnemonic);
+          wallet: wallet, network: network, pset: pset, mnemonic: mnemonic);
       final txid = await ffi.broadcastTxStaticMethodApi(
           electrumUrl: electrumUrl, txBytes: signedTxBytes);
       print('$txid');
