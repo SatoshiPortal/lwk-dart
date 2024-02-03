@@ -11,16 +11,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.2
   ffi: ^2.0.1
-  flutter_rust_bridge: ^1.82.5
+  flutter_rust_bridge: ^1.82.2
   meta: ^1.8.0
   uuid: ^4.1.0
   dio: ^5.4.0
-  freezed: ^2.3.5
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   archive: ^3.4.10
-  http: ^1.2.0
+
 
 dev_dependencies:
   flutter_test:
@@ -33,8 +33,8 @@ dev_dependencies:
   lints: ^3.0.0
 
 flutter:
-  assets:
-    - assets/
+  # assets:
+  #   - assets/
   plugin:
     platforms:
       android:
