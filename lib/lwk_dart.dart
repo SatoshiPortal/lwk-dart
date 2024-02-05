@@ -1,4 +1,4 @@
-library boltz_dart;
+library lwk_dart;
 
 export './src/generated/bridge_definitions.dart';
 
