@@ -34,7 +34,7 @@ fn wire_new_wallet__static_method__Api_impl(
     network: impl Wire2Api<LiquidNetwork> + UnwindSafe,
     db_path: impl Wire2Api<String> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, RustOpaque<Wallet>, _>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
         WrapInfo {
             debug_name: "new_wallet__static_method__Api",
             port: Some(port_),
@@ -50,7 +50,7 @@ fn wire_new_wallet__static_method__Api_impl(
 }
 fn wire_sync__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
     electrum_url: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, (), _>(
@@ -60,15 +60,15 @@ fn wire_sync__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_wallet = wallet.wire2api();
+            let api_wallet_id = wallet_id.wire2api();
             let api_electrum_url = electrum_url.wire2api();
-            move |task_callback| Api::sync(api_wallet, api_electrum_url)
+            move |task_callback| Api::sync(api_wallet_id, api_electrum_url)
         },
     )
 }
 fn wire_descriptor__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
         WrapInfo {
@@ -77,14 +77,14 @@ fn wire_descriptor__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_wallet = wallet.wire2api();
-            move |task_callback| Api::descriptor(api_wallet)
+            let api_wallet_id = wallet_id.wire2api();
+            move |task_callback| Api::descriptor(api_wallet_id)
         },
     )
 }
 fn wire_address__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
         WrapInfo {
@@ -93,14 +93,14 @@ fn wire_address__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_wallet = wallet.wire2api();
-            move |task_callback| Api::address(api_wallet)
+            let api_wallet_id = wallet_id.wire2api();
+            move |task_callback| Api::address(api_wallet_id)
         },
     )
 }
 fn wire_balance__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Balance, _>(
         WrapInfo {
@@ -109,14 +109,14 @@ fn wire_balance__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_wallet = wallet.wire2api();
-            move |task_callback| Api::balance(api_wallet)
+            let api_wallet_id = wallet_id.wire2api();
+            move |task_callback| Api::balance(api_wallet_id)
         },
     )
 }
 fn wire_txs__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Vec<Tx>, _>(
         WrapInfo {
@@ -125,14 +125,14 @@ fn wire_txs__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_wallet = wallet.wire2api();
-            move |task_callback| Api::txs(api_wallet)
+            let api_wallet_id = wallet_id.wire2api();
+            move |task_callback| Api::txs(api_wallet_id)
         },
     )
 }
 fn wire_build_tx__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
     sats: impl Wire2Api<u64> + UnwindSafe,
     out_address: impl Wire2Api<String> + UnwindSafe,
     abs_fee: impl Wire2Api<f32> + UnwindSafe,
@@ -144,17 +144,19 @@ fn wire_build_tx__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_wallet = wallet.wire2api();
+            let api_wallet_id = wallet_id.wire2api();
             let api_sats = sats.wire2api();
             let api_out_address = out_address.wire2api();
             let api_abs_fee = abs_fee.wire2api();
-            move |task_callback| Api::build_tx(api_wallet, api_sats, api_out_address, api_abs_fee)
+            move |task_callback| {
+                Api::build_tx(api_wallet_id, api_sats, api_out_address, api_abs_fee)
+            }
         },
     )
 }
 fn wire_decode_tx__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
     pset: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, PsetAmounts, _>(
@@ -164,15 +166,15 @@ fn wire_decode_tx__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_wallet = wallet.wire2api();
+            let api_wallet_id = wallet_id.wire2api();
             let api_pset = pset.wire2api();
-            move |task_callback| Api::decode_tx(api_wallet, api_pset)
+            move |task_callback| Api::decode_tx(api_wallet_id, api_pset)
         },
     )
 }
 fn wire_sign_tx__static_method__Api_impl(
     port_: MessagePort,
-    wallet: impl Wire2Api<RustOpaque<Wallet>> + UnwindSafe,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
     network: impl Wire2Api<LiquidNetwork> + UnwindSafe,
     pset: impl Wire2Api<String> + UnwindSafe,
     mnemonic: impl Wire2Api<String> + UnwindSafe,
@@ -184,11 +186,11 @@ fn wire_sign_tx__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_wallet = wallet.wire2api();
+            let api_wallet_id = wallet_id.wire2api();
             let api_network = network.wire2api();
             let api_pset = pset.wire2api();
             let api_mnemonic = mnemonic.wire2api();
-            move |task_callback| Api::sign_tx(api_wallet, api_network, api_pset, api_mnemonic)
+            move |task_callback| Api::sign_tx(api_wallet_id, api_network, api_pset, api_mnemonic)
         },
     )
 }

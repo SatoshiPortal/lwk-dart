@@ -5,11 +5,11 @@ import 'package:path_provider/path_provider.dart';
 class TestApp extends StatefulWidget {
   const TestApp({super.key});
 
-  static Future<String> getTempDirectory() async {
+  static Future<String> getDbDir() async {
     try {
       WidgetsFlutterBinding.ensureInitialized();
-      final directory = await getTemporaryDirectory();
-      final path = "${directory.path}/lwk-test";
+      final directory = await getApplicationDocumentsDirectory();
+      final path = "${directory.path}/lwk-db";
       return path;
     } catch (e) {
       print('Error getting current directory: $e');
@@ -23,15 +23,11 @@ class TestApp extends StatefulWidget {
     const network = LiquidNetwork.Testnet;
     const electrumUrl = 'blockstream.info:465';
 
-    final dbPath = await getTempDirectory();
-    const outAmount = 10000;
-    const outAddress =
-        "tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu";
-    const absFee = 300.0;
+    final dbPath = await getDbDir();
 
     final wallet = await LiquidWallet.create(
-        mnemonic: mnemonic, network: network, dbPath: dbPath);
-    await wallet.sync(electrumUrl);
+        mnemonic: mnemonic, network: network, dbPath: dbPath,);
+    // await wallet.sync(electrumUrl);
     final address = await wallet.address();
     return address;
   }

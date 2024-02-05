@@ -19,6 +19,7 @@ elements = "0.24.0"
 flutter_rust_bridge = "1.82.6"
 anyhow = "1.0.68"
 lazy_static = "1.4.0"
+bitcoin = "0.30.0"
 
 [build-dependencies]
 flutter_rust_bridge_codegen = { version = "= 1.82.6"  }

@@ -12,7 +12,7 @@ dependencies:
   lwk_dart: 
     git:
       url: https://github.com/SatoshiPortal/lwk-dart.git
-      ref: main
+      ref: trunk
   path_provider: ^2.1.2
 
 dev_dependencies:

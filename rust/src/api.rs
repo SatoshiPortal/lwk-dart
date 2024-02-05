@@ -15,53 +15,53 @@ impl Api {
         mnemonic: String,
         network: LiquidNetwork,
         db_path: String,
-    ) -> anyhow::Result<RustOpaque<Wallet>, LwkError> {
-        Ok(RustOpaque::new(Wallet::new(network, &db_path, &mnemonic)?))
+    ) -> anyhow::Result<String, LwkError> {
+        Ok(Wallet::new(network, &db_path, &mnemonic)?.into())
     }
 
-    pub fn sync(wallet: RustOpaque<Wallet>, electrum_url: String) -> anyhow::Result<(), LwkError> {
-        wallet.sync(electrum_url)
+    pub fn sync(wallet_id: String, electrum_url: String) -> anyhow::Result<(), LwkError> {
+        Wallet::retrieve_wallet(wallet_id).sync(electrum_url)
     }
 
-    pub fn descriptor(wallet: RustOpaque<Wallet>) -> anyhow::Result<String, LwkError> {
-        wallet.descriptor()
+    pub fn descriptor(wallet_id: String) -> anyhow::Result<String, LwkError> {
+        Wallet::retrieve_wallet(wallet_id).descriptor()
     }
 
-    pub fn address(wallet: RustOpaque<Wallet>) -> anyhow::Result<String, LwkError> {
-        wallet.address()
+    pub fn address(wallet_id: String) -> anyhow::Result<String, LwkError> {
+        Wallet::retrieve_wallet(wallet_id).address()
     }
 
-    pub fn balance(wallet: RustOpaque<Wallet>) -> anyhow::Result<Balance, LwkError> {
-        wallet.balance()
+    pub fn balance(wallet_id: String) -> anyhow::Result<Balance, LwkError> {
+        Wallet::retrieve_wallet(wallet_id).balance()
     }
 
-    pub fn txs(wallet: RustOpaque<Wallet>) -> anyhow::Result<Vec<Tx>, LwkError> {
-        wallet.txs()
+    pub fn txs(wallet_id: String) -> anyhow::Result<Vec<Tx>, LwkError> {
+        Wallet::retrieve_wallet(wallet_id).txs()
     }
 
     pub fn build_tx(
-        wallet: RustOpaque<Wallet>,
+        wallet_id: String,
         sats: u64,
         out_address: String,
         abs_fee: f32,
     ) -> anyhow::Result<String, LwkError> {
-        wallet.build_tx(sats, out_address, abs_fee)
+        Wallet::retrieve_wallet(wallet_id).build_tx(sats, out_address, abs_fee)
     }
 
     pub fn decode_tx(
-        wallet: RustOpaque<Wallet>,
+        wallet_id: String,
         pset: String,
     ) -> anyhow::Result<PsetAmounts, LwkError> {
-        wallet.decode_tx(pset)
+        Wallet::retrieve_wallet(wallet_id).decode_tx(pset)
     }
 
     pub fn sign_tx(
-        wallet: RustOpaque<Wallet>,
+        wallet_id: String,
         network: LiquidNetwork,
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<Vec<u8>, LwkError> {
-        wallet.sign_tx(network, pset, mnemonic)
+        Wallet::retrieve_wallet(wallet_id).sign_tx(network, pset, mnemonic)
     }
 
     pub fn broadcast_tx(

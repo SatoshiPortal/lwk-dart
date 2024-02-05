@@ -10,21 +10,21 @@ void main() {
       const network = LiquidNetwork.Testnet;
       const electrumUrl = 'blockstream.info:465';
       const dbPath = '/tmp/lwk-dart';
-      final wallet = await ffi.newWalletStaticMethodApi(
+      final walletId = await ffi.newWalletStaticMethodApi(
         mnemonic: mnemonic,
         network: network,
         dbPath: dbPath,
       );
-      print('$wallet');
+      print('$walletId');
 
-      await ffi.syncStaticMethodApi(electrumUrl: electrumUrl, wallet: wallet);
-      final address = await ffi.addressStaticMethodApi(wallet: wallet);
+      await ffi.syncStaticMethodApi(electrumUrl: electrumUrl, walletId: walletId);
+      final address = await ffi.addressStaticMethodApi(walletId: walletId);
       print('$address');
 
-      final balance = await ffi.balanceStaticMethodApi(wallet: wallet);
+      final balance = await ffi.balanceStaticMethodApi(walletId: walletId);
       print('$balance');
 
-      final txs = await ffi.txsStaticMethodApi(wallet: wallet);
+      final txs = await ffi.txsStaticMethodApi(walletId: walletId);
       txs.forEach((element) {
         print('${element.kind}');
         print('${element.amount}');
@@ -37,17 +37,17 @@ void main() {
       const outAmount = 1000;
       const fee = 300.0;
       final pset = await ffi.buildTxStaticMethodApi(
-          wallet: wallet, sats: outAmount, outAddress: outAddress, absFee: fee);
+          walletId: walletId, sats: outAmount, outAddress: outAddress, absFee: fee);
 
       final decoded =
-          await ffi.decodeTxStaticMethodApi(wallet: wallet, pset: pset);
+          await ffi.decodeTxStaticMethodApi(walletId: walletId, pset: pset);
       print('------------CONFIRM TX---------------');
       print('Fee: ${decoded.fee}');
       print('Total: ${decoded.balances.lbtc}');
       print('-------------------------------------');
 
       final signedTxBytes = await ffi.signTxStaticMethodApi(
-          wallet: wallet, network: network, pset: pset, mnemonic: mnemonic);
+          walletId: walletId, network: network, pset: pset, mnemonic: mnemonic);
       final txid = await ffi.broadcastTxStaticMethodApi(
           electrumUrl: electrumUrl, txBytes: signedTxBytes);
       print('$txid');

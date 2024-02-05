@@ -9,7 +9,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class LwkBridge {
-  Future<Wallet> newWalletStaticMethodApi(
+  Future<String> newWalletStaticMethodApi(
       {required String mnemonic,
       required LiquidNetwork network,
       required String dbPath,
@@ -18,30 +18,31 @@ abstract class LwkBridge {
   FlutterRustBridgeTaskConstMeta get kNewWalletStaticMethodApiConstMeta;
 
   Future<void> syncStaticMethodApi(
-      {required Wallet wallet, required String electrumUrl, dynamic hint});
+      {required String walletId, required String electrumUrl, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kSyncStaticMethodApiConstMeta;
 
   Future<String> descriptorStaticMethodApi(
-      {required Wallet wallet, dynamic hint});
+      {required String walletId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDescriptorStaticMethodApiConstMeta;
 
-  Future<String> addressStaticMethodApi({required Wallet wallet, dynamic hint});
+  Future<String> addressStaticMethodApi(
+      {required String walletId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kAddressStaticMethodApiConstMeta;
 
   Future<Balance> balanceStaticMethodApi(
-      {required Wallet wallet, dynamic hint});
+      {required String walletId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kBalanceStaticMethodApiConstMeta;
 
-  Future<List<Tx>> txsStaticMethodApi({required Wallet wallet, dynamic hint});
+  Future<List<Tx>> txsStaticMethodApi({required String walletId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kTxsStaticMethodApiConstMeta;
 
   Future<String> buildTxStaticMethodApi(
-      {required Wallet wallet,
+      {required String walletId,
       required int sats,
       required String outAddress,
       required double absFee,
@@ -50,12 +51,12 @@ abstract class LwkBridge {
   FlutterRustBridgeTaskConstMeta get kBuildTxStaticMethodApiConstMeta;
 
   Future<PsetAmounts> decodeTxStaticMethodApi(
-      {required Wallet wallet, required String pset, dynamic hint});
+      {required String walletId, required String pset, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDecodeTxStaticMethodApiConstMeta;
 
   Future<Uint8List> signTxStaticMethodApi(
-      {required Wallet wallet,
+      {required String walletId,
       required LiquidNetwork network,
       required String pset,
       required String mnemonic,
@@ -67,24 +68,6 @@ abstract class LwkBridge {
       {required String electrumUrl, required Uint8List txBytes, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kBroadcastTxStaticMethodApiConstMeta;
-
-  DropFnType get dropOpaqueWallet;
-  ShareFnType get shareOpaqueWallet;
-  OpaqueTypeFinalizer get WalletFinalizer;
-}
-
-@sealed
-class Wallet extends FrbOpaque {
-  final LwkBridge bridge;
-  Wallet.fromRaw(int ptr, int size, this.bridge) : super.unsafe(ptr, size);
-  @override
-  DropFnType get dropFn => bridge.dropOpaqueWallet;
-
-  @override
-  ShareFnType get shareFn => bridge.shareOpaqueWallet;
-
-  @override
-  OpaqueTypeFinalizer get staticFinalizer => bridge.WalletFinalizer;
 }
 
 class Balance {

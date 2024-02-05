@@ -13,11 +13,11 @@ Future<void> setCurrentDirectory() async {
 }
 
 class LiquidWallet {
-  final bridge.Wallet _liquidWallet;
+  final String _liquidWallet;
 
   LiquidWallet._(this._liquidWallet);
 
-  bridge.Wallet get liquidWallet => _liquidWallet;
+  String get liquidWallet => _liquidWallet;
 
   static Future<LiquidWallet> create(
       {required String mnemonic,
@@ -38,7 +38,7 @@ class LiquidWallet {
   ) async {
     try {
       final res = await ffi.syncStaticMethodApi(
-        wallet: _liquidWallet,
+        walletId: _liquidWallet,
         electrumUrl: electrumUrl,
       );
       return res;
@@ -50,7 +50,7 @@ class LiquidWallet {
   Future<String> address() async {
     try {
       final res = await ffi.addressStaticMethodApi(
-        wallet: _liquidWallet,
+        walletId: _liquidWallet,
       );
       return res;
     } catch (e) {
@@ -61,7 +61,7 @@ class LiquidWallet {
 //   String descriptor() {
 //     try {
 // final res = await ffi.descriptor(
-//         wallet: _liquidWallet,
+//         walletId: _liquidWallet,
 //       );
 //       return res;    } catch (e) {
 //       rethrow;
@@ -70,7 +70,7 @@ class LiquidWallet {
 
   Future<Balance> balance() async {
     try {
-      final res = await ffi.balanceStaticMethodApi(wallet: _liquidWallet);
+      final res = await ffi.balanceStaticMethodApi(walletId: _liquidWallet);
       return res;
     } catch (e) {
       rethrow;
@@ -79,7 +79,7 @@ class LiquidWallet {
 
   Future<List<Tx>> txs() async {
     try {
-      final res = await ffi.txsStaticMethodApi(wallet: _liquidWallet);
+      final res = await ffi.txsStaticMethodApi(walletId: _liquidWallet);
       return res;
     } catch (e) {
       rethrow;
@@ -92,7 +92,7 @@ class LiquidWallet {
       required double absFee}) async {
     try {
       final res = await ffi.buildTxStaticMethodApi(
-          wallet: _liquidWallet,
+          walletId: _liquidWallet,
           sats: sats,
           outAddress: outAddress,
           absFee: absFee);
@@ -105,7 +105,7 @@ class LiquidWallet {
   Future<PsetAmounts> decode({required String pset}) async {
     try {
       final res =
-          await ffi.decodeTxStaticMethodApi(wallet: _liquidWallet, pset: pset);
+          await ffi.decodeTxStaticMethodApi(walletId: _liquidWallet, pset: pset);
       return res;
     } catch (e) {
       rethrow;
@@ -118,7 +118,7 @@ class LiquidWallet {
       required String mnemonic}) async {
     try {
       final res = await ffi.signTxStaticMethodApi(
-          wallet: _liquidWallet,
+          walletId: _liquidWallet,
           network: network,
           pset: pset,
           mnemonic: mnemonic);
