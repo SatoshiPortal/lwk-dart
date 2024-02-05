@@ -39,6 +39,11 @@ xcframework:
 	sh darwin.sh $(VERSION)
 	@echo "[Done ✅]"
 
+unit-test:
+	@echo "[Creating unit-test binaries ...] $@"
+	sh unit-test.sh $(VERSION)
+	@echo "[Done ✅]"
+
 zip:
 	@echo "[COMPRESSING BINARIES TO FLUTTER PACKAGE ...] $@"
 	sh compress.sh $(VERSION)
