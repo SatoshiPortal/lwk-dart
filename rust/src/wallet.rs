@@ -52,11 +52,7 @@ where
 pub struct Wallet {
     pub inner: Mutex<Wollet>,
 }
-impl From<Wallet> for RustOpaque<Wallet> {
-    fn from(wallet: Wallet) -> Self {
-        RustOpaque::new(wallet)
-    }
-}
+
 impl Wallet {
     pub fn retrieve_wallet(id: String) -> Arc<Wallet> {
         let wallet_lock = WALLET.read().unwrap();
