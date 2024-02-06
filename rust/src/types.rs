@@ -1,23 +1,60 @@
-use crate::{error::LwkError, network::LiquidNetwork};
-use elements::AssetId;
+use elements::{Address, AddressParams, AssetId};
 use lwk_common::PsetBalance;
-use lwk_wollet::{EncryptedFsPersister, WalletTx, Wollet, WolletDescriptor};
+use lwk_wollet::{AddressResult, WalletTx};
 use std::collections::HashMap;
 use std::str::FromStr;
-
 const TLBTC_ASSET_ID: &str = "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct WalletAddress {
+    pub standard: String,
+    pub confidential: String,
+    pub index: u32,
+}
+
+impl From<AddressResult> for WalletAddress {
+    fn from(address: AddressResult) -> Self {
+        WalletAddress {
+            standard: address.address().to_unconfidential().to_string(),
+            confidential: address.address().to_string(),
+            index: address.index(),
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct TxOut {
+    pub address: String,
+    pub amount: u64,
+}
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Tx {
     pub kind: String,
     pub amount: u64,
     pub txid: String,
-    pub address: String,
+    pub outputs: Vec<TxOut>,
     pub fee: u64,
 }
 
 impl From<WalletTx> for Tx {
     fn from(wallet_tx: WalletTx) -> Self {
+        let mut outputs: Vec<TxOut> = Vec::new();
+
+        for output in wallet_tx.outputs {
+            if output.is_some() {
+                let script_pubkey = output.clone().unwrap().script_pubkey;
+                let amount = output.unwrap().unblinded.value;
+                let address =
+                    Address::from_script(&script_pubkey, None, &AddressParams::LIQUID_TESTNET)
+                        .unwrap();
+                outputs.push(TxOut {
+                    address: address.to_string(),
+                    amount: amount,
+                })
+            }
+        }
+
         Tx {
             kind: wallet_tx.type_,
             amount: wallet_tx
@@ -27,7 +64,7 @@ impl From<WalletTx> for Tx {
                 .to_owned()
                 .abs() as u64,
             txid: wallet_tx.tx.txid().to_string(),
-            address: "".to_string(),
+            outputs: outputs,
             fee: wallet_tx.fee,
         }
     }
@@ -74,4 +111,11 @@ impl From<HashMap<AssetId, u64>> for Balance {
             lbtc: lbtc_balance as i64,
         }
     }
+}
+
+#[cfg(test)]
+mod test {
+
+    #[test]
+    fn test_types() {}
 }

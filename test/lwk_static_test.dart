@@ -18,7 +18,7 @@ void main() {
       print('$walletId');
 
       await ffi.syncStaticMethodApi(electrumUrl: electrumUrl, walletId: walletId);
-      final address = await ffi.addressStaticMethodApi(walletId: walletId);
+      final address = await ffi.addressLastUnusedStaticMethodApi(walletId: walletId);
       print('$address');
 
       final balance = await ffi.balanceStaticMethodApi(walletId: walletId);
@@ -29,7 +29,7 @@ void main() {
         print('${element.kind}');
         print('${element.amount}');
         print('${element.txid}');
-        print('${element.address}');
+        print('${element.outputs}');
         print('---------------------------');
       });
       const outAddress =

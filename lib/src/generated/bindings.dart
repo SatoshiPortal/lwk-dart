@@ -92,16 +92,38 @@ class LwkBridgeImpl implements LwkBridge {
         argNames: ["walletId"],
       );
 
-  Future<String> addressStaticMethodApi(
+  Future<WalletAddress> addressLastUnusedStaticMethodApi(
       {required String walletId, dynamic hint}) {
     var arg0 = _platform.api2wire_String(walletId);
     return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_address_last_unused__static_method__Api(port_, arg0),
+      parseSuccessData: _wire2api_wallet_address,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kAddressLastUnusedStaticMethodApiConstMeta,
+      argValues: [walletId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta
+      get kAddressLastUnusedStaticMethodApiConstMeta =>
+          const FlutterRustBridgeTaskConstMeta(
+            debugName: "address_last_unused__static_method__Api",
+            argNames: ["walletId"],
+          );
+
+  Future<WalletAddress> addressStaticMethodApi(
+      {required String walletId, required int index, dynamic hint}) {
+    var arg0 = _platform.api2wire_String(walletId);
+    var arg1 = api2wire_u32(index);
+    return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) =>
-          _platform.inner.wire_address__static_method__Api(port_, arg0),
-      parseSuccessData: _wire2api_String,
+          _platform.inner.wire_address__static_method__Api(port_, arg0, arg1),
+      parseSuccessData: _wire2api_wallet_address,
       parseErrorData: _wire2api_lwk_error,
       constMeta: kAddressStaticMethodApiConstMeta,
-      argValues: [walletId],
+      argValues: [walletId, index],
       hint: hint,
     ));
   }
@@ -109,7 +131,7 @@ class LwkBridgeImpl implements LwkBridge {
   FlutterRustBridgeTaskConstMeta get kAddressStaticMethodApiConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
         debugName: "address__static_method__Api",
-        argNames: ["walletId"],
+        argNames: ["walletId", "index"],
       );
 
   Future<Balance> balanceStaticMethodApi(
@@ -274,6 +296,10 @@ class LwkBridgeImpl implements LwkBridge {
     return (raw as List<dynamic>).map(_wire2api_tx).toList();
   }
 
+  List<TxOut> _wire2api_list_tx_out(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_tx_out).toList();
+  }
+
   LwkError _wire2api_lwk_error(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 1)
@@ -301,9 +327,23 @@ class LwkBridgeImpl implements LwkBridge {
       kind: _wire2api_String(arr[0]),
       amount: _wire2api_u64(arr[1]),
       txid: _wire2api_String(arr[2]),
-      address: _wire2api_String(arr[3]),
+      outputs: _wire2api_list_tx_out(arr[3]),
       fee: _wire2api_u64(arr[4]),
     );
+  }
+
+  TxOut _wire2api_tx_out(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return TxOut(
+      address: _wire2api_String(arr[0]),
+      amount: _wire2api_u64(arr[1]),
+    );
+  }
+
+  int _wire2api_u32(dynamic raw) {
+    return raw as int;
   }
 
   int _wire2api_u64(dynamic raw) {
@@ -320,6 +360,17 @@ class LwkBridgeImpl implements LwkBridge {
 
   void _wire2api_unit(dynamic raw) {
     return;
+  }
+
+  WalletAddress _wire2api_wallet_address(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return WalletAddress(
+      standard: _wire2api_String(arr[0]),
+      confidential: _wire2api_String(arr[1]),
+      index: _wire2api_u32(arr[2]),
+    );
   }
 }
 
@@ -338,6 +389,11 @@ int api2wire_i32(int raw) {
 @protected
 int api2wire_liquid_network(LiquidNetwork raw) {
   return api2wire_i32(raw.index);
+}
+
+@protected
+int api2wire_u32(int raw) {
+  return raw;
 }
 
 @protected
@@ -532,23 +588,43 @@ class LwkBridgeWire implements FlutterRustBridgeWireBase {
       _wire_descriptor__static_method__ApiPtr
           .asFunction<void Function(int, ffi.Pointer<wire_uint_8_list>)>();
 
-  void wire_address__static_method__Api(
+  void wire_address_last_unused__static_method__Api(
     int port_,
     ffi.Pointer<wire_uint_8_list> wallet_id,
   ) {
-    return _wire_address__static_method__Api(
+    return _wire_address_last_unused__static_method__Api(
       port_,
       wallet_id,
     );
   }
 
-  late final _wire_address__static_method__ApiPtr = _lookup<
+  late final _wire_address_last_unused__static_method__ApiPtr = _lookup<
           ffi.NativeFunction<
               ffi.Void Function(ffi.Int64, ffi.Pointer<wire_uint_8_list>)>>(
-      'wire_address__static_method__Api');
+      'wire_address_last_unused__static_method__Api');
+  late final _wire_address_last_unused__static_method__Api =
+      _wire_address_last_unused__static_method__ApiPtr
+          .asFunction<void Function(int, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_address__static_method__Api(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> wallet_id,
+    int index,
+  ) {
+    return _wire_address__static_method__Api(
+      port_,
+      wallet_id,
+      index,
+    );
+  }
+
+  late final _wire_address__static_method__ApiPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32)>>('wire_address__static_method__Api');
   late final _wire_address__static_method__Api =
       _wire_address__static_method__ApiPtr
-          .asFunction<void Function(int, ffi.Pointer<wire_uint_8_list>)>();
+          .asFunction<void Function(int, ffi.Pointer<wire_uint_8_list>, int)>();
 
   void wire_balance__static_method__Api(
     int port_,
