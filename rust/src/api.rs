@@ -1,12 +1,12 @@
 pub use crate::error::LwkError;
 pub use crate::network::LiquidNetwork;
+use crate::types::WalletAddress;
 pub use crate::types::{Balance, PsetAmounts, Tx};
 pub use crate::wallet::Wallet;
 use elements::pset::serialize::Deserialize;
 
 use elements::Transaction;
 use elements::Txid;
-use flutter_rust_bridge::RustOpaque;
 use lwk_wollet::{BlockchainBackend, ElectrumClient};
 pub struct Api {}
 
@@ -27,8 +27,12 @@ impl Api {
         Wallet::retrieve_wallet(wallet_id).descriptor()
     }
 
-    pub fn address(wallet_id: String) -> anyhow::Result<String, LwkError> {
-        Wallet::retrieve_wallet(wallet_id).address()
+    pub fn address_last_unused(wallet_id: String) -> anyhow::Result<WalletAddress, LwkError> {
+        Wallet::retrieve_wallet(wallet_id).address_last_unused()
+    }
+
+    pub fn address(wallet_id: String, index: u32) -> anyhow::Result<WalletAddress, LwkError> {
+        Wallet::retrieve_wallet(wallet_id).address(index)
     }
 
     pub fn balance(wallet_id: String) -> anyhow::Result<Balance, LwkError> {
@@ -48,10 +52,7 @@ impl Api {
         Wallet::retrieve_wallet(wallet_id).build_tx(sats, out_address, abs_fee)
     }
 
-    pub fn decode_tx(
-        wallet_id: String,
-        pset: String,
-    ) -> anyhow::Result<PsetAmounts, LwkError> {
+    pub fn decode_tx(wallet_id: String, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
         Wallet::retrieve_wallet(wallet_id).decode_tx(pset)
     }
 
@@ -78,6 +79,8 @@ impl Api {
 
 #[cfg(test)]
 mod test {
+    use elements::{Address, AddressParams};
+
     use super::*;
     #[test]
     fn test_api() {
@@ -91,35 +94,54 @@ mod test {
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url.clone(), false))
                 .unwrap();
         let dbpath = "/tmp/lwk".to_string();
-        let wallet = Api::new_wallet(mnemonic.clone(), network, dbpath).unwrap();
+        let wallet_id = Api::new_wallet(mnemonic.clone(), network, dbpath).unwrap();
 
-        Api::sync(wallet.clone(), electrum_url.clone()).unwrap();
+        Api::sync(wallet_id.clone(), electrum_url.clone()).unwrap();
         // let wollet: Wollet = Wollet::new(network.into(), Some(&dbpath), &desc).unwrap();
-        let address = Api::address(wallet.clone()).unwrap();
+        let address = Api::address_last_unused(wallet_id.clone()).unwrap();
         println!("ADDRESS: {:#?}", address);
-        let pre_balance: Balance = Api::balance(wallet.clone()).unwrap();
+        let pre_balance: Balance = Api::balance(wallet_id.clone()).unwrap();
         println!("BALANCE: {:#?}", pre_balance.lbtc);
-
+        let wallet = Wallet::retrieve_wallet(wallet_id.clone());
+        let wollet = wallet.get_wollet();
+        let txs_test = wollet.transactions().unwrap();
+        println!("TXs:");
+        for tx in txs_test {
+            for output in tx.outputs {
+                if output.is_some() {
+                    let script_pubkey = output.clone().unwrap().script_pubkey;
+                    let amount = output.clone().unwrap().unblinded.value;
+                    let b_pubkey = None;
+                    let address = Address::from_script(
+                        &script_pubkey,
+                        b_pubkey,
+                        &AddressParams::LIQUID_TESTNET,
+                    )
+                    .unwrap();
+                    println!("amount:{:?},address:{:?}", amount, address);
+                }
+            }
+        }
         // build tx
         let sats = 10000;
         let out_address="tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu".to_string();
         let fee_rate = 300.0;
-        let pset = Api::build_tx(wallet.clone(), sats, out_address, fee_rate).unwrap();
-        let decoded = Api::decode_tx(wallet.clone(), pset.clone()).unwrap();
+        let pset = Api::build_tx(wallet_id.clone(), sats, out_address, fee_rate).unwrap();
+        let decoded = Api::decode_tx(wallet_id.clone(), pset.clone()).unwrap();
         println!("DECODED TX: {:#?}", decoded);
-        // sign tx
-        let tx = Api::sign_tx(wallet.clone(), network, pset, mnemonic).unwrap();
-        // println!("RAW TX: {:#?}", tx);
+        //sign tx
+        let tx = Api::sign_tx(wallet_id.clone(), network, pset, mnemonic).unwrap();
+        println!("RAW TX: {:#?}", tx);
 
-        // broadcast tx
+        //broadcast tx
         let txid = Api::broadcast_tx(electrum_url.clone(), tx).unwrap();
         println!("SEND: TXID: {:#?}", txid);
-        Api::sync(wallet.clone(), electrum_url.clone()).unwrap();
-        let txs = Api::txs(wallet.clone()).unwrap();
+        Api::sync(wallet_id.clone(), electrum_url.clone()).unwrap();
+        let txs = Api::txs(wallet_id.clone()).unwrap();
         for tx in txs {
             if tx.txid == txid {
                 let fees = tx.fee;
-                let post_balance: Balance = Api::balance(wallet.clone()).unwrap();
+                let post_balance: Balance = Api::balance(wallet_id.clone()).unwrap();
                 assert_eq!(
                     (post_balance.lbtc),
                     (pre_balance.lbtc - (sats as i64 + fees as i64))

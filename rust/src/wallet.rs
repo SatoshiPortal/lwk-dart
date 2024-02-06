@@ -1,14 +1,12 @@
+use elements::hex::ToHex;
 use elements::pset::serialize::Serialize;
 use elements::pset::PartiallySignedTransaction;
-use flutter_rust_bridge::RustOpaque;
 use lwk_common::Signer;
 use lwk_signer::SwSigner;
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
 use lwk_wollet::ElementsNetwork;
-use lwk_wollet::Persister;
 use lwk_wollet::Update;
-use elements::hex::ToHex;
 use std::collections::HashMap;
 
 use std::sync::{Mutex, MutexGuard};
@@ -16,21 +14,20 @@ use std::sync::{Mutex, MutexGuard};
 use crate::types::Balance;
 use crate::types::PsetAmounts;
 use crate::types::Tx;
+use crate::types::WalletAddress;
 use crate::{error::LwkError, network::LiquidNetwork};
 use elements::AssetId;
 use lwk_wollet::BlockchainBackend;
 use lwk_wollet::{EncryptedFsPersister, Wollet, WolletDescriptor};
 use std::str::FromStr;
-const TLBTC_ASSET_ID: &str = "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
+//const TLBTC_ASSET_ID: &str = "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
 use lazy_static::lazy_static;
-use std::borrow::Borrow;
 use std::collections::hash_map::DefaultHasher;
 // use std::collections::HashMap;
 use std::hash::Hash;
 use std::hash::Hasher;
-use std::ops::Deref;
+use std::sync::Arc;
 use std::sync::RwLock;
-use std::sync::{Arc};
 
 lazy_static! {
     static ref WALLET: RwLock<HashMap<String, Arc<Wallet>>> = RwLock::new(HashMap::new());
@@ -77,14 +74,12 @@ impl Wallet {
             inner: Mutex::new(wollet),
         };
 
-
         let id = default_hasher(&descriptor.to_string()).to_hex();
         persist_wallet(id.clone(), wallet);
         Ok(id)
-
     }
 
-    pub(crate) fn get_wallet(&self) -> MutexGuard<Wollet> {
+    pub(crate) fn get_wollet(&self) -> MutexGuard<Wollet> {
         self.inner.lock().expect("wallet")
     }
 
@@ -92,32 +87,37 @@ impl Wallet {
         let mut electrum_client: ElectrumClient =
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
         let update: Update =
-            if let Some(value) = electrum_client.full_scan(&mut self.get_wallet())? {
+            if let Some(value) = electrum_client.full_scan(&mut self.get_wollet())? {
                 value
             } else {
                 return Ok(());
             };
-        let _ = self.get_wallet().apply_update(update)?;
+        let _ = self.get_wollet().apply_update(update)?;
         Ok(())
     }
 
     pub fn descriptor(&self) -> anyhow::Result<String, LwkError> {
-        Ok(self.get_wallet().descriptor().to_string())
+        Ok(self.get_wollet().descriptor().to_string())
     }
 
-    pub fn address(&self) -> anyhow::Result<String, LwkError> {
-        let address: AddressResult = self.get_wallet().address(None)?.into();
-        Ok(address.address().to_string())
+    pub fn address_last_unused(&self) -> anyhow::Result<WalletAddress, LwkError> {
+        let address: AddressResult = self.get_wollet().address(None)?.into();
+        Ok(address.into())
+    }
+
+    pub fn address(&self, index: u32) -> anyhow::Result<WalletAddress, LwkError> {
+        let address: AddressResult = self.get_wollet().address(Some(index))?.into();
+        Ok(address.into())
     }
 
     pub fn balance(&self) -> anyhow::Result<Balance, LwkError> {
-        let balance: HashMap<AssetId, u64> = self.get_wallet().balance()?.into();
+        let balance: HashMap<AssetId, u64> = self.get_wollet().balance()?.into();
         Ok(Balance::from(balance))
     }
 
     pub fn txs(&self) -> anyhow::Result<Vec<Tx>, LwkError> {
         let txs = self
-            .get_wallet()
+            .get_wollet()
             .transactions()?
             .iter()
             .map(|x| Tx::from(x.to_owned()))
@@ -132,14 +132,14 @@ impl Wallet {
         abs_fee: f32,
     ) -> anyhow::Result<String, LwkError> {
         let pset: PartiallySignedTransaction =
-            self.get_wallet()
+            self.get_wollet()
                 .send_lbtc(sats, &out_address, Some(abs_fee))?;
         Ok(pset.to_string())
     }
 
     pub fn decode_tx(&self, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-        let pset_details = self.get_wallet().get_details(&mut pset)?;
+        let pset_details = self.get_wollet().get_details(&mut pset)?;
         Ok(PsetAmounts::from(pset_details.balance))
     }
 
@@ -153,7 +153,7 @@ impl Wallet {
         let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         let _ = signer.sign(&mut pset);
-        let tx = self.get_wallet().finalize(&mut pset)?;
+        let tx = self.get_wollet().finalize(&mut pset)?;
         Ok(tx.serialize())
     }
 }

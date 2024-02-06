@@ -27,8 +27,13 @@ abstract class LwkBridge {
 
   FlutterRustBridgeTaskConstMeta get kDescriptorStaticMethodApiConstMeta;
 
-  Future<String> addressStaticMethodApi(
+  Future<WalletAddress> addressLastUnusedStaticMethodApi(
       {required String walletId, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kAddressLastUnusedStaticMethodApiConstMeta;
+
+  Future<WalletAddress> addressStaticMethodApi(
+      {required String walletId, required int index, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kAddressStaticMethodApiConstMeta;
 
@@ -106,14 +111,36 @@ class Tx {
   final String kind;
   final int amount;
   final String txid;
-  final String address;
+  final List<TxOut> outputs;
   final int fee;
 
   const Tx({
     required this.kind,
     required this.amount,
     required this.txid,
-    required this.address,
+    required this.outputs,
     required this.fee,
+  });
+}
+
+class TxOut {
+  final String address;
+  final int amount;
+
+  const TxOut({
+    required this.address,
+    required this.amount,
+  });
+}
+
+class WalletAddress {
+  final String standard;
+  final String confidential;
+  final int index;
+
+  const WalletAddress({
+    required this.standard,
+    required this.confidential,
+    required this.index,
   });
 }

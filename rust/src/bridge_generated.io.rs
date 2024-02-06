@@ -29,8 +29,20 @@ pub extern "C" fn wire_descriptor__static_method__Api(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_address__static_method__Api(port_: i64, wallet_id: *mut wire_uint_8_list) {
-    wire_address__static_method__Api_impl(port_, wallet_id)
+pub extern "C" fn wire_address_last_unused__static_method__Api(
+    port_: i64,
+    wallet_id: *mut wire_uint_8_list,
+) {
+    wire_address_last_unused__static_method__Api_impl(port_, wallet_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_address__static_method__Api(
+    port_: i64,
+    wallet_id: *mut wire_uint_8_list,
+    index: u32,
+) {
+    wire_address__static_method__Api_impl(port_, wallet_id, index)
 }
 
 #[no_mangle]

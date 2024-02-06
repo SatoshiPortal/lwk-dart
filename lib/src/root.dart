@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:lwk_dart/src/utils/loader.dart';
-import 'generated/bridge_definitions.dart' as bridge;
 import 'generated/bridge_definitions.dart';
 
 Future<void> setCurrentDirectory() async {
@@ -47,9 +46,9 @@ class LiquidWallet {
     }
   }
 
-  Future<String> address() async {
+  Future<WalletAddress> address() async {
     try {
-      final res = await ffi.addressStaticMethodApi(
+      final res = await ffi.addressLastUnusedStaticMethodApi(
         walletId: _liquidWallet,
       );
       return res;

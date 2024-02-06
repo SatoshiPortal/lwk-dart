@@ -25,6 +25,8 @@ use crate::network::LiquidNetwork;
 use crate::types::Balance;
 use crate::types::PsetAmounts;
 use crate::types::Tx;
+use crate::types::TxOut;
+use crate::types::WalletAddress;
 
 // Section: wire functions
 
@@ -82,11 +84,28 @@ fn wire_descriptor__static_method__Api_impl(
         },
     )
 }
-fn wire_address__static_method__Api_impl(
+fn wire_address_last_unused__static_method__Api_impl(
     port_: MessagePort,
     wallet_id: impl Wire2Api<String> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, WalletAddress, _>(
+        WrapInfo {
+            debug_name: "address_last_unused__static_method__Api",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_wallet_id = wallet_id.wire2api();
+            move |task_callback| Api::address_last_unused(api_wallet_id)
+        },
+    )
+}
+fn wire_address__static_method__Api_impl(
+    port_: MessagePort,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
+    index: impl Wire2Api<u32> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, WalletAddress, _>(
         WrapInfo {
             debug_name: "address__static_method__Api",
             port: Some(port_),
@@ -94,7 +113,8 @@ fn wire_address__static_method__Api_impl(
         },
         move || {
             let api_wallet_id = wallet_id.wire2api();
-            move |task_callback| Api::address(api_wallet_id)
+            let api_index = index.wire2api();
+            move |task_callback| Api::address(api_wallet_id, api_index)
         },
     )
 }
@@ -254,6 +274,11 @@ impl Wire2Api<LiquidNetwork> for i32 {
         }
     }
 }
+impl Wire2Api<u32> for u32 {
+    fn wire2api(self) -> u32 {
+        self
+    }
+}
 impl Wire2Api<u64> for u64 {
     fn wire2api(self) -> u64 {
         self
@@ -313,7 +338,7 @@ impl support::IntoDart for Tx {
             self.kind.into_into_dart().into_dart(),
             self.amount.into_into_dart().into_dart(),
             self.txid.into_into_dart().into_dart(),
-            self.address.into_into_dart().into_dart(),
+            self.outputs.into_into_dart().into_dart(),
             self.fee.into_into_dart().into_dart(),
         ]
         .into_dart()
@@ -321,6 +346,39 @@ impl support::IntoDart for Tx {
 }
 impl support::IntoDartExceptPrimitive for Tx {}
 impl rust2dart::IntoIntoDart<Tx> for Tx {
+    fn into_into_dart(self) -> Self {
+        self
+    }
+}
+
+impl support::IntoDart for TxOut {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.address.into_into_dart().into_dart(),
+            self.amount.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for TxOut {}
+impl rust2dart::IntoIntoDart<TxOut> for TxOut {
+    fn into_into_dart(self) -> Self {
+        self
+    }
+}
+
+impl support::IntoDart for WalletAddress {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.standard.into_into_dart().into_dart(),
+            self.confidential.into_into_dart().into_dart(),
+            self.index.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for WalletAddress {}
+impl rust2dart::IntoIntoDart<WalletAddress> for WalletAddress {
     fn into_into_dart(self) -> Self {
         self
     }

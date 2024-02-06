@@ -1,6 +1,4 @@
-import 'dart:ffi';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:lwk_dart/lwk_dart.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,7 +30,7 @@ class TestApp extends StatefulWidget {
       return path;
     } catch (e) {
       print('Error getting current directory: $e');
-      throw (e);
+      rethrow;
     }
   }
 
@@ -117,26 +115,26 @@ class _TestAppState extends State<TestApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        scrollbarTheme: ScrollbarThemeData(
+        scrollbarTheme: const ScrollbarThemeData(
           minThumbLength: 10,
           thumbVisibility: MaterialStatePropertyAll<bool>(true),
           thumbColor: MaterialStatePropertyAll<Color>(Colors.grey),
         ),
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           bodyMedium: TextStyle(fontSize: 18.0),
         ),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             backgroundColor:
                 MaterialStatePropertyAll<Color>(Colors.red.shade400),
-            foregroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+            foregroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
           ),
         ),
       ),
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red.shade400,
-          title: Text("LWK Flutter Lib Test:"),
+          title: const Text("LWK Flutter Lib Test:"),
         ),
         body: Center(
           child: Padding(
@@ -147,9 +145,9 @@ class _TestAppState extends State<TestApp> {
                   children: [
                     Visibility(
                       visible: loading,
-                      child: LinearProgressIndicator(),
+                      child: const LinearProgressIndicator(),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Column(
@@ -235,7 +233,7 @@ class _TestAppState extends State<TestApp> {
                               ),
                             ),
                             txs == null
-                                ? Text("...")
+                                ? const Text("...")
                                 : Container(
                                     decoration: BoxDecoration(
                                       border: Border.all(
@@ -297,7 +295,7 @@ class _TestAppState extends State<TestApp> {
                               ),
                             ),
                             pset == null
-                                ? Text("...")
+                                ? const Text("...")
                                 : Container(
                                     height: 300,
                                     decoration: BoxDecoration(
@@ -330,7 +328,7 @@ class _TestAppState extends State<TestApp> {
                               ),
                             ),
                             decodedPset == null
-                                ? Text("...")
+                                ? const Text("...")
                                 : Text(
                                     'Amount: ${decodedPset!.amount}, Fee: ${decodedPset!.fee}'),
                           ],

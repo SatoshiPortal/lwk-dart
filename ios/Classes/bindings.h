@@ -37,7 +37,12 @@ void wire_sync__static_method__Api(int64_t port_,
 
 void wire_descriptor__static_method__Api(int64_t port_, struct wire_uint_8_list *wallet_id);
 
-void wire_address__static_method__Api(int64_t port_, struct wire_uint_8_list *wallet_id);
+void wire_address_last_unused__static_method__Api(int64_t port_,
+                                                  struct wire_uint_8_list *wallet_id);
+
+void wire_address__static_method__Api(int64_t port_,
+                                      struct wire_uint_8_list *wallet_id,
+                                      uint32_t index);
 
 void wire_balance__static_method__Api(int64_t port_, struct wire_uint_8_list *wallet_id);
 
@@ -72,6 +77,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_new_wallet__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_sync__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_descriptor__static_method__Api);
+    dummy_var ^= ((int64_t) (void*) wire_address_last_unused__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_address__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_balance__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_txs__static_method__Api);
