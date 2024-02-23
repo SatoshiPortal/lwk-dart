@@ -38,7 +38,7 @@ read_key_value_pairs = lambda do |file_path|
   #
   Pod::Spec.new do |s|
     s.name             = 'lwk_dart'
-    s.version          = '0.1.1'
+    s.version          = '0.1.0'
     s.summary          = 'A liquid wallet library for dart/flutter.'
     s.description      = <<-DESC
     A language bindings library over lwk - a rust liquid wallet kit

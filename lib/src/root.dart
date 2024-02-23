@@ -33,6 +33,15 @@ class LiquidWallet {
     }
   }
 
+  Future<String> descriptor() async {
+    try {
+      final res = await ffi.descriptorStaticMethodApi(wallet: _liquidWallet);
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> sync(
     String electrumUrl,
   ) async {

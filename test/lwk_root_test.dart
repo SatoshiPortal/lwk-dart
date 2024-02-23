@@ -18,7 +18,10 @@ void main() {
       const absFee = 300.0;
 
       final wallet = await LiquidWallet.create(
-          mnemonic: mnemonic, network: network, dbPath: dbPath);
+        mnemonic: mnemonic,
+        network: network,
+        dbPath: dbPath,
+      );
       await wallet.sync(electrumUrl);
       final address = await wallet.address();
       print(address);
