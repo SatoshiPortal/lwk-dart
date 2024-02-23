@@ -57,15 +57,16 @@ class LiquidWallet {
     }
   }
 
-//   String descriptor() {
-//     try {
-// final res = await ffi.descriptor(
-//         walletId: _liquidWallet,
-//       );
-//       return res;    } catch (e) {
-//       rethrow;
-//     }
-//   }
+  Future<String> descriptor() async {
+    try { 
+      final res = await ffi.descriptorStaticMethodApi(
+        walletId: _liquidWallet,
+      );
+      return res;    
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   Future<Balance> balance() async {
     try {
@@ -112,15 +113,19 @@ class LiquidWallet {
   }
 
   Future<Uint8List> sign(
-      {required LiquidNetwork network,
+    {
+      required LiquidNetwork network,
       required String pset,
-      required String mnemonic}) async {
+      required String mnemonic,
+    }
+  ) async {
     try {
       final res = await ffi.signTxStaticMethodApi(
-          walletId: _liquidWallet,
-          network: network,
-          pset: pset,
-          mnemonic: mnemonic);
+        walletId: _liquidWallet,
+        network: network,
+        pset: pset,
+        mnemonic: mnemonic,
+      );
       return res;
     } catch (e) {
       rethrow;
