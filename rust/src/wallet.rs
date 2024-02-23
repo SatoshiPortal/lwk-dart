@@ -68,8 +68,6 @@ impl Wallet {
     }
 
     pub fn new(network: Network, dbpath: &str, desc_str: &str) -> Result<String, LwkError> {
-        let el_network: ElementsNetwork = network.into();
-        let is_mainnet = el_network == ElementsNetwork::Liquid;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
         let wollet = Wollet::new(
             network.into(),

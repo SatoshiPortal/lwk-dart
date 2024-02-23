@@ -101,7 +101,7 @@ mod test {
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url.clone(), false))
                 .unwrap();
         let dbpath = "/tmp/lwk".to_string();
-        let wallet_id = Api::new_wallet(mnemonic.clone(), network, dbpath).unwrap();
+        let wallet_id = Api::new_wallet(network, dbpath,mnemonic.clone()).unwrap();
 
         Api::sync(wallet_id.clone(), electrum_url.clone()).unwrap();
         // let wollet: Wollet = Wollet::new(network.into(), Some(&dbpath), &desc).unwrap();

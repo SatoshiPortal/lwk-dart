@@ -20,7 +20,7 @@ void main() {
       final wallet = await Wallet.create(
          network: network, dbPath: dbPath, descriptor: descriptor.descriptor, );
       await wallet.sync(electrumUrl);
-      final address = await wallet.address();
+      final address = await wallet.lastUnusedAddress();
       print(address);
       // print(wallet.descriptor());
       final balance = await wallet.balance();

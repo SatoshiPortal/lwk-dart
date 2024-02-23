@@ -66,7 +66,7 @@ class Wallet {
     }
   }
 
-  Future<Address> address() async {
+  Future<Address> addressAtIndex() async {
     try {
       final res = await ffi.addressLastUnusedStaticMethodApi(
         walletId: _liquidWallet,
@@ -76,7 +76,17 @@ class Wallet {
       rethrow;
     }
   }
-
+  
+  Future<Address> lastUnusedAddress() async {
+    try {
+      final res = await ffi.addressLastUnusedStaticMethodApi(
+        walletId: _liquidWallet,
+      );
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
   Future<String> descriptor() async {
     try { 
       final res = await ffi.walletDescriptorStaticMethodApi(

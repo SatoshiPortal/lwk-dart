@@ -5,6 +5,7 @@ use std::collections::HashMap;
 use std::str::FromStr;
 const TLBTC_ASSET_ID: &str = "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
 
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Address {
     pub standard: String,
