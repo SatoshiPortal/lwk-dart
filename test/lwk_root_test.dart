@@ -26,9 +26,9 @@ void main() {
       final balance = await wallet.balance();
       print('Pre Balance: ${balance.lbtc}');
       final txs = await wallet.txs();
-      txs.forEach(
-        (element) => print('${element.txid}:${element.amount}'),
-      );
+      for (final tx in txs){
+        print('${tx.txid}:${tx.amount}');
+      }
       final pset = await wallet.build(
           sats: outAmount, outAddress: outAddress, absFee: absFee);
       final decodedPset = await wallet.decode(pset: pset);

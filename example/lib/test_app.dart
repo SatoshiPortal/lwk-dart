@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+// ignore: depend_on_referenced_packages
 import 'package:flutter/material.dart';
 import 'package:lwk_dart/lwk_dart.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,6 +30,7 @@ class TestApp extends StatefulWidget {
       final path = "${directory.path}/lwk-db";
       return path;
     } catch (e) {
+      // ignore: avoid_print
       print('Error getting current directory: $e');
       rethrow;
     }
