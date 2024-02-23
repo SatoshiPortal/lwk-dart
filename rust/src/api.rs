@@ -11,19 +11,26 @@ use lwk_wollet::{BlockchainBackend, ElectrumClient};
 pub struct Api {}
 
 impl Api {
-    pub fn new_wallet(
+    pub fn new_descriptor(
+        network: Network,
         mnemonic: String,
+    ) -> anyhow::Result<String, LwkError> {
+        Ok(Wallet::new_descriptor(network, &mnemonic)?.into())
+    }
+
+    pub fn new_wallet(
         network: Network,
         db_path: String,
+        descriptor: String,
     ) -> anyhow::Result<String, LwkError> {
-        Ok(Wallet::new(network, &db_path, &mnemonic)?.into())
+        Ok(Wallet::new(network, &db_path, &descriptor)?.into())
     }
 
     pub fn sync(wallet_id: String, electrum_url: String) -> anyhow::Result<(), LwkError> {
         Wallet::retrieve_wallet(wallet_id).sync(electrum_url)
     }
 
-    pub fn descriptor(wallet_id: String) -> anyhow::Result<String, LwkError> {
+    pub fn wallet_descriptor(wallet_id: String) -> anyhow::Result<String, LwkError> {
         Wallet::retrieve_wallet(wallet_id).descriptor()
     }
 

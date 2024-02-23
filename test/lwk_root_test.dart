@@ -16,9 +16,9 @@ void main() {
       const outAddress =
           "tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu";
       const absFee = 300.0;
-
+      final descriptor = await Descriptor.create(network: network, mnemonic: mnemonic,);
       final wallet = await Wallet.create(
-          mnemonic: mnemonic, network: network, dbPath: dbPath);
+         network: network, dbPath: dbPath, descriptor: descriptor.descriptor, );
       await wallet.sync(electrumUrl);
       final address = await wallet.address();
       print(address);

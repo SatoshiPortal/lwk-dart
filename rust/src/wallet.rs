@@ -55,7 +55,8 @@ impl Wallet {
         let wallet_lock = WALLET.read().unwrap();
         wallet_lock.get(id.as_str()).unwrap().clone()
     }
-    pub fn new(network: Network, dbpath: &str, mnemonic: &str) -> Result<String, LwkError> {
+
+    pub fn new_descriptor(network: Network, mnemonic: &str) -> Result<String, LwkError> {
         let el_network: ElementsNetwork = network.into();
         let is_mainnet = el_network == ElementsNetwork::Liquid;
         let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?.into();
@@ -63,17 +64,21 @@ impl Wallet {
         let blinding_variant = lwk_common::DescriptorBlindingKey::Slip77;
         let desc_str =
             lwk_common::singlesig_desc(&signer, script_variant, blinding_variant, is_mainnet)?;
+        Ok(desc_str)
+    }
+
+    pub fn new(network: Network, dbpath: &str, desc_str: &str) -> Result<String, LwkError> {
+        let el_network: ElementsNetwork = network.into();
+        let is_mainnet = el_network == ElementsNetwork::Liquid;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
         let wollet = Wollet::new(
             network.into(),
             EncryptedFsPersister::new(dbpath, network.into(), &descriptor)?,
             &desc_str,
         )?;
-
         let wallet = Wallet {
             inner: Mutex::new(wollet),
         };
-
         let id = default_hasher(&descriptor.to_string()).to_hex();
         persist_wallet(id.clone(), wallet);
         Ok(id)

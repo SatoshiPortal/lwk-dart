@@ -10,6 +10,25 @@ Future<void> setCurrentDirectory() async {
     print(e.toString());
   }
 }
+class Descriptor{
+  final String _descriptor;
+  Descriptor._(this._descriptor);
+  String get descriptor => _descriptor;
+
+  static Future<Descriptor> create(
+      {
+      required Network network,
+      required String mnemonic,
+      dynamic hint,}) async {
+    try {
+      final res = await ffi.newDescriptorStaticMethodApi(
+          network: network, mnemonic: mnemonic, );
+      return Descriptor._(res);
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
 
 class Wallet {
   final String _liquidWallet;
@@ -19,13 +38,14 @@ class Wallet {
   String get liquidWallet => _liquidWallet;
 
   static Future<Wallet> create(
-      {required String mnemonic,
+      {
       required Network network,
       required String dbPath,
-      dynamic hint}) async {
+      required String descriptor,
+      dynamic hint,}) async {
     try {
       final res = await ffi.newWalletStaticMethodApi(
-          mnemonic: mnemonic, network: network, dbPath: dbPath);
+          network: network, dbPath: dbPath, descriptor: descriptor, );
       return Wallet._(res);
     } catch (e) {
       rethrow;
@@ -59,7 +79,7 @@ class Wallet {
 
   Future<String> descriptor() async {
     try { 
-      final res = await ffi.descriptorStaticMethodApi(
+      final res = await ffi.walletDescriptorStaticMethodApi(
         walletId: _liquidWallet,
       );
       return res;    

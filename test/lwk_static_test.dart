@@ -10,10 +10,12 @@ void main() {
       const network = Network.Testnet;
       const electrumUrl = 'blockstream.info:465';
       const dbPath = '/tmp/lwk-dart';
+      final desc = await ffi.newDescriptorStaticMethodApi(network: network, mnemonic: mnemonic);
       final walletId = await ffi.newWalletStaticMethodApi(
-        mnemonic: mnemonic,
         network: network,
         dbPath: dbPath,
+        descriptor: desc,
+
       );
       print(walletId);
 

@@ -30,11 +30,29 @@ use crate::types::TxOut;
 
 // Section: wire functions
 
+fn wire_new_descriptor__static_method__Api_impl(
+    port_: MessagePort,
+    network: impl Wire2Api<Network> + UnwindSafe,
+    mnemonic: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
+        WrapInfo {
+            debug_name: "new_descriptor__static_method__Api",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_network = network.wire2api();
+            let api_mnemonic = mnemonic.wire2api();
+            move |task_callback| Api::new_descriptor(api_network, api_mnemonic)
+        },
+    )
+}
 fn wire_new_wallet__static_method__Api_impl(
     port_: MessagePort,
-    mnemonic: impl Wire2Api<String> + UnwindSafe,
     network: impl Wire2Api<Network> + UnwindSafe,
     db_path: impl Wire2Api<String> + UnwindSafe,
+    descriptor: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
         WrapInfo {
@@ -43,10 +61,10 @@ fn wire_new_wallet__static_method__Api_impl(
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_mnemonic = mnemonic.wire2api();
             let api_network = network.wire2api();
             let api_db_path = db_path.wire2api();
-            move |task_callback| Api::new_wallet(api_mnemonic, api_network, api_db_path)
+            let api_descriptor = descriptor.wire2api();
+            move |task_callback| Api::new_wallet(api_network, api_db_path, api_descriptor)
         },
     )
 }
@@ -68,19 +86,19 @@ fn wire_sync__static_method__Api_impl(
         },
     )
 }
-fn wire_descriptor__static_method__Api_impl(
+fn wire_wallet_descriptor__static_method__Api_impl(
     port_: MessagePort,
     wallet_id: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
         WrapInfo {
-            debug_name: "descriptor__static_method__Api",
+            debug_name: "wallet_descriptor__static_method__Api",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
         move || {
             let api_wallet_id = wallet_id.wire2api();
-            move |task_callback| Api::descriptor(api_wallet_id)
+            move |task_callback| Api::wallet_descriptor(api_wallet_id)
         },
     )
 }

@@ -2,13 +2,22 @@ use super::*;
 // Section: wire functions
 
 #[no_mangle]
+pub extern "C" fn wire_new_descriptor__static_method__Api(
+    port_: i64,
+    network: i32,
+    mnemonic: *mut wire_uint_8_list,
+) {
+    wire_new_descriptor__static_method__Api_impl(port_, network, mnemonic)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_new_wallet__static_method__Api(
     port_: i64,
-    mnemonic: *mut wire_uint_8_list,
     network: i32,
     db_path: *mut wire_uint_8_list,
+    descriptor: *mut wire_uint_8_list,
 ) {
-    wire_new_wallet__static_method__Api_impl(port_, mnemonic, network, db_path)
+    wire_new_wallet__static_method__Api_impl(port_, network, db_path, descriptor)
 }
 
 #[no_mangle]
@@ -21,11 +30,11 @@ pub extern "C" fn wire_sync__static_method__Api(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_descriptor__static_method__Api(
+pub extern "C" fn wire_wallet_descriptor__static_method__Api(
     port_: i64,
     wallet_id: *mut wire_uint_8_list,
 ) {
-    wire_descriptor__static_method__Api_impl(port_, wallet_id)
+    wire_wallet_descriptor__static_method__Api_impl(port_, wallet_id)
 }
 
 #[no_mangle]

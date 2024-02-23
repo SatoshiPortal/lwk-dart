@@ -26,21 +26,42 @@ class LwkBridgeImpl implements LwkBridge {
   factory LwkBridgeImpl.wasm(FutureOr<WasmModule> module) =>
       LwkBridgeImpl(module as ExternalLibrary);
   LwkBridgeImpl.raw(this._platform);
+  Future<String> newDescriptorStaticMethodApi(
+      {required Network network, required String mnemonic, dynamic hint}) {
+    var arg0 = api2wire_network(network);
+    var arg1 = _platform.api2wire_String(mnemonic);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_new_descriptor__static_method__Api(port_, arg0, arg1),
+      parseSuccessData: _wire2api_String,
+      parseErrorData: _wire2api_lwk_error,
+      constMeta: kNewDescriptorStaticMethodApiConstMeta,
+      argValues: [network, mnemonic],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kNewDescriptorStaticMethodApiConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "new_descriptor__static_method__Api",
+        argNames: ["network", "mnemonic"],
+      );
+
   Future<String> newWalletStaticMethodApi(
-      {required String mnemonic,
-      required Network network,
+      {required Network network,
       required String dbPath,
+      required String descriptor,
       dynamic hint}) {
-    var arg0 = _platform.api2wire_String(mnemonic);
-    var arg1 = api2wire_network(network);
-    var arg2 = _platform.api2wire_String(dbPath);
+    var arg0 = api2wire_network(network);
+    var arg1 = _platform.api2wire_String(dbPath);
+    var arg2 = _platform.api2wire_String(descriptor);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner
           .wire_new_wallet__static_method__Api(port_, arg0, arg1, arg2),
       parseSuccessData: _wire2api_String,
       parseErrorData: _wire2api_lwk_error,
       constMeta: kNewWalletStaticMethodApiConstMeta,
-      argValues: [mnemonic, network, dbPath],
+      argValues: [network, dbPath, descriptor],
       hint: hint,
     ));
   }
@@ -48,7 +69,7 @@ class LwkBridgeImpl implements LwkBridge {
   FlutterRustBridgeTaskConstMeta get kNewWalletStaticMethodApiConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
         debugName: "new_wallet__static_method__Api",
-        argNames: ["mnemonic", "network", "dbPath"],
+        argNames: ["network", "dbPath", "descriptor"],
       );
 
   Future<void> syncStaticMethodApi(
@@ -72,25 +93,26 @@ class LwkBridgeImpl implements LwkBridge {
         argNames: ["walletId", "electrumUrl"],
       );
 
-  Future<String> descriptorStaticMethodApi(
+  Future<String> walletDescriptorStaticMethodApi(
       {required String walletId, dynamic hint}) {
     var arg0 = _platform.api2wire_String(walletId);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) =>
-          _platform.inner.wire_descriptor__static_method__Api(port_, arg0),
+      callFfi: (port_) => _platform.inner
+          .wire_wallet_descriptor__static_method__Api(port_, arg0),
       parseSuccessData: _wire2api_String,
       parseErrorData: _wire2api_lwk_error,
-      constMeta: kDescriptorStaticMethodApiConstMeta,
+      constMeta: kWalletDescriptorStaticMethodApiConstMeta,
       argValues: [walletId],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kDescriptorStaticMethodApiConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
-        debugName: "descriptor__static_method__Api",
-        argNames: ["walletId"],
-      );
+  FlutterRustBridgeTaskConstMeta
+      get kWalletDescriptorStaticMethodApiConstMeta =>
+          const FlutterRustBridgeTaskConstMeta(
+            debugName: "wallet_descriptor__static_method__Api",
+            argNames: ["walletId"],
+          );
 
   Future<Address> addressLastUnusedStaticMethodApi(
       {required String walletId, dynamic hint}) {
@@ -525,28 +547,52 @@ class LwkBridgeWire implements FlutterRustBridgeWireBase {
   late final _init_frb_dart_api_dl = _init_frb_dart_api_dlPtr
       .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
+  void wire_new_descriptor__static_method__Api(
+    int port_,
+    int network,
+    ffi.Pointer<wire_uint_8_list> mnemonic,
+  ) {
+    return _wire_new_descriptor__static_method__Api(
+      port_,
+      network,
+      mnemonic,
+    );
+  }
+
+  late final _wire_new_descriptor__static_method__ApiPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Int64, ffi.Int32, ffi.Pointer<wire_uint_8_list>)>>(
+      'wire_new_descriptor__static_method__Api');
+  late final _wire_new_descriptor__static_method__Api =
+      _wire_new_descriptor__static_method__ApiPtr
+          .asFunction<void Function(int, int, ffi.Pointer<wire_uint_8_list>)>();
+
   void wire_new_wallet__static_method__Api(
     int port_,
-    ffi.Pointer<wire_uint_8_list> mnemonic,
     int network,
     ffi.Pointer<wire_uint_8_list> db_path,
+    ffi.Pointer<wire_uint_8_list> descriptor,
   ) {
     return _wire_new_wallet__static_method__Api(
       port_,
-      mnemonic,
       network,
       db_path,
+      descriptor,
     );
   }
 
   late final _wire_new_wallet__static_method__ApiPtr = _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_uint_8_list>,
-                  ffi.Int32, ffi.Pointer<wire_uint_8_list>)>>(
+              ffi.Void Function(
+                  ffi.Int64,
+                  ffi.Int32,
+                  ffi.Pointer<wire_uint_8_list>,
+                  ffi.Pointer<wire_uint_8_list>)>>(
       'wire_new_wallet__static_method__Api');
   late final _wire_new_wallet__static_method__Api =
       _wire_new_wallet__static_method__ApiPtr.asFunction<
-          void Function(int, ffi.Pointer<wire_uint_8_list>, int,
+          void Function(int, int, ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>)>();
 
   void wire_sync__static_method__Api(
@@ -570,22 +616,22 @@ class LwkBridgeWire implements FlutterRustBridgeWireBase {
           void Function(int, ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>)>();
 
-  void wire_descriptor__static_method__Api(
+  void wire_wallet_descriptor__static_method__Api(
     int port_,
     ffi.Pointer<wire_uint_8_list> wallet_id,
   ) {
-    return _wire_descriptor__static_method__Api(
+    return _wire_wallet_descriptor__static_method__Api(
       port_,
       wallet_id,
     );
   }
 
-  late final _wire_descriptor__static_method__ApiPtr = _lookup<
+  late final _wire_wallet_descriptor__static_method__ApiPtr = _lookup<
           ffi.NativeFunction<
               ffi.Void Function(ffi.Int64, ffi.Pointer<wire_uint_8_list>)>>(
-      'wire_descriptor__static_method__Api');
-  late final _wire_descriptor__static_method__Api =
-      _wire_descriptor__static_method__ApiPtr
+      'wire_wallet_descriptor__static_method__Api');
+  late final _wire_wallet_descriptor__static_method__Api =
+      _wire_wallet_descriptor__static_method__ApiPtr
           .asFunction<void Function(int, ffi.Pointer<wire_uint_8_list>)>();
 
   void wire_address_last_unused__static_method__Api(

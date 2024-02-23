@@ -9,10 +9,15 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class LwkBridge {
+  Future<String> newDescriptorStaticMethodApi(
+      {required Network network, required String mnemonic, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kNewDescriptorStaticMethodApiConstMeta;
+
   Future<String> newWalletStaticMethodApi(
-      {required String mnemonic,
-      required Network network,
+      {required Network network,
       required String dbPath,
+      required String descriptor,
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kNewWalletStaticMethodApiConstMeta;
@@ -22,10 +27,10 @@ abstract class LwkBridge {
 
   FlutterRustBridgeTaskConstMeta get kSyncStaticMethodApiConstMeta;
 
-  Future<String> descriptorStaticMethodApi(
+  Future<String> walletDescriptorStaticMethodApi(
       {required String walletId, dynamic hint});
 
-  FlutterRustBridgeTaskConstMeta get kDescriptorStaticMethodApiConstMeta;
+  FlutterRustBridgeTaskConstMeta get kWalletDescriptorStaticMethodApiConstMeta;
 
   Future<Address> addressLastUnusedStaticMethodApi(
       {required String walletId, dynamic hint});
