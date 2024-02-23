@@ -15,7 +15,7 @@ use crate::types::Balance;
 use crate::types::PsetAmounts;
 use crate::types::Tx;
 use crate::types::WalletAddress;
-use crate::{error::LwkError, network::LiquidNetwork};
+use crate::{error::LwkError, network::Network};
 use elements::AssetId;
 use lwk_wollet::BlockchainBackend;
 use lwk_wollet::{EncryptedFsPersister, Wollet, WolletDescriptor};
@@ -55,7 +55,7 @@ impl Wallet {
         let wallet_lock = WALLET.read().unwrap();
         wallet_lock.get(id.as_str()).unwrap().clone()
     }
-    pub fn new(network: LiquidNetwork, dbpath: &str, mnemonic: &str) -> Result<String, LwkError> {
+    pub fn new(network: Network, dbpath: &str, mnemonic: &str) -> Result<String, LwkError> {
         let el_network: ElementsNetwork = network.into();
         let is_mainnet = el_network == ElementsNetwork::Liquid;
         let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?.into();
@@ -145,11 +145,11 @@ impl Wallet {
 
     pub fn sign_tx(
         &self,
-        network: LiquidNetwork,
+        network: Network,
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<Vec<u8>, LwkError> {
-        let is_mainnet = network == LiquidNetwork::Testnet;
+        let is_mainnet = network == Network::Testnet;
         let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         let _ = signer.sign(&mut pset);

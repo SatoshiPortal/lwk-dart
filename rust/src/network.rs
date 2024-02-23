@@ -1,16 +1,16 @@
 use lwk_wollet::ElementsNetwork;
 
 #[derive(Clone, Copy, PartialEq, Debug)]
-pub enum LiquidNetwork {
+pub enum Network {
     Mainnet,
     Testnet,
 }
 
-impl Into<ElementsNetwork> for LiquidNetwork {
+impl Into<ElementsNetwork> for Network {
     fn into(self) -> ElementsNetwork {
         match self {
-            LiquidNetwork::Mainnet => ElementsNetwork::Liquid,
-            LiquidNetwork::Testnet => ElementsNetwork::LiquidTestnet,
+            Network::Mainnet => ElementsNetwork::Liquid,
+            Network::Testnet => ElementsNetwork::LiquidTestnet,
         }
     }
 }

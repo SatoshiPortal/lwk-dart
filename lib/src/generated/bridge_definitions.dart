@@ -11,7 +11,7 @@ import 'package:uuid/uuid.dart';
 abstract class LwkBridge {
   Future<String> newWalletStaticMethodApi(
       {required String mnemonic,
-      required LiquidNetwork network,
+      required Network network,
       required String dbPath,
       dynamic hint});
 
@@ -62,7 +62,7 @@ abstract class LwkBridge {
 
   Future<Uint8List> signTxStaticMethodApi(
       {required String walletId,
-      required LiquidNetwork network,
+      required Network network,
       required String pset,
       required String mnemonic,
       dynamic hint});
@@ -83,11 +83,6 @@ class Balance {
   });
 }
 
-enum LiquidNetwork {
-  Mainnet,
-  Testnet,
-}
-
 /// Possible errors emitted
 class LwkError implements FrbException {
   final String msg;
@@ -95,6 +90,11 @@ class LwkError implements FrbException {
   const LwkError({
     required this.msg,
   });
+}
+
+enum Network {
+  Mainnet,
+  Testnet,
 }
 
 class PsetAmounts {

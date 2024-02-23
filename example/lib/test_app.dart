@@ -14,7 +14,7 @@ class TestApp extends StatefulWidget {
   const TestApp({super.key});
   static const mnemonic =
       "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
-  static const network = LiquidNetwork.Testnet;
+  static const network = Network.Testnet;
 
   static const electrumUrl = 'blockstream.info:465';
   static const outAmount = 10000;
@@ -34,10 +34,10 @@ class TestApp extends StatefulWidget {
     }
   }
 
-  static Future<LiquidWallet> createWallet() async {
+  static Future<Wallet> createWallet() async {
     final dbPath = await getDbDir();
 
-    final wallet = await LiquidWallet.create(
+    final wallet = await Wallet.create(
       mnemonic: mnemonic,
       network: network,
       dbPath: dbPath,
@@ -46,22 +46,22 @@ class TestApp extends StatefulWidget {
     return wallet;
   }
 
-  static Future<String> getAddress(LiquidWallet wallet) async {
+  static Future<String> getAddress(Wallet wallet) async {
     final address = await wallet.address();
     return address;
   }
 
-  static Future<bool> sync(LiquidWallet wallet) async {
+  static Future<bool> sync(Wallet wallet) async {
     await wallet.sync(electrumUrl);
     return true;
   }
 
-  static Future<Balance> balance(LiquidWallet wallet) async {
+  static Future<Balance> balance(Wallet wallet) async {
     final Balance balance = await wallet.balance();
     return balance;
   }
 
-  static Future<List<Map<String, int>>> txs(LiquidWallet wallet) async {
+  static Future<List<Map<String, int>>> txs(Wallet wallet) async {
     final txs = await wallet.txs();
     List<Map<String, int>> res = [];
     for (int i = 0; i < txs.length; i++) {
@@ -70,18 +70,18 @@ class TestApp extends StatefulWidget {
     return res;
   }
 
-  static Future<String> build(LiquidWallet wallet) async {
+  static Future<String> build(Wallet wallet) async {
     final pset = await wallet.build(
         sats: outAmount, outAddress: outAddress, absFee: fee);
     return pset;
   }
 
-  static Future<DecodedPset> decode(LiquidWallet wallet, String pset) async {
+  static Future<DecodedPset> decode(Wallet wallet, String pset) async {
     final decodedPset = await wallet.decode(pset: pset);
     return DecodedPset(amount: decodedPset.balances.lbtc, fee: decodedPset.fee);
   }
 
-  static Future<Uint8List> sign(LiquidWallet wallet, String pset) async {
+  static Future<Uint8List> sign(Wallet wallet, String pset) async {
     final signedTxBytes =
         await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
 
@@ -89,7 +89,7 @@ class TestApp extends StatefulWidget {
   }
 
   static Future<String> broadcast(
-      LiquidWallet wallet, Uint8List signedTxBytes) async {
+      Wallet wallet, Uint8List signedTxBytes) async {
     final tx = await wallet.broadcast(
         electrumUrl: electrumUrl, txBytes: signedTxBytes);
     return tx;
@@ -101,7 +101,7 @@ class TestApp extends StatefulWidget {
 
 class _TestAppState extends State<TestApp> {
   bool loading = false;
-  LiquidWallet? wallet;
+  Wallet? wallet;
   bool isWalletSynced = false;
   Balance? balance;
   List<Map<String, int>>? txs;

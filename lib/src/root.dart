@@ -11,22 +11,22 @@ Future<void> setCurrentDirectory() async {
   }
 }
 
-class LiquidWallet {
+class Wallet {
   final String _liquidWallet;
 
-  LiquidWallet._(this._liquidWallet);
+  Wallet._(this._liquidWallet);
 
   String get liquidWallet => _liquidWallet;
 
-  static Future<LiquidWallet> create(
+  static Future<Wallet> create(
       {required String mnemonic,
-      required LiquidNetwork network,
+      required Network network,
       required String dbPath,
       dynamic hint}) async {
     try {
       final res = await ffi.newWalletStaticMethodApi(
           mnemonic: mnemonic, network: network, dbPath: dbPath);
-      return LiquidWallet._(res);
+      return Wallet._(res);
     } catch (e) {
       rethrow;
     }
@@ -114,7 +114,7 @@ class LiquidWallet {
 
   Future<Uint8List> sign(
     {
-      required LiquidNetwork network,
+      required Network network,
       required String pset,
       required String mnemonic,
     }

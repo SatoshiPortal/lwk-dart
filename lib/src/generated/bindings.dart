@@ -28,11 +28,11 @@ class LwkBridgeImpl implements LwkBridge {
   LwkBridgeImpl.raw(this._platform);
   Future<String> newWalletStaticMethodApi(
       {required String mnemonic,
-      required LiquidNetwork network,
+      required Network network,
       required String dbPath,
       dynamic hint}) {
     var arg0 = _platform.api2wire_String(mnemonic);
-    var arg1 = api2wire_liquid_network(network);
+    var arg1 = api2wire_network(network);
     var arg2 = _platform.api2wire_String(dbPath);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner
@@ -224,12 +224,12 @@ class LwkBridgeImpl implements LwkBridge {
 
   Future<Uint8List> signTxStaticMethodApi(
       {required String walletId,
-      required LiquidNetwork network,
+      required Network network,
       required String pset,
       required String mnemonic,
       dynamic hint}) {
     var arg0 = _platform.api2wire_String(walletId);
-    var arg1 = api2wire_liquid_network(network);
+    var arg1 = api2wire_network(network);
     var arg2 = _platform.api2wire_String(pset);
     var arg3 = _platform.api2wire_String(mnemonic);
     return _platform.executeNormal(FlutterRustBridgeTask(
@@ -387,7 +387,7 @@ int api2wire_i32(int raw) {
 }
 
 @protected
-int api2wire_liquid_network(LiquidNetwork raw) {
+int api2wire_network(Network raw) {
   return api2wire_i32(raw.index);
 }
 

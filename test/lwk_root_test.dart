@@ -9,7 +9,7 @@ void main() {
     test('Wallet Flow', () async {
       const mnemonic =
           "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
-      const network = LiquidNetwork.Testnet;
+      const network = Network.Testnet;
       const electrumUrl = 'blockstream.info:465';
       const dbPath = '/tmp/lwk-darti';
       const outAmount = 10000;
@@ -17,7 +17,7 @@ void main() {
           "tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu";
       const absFee = 300.0;
 
-      final wallet = await LiquidWallet.create(
+      final wallet = await Wallet.create(
           mnemonic: mnemonic, network: network, dbPath: dbPath);
       await wallet.sync(electrumUrl);
       final address = await wallet.address();

@@ -1,5 +1,5 @@
 pub use crate::error::LwkError;
-pub use crate::network::LiquidNetwork;
+pub use crate::network::Network;
 use crate::types::WalletAddress;
 pub use crate::types::{Balance, PsetAmounts, Tx};
 pub use crate::wallet::Wallet;
@@ -13,7 +13,7 @@ pub struct Api {}
 impl Api {
     pub fn new_wallet(
         mnemonic: String,
-        network: LiquidNetwork,
+        network: Network,
         db_path: String,
     ) -> anyhow::Result<String, LwkError> {
         Ok(Wallet::new(network, &db_path, &mnemonic)?.into())
@@ -58,7 +58,7 @@ impl Api {
 
     pub fn sign_tx(
         wallet_id: String,
-        network: LiquidNetwork,
+        network: Network,
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<Vec<u8>, LwkError> {
@@ -85,7 +85,7 @@ mod test {
     #[test]
     fn test_api() {
         let mnemonic = "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon".to_string();
-        let network = LiquidNetwork::Testnet;
+        let network = Network::Testnet;
         //println!("DESC: {}", desc);
 
         // use lwk

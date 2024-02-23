@@ -21,7 +21,7 @@ use std::sync::Arc;
 // Section: imports
 
 use crate::error::LwkError;
-use crate::network::LiquidNetwork;
+use crate::network::Network;
 use crate::types::Balance;
 use crate::types::PsetAmounts;
 use crate::types::Tx;
@@ -33,7 +33,7 @@ use crate::types::WalletAddress;
 fn wire_new_wallet__static_method__Api_impl(
     port_: MessagePort,
     mnemonic: impl Wire2Api<String> + UnwindSafe,
-    network: impl Wire2Api<LiquidNetwork> + UnwindSafe,
+    network: impl Wire2Api<Network> + UnwindSafe,
     db_path: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
@@ -195,7 +195,7 @@ fn wire_decode_tx__static_method__Api_impl(
 fn wire_sign_tx__static_method__Api_impl(
     port_: MessagePort,
     wallet_id: impl Wire2Api<String> + UnwindSafe,
-    network: impl Wire2Api<LiquidNetwork> + UnwindSafe,
+    network: impl Wire2Api<Network> + UnwindSafe,
     pset: impl Wire2Api<String> + UnwindSafe,
     mnemonic: impl Wire2Api<String> + UnwindSafe,
 ) {
@@ -265,12 +265,12 @@ impl Wire2Api<i32> for i32 {
         self
     }
 }
-impl Wire2Api<LiquidNetwork> for i32 {
-    fn wire2api(self) -> LiquidNetwork {
+impl Wire2Api<Network> for i32 {
+    fn wire2api(self) -> Network {
         match self {
-            0 => LiquidNetwork::Mainnet,
-            1 => LiquidNetwork::Testnet,
-            _ => unreachable!("Invalid variant for LiquidNetwork: {}", self),
+            0 => Network::Mainnet,
+            1 => Network::Testnet,
+            _ => unreachable!("Invalid variant for Network: {}", self),
         }
     }
 }

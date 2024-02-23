@@ -7,7 +7,7 @@ void main() {
     test('Wallet Flow', () async {
       const mnemonic =
           "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
-      const network = LiquidNetwork.Testnet;
+      const network = Network.Testnet;
       const electrumUrl = 'blockstream.info:465';
       const dbPath = '/tmp/lwk-dart';
       final walletId = await ffi.newWalletStaticMethodApi(
