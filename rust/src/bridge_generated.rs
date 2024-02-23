@@ -22,11 +22,11 @@ use std::sync::Arc;
 
 use crate::error::LwkError;
 use crate::network::Network;
+use crate::types::Address;
 use crate::types::Balance;
 use crate::types::PsetAmounts;
 use crate::types::Tx;
 use crate::types::TxOut;
-use crate::types::WalletAddress;
 
 // Section: wire functions
 
@@ -88,7 +88,7 @@ fn wire_address_last_unused__static_method__Api_impl(
     port_: MessagePort,
     wallet_id: impl Wire2Api<String> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, WalletAddress, _>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Address, _>(
         WrapInfo {
             debug_name: "address_last_unused__static_method__Api",
             port: Some(port_),
@@ -105,7 +105,7 @@ fn wire_address__static_method__Api_impl(
     wallet_id: impl Wire2Api<String> + UnwindSafe,
     index: impl Wire2Api<u32> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, WalletAddress, _>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Address, _>(
         WrapInfo {
             debug_name: "address__static_method__Api",
             port: Some(port_),
@@ -292,6 +292,23 @@ impl Wire2Api<u8> for u8 {
 
 // Section: impl IntoDart
 
+impl support::IntoDart for Address {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.standard.into_into_dart().into_dart(),
+            self.confidential.into_into_dart().into_dart(),
+            self.index.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for Address {}
+impl rust2dart::IntoIntoDart<Address> for Address {
+    fn into_into_dart(self) -> Self {
+        self
+    }
+}
+
 impl support::IntoDart for Balance {
     fn into_dart(self) -> support::DartAbi {
         vec![self.lbtc.into_into_dart().into_dart()].into_dart()
@@ -362,23 +379,6 @@ impl support::IntoDart for TxOut {
 }
 impl support::IntoDartExceptPrimitive for TxOut {}
 impl rust2dart::IntoIntoDart<TxOut> for TxOut {
-    fn into_into_dart(self) -> Self {
-        self
-    }
-}
-
-impl support::IntoDart for WalletAddress {
-    fn into_dart(self) -> support::DartAbi {
-        vec![
-            self.standard.into_into_dart().into_dart(),
-            self.confidential.into_into_dart().into_dart(),
-            self.index.into_into_dart().into_dart(),
-        ]
-        .into_dart()
-    }
-}
-impl support::IntoDartExceptPrimitive for WalletAddress {}
-impl rust2dart::IntoIntoDart<WalletAddress> for WalletAddress {
     fn into_into_dart(self) -> Self {
         self
     }

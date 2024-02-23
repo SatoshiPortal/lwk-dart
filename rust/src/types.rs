@@ -1,4 +1,4 @@
-use elements::{Address, AddressParams, AssetId};
+use elements::{Address as LiquidAddress, AddressParams, AssetId};
 use lwk_common::PsetBalance;
 use lwk_wollet::{AddressResult, WalletTx};
 use std::collections::HashMap;
@@ -6,15 +6,15 @@ use std::str::FromStr;
 const TLBTC_ASSET_ID: &str = "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
 
 #[derive(Clone, Debug, PartialEq)]
-pub struct WalletAddress {
+pub struct Address {
     pub standard: String,
     pub confidential: String,
     pub index: u32,
 }
 
-impl From<AddressResult> for WalletAddress {
+impl From<AddressResult> for Address {
     fn from(address: AddressResult) -> Self {
-        WalletAddress {
+        Address {
             standard: address.address().to_unconfidential().to_string(),
             confidential: address.address().to_string(),
             index: address.index(),
@@ -46,7 +46,7 @@ impl From<WalletTx> for Tx {
                 let script_pubkey = output.clone().unwrap().script_pubkey;
                 let amount = output.unwrap().unblinded.value;
                 let address =
-                    Address::from_script(&script_pubkey, None, &AddressParams::LIQUID_TESTNET)
+                    LiquidAddress::from_script(&script_pubkey, None, &AddressParams::LIQUID_TESTNET)
                         .unwrap();
                 outputs.push(TxOut {
                     address: address.to_string(),

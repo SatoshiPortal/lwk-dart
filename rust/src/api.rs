@@ -1,6 +1,6 @@
 pub use crate::error::LwkError;
 pub use crate::network::Network;
-use crate::types::WalletAddress;
+use crate::types::Address;
 pub use crate::types::{Balance, PsetAmounts, Tx};
 pub use crate::wallet::Wallet;
 use elements::pset::serialize::Deserialize;
@@ -27,11 +27,11 @@ impl Api {
         Wallet::retrieve_wallet(wallet_id).descriptor()
     }
 
-    pub fn address_last_unused(wallet_id: String) -> anyhow::Result<WalletAddress, LwkError> {
+    pub fn address_last_unused(wallet_id: String) -> anyhow::Result<Address, LwkError> {
         Wallet::retrieve_wallet(wallet_id).address_last_unused()
     }
 
-    pub fn address(wallet_id: String, index: u32) -> anyhow::Result<WalletAddress, LwkError> {
+    pub fn address(wallet_id: String, index: u32) -> anyhow::Result<Address, LwkError> {
         Wallet::retrieve_wallet(wallet_id).address(index)
     }
 

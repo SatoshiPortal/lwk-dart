@@ -48,7 +48,7 @@ class TestApp extends StatefulWidget {
 
   static Future<String> getAddress(Wallet wallet) async {
     final address = await wallet.address();
-    return address;
+    return address.confidential;
   }
 
   static Future<bool> sync(Wallet wallet) async {

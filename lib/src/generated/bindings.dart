@@ -92,13 +92,13 @@ class LwkBridgeImpl implements LwkBridge {
         argNames: ["walletId"],
       );
 
-  Future<WalletAddress> addressLastUnusedStaticMethodApi(
+  Future<Address> addressLastUnusedStaticMethodApi(
       {required String walletId, dynamic hint}) {
     var arg0 = _platform.api2wire_String(walletId);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner
           .wire_address_last_unused__static_method__Api(port_, arg0),
-      parseSuccessData: _wire2api_wallet_address,
+      parseSuccessData: _wire2api_address,
       parseErrorData: _wire2api_lwk_error,
       constMeta: kAddressLastUnusedStaticMethodApiConstMeta,
       argValues: [walletId],
@@ -113,14 +113,14 @@ class LwkBridgeImpl implements LwkBridge {
             argNames: ["walletId"],
           );
 
-  Future<WalletAddress> addressStaticMethodApi(
+  Future<Address> addressStaticMethodApi(
       {required String walletId, required int index, dynamic hint}) {
     var arg0 = _platform.api2wire_String(walletId);
     var arg1 = api2wire_u32(index);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) =>
           _platform.inner.wire_address__static_method__Api(port_, arg0, arg1),
-      parseSuccessData: _wire2api_wallet_address,
+      parseSuccessData: _wire2api_address,
       parseErrorData: _wire2api_lwk_error,
       constMeta: kAddressStaticMethodApiConstMeta,
       argValues: [walletId, index],
@@ -279,6 +279,17 @@ class LwkBridgeImpl implements LwkBridge {
     return raw as String;
   }
 
+  Address _wire2api_address(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return Address(
+      standard: _wire2api_String(arr[0]),
+      confidential: _wire2api_String(arr[1]),
+      index: _wire2api_u32(arr[2]),
+    );
+  }
+
   Balance _wire2api_balance(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 1)
@@ -360,17 +371,6 @@ class LwkBridgeImpl implements LwkBridge {
 
   void _wire2api_unit(dynamic raw) {
     return;
-  }
-
-  WalletAddress _wire2api_wallet_address(dynamic raw) {
-    final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
-    return WalletAddress(
-      standard: _wire2api_String(arr[0]),
-      confidential: _wire2api_String(arr[1]),
-      index: _wire2api_u32(arr[2]),
-    );
   }
 }
 

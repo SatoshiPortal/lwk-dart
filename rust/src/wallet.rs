@@ -14,7 +14,7 @@ use std::sync::{Mutex, MutexGuard};
 use crate::types::Balance;
 use crate::types::PsetAmounts;
 use crate::types::Tx;
-use crate::types::WalletAddress;
+use crate::types::Address;
 use crate::{error::LwkError, network::Network};
 use elements::AssetId;
 use lwk_wollet::BlockchainBackend;
@@ -100,12 +100,12 @@ impl Wallet {
         Ok(self.get_wollet().descriptor().to_string())
     }
 
-    pub fn address_last_unused(&self) -> anyhow::Result<WalletAddress, LwkError> {
+    pub fn address_last_unused(&self) -> anyhow::Result<Address, LwkError> {
         let address: AddressResult = self.get_wollet().address(None)?.into();
         Ok(address.into())
     }
 
-    pub fn address(&self, index: u32) -> anyhow::Result<WalletAddress, LwkError> {
+    pub fn address(&self, index: u32) -> anyhow::Result<Address, LwkError> {
         let address: AddressResult = self.get_wollet().address(Some(index))?.into();
         Ok(address.into())
     }
