@@ -66,17 +66,18 @@ class Wallet {
     }
   }
 
-  Future<Address> addressAtIndex() async {
+  Future<Address> addressAtIndex(int index) async {
     try {
-      final res = await ffi.addressLastUnusedStaticMethodApi(
+      final res = await ffi.addressStaticMethodApi(
         walletId: _liquidWallet,
+        index: index
       );
       return res;
     } catch (e) {
       rethrow;
     }
   }
-  
+
   Future<Address> lastUnusedAddress() async {
     try {
       final res = await ffi.addressLastUnusedStaticMethodApi(
