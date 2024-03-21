@@ -354,14 +354,15 @@ class LwkBridgeImpl implements LwkBridge {
 
   Tx _wire2api_tx(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return Tx(
       kind: _wire2api_String(arr[0]),
       amount: _wire2api_u64(arr[1]),
       txid: _wire2api_String(arr[2]),
       outputs: _wire2api_list_tx_out(arr[3]),
       fee: _wire2api_u64(arr[4]),
+      timestamp: _wire2api_u32(arr[5]),
     );
   }
 
