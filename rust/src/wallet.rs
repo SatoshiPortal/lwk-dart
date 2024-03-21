@@ -119,12 +119,13 @@ impl Wallet {
     }
 
     pub fn txs(&self) -> anyhow::Result<Vec<Tx>, LwkError> {
-        let txs = self
+        let txs: Vec<Tx> = self
             .get_wollet()
             .transactions()?
             .iter()
             .map(|x| Tx::from(x.to_owned()))
             .collect();
+        println!("{:?}", txs[0]);
         Ok(txs)
     }
 
