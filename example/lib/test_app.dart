@@ -38,9 +38,13 @@ class TestApp extends StatefulWidget {
 
   static Future<Wallet> createWallet() async {
     final dbPath = await getDbDir();
+    final descriptor = await Descriptor.create(
+      network: network,
+      mnemonic: mnemonic,
+    );
 
     final wallet = await Wallet.create(
-      mnemonic: mnemonic,
+      descriptor: descriptor.descriptor,
       network: network,
       dbPath: dbPath,
     );
@@ -49,7 +53,7 @@ class TestApp extends StatefulWidget {
   }
 
   static Future<String> getAddress(Wallet wallet) async {
-    final address = await wallet.address();
+    final address = await wallet.lastUnusedAddress();
     return address.confidential;
   }
 
@@ -85,7 +89,7 @@ class TestApp extends StatefulWidget {
 
   static Future<Uint8List> sign(Wallet wallet, String pset) async {
     final signedTxBytes =
-        await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
+    await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
 
     return signedTxBytes;
   }
@@ -128,7 +132,7 @@ class _TestAppState extends State<TestApp> {
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             backgroundColor:
-                MaterialStatePropertyAll<Color>(Colors.red.shade400),
+            MaterialStatePropertyAll<Color>(Colors.red.shade400),
             foregroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
           ),
         ),
@@ -237,26 +241,26 @@ class _TestAppState extends State<TestApp> {
                             txs == null
                                 ? const Text("...")
                                 : Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.red.shade400,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    height: 300,
-                                    child: ListView.builder(
-                                      itemCount: txs!.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return ListTile(
-                                          title: Text(
-                                              'Transaction ID: ${txs![index].keys}'),
-                                          subtitle: Text(
-                                              'Amount: ${txs![index].values}'),
-                                        );
-                                      },
-                                    ),
-                                  ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.red.shade400,
+                                  width: 2,
+                                ),
+                              ),
+                              height: 300,
+                              child: ListView.builder(
+                                itemCount: txs!.length,
+                                itemBuilder:
+                                    (BuildContext context, int index) {
+                                  return ListTile(
+                                    title: Text(
+                                        'Transaction ID: ${txs![index].keys}'),
+                                    subtitle: Text(
+                                        'Amount: ${txs![index].values}'),
+                                  );
+                                },
+                              ),
+                            ),
                           ],
                         ),
                         Column(
@@ -299,16 +303,16 @@ class _TestAppState extends State<TestApp> {
                             pset == null
                                 ? const Text("...")
                                 : Container(
-                                    height: 300,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.red.shade400,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    child: SingleChildScrollView(
-                                        child: Text(pset!)),
-                                  ),
+                              height: 300,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.red.shade400,
+                                  width: 2,
+                                ),
+                              ),
+                              child: SingleChildScrollView(
+                                  child: Text(pset!)),
+                            ),
                           ],
                         ),
                         Column(
@@ -319,7 +323,7 @@ class _TestAppState extends State<TestApp> {
                                   loading = true;
                                 });
                                 final res =
-                                    await TestApp.decode(wallet!, pset!);
+                                await TestApp.decode(wallet!, pset!);
                                 setState(() {
                                   loading = false;
                                   decodedPset = res;
@@ -332,7 +336,7 @@ class _TestAppState extends State<TestApp> {
                             decodedPset == null
                                 ? const Text("...")
                                 : Text(
-                                    'Amount: ${decodedPset!.amount}, Fee: ${decodedPset!.fee}'),
+                                'Amount: ${decodedPset!.amount}, Fee: ${decodedPset!.fee}'),
                           ],
                         ),
                         Column(
