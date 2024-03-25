@@ -68,7 +68,8 @@ impl From<WalletTx> for Tx {
             txid: wallet_tx.tx.txid().to_string(),
             outputs: outputs,
             fee: wallet_tx.fee,
-            timestamp: wallet_tx.timestamp.map_or(0, |t| t),
+            timestamp: wallet_tx.timestamp.unwrap_or(0),
+            // timestamp: wallet_tx.timestamp.map_or(0, |t| t),
         }
     }
 }
