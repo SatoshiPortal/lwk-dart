@@ -14,7 +14,7 @@ The `api.rs` file contains all the methods that will be available in dart. They 
 
 - codegen + binary 
 
-After writing the interface in rust, we run codegen, which will produce generated code in both rust and dart (which should not be manually edited). We also run `make` (with flags for specific architectures) to compile the libraryto a c binary, which will be called from dart. As a contributer, only run `make test`. The maintainer of the repository must build the main binaries and upload them to github releases.
+After writing the interface in rust, we run codegen, which will produce generated code in both rust and dart (which should not be manually edited). We also run `make` (with flags for specific architectures) to compile the libraryto a c binary, which will be called from dart. As a contributer, only run `make unit-test`. The maintainer of the repository must build the main binaries and upload them to github releases.
 
 - dart class
 
