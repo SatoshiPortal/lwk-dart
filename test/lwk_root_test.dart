@@ -30,20 +30,23 @@ void main() {
       print(address);
       // print(wallet.descriptor());
       final balance = await wallet.balance();
-      print('Pre Balance: ${balance.lbtc}');
+      print('Pre Balance: ${balance}');
       final txs = await wallet.txs();
       for (final tx in txs) {
-        print('${tx.txid}:${tx.amount} ${tx.timestamp}');
+        print('${tx.txid}:${tx.balances} ${tx.timestamp}');
       }
-      final pset = await wallet.build(sats: outAmount, outAddress: outAddress, absFee: absFee);
+      final pset = await wallet.build(
+          sats: outAmount, outAddress: outAddress, absFee: absFee);
       final decodedPset = await wallet.decode(pset: pset);
-      print("Amount: ${decodedPset.balances.lbtc} , Fee: ${decodedPset.fee}");
-      final signedTxBytes = await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
-      final tx = await wallet.broadcast(electrumUrl: electrumUrl, txBytes: signedTxBytes);
+      print("Amount: ${decodedPset.balances} , Fee: ${decodedPset.fee}");
+      final signedTxBytes =
+          await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
+      final tx = await wallet.broadcast(
+          electrumUrl: electrumUrl, txBytes: signedTxBytes);
       print(tx);
       await wallet.sync(electrumUrl);
       final postBalance = await wallet.balance();
-      print('Post Balance: ${postBalance.lbtc}');
+      print('Post Balance: ${postBalance}');
     });
   });
 }
