@@ -36,6 +36,7 @@ pub struct Tx {
     pub txid: String,
     pub outputs: Vec<TxOut>,
     pub fee: u64,
+    pub timestamp: u32,
 }
 
 impl From<WalletTx> for Tx {
@@ -67,6 +68,7 @@ impl From<WalletTx> for Tx {
             txid: wallet_tx.tx.txid().to_string(),
             outputs: outputs,
             fee: wallet_tx.fee,
+            timestamp: wallet_tx.timestamp.unwrap(),
         }
     }
 }
