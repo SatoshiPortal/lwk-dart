@@ -10,19 +10,24 @@ Future<void> setCurrentDirectory() async {
     print(e.toString());
   }
 }
-class Descriptor{
+
+typedef Balances = List<(String, int)>;
+
+class Descriptor {
   final String _descriptor;
   Descriptor._(this._descriptor);
   String get descriptor => _descriptor;
 
-  static Future<Descriptor> create(
-      {
-      required Network network,
-      required String mnemonic,
-      dynamic hint,}) async {
+  static Future<Descriptor> create({
+    required Network network,
+    required String mnemonic,
+    dynamic hint,
+  }) async {
     try {
       final res = await ffi.newDescriptorStaticMethodApi(
-          network: network, mnemonic: mnemonic, );
+        network: network,
+        mnemonic: mnemonic,
+      );
       return Descriptor._(res);
     } catch (e) {
       rethrow;
@@ -37,15 +42,18 @@ class Wallet {
 
   String get liquidWallet => _liquidWallet;
 
-  static Future<Wallet> create(
-      {
-      required Network network,
-      required String dbPath,
-      required String descriptor,
-      dynamic hint,}) async {
+  static Future<Wallet> create({
+    required Network network,
+    required String dbPath,
+    required String descriptor,
+    dynamic hint,
+  }) async {
     try {
       final res = await ffi.newWalletStaticMethodApi(
-          network: network, dbPath: dbPath, descriptor: descriptor, );
+        network: network,
+        dbPath: dbPath,
+        descriptor: descriptor,
+      );
       return Wallet._(res);
     } catch (e) {
       rethrow;
@@ -69,9 +77,7 @@ class Wallet {
   Future<Address> addressAtIndex(int index) async {
     try {
       final res = await ffi.addressStaticMethodApi(
-        walletId: _liquidWallet,
-        index: index
-      );
+          walletId: _liquidWallet, index: index);
       return res;
     } catch (e) {
       rethrow;
@@ -88,18 +94,19 @@ class Wallet {
       rethrow;
     }
   }
+
   Future<String> descriptor() async {
-    try { 
+    try {
       final res = await ffi.walletDescriptorStaticMethodApi(
         walletId: _liquidWallet,
       );
-      return res;    
+      return res;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Balance> balance() async {
+  Future<Balances> balance() async {
     try {
       final res = await ffi.balanceStaticMethodApi(walletId: _liquidWallet);
       return res;
@@ -135,21 +142,19 @@ class Wallet {
 
   Future<PsetAmounts> decode({required String pset}) async {
     try {
-      final res =
-          await ffi.decodeTxStaticMethodApi(walletId: _liquidWallet, pset: pset);
+      final res = await ffi.decodeTxStaticMethodApi(
+          walletId: _liquidWallet, pset: pset);
       return res;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Uint8List> sign(
-    {
-      required Network network,
-      required String pset,
-      required String mnemonic,
-    }
-  ) async {
+  Future<Uint8List> sign({
+    required Network network,
+    required String pset,
+    required String mnemonic,
+  }) async {
     try {
       final res = await ffi.signTxStaticMethodApi(
         walletId: _liquidWallet,

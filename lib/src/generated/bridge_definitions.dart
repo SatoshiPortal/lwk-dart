@@ -42,7 +42,7 @@ abstract class LwkBridge {
 
   FlutterRustBridgeTaskConstMeta get kAddressStaticMethodApiConstMeta;
 
-  Future<Balance> balanceStaticMethodApi(
+  Future<List<(String, int)>> balanceStaticMethodApi(
       {required String walletId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kBalanceStaticMethodApiConstMeta;
@@ -92,14 +92,6 @@ class Address {
   });
 }
 
-class Balance {
-  final int lbtc;
-
-  const Balance({
-    required this.lbtc,
-  });
-}
-
 /// Possible errors emitted
 class LwkError implements FrbException {
   final String msg;
@@ -114,9 +106,19 @@ enum Network {
   Testnet,
 }
 
+class OutPoint {
+  final String txid;
+  final int vout;
+
+  const OutPoint({
+    required this.txid,
+    required this.vout,
+  });
+}
+
 class PsetAmounts {
   final int fee;
-  final Balance balances;
+  final List<(String, int)> balances;
 
   const PsetAmounts({
     required this.fee,
@@ -125,29 +127,49 @@ class PsetAmounts {
 }
 
 class Tx {
+  final int timestamp;
   final String kind;
-  final int amount;
+  final List<(String, int)> balances;
   final String txid;
   final List<TxOut> outputs;
+  final List<TxOut> inputs;
   final int fee;
-  final int timestamp;
 
   const Tx({
+    required this.timestamp,
     required this.kind,
-    required this.amount,
+    required this.balances,
     required this.txid,
     required this.outputs,
+    required this.inputs,
     required this.fee,
-    required this.timestamp,
   });
 }
 
 class TxOut {
-  final String address;
-  final int amount;
+  final String scriptPubkey;
+  final OutPoint outpoint;
+  final int? height;
+  final TxOutSecrets unblinded;
 
   const TxOut({
-    required this.address,
-    required this.amount,
+    required this.scriptPubkey,
+    required this.outpoint,
+    this.height,
+    required this.unblinded,
+  });
+}
+
+class TxOutSecrets {
+  final int value;
+  final String valueBf;
+  final String asset;
+  final String assetBf;
+
+  const TxOutSecrets({
+    required this.value,
+    required this.valueBf,
+    required this.asset,
+    required this.assetBf,
   });
 }

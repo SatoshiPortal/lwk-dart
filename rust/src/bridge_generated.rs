@@ -23,10 +23,11 @@ use std::sync::Arc;
 use crate::error::LwkError;
 use crate::network::Network;
 use crate::types::Address;
-use crate::types::Balance;
+use crate::types::OutPoint;
 use crate::types::PsetAmounts;
 use crate::types::Tx;
 use crate::types::TxOut;
+use crate::types::TxOutSecrets;
 
 // Section: wire functions
 
@@ -140,7 +141,7 @@ fn wire_balance__static_method__Api_impl(
     port_: MessagePort,
     wallet_id: impl Wire2Api<String> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Balance, _>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Vec<(String, i64)>, _>(
         WrapInfo {
             debug_name: "balance__static_method__Api",
             port: Some(port_),
@@ -327,18 +328,6 @@ impl rust2dart::IntoIntoDart<Address> for Address {
     }
 }
 
-impl support::IntoDart for Balance {
-    fn into_dart(self) -> support::DartAbi {
-        vec![self.lbtc.into_into_dart().into_dart()].into_dart()
-    }
-}
-impl support::IntoDartExceptPrimitive for Balance {}
-impl rust2dart::IntoIntoDart<Balance> for Balance {
-    fn into_into_dart(self) -> Self {
-        self
-    }
-}
-
 impl support::IntoDart for LwkError {
     fn into_dart(self) -> support::DartAbi {
         vec![self.msg.into_into_dart().into_dart()].into_dart()
@@ -346,6 +335,22 @@ impl support::IntoDart for LwkError {
 }
 impl support::IntoDartExceptPrimitive for LwkError {}
 impl rust2dart::IntoIntoDart<LwkError> for LwkError {
+    fn into_into_dart(self) -> Self {
+        self
+    }
+}
+
+impl support::IntoDart for OutPoint {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.txid.into_into_dart().into_dart(),
+            self.vout.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for OutPoint {}
+impl rust2dart::IntoIntoDart<OutPoint> for OutPoint {
     fn into_into_dart(self) -> Self {
         self
     }
@@ -370,12 +375,13 @@ impl rust2dart::IntoIntoDart<PsetAmounts> for PsetAmounts {
 impl support::IntoDart for Tx {
     fn into_dart(self) -> support::DartAbi {
         vec![
+            self.timestamp.into_into_dart().into_dart(),
             self.kind.into_into_dart().into_dart(),
-            self.amount.into_into_dart().into_dart(),
+            self.balances.into_into_dart().into_dart(),
             self.txid.into_into_dart().into_dart(),
             self.outputs.into_into_dart().into_dart(),
+            self.inputs.into_into_dart().into_dart(),
             self.fee.into_into_dart().into_dart(),
-            self.timestamp.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -390,14 +396,34 @@ impl rust2dart::IntoIntoDart<Tx> for Tx {
 impl support::IntoDart for TxOut {
     fn into_dart(self) -> support::DartAbi {
         vec![
-            self.address.into_into_dart().into_dart(),
-            self.amount.into_into_dart().into_dart(),
+            self.script_pubkey.into_into_dart().into_dart(),
+            self.outpoint.into_into_dart().into_dart(),
+            self.height.into_dart(),
+            self.unblinded.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for TxOut {}
 impl rust2dart::IntoIntoDart<TxOut> for TxOut {
+    fn into_into_dart(self) -> Self {
+        self
+    }
+}
+
+impl support::IntoDart for TxOutSecrets {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.value.into_into_dart().into_dart(),
+            self.value_bf.into_into_dart().into_dart(),
+            self.asset.into_into_dart().into_dart(),
+            self.asset_bf.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for TxOutSecrets {}
+impl rust2dart::IntoIntoDart<TxOutSecrets> for TxOutSecrets {
     fn into_into_dart(self) -> Self {
         self
     }

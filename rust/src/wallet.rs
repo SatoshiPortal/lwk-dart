@@ -11,9 +11,9 @@ use std::collections::HashMap;
 
 use std::sync::{Mutex, MutexGuard};
 
-use crate::types::Balance;
+use crate::types::{AssetIdMapInt, AssetIdMapUInt};
 use crate::types::PsetAmounts;
-use crate::types::Tx;
+use crate::types::{Balances, Tx};
 use crate::types::Address;
 use crate::{error::LwkError, network::Network};
 use elements::AssetId;
@@ -113,9 +113,9 @@ impl Wallet {
         Ok(address.into())
     }
 
-    pub fn balance(&self) -> anyhow::Result<Balance, LwkError> {
-        let balance: HashMap<AssetId, u64> = self.get_wollet().balance()?.into();
-        Ok(Balance::from(balance))
+    pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
+        let balance= Balances::from(AssetIdMapUInt(self.get_wollet().balance()?));
+        Ok(balance)
     }
 
     pub fn txs(&self) -> anyhow::Result<Vec<Tx>, LwkError> {

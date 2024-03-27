@@ -3,7 +3,7 @@ PROJECTNAME=$(shell basename "$(PWD)")
 # ##############################################################################
 # # GENERAL
 # ##############################################################################
-VERSION="0.1.0"
+VERSION="0.1.1"
 .PHONY: help
 help: makefile
 	@echo
@@ -20,7 +20,7 @@ init:
 ## :
 
 ## all: Compile iOS, Android & Linux binaries
-all: init jnilib xcframework zip
+all: init jnilib unit-test zip
  
 linux:
 	@echo "[Creating linux binary ...] $@"

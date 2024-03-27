@@ -156,13 +156,13 @@ class LwkBridgeImpl implements LwkBridge {
         argNames: ["walletId", "index"],
       );
 
-  Future<Balance> balanceStaticMethodApi(
+  Future<List<(String, int)>> balanceStaticMethodApi(
       {required String walletId, dynamic hint}) {
     var arg0 = _platform.api2wire_String(walletId);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) =>
           _platform.inner.wire_balance__static_method__Api(port_, arg0),
-      parseSuccessData: _wire2api_balance,
+      parseSuccessData: _wire2api_list___record__String_i64,
       parseErrorData: _wire2api_lwk_error,
       constMeta: kBalanceStaticMethodApiConstMeta,
       argValues: [walletId],
@@ -301,6 +301,17 @@ class LwkBridgeImpl implements LwkBridge {
     return raw as String;
   }
 
+  (String, int) _wire2api___record__String_i64(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      _wire2api_String(arr[0]),
+      _wire2api_i64(arr[1]),
+    );
+  }
+
   Address _wire2api_address(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 3)
@@ -312,17 +323,16 @@ class LwkBridgeImpl implements LwkBridge {
     );
   }
 
-  Balance _wire2api_balance(dynamic raw) {
-    final arr = raw as List<dynamic>;
-    if (arr.length != 1)
-      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
-    return Balance(
-      lbtc: _wire2api_i64(arr[0]),
-    );
+  int _wire2api_box_autoadd_u32(dynamic raw) {
+    return raw as int;
   }
 
   int _wire2api_i64(dynamic raw) {
     return castInt(raw);
+  }
+
+  List<(String, int)> _wire2api_list___record__String_i64(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api___record__String_i64).toList();
   }
 
   List<Tx> _wire2api_list_tx(dynamic raw) {
@@ -342,37 +352,66 @@ class LwkBridgeImpl implements LwkBridge {
     );
   }
 
+  int? _wire2api_opt_box_autoadd_u32(dynamic raw) {
+    return raw == null ? null : _wire2api_box_autoadd_u32(raw);
+  }
+
+  OutPoint _wire2api_out_point(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return OutPoint(
+      txid: _wire2api_String(arr[0]),
+      vout: _wire2api_u32(arr[1]),
+    );
+  }
+
   PsetAmounts _wire2api_pset_amounts(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 2)
       throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return PsetAmounts(
       fee: _wire2api_u64(arr[0]),
-      balances: _wire2api_balance(arr[1]),
+      balances: _wire2api_list___record__String_i64(arr[1]),
     );
   }
 
   Tx _wire2api_tx(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 6)
-      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
     return Tx(
-      kind: _wire2api_String(arr[0]),
-      amount: _wire2api_u64(arr[1]),
-      txid: _wire2api_String(arr[2]),
-      outputs: _wire2api_list_tx_out(arr[3]),
-      fee: _wire2api_u64(arr[4]),
-      timestamp: _wire2api_u32(arr[5]),
+      timestamp: _wire2api_u32(arr[0]),
+      kind: _wire2api_String(arr[1]),
+      balances: _wire2api_list___record__String_i64(arr[2]),
+      txid: _wire2api_String(arr[3]),
+      outputs: _wire2api_list_tx_out(arr[4]),
+      inputs: _wire2api_list_tx_out(arr[5]),
+      fee: _wire2api_u64(arr[6]),
     );
   }
 
   TxOut _wire2api_tx_out(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return TxOut(
-      address: _wire2api_String(arr[0]),
-      amount: _wire2api_u64(arr[1]),
+      scriptPubkey: _wire2api_String(arr[0]),
+      outpoint: _wire2api_out_point(arr[1]),
+      height: _wire2api_opt_box_autoadd_u32(arr[2]),
+      unblinded: _wire2api_tx_out_secrets(arr[3]),
+    );
+  }
+
+  TxOutSecrets _wire2api_tx_out_secrets(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return TxOutSecrets(
+      value: _wire2api_u64(arr[0]),
+      valueBf: _wire2api_String(arr[1]),
+      asset: _wire2api_String(arr[2]),
+      assetBf: _wire2api_String(arr[3]),
     );
   }
 
