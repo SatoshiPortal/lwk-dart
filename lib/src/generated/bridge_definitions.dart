@@ -130,6 +130,7 @@ class Tx {
   final String txid;
   final List<TxOut> outputs;
   final int fee;
+  final int timestamp;
 
   const Tx({
     required this.kind,
@@ -137,6 +138,7 @@ class Tx {
     required this.txid,
     required this.outputs,
     required this.fee,
+    required this.timestamp,
   });
 }
 

@@ -375,6 +375,7 @@ impl support::IntoDart for Tx {
             self.txid.into_into_dart().into_dart(),
             self.outputs.into_into_dart().into_dart(),
             self.fee.into_into_dart().into_dart(),
+            self.timestamp.into_into_dart().into_dart(),
         ]
         .into_dart()
     }

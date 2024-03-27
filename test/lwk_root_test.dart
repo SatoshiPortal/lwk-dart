@@ -16,9 +16,15 @@ void main() {
       const outAddress =
           "tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu";
       const absFee = 300.0;
-      final descriptor = await Descriptor.create(network: network, mnemonic: mnemonic,);
+      final descriptor = await Descriptor.create(
+        network: network,
+        mnemonic: mnemonic,
+      );
       final wallet = await Wallet.create(
-         network: network, dbPath: dbPath, descriptor: descriptor.descriptor, );
+        network: network,
+        dbPath: dbPath,
+        descriptor: descriptor.descriptor,
+      );
       await wallet.sync(electrumUrl);
       final address = await wallet.lastUnusedAddress();
       print(address);
@@ -26,17 +32,14 @@ void main() {
       final balance = await wallet.balance();
       print('Pre Balance: ${balance.lbtc}');
       final txs = await wallet.txs();
-      for (final tx in txs){
-        print('${tx.txid}:${tx.amount}');
+      for (final tx in txs) {
+        print('${tx.txid}:${tx.amount} ${tx.timestamp}');
       }
-      final pset = await wallet.build(
-          sats: outAmount, outAddress: outAddress, absFee: absFee);
+      final pset = await wallet.build(sats: outAmount, outAddress: outAddress, absFee: absFee);
       final decodedPset = await wallet.decode(pset: pset);
       print("Amount: ${decodedPset.balances.lbtc} , Fee: ${decodedPset.fee}");
-      final signedTxBytes =
-          await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
-      final tx = await wallet.broadcast(
-          electrumUrl: electrumUrl, txBytes: signedTxBytes);
+      final signedTxBytes = await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
+      final tx = await wallet.broadcast(electrumUrl: electrumUrl, txBytes: signedTxBytes);
       print(tx);
       await wallet.sync(electrumUrl);
       final postBalance = await wallet.balance();

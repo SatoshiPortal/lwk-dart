@@ -15,7 +15,6 @@ void main() {
         network: network,
         dbPath: dbPath,
         descriptor: desc,
-
       );
       print(walletId);
 
@@ -32,26 +31,25 @@ void main() {
         print('${tx.amount}');
         print(tx.txid);
         print('${tx.outputs}');
+        print(tx.timestamp);
         print('---------------------------');
       }
       const outAddress =
           "tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu";
       const outAmount = 1000;
       const fee = 300.0;
-      final pset = await ffi.buildTxStaticMethodApi(
-          walletId: walletId, sats: outAmount, outAddress: outAddress, absFee: fee);
+      final pset =
+          await ffi.buildTxStaticMethodApi(walletId: walletId, sats: outAmount, outAddress: outAddress, absFee: fee);
 
-      final decoded =
-          await ffi.decodeTxStaticMethodApi(walletId: walletId, pset: pset);
+      final decoded = await ffi.decodeTxStaticMethodApi(walletId: walletId, pset: pset);
       print('------------CONFIRM TX---------------');
       print('Fee: ${decoded.fee}');
       print('Total: ${decoded.balances.lbtc}');
       print('-------------------------------------');
 
-      final signedTxBytes = await ffi.signTxStaticMethodApi(
-          walletId: walletId, network: network, pset: pset, mnemonic: mnemonic);
-      final txid = await ffi.broadcastTxStaticMethodApi(
-          electrumUrl: electrumUrl, txBytes: signedTxBytes);
+      final signedTxBytes =
+          await ffi.signTxStaticMethodApi(walletId: walletId, network: network, pset: pset, mnemonic: mnemonic);
+      final txid = await ffi.broadcastTxStaticMethodApi(electrumUrl: electrumUrl, txBytes: signedTxBytes);
       print(txid);
     });
   });
