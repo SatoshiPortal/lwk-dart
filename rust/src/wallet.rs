@@ -11,12 +11,11 @@ use std::collections::HashMap;
 
 use std::sync::{Mutex, MutexGuard};
 
-use crate::types::{AssetIdMapInt, AssetIdMapUInt};
+use crate::types::AssetIdMapUInt;
 use crate::types::PsetAmounts;
 use crate::types::{Balances, Tx};
 use crate::types::Address;
 use crate::{error::LwkError, network::Network};
-use elements::AssetId;
 use lwk_wollet::BlockchainBackend;
 use lwk_wollet::{EncryptedFsPersister, Wollet, WolletDescriptor};
 use std::str::FromStr;

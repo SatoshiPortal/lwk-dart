@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 
 pub use crate::error::LwkError;
 pub use crate::network::Network;
@@ -7,7 +6,7 @@ pub use crate::types::{PsetAmounts, Tx};
 pub use crate::wallet::Wallet;
 use elements::pset::serialize::Deserialize;
 
-use elements::{AssetId, Transaction};
+use elements::Transaction;
 use elements::Txid;
 use lwk_wollet::{BlockchainBackend, ElectrumClient};
 pub struct Api {}
@@ -149,8 +148,8 @@ mod test {
         let txs = Api::txs(wallet_id.clone()).unwrap();
         for tx in txs {
             if tx.txid == txid {
-                let fees = tx.fee;
-                let post_balance: Balances = Api::balance(wallet_id.clone()).unwrap();
+                // let fees = tx.fee;
+                // let post_balance: Balances = Api::balance(wallet_id.clone()).unwrap();
                 // assert_eq!(
                 //     (post_balance.lbtc),
                 //     (pre_balance.lbtc - (sats as i64 + fees as i64))

@@ -1,9 +1,7 @@
-use elements::{Address as LiquidAddress, AddressParams, AssetId, TxOutSecrets as LwkTxOutSecrets, OutPoint as LwkOutPoint};
+use elements::{ AssetId, TxOutSecrets as LwkTxOutSecrets, OutPoint as LwkOutPoint};
 use lwk_common::PsetBalance;
 use lwk_wollet::{AddressResult, WalletTx};
 use std::collections::HashMap;
-use std::str::FromStr;
-
 
 pub struct AssetIdMapUInt(pub HashMap<AssetId, u64>);
 pub struct AssetIdMapInt(pub HashMap<AssetId, i64>);
@@ -90,7 +88,6 @@ impl From<WalletTx> for Tx {
         for output in wallet_tx.outputs {
             if output.is_some() { // safe to unwrap
                 let script_pubkey = output.clone().unwrap().script_pubkey;
-                let amount = output.clone().unwrap().unblinded.value;
                 outputs.push(TxOut {
                     script_pubkey:script_pubkey.to_string(),
                     height: output.clone().unwrap().height,
@@ -111,7 +108,6 @@ impl From<WalletTx> for Tx {
         for input in wallet_tx.inputs {
             if input.is_some() { // safe to unwrap
                 let script_pubkey = input.clone().unwrap().script_pubkey;
-                let amount = input.clone().unwrap().unblinded.value;
                 inputs.push(TxOut {
                     script_pubkey:script_pubkey.to_string(),
                     height: input.clone().unwrap().height,

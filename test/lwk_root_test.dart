@@ -30,7 +30,7 @@ void main() {
       print(address);
       // print(wallet.descriptor());
       final balance = await wallet.balance();
-      print('Pre Balance: ${balance}');
+      print('Pre Balance: $balance');
       final txs = await wallet.txs();
       for (final tx in txs) {
         print('${tx.txid}:${tx.balances} ${tx.timestamp}');
