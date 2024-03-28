@@ -136,10 +136,11 @@ class Wallet {
       required double absFee}) async {
     try {
       final res = await ffi.buildTxStaticMethodApi(
-          walletId: _liquidWallet,
-          sats: sats,
-          outAddress: outAddress,
-          absFee: absFee);
+        walletId: _liquidWallet,
+        sats: sats,
+        outAddress: outAddress,
+        absFee: absFee,
+      );
       return res;
     } catch (e) {
       rethrow;
