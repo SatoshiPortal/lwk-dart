@@ -156,13 +156,13 @@ class LwkBridgeImpl implements LwkBridge {
         argNames: ["walletId", "index"],
       );
 
-  Future<List<(String, int)>> balanceStaticMethodApi(
+  Future<List<Balance>> balanceStaticMethodApi(
       {required String walletId, dynamic hint}) {
     var arg0 = _platform.api2wire_String(walletId);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) =>
           _platform.inner.wire_balance__static_method__Api(port_, arg0),
-      parseSuccessData: _wire2api_list___record__String_i64,
+      parseSuccessData: _wire2api_list_balance,
       parseErrorData: _wire2api_lwk_error,
       constMeta: kBalanceStaticMethodApiConstMeta,
       argValues: [walletId],
@@ -301,17 +301,6 @@ class LwkBridgeImpl implements LwkBridge {
     return raw as String;
   }
 
-  (String, int) _wire2api___record__String_i64(dynamic raw) {
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2) {
-      throw Exception('Expected 2 elements, got ${arr.length}');
-    }
-    return (
-      _wire2api_String(arr[0]),
-      _wire2api_i64(arr[1]),
-    );
-  }
-
   Address _wire2api_address(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 3)
@@ -323,6 +312,16 @@ class LwkBridgeImpl implements LwkBridge {
     );
   }
 
+  Balance _wire2api_balance(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return Balance(
+      assetId: _wire2api_String(arr[0]),
+      value: _wire2api_i64(arr[1]),
+    );
+  }
+
   int _wire2api_box_autoadd_u32(dynamic raw) {
     return raw as int;
   }
@@ -331,8 +330,8 @@ class LwkBridgeImpl implements LwkBridge {
     return castInt(raw);
   }
 
-  List<(String, int)> _wire2api_list___record__String_i64(dynamic raw) {
-    return (raw as List<dynamic>).map(_wire2api___record__String_i64).toList();
+  List<Balance> _wire2api_list_balance(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_balance).toList();
   }
 
   List<Tx> _wire2api_list_tx(dynamic raw) {
@@ -372,7 +371,7 @@ class LwkBridgeImpl implements LwkBridge {
       throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return PsetAmounts(
       fee: _wire2api_u64(arr[0]),
-      balances: _wire2api_list___record__String_i64(arr[1]),
+      balances: _wire2api_list_balance(arr[1]),
     );
   }
 
@@ -383,7 +382,7 @@ class LwkBridgeImpl implements LwkBridge {
     return Tx(
       timestamp: _wire2api_u32(arr[0]),
       kind: _wire2api_String(arr[1]),
-      balances: _wire2api_list___record__String_i64(arr[2]),
+      balances: _wire2api_list_balance(arr[2]),
       txid: _wire2api_String(arr[3]),
       outputs: _wire2api_list_tx_out(arr[4]),
       inputs: _wire2api_list_tx_out(arr[5]),

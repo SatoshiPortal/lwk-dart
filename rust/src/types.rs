@@ -6,28 +6,46 @@ use std::collections::HashMap;
 pub struct AssetIdMapUInt(pub HashMap<AssetId, u64>);
 pub struct AssetIdMapInt(pub HashMap<AssetId, i64>);
 
-pub type Balances = Vec<(String, i64)>;
+pub type Balances = Vec<Balance>;
 
 impl From<AssetIdMapInt> for Balances {
     fn from(asset_id_map: AssetIdMapInt) -> Self {
         asset_id_map.0.into_iter()
-            .map(|(key, value)| (key.to_string(), value))
-            .collect()
-    }
-}
-
-impl From<AssetIdMapUInt> for Balances {
-    fn from(asset_id_map: AssetIdMapUInt) -> Self {
-        asset_id_map.0.into_iter()
-            .map(|(key, value)| {
-                // This may overflow for very large u64 values.
-                let converted_value = value as i64;
-                (key.to_string(), converted_value)
+            .map(|(key, value)| Balance {
+                asset_id: key.to_string(),
+                value,
             })
             .collect()
     }
 }
 
+use std::convert::TryFrom;
+
+impl From<AssetIdMapUInt> for Balances {
+    fn from(asset_id_map: AssetIdMapUInt) -> Self {
+        asset_id_map.0.into_iter()
+            .filter_map(|(key, value)| {
+                match i64::try_from(value) {
+                    Ok(converted_value) => Some(Balance {
+                        asset_id: key.to_string(),
+                        value: converted_value,
+                    }),
+                    Err(_) => {
+                        eprintln!("Warning: Overflow encountered converting {} to i64", value);
+                        None
+                    }
+                }
+            })
+            .collect()
+    }
+}
+
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct Balance {
+    pub asset_id: String,
+    pub value: i64
+}
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Address {
@@ -45,7 +63,6 @@ impl From<AddressResult> for Address {
         }
     }
 }
-
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct OutPoint {
@@ -156,5 +173,8 @@ impl From<PsetBalance> for PsetAmounts {
 mod test {
 
     #[test]
-    fn test_types() {}
+    fn test_types() {
+        
+
+    }
 }

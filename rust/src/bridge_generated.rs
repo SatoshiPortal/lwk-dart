@@ -23,6 +23,7 @@ use std::sync::Arc;
 use crate::error::LwkError;
 use crate::network::Network;
 use crate::types::Address;
+use crate::types::Balance;
 use crate::types::OutPoint;
 use crate::types::PsetAmounts;
 use crate::types::Tx;
@@ -141,7 +142,7 @@ fn wire_balance__static_method__Api_impl(
     port_: MessagePort,
     wallet_id: impl Wire2Api<String> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Vec<(String, i64)>, _>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Vec<Balance>, _>(
         WrapInfo {
             debug_name: "balance__static_method__Api",
             port: Some(port_),
@@ -323,6 +324,22 @@ impl support::IntoDart for Address {
 }
 impl support::IntoDartExceptPrimitive for Address {}
 impl rust2dart::IntoIntoDart<Address> for Address {
+    fn into_into_dart(self) -> Self {
+        self
+    }
+}
+
+impl support::IntoDart for Balance {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.asset_id.into_into_dart().into_dart(),
+            self.value.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for Balance {}
+impl rust2dart::IntoIntoDart<Balance> for Balance {
     fn into_into_dart(self) -> Self {
         self
     }

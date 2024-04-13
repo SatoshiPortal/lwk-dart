@@ -17,7 +17,26 @@ Future<void> setCurrentDirectory() async {
   }
 }
 
-typedef Balances = List<(String, int)>;
+typedef Balances = List<Balance>;
+
+class BalanceUtils {
+  static int getBalanceByAssetId(List<Balance> balances, String assetId) {
+    for (var balance in balances) {
+      if (balance.assetId == assetId) {
+        return balance.value;
+      }
+    }
+    return 0; // Return 0 if no balance is found for the asset ID
+  }
+
+  static int getLBtcBalance(List<Balance> balances) {
+    return getBalanceByAssetId(balances, lBtcAssetId);
+  }
+
+  static int getLTestBalance(List<Balance> balances) {
+    return getBalanceByAssetId(balances, lTestAssetId);
+  }
+}
 
 class Descriptor {
   final String _descriptor;

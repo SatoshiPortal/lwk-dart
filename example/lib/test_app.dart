@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:lwk_dart/lwk_dart.dart';
 import 'package:path_provider/path_provider.dart';
 
-class DecodedPset {
-  final int amount;
-  final int fee;
+// class DecodedPset {
+//   final int amount;
+//   final int fee;
 
-  DecodedPset({required this.amount, required this.fee});
-}
+//   DecodedPset({required this.amount, required this.fee});
+// }
 
 class TestApp extends StatefulWidget {
   const TestApp({super.key});
@@ -62,16 +62,16 @@ class TestApp extends StatefulWidget {
     return true;
   }
 
-  static Future<Balance> balance(Wallet wallet) async {
-    final Balance balance = await wallet.balance();
+  static Future<Balances> balance(Wallet wallet) async {
+    final Balances balance = await wallet.balance();
     return balance;
   }
 
-  static Future<List<Map<String, int>>> txs(Wallet wallet) async {
+  static Future<List<Map<String, Tx>>> txs(Wallet wallet) async {
     final txs = await wallet.txs();
-    List<Map<String, int>> res = [];
+    List<Map<String, Tx>> res = [];
     for (int i = 0; i < txs.length; i++) {
-      res.add({txs[i].txid: txs[i].amount});
+      res.add({txs[i].txid: txs[i]});
     }
     return res;
   }
@@ -82,14 +82,13 @@ class TestApp extends StatefulWidget {
     return pset;
   }
 
-  static Future<DecodedPset> decode(Wallet wallet, String pset) async {
-    final decodedPset = await wallet.decode(pset: pset);
-    return DecodedPset(amount: decodedPset.balances.lbtc, fee: decodedPset.fee);
+  static Future<PsetAmounts> decode(Wallet wallet, String pset) async {
+    return await wallet.decode(pset: pset);
   }
 
   static Future<Uint8List> sign(Wallet wallet, String pset) async {
     final signedTxBytes =
-    await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
+        await wallet.sign(network: network, pset: pset, mnemonic: mnemonic);
 
     return signedTxBytes;
   }
@@ -109,11 +108,11 @@ class _TestAppState extends State<TestApp> {
   bool loading = false;
   Wallet? wallet;
   bool isWalletSynced = false;
-  Balance? balance;
+  Balances? balance;
   List<Map<String, int>>? txs;
   String newAddress = "...";
   String? pset;
-  DecodedPset? decodedPset;
+  PsetAmounts? decodedPset;
   Uint8List? signedTxBytes;
   String? tx;
 
@@ -132,8 +131,9 @@ class _TestAppState extends State<TestApp> {
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             backgroundColor:
-            MaterialStatePropertyAll<Color>(Colors.red.shade400),
-            foregroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
+                MaterialStatePropertyAll<Color>(Colors.red.shade400),
+            foregroundColor:
+                const MaterialStatePropertyAll<Color>(Colors.white),
           ),
         ),
       ),
@@ -216,9 +216,7 @@ class _TestAppState extends State<TestApp> {
                                 'Get Balance',
                               ),
                             ),
-                            Text(balance == null
-                                ? "..."
-                                : "${balance!.lbtc} sats"),
+                            Text(balance == null ? "..." : "${balance} sats"),
                           ],
                         ),
                         Column(
@@ -231,7 +229,7 @@ class _TestAppState extends State<TestApp> {
                                 final res = await TestApp.txs(wallet!);
                                 setState(() {
                                   loading = false;
-                                  txs = res;
+                                  txs = res.cast<Map<String, int>>();
                                 });
                               },
                               child: const Text(
@@ -241,26 +239,26 @@ class _TestAppState extends State<TestApp> {
                             txs == null
                                 ? const Text("...")
                                 : Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.red.shade400,
-                                  width: 2,
-                                ),
-                              ),
-                              height: 300,
-                              child: ListView.builder(
-                                itemCount: txs!.length,
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  return ListTile(
-                                    title: Text(
-                                        'Transaction ID: ${txs![index].keys}'),
-                                    subtitle: Text(
-                                        'Amount: ${txs![index].values}'),
-                                  );
-                                },
-                              ),
-                            ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.red.shade400,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    height: 300,
+                                    child: ListView.builder(
+                                      itemCount: txs!.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return ListTile(
+                                          title: Text(
+                                              'Transaction ID: ${txs![index].keys}'),
+                                          subtitle: Text(
+                                              'Amount: ${txs![index].values}'),
+                                        );
+                                      },
+                                    ),
+                                  ),
                           ],
                         ),
                         Column(
@@ -303,16 +301,16 @@ class _TestAppState extends State<TestApp> {
                             pset == null
                                 ? const Text("...")
                                 : Container(
-                              height: 300,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.red.shade400,
-                                  width: 2,
-                                ),
-                              ),
-                              child: SingleChildScrollView(
-                                  child: Text(pset!)),
-                            ),
+                                    height: 300,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.red.shade400,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: SingleChildScrollView(
+                                        child: Text(pset!)),
+                                  ),
                           ],
                         ),
                         Column(
@@ -323,7 +321,7 @@ class _TestAppState extends State<TestApp> {
                                   loading = true;
                                 });
                                 final res =
-                                await TestApp.decode(wallet!, pset!);
+                                    await TestApp.decode(wallet!, pset!);
                                 setState(() {
                                   loading = false;
                                   decodedPset = res;
@@ -336,7 +334,7 @@ class _TestAppState extends State<TestApp> {
                             decodedPset == null
                                 ? const Text("...")
                                 : Text(
-                                'Amount: ${decodedPset!.amount}, Fee: ${decodedPset!.fee}'),
+                                    'Amount: ${decodedPset!.balances}, Fee: ${decodedPset!.fee}'),
                           ],
                         ),
                         Column(

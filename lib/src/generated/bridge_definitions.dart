@@ -42,7 +42,7 @@ abstract class LwkBridge {
 
   FlutterRustBridgeTaskConstMeta get kAddressStaticMethodApiConstMeta;
 
-  Future<List<(String, int)>> balanceStaticMethodApi(
+  Future<List<Balance>> balanceStaticMethodApi(
       {required String walletId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kBalanceStaticMethodApiConstMeta;
@@ -92,6 +92,16 @@ class Address {
   });
 }
 
+class Balance {
+  final String assetId;
+  final int value;
+
+  const Balance({
+    required this.assetId,
+    required this.value,
+  });
+}
+
 /// Possible errors emitted
 class LwkError implements FrbException {
   final String msg;
@@ -118,7 +128,7 @@ class OutPoint {
 
 class PsetAmounts {
   final int fee;
-  final List<(String, int)> balances;
+  final List<Balance> balances;
 
   const PsetAmounts({
     required this.fee,
@@ -129,7 +139,7 @@ class PsetAmounts {
 class Tx {
   final int timestamp;
   final String kind;
-  final List<(String, int)> balances;
+  final List<Balance> balances;
   final String txid;
   final List<TxOut> outputs;
   final List<TxOut> inputs;
