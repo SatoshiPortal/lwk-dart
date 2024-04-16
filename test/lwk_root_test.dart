@@ -35,7 +35,7 @@ void main() {
       for (final tx in txs) {
         print('${tx.txid}:${tx.balances} ${tx.timestamp}');
       }
-      final pset = await wallet.build(
+      final pset = await wallet.build_lbtc_tx(
           sats: outAmount, outAddress: outAddress, absFee: absFee);
       final decodedPset = await wallet.decode(pset: pset);
       print("Amount: ${decodedPset.balances} , Fee: ${decodedPset.fee}");

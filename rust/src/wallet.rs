@@ -6,6 +6,7 @@ use lwk_signer::SwSigner;
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
 use lwk_wollet::ElementsNetwork;
+use lwk_wollet::EncryptedFsPersister;
 use lwk_wollet::Update;
 use std::collections::HashMap;
 
@@ -17,7 +18,7 @@ use crate::types::{Balances, Tx};
 use crate::types::Address;
 use crate::{error::LwkError, network::Network};
 use lwk_wollet::BlockchainBackend;
-use lwk_wollet::{EncryptedFsPersister, Wollet, WolletDescriptor};
+use lwk_wollet::{ Wollet, WolletDescriptor};
 use std::str::FromStr;
 //const TLBTC_ASSET_ID: &str = "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
 use lazy_static::lazy_static;
@@ -71,7 +72,7 @@ impl Wallet {
         let wollet = Wollet::new(
             network.into(),
             EncryptedFsPersister::new(dbpath, network.into(), &descriptor)?,
-            &desc_str,
+            &descriptor.clone().to_string(),
         )?;
         let wallet = Wallet {
             inner: Mutex::new(wollet),
@@ -127,7 +128,7 @@ impl Wallet {
         Ok(txs)
     }
 
-    pub fn build_tx(
+    pub fn build_lbtc_tx(
         &self,
         sats: u64,
         out_address: String,
@@ -136,6 +137,19 @@ impl Wallet {
         let pset: PartiallySignedTransaction =
             self.get_wollet()
                 .send_lbtc(sats, &out_address, Some(abs_fee))?;
+        Ok(pset.to_string())
+    }
+
+    pub fn build_asset_tx(
+        &self,
+        sats: u64,
+        out_address: String,
+        abs_fee: f32,
+        asset: String,
+    ) -> anyhow::Result<String, LwkError> {
+        let pset: PartiallySignedTransaction =
+            self.get_wollet()
+                .send_asset(sats, &out_address, &asset, Some(abs_fee))?;
         Ok(pset.to_string())
     }
 

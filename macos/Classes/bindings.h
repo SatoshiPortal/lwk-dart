@@ -30,6 +30,8 @@ void wire_new_descriptor__static_method__Api(int64_t port_,
                                              int32_t network,
                                              struct wire_uint_8_list *mnemonic);
 
+void wire_blinding_key__static_method__Api(int64_t port_, struct wire_uint_8_list *wallet_id);
+
 void wire_new_wallet__static_method__Api(int64_t port_,
                                          int32_t network,
                                          struct wire_uint_8_list *db_path,
@@ -48,15 +50,30 @@ void wire_address__static_method__Api(int64_t port_,
                                       struct wire_uint_8_list *wallet_id,
                                       uint32_t index);
 
+void wire_validate_address__static_method__Api(int64_t port_,
+                                               struct wire_uint_8_list *address_string);
+
+void wire_address_from_script__static_method__Api(int64_t port_,
+                                                  int32_t network,
+                                                  struct wire_uint_8_list *script,
+                                                  struct wire_uint_8_list *blinding_key);
+
 void wire_balance__static_method__Api(int64_t port_, struct wire_uint_8_list *wallet_id);
 
 void wire_txs__static_method__Api(int64_t port_, struct wire_uint_8_list *wallet_id);
 
-void wire_build_tx__static_method__Api(int64_t port_,
-                                       struct wire_uint_8_list *wallet_id,
-                                       uint64_t sats,
-                                       struct wire_uint_8_list *out_address,
-                                       float abs_fee);
+void wire_build_lbtc_tx__static_method__Api(int64_t port_,
+                                            struct wire_uint_8_list *wallet_id,
+                                            uint64_t sats,
+                                            struct wire_uint_8_list *out_address,
+                                            float abs_fee);
+
+void wire_build_asset_tx__static_method__Api(int64_t port_,
+                                             struct wire_uint_8_list *wallet_id,
+                                             uint64_t sats,
+                                             struct wire_uint_8_list *out_address,
+                                             float abs_fee,
+                                             struct wire_uint_8_list *asset_id);
 
 void wire_decode_tx__static_method__Api(int64_t port_,
                                         struct wire_uint_8_list *wallet_id,
@@ -79,14 +96,18 @@ void free_WireSyncReturn(WireSyncReturn ptr);
 static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
     dummy_var ^= ((int64_t) (void*) wire_new_descriptor__static_method__Api);
+    dummy_var ^= ((int64_t) (void*) wire_blinding_key__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_new_wallet__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_sync__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_wallet_descriptor__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_address_last_unused__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_address__static_method__Api);
+    dummy_var ^= ((int64_t) (void*) wire_validate_address__static_method__Api);
+    dummy_var ^= ((int64_t) (void*) wire_address_from_script__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_balance__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_txs__static_method__Api);
-    dummy_var ^= ((int64_t) (void*) wire_build_tx__static_method__Api);
+    dummy_var ^= ((int64_t) (void*) wire_build_lbtc_tx__static_method__Api);
+    dummy_var ^= ((int64_t) (void*) wire_build_asset_tx__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_decode_tx__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_sign_tx__static_method__Api);
     dummy_var ^= ((int64_t) (void*) wire_broadcast_tx__static_method__Api);

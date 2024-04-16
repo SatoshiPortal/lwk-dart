@@ -77,8 +77,11 @@ class TestApp extends StatefulWidget {
   }
 
   static Future<String> build(Wallet wallet) async {
-    final pset = await wallet.build(
-        sats: outAmount, outAddress: outAddress, absFee: fee);
+    final pset = await wallet.build_lbtc_tx(
+      sats: outAmount,
+      outAddress: outAddress,
+      absFee: fee,
+    );
     return pset;
   }
 

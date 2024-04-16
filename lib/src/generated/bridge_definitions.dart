@@ -14,6 +14,11 @@ abstract class LwkBridge {
 
   FlutterRustBridgeTaskConstMeta get kNewDescriptorStaticMethodApiConstMeta;
 
+  Future<String> blindingKeyStaticMethodApi(
+      {required String walletId, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kBlindingKeyStaticMethodApiConstMeta;
+
   Future<String> newWalletStaticMethodApi(
       {required Network network,
       required String dbPath,
@@ -42,6 +47,19 @@ abstract class LwkBridge {
 
   FlutterRustBridgeTaskConstMeta get kAddressStaticMethodApiConstMeta;
 
+  Future<void> validateAddressStaticMethodApi(
+      {required String addressString, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kValidateAddressStaticMethodApiConstMeta;
+
+  Future<Address> addressFromScriptStaticMethodApi(
+      {required Network network,
+      required String script,
+      required String blindingKey,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kAddressFromScriptStaticMethodApiConstMeta;
+
   Future<List<Balance>> balanceStaticMethodApi(
       {required String walletId, dynamic hint});
 
@@ -51,14 +69,24 @@ abstract class LwkBridge {
 
   FlutterRustBridgeTaskConstMeta get kTxsStaticMethodApiConstMeta;
 
-  Future<String> buildTxStaticMethodApi(
+  Future<String> buildLbtcTxStaticMethodApi(
       {required String walletId,
       required int sats,
       required String outAddress,
       required double absFee,
       dynamic hint});
 
-  FlutterRustBridgeTaskConstMeta get kBuildTxStaticMethodApiConstMeta;
+  FlutterRustBridgeTaskConstMeta get kBuildLbtcTxStaticMethodApiConstMeta;
+
+  Future<String> buildAssetTxStaticMethodApi(
+      {required String walletId,
+      required int sats,
+      required String outAddress,
+      required double absFee,
+      required String assetId,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kBuildAssetTxStaticMethodApiConstMeta;
 
   Future<PsetAmounts> decodeTxStaticMethodApi(
       {required String walletId, required String pset, dynamic hint});

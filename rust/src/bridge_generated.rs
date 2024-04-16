@@ -50,6 +50,22 @@ fn wire_new_descriptor__static_method__Api_impl(
         },
     )
 }
+fn wire_blinding_key__static_method__Api_impl(
+    port_: MessagePort,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
+        WrapInfo {
+            debug_name: "blinding_key__static_method__Api",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_wallet_id = wallet_id.wire2api();
+            move |task_callback| Api::blinding_key(api_wallet_id)
+        },
+    )
+}
 fn wire_new_wallet__static_method__Api_impl(
     port_: MessagePort,
     network: impl Wire2Api<Network> + UnwindSafe,
@@ -138,6 +154,42 @@ fn wire_address__static_method__Api_impl(
         },
     )
 }
+fn wire_validate_address__static_method__Api_impl(
+    port_: MessagePort,
+    address_string: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, (), _>(
+        WrapInfo {
+            debug_name: "validate_address__static_method__Api",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_address_string = address_string.wire2api();
+            move |task_callback| Api::validate_address(api_address_string)
+        },
+    )
+}
+fn wire_address_from_script__static_method__Api_impl(
+    port_: MessagePort,
+    network: impl Wire2Api<Network> + UnwindSafe,
+    script: impl Wire2Api<String> + UnwindSafe,
+    blinding_key: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Address, _>(
+        WrapInfo {
+            debug_name: "address_from_script__static_method__Api",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_network = network.wire2api();
+            let api_script = script.wire2api();
+            let api_blinding_key = blinding_key.wire2api();
+            move |task_callback| Api::address_from_script(api_network, api_script, api_blinding_key)
+        },
+    )
+}
 fn wire_balance__static_method__Api_impl(
     port_: MessagePort,
     wallet_id: impl Wire2Api<String> + UnwindSafe,
@@ -170,7 +222,7 @@ fn wire_txs__static_method__Api_impl(
         },
     )
 }
-fn wire_build_tx__static_method__Api_impl(
+fn wire_build_lbtc_tx__static_method__Api_impl(
     port_: MessagePort,
     wallet_id: impl Wire2Api<String> + UnwindSafe,
     sats: impl Wire2Api<u64> + UnwindSafe,
@@ -179,7 +231,7 @@ fn wire_build_tx__static_method__Api_impl(
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
         WrapInfo {
-            debug_name: "build_tx__static_method__Api",
+            debug_name: "build_lbtc_tx__static_method__Api",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
@@ -189,7 +241,39 @@ fn wire_build_tx__static_method__Api_impl(
             let api_out_address = out_address.wire2api();
             let api_abs_fee = abs_fee.wire2api();
             move |task_callback| {
-                Api::build_tx(api_wallet_id, api_sats, api_out_address, api_abs_fee)
+                Api::build_lbtc_tx(api_wallet_id, api_sats, api_out_address, api_abs_fee)
+            }
+        },
+    )
+}
+fn wire_build_asset_tx__static_method__Api_impl(
+    port_: MessagePort,
+    wallet_id: impl Wire2Api<String> + UnwindSafe,
+    sats: impl Wire2Api<u64> + UnwindSafe,
+    out_address: impl Wire2Api<String> + UnwindSafe,
+    abs_fee: impl Wire2Api<f32> + UnwindSafe,
+    asset_id: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
+        WrapInfo {
+            debug_name: "build_asset_tx__static_method__Api",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_wallet_id = wallet_id.wire2api();
+            let api_sats = sats.wire2api();
+            let api_out_address = out_address.wire2api();
+            let api_abs_fee = abs_fee.wire2api();
+            let api_asset_id = asset_id.wire2api();
+            move |task_callback| {
+                Api::build_asset_tx(
+                    api_wallet_id,
+                    api_sats,
+                    api_out_address,
+                    api_abs_fee,
+                    api_asset_id,
+                )
             }
         },
     )

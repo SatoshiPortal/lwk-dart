@@ -41,7 +41,7 @@ void main() {
           "tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu";
       const outAmount = 1000;
       const fee = 300.0;
-      final pset = await ffi.buildTxStaticMethodApi(
+      final pset = await ffi.buildLbtcTxStaticMethodApi(
           walletId: walletId,
           sats: outAmount,
           outAddress: outAddress,

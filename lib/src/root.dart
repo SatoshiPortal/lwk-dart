@@ -131,6 +131,17 @@ class Wallet {
     }
   }
 
+  Future<String> blinding_key() async {
+    try {
+      final res = await ffi.blindingKeyStaticMethodApi(
+        walletId: _liquidWallet,
+      );
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Balances> balance() async {
     try {
       final res = await ffi.balanceStaticMethodApi(walletId: _liquidWallet);
@@ -149,12 +160,13 @@ class Wallet {
     }
   }
 
-  Future<String> build(
-      {required int sats,
-      required String outAddress,
-      required double absFee}) async {
+  Future<String> build_lbtc_tx({
+    required int sats,
+    required String outAddress,
+    required double absFee,
+  }) async {
     try {
-      final res = await ffi.buildTxStaticMethodApi(
+      final res = await ffi.buildLbtcTxStaticMethodApi(
         walletId: _liquidWallet,
         sats: sats,
         outAddress: outAddress,
@@ -166,10 +178,32 @@ class Wallet {
     }
   }
 
+  Future<String> build_asset_tx({
+    required int sats,
+    required String outAddress,
+    required double absFee,
+    required String assetId,
+  }) async {
+    try {
+      final res = await ffi.buildAssetTxStaticMethodApi(
+        walletId: _liquidWallet,
+        sats: sats,
+        outAddress: outAddress,
+        absFee: absFee,
+        assetId: assetId,
+      );
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<PsetAmounts> decode({required String pset}) async {
     try {
       final res = await ffi.decodeTxStaticMethodApi(
-          walletId: _liquidWallet, pset: pset);
+        walletId: _liquidWallet,
+        pset: pset,
+      );
       return res;
     } catch (e) {
       rethrow;
@@ -194,8 +228,10 @@ class Wallet {
     }
   }
 
-  Future<String> broadcast(
-      {required String electrumUrl, required Uint8List txBytes}) async {
+  Future<String> broadcast({
+    required String electrumUrl,
+    required Uint8List txBytes,
+  }) async {
     try {
       final res = await ffi.broadcastTxStaticMethodApi(
           electrumUrl: electrumUrl, txBytes: txBytes);
@@ -203,5 +239,35 @@ class Wallet {
     } catch (e) {
       rethrow;
     }
+  }
+}
+
+Future<Address> scriptToAddress({
+  required Network network,
+  required String script,
+  String? blindingKey,
+}) async {
+  try {
+    final res = await ffi.addressFromScriptStaticMethodApi(
+      script: script,
+      network: network,
+      blindingKey: blindingKey ?? "",
+    );
+    return res;
+  } catch (e) {
+    rethrow;
+  }
+}
+
+Future<void> validateAddress({
+  required String address,
+}) async {
+  try {
+    final res = await ffi.validateAddressStaticMethodApi(
+      addressString: address,
+    );
+    return res;
+  } catch (e) {
+    rethrow;
   }
 }

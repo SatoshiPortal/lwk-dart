@@ -1,4 +1,5 @@
-use elements::{ AssetId, TxOutSecrets as LwkTxOutSecrets, OutPoint as LwkOutPoint};
+use elements::hex::ToHex;
+use elements::AssetId;
 use lwk_common::PsetBalance;
 use lwk_wollet::{AddressResult, WalletTx};
 use std::collections::HashMap;
@@ -20,6 +21,7 @@ impl From<AssetIdMapInt> for Balances {
 }
 
 use std::convert::TryFrom;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 impl From<AssetIdMapUInt> for Balances {
     fn from(asset_id_map: AssetIdMapUInt) -> Self {
@@ -64,6 +66,7 @@ impl From<AddressResult> for Address {
     }
 }
 
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct OutPoint {
     pub txid: String,
@@ -106,7 +109,7 @@ impl From<WalletTx> for Tx {
             if output.is_some() { // safe to unwrap
                 let script_pubkey = output.clone().unwrap().script_pubkey;
                 outputs.push(TxOut {
-                    script_pubkey:script_pubkey.to_string(),
+                    script_pubkey:script_pubkey.to_hex(),
                     height: output.clone().unwrap().height,
                     unblinded: TxOutSecrets {
                         value: output.clone().unwrap().unblinded.value,
@@ -141,6 +144,9 @@ impl From<WalletTx> for Tx {
                 })
             }
         }
+        let now = SystemTime::now();
+        let since_the_epoch = now.duration_since(UNIX_EPOCH)
+            .expect("Time went backwards");
         Tx {
             kind: wallet_tx.type_,
             balances: Balances::from(AssetIdMapInt(wallet_tx
@@ -149,7 +155,7 @@ impl From<WalletTx> for Tx {
             outputs: outputs,
             inputs: inputs,
             fee: wallet_tx.fee,
-            timestamp: wallet_tx.timestamp.unwrap(),
+            timestamp: wallet_tx.timestamp.unwrap_or(since_the_epoch.as_secs() as u32),
         }
     }
 }
@@ -168,13 +174,3 @@ impl From<PsetBalance> for PsetAmounts {
     }
 }
 
-
-#[cfg(test)]
-mod test {
-
-    #[test]
-    fn test_types() {
-        
-
-    }
-}

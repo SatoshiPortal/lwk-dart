@@ -11,6 +11,14 @@ pub extern "C" fn wire_new_descriptor__static_method__Api(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_blinding_key__static_method__Api(
+    port_: i64,
+    wallet_id: *mut wire_uint_8_list,
+) {
+    wire_blinding_key__static_method__Api_impl(port_, wallet_id)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_new_wallet__static_method__Api(
     port_: i64,
     network: i32,
@@ -55,6 +63,24 @@ pub extern "C" fn wire_address__static_method__Api(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_validate_address__static_method__Api(
+    port_: i64,
+    address_string: *mut wire_uint_8_list,
+) {
+    wire_validate_address__static_method__Api_impl(port_, address_string)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_address_from_script__static_method__Api(
+    port_: i64,
+    network: i32,
+    script: *mut wire_uint_8_list,
+    blinding_key: *mut wire_uint_8_list,
+) {
+    wire_address_from_script__static_method__Api_impl(port_, network, script, blinding_key)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_balance__static_method__Api(port_: i64, wallet_id: *mut wire_uint_8_list) {
     wire_balance__static_method__Api_impl(port_, wallet_id)
 }
@@ -65,14 +91,33 @@ pub extern "C" fn wire_txs__static_method__Api(port_: i64, wallet_id: *mut wire_
 }
 
 #[no_mangle]
-pub extern "C" fn wire_build_tx__static_method__Api(
+pub extern "C" fn wire_build_lbtc_tx__static_method__Api(
     port_: i64,
     wallet_id: *mut wire_uint_8_list,
     sats: u64,
     out_address: *mut wire_uint_8_list,
     abs_fee: f32,
 ) {
-    wire_build_tx__static_method__Api_impl(port_, wallet_id, sats, out_address, abs_fee)
+    wire_build_lbtc_tx__static_method__Api_impl(port_, wallet_id, sats, out_address, abs_fee)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_build_asset_tx__static_method__Api(
+    port_: i64,
+    wallet_id: *mut wire_uint_8_list,
+    sats: u64,
+    out_address: *mut wire_uint_8_list,
+    abs_fee: f32,
+    asset_id: *mut wire_uint_8_list,
+) {
+    wire_build_asset_tx__static_method__Api_impl(
+        port_,
+        wallet_id,
+        sats,
+        out_address,
+        abs_fee,
+        asset_id,
+    )
 }
 
 #[no_mangle]
