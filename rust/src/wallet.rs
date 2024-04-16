@@ -33,11 +33,15 @@ lazy_static! {
     static ref WALLET: RwLock<HashMap<String, Arc<Wallet>>> = RwLock::new(HashMap::new());
 }
 
-fn persist_wallet(id: String, wallet: Wallet) {
-    let mut wallet_lock = WALLET.write().unwrap();
+fn persist_wallet(id: String, wallet: Wallet) ->Result<(), LwkError> {
+    let mut wallet_lock = match WALLET.write(){
+        Ok(result)=>result,
+        Err(e)=>return Err(LwkError{msg: e.to_string()})
+    };
     wallet_lock.insert(id, Arc::new(wallet));
-    return;
+    Ok(())
 }
+
 pub fn default_hasher<T>(obj: T) -> u64
 where
     T: Hash,
@@ -51,9 +55,17 @@ pub struct Wallet {
 }
 
 impl Wallet {
-    pub fn retrieve_wallet(id: String) -> Arc<Wallet> {
-        let wallet_lock = WALLET.read().unwrap();
-        wallet_lock.get(id.as_str()).unwrap().clone()
+    pub fn retrieve_wallet(id: String) -> Result<Arc<Wallet>,LwkError> {
+        let wallet_lock = match WALLET.read(){
+            Ok(result)=>result,
+            Err(e)=>return Err(LwkError{msg: e.to_string()})
+        };
+        let wallet = match wallet_lock.get(id.as_str()){
+            Some(result)=>result,
+            None=>return Err(LwkError{msg: "No wallet found".to_string()})
+        };
+        Ok(wallet.clone())
+
     }
 
     pub fn new_descriptor(network: Network, mnemonic: &str) -> Result<String, LwkError> {
@@ -78,7 +90,7 @@ impl Wallet {
             inner: Mutex::new(wollet),
         };
         let id = default_hasher(&descriptor.to_string()).to_hex();
-        persist_wallet(id.clone(), wallet);
+        persist_wallet(id.clone(), wallet)?;
         Ok(id)
     }
 
