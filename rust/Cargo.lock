@@ -731,9 +731,9 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge"
-version = "2.0.0-dev.32"
+version = "2.0.0-dev.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34014207992d96657886c50c90ab503bb4581cc9c2b1ea7ffad2ec12400032da"
+checksum = "9d9ceb6f8db0bf711a55e20151c6699132bb5975f846ecac2c3bc7d23cc0845d"
 dependencies = [
  "allo-isolate",
  "android_logger",
@@ -803,9 +803,9 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge_macros"
-version = "2.0.0-dev.32"
+version = "2.0.0-dev.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd250246955bb9548a99733859946a5721289ec152de5fcc6eb03da7d3143dd1"
+checksum = "e02edfe56f04af804d3145b17dfe7820d46a6753b214160f227dbdfa1073f7cb"
 dependencies = [
  "hex",
  "quote",
@@ -2247,11 +2247,11 @@ checksum = "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
 
 [[package]]
 name = "winapi-util"
-version = "0.1.6"
+version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f29e6f9198ba0d26b4c9f07dbe6f9ed633e1f3d5b8b414090084349e46a52596"
+checksum = "134306a13c5647ad6453e8deaec55d3a44d6021970129e6188735e74bf546697"
 dependencies = [
- "winapi",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
