@@ -136,16 +136,7 @@ impl Api {
         Wallet::retrieve_wallet(wallet_id)?.sign_tx(network, pset, mnemonic)
     }
 
-    pub fn broadcast_tx(
-        electrum_url: String,
-        tx_bytes: Vec<u8>,
-    ) -> anyhow::Result<String, LwkError> {
-        let electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
-        let tx = Transaction::deserialize(&tx_bytes)?;
-        let txid: Txid = electrum_client.broadcast(&tx)?;
-        Ok(txid.to_string())
-    }
+
 }
 
 #[cfg(test)]

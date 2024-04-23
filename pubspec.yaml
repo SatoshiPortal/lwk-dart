@@ -21,8 +21,6 @@ dependencies:
   json_annotation: ^4.8.1
   archive: ^3.4.10
   http: ^1.2.0
-  rust_lib_lwk_dart:
-    path: rust_builder
 
 
 dev_dependencies:

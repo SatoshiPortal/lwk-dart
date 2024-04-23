@@ -63,7 +63,6 @@ class Dylib {
     final assetsDir = '${currentDirectory.path}/build/unit_test_assets';
 
     if (Platform.isMacOS) {
-      // return "$assetsDir/$libName/macos/libboltzclient.dylib";
       return "$assetsDir/$name.dylib";
     } else if (Platform.isLinux) {
       return "$assetsDir/$name.so";
