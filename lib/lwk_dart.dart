@@ -1,5 +1,5 @@
 library lwk_dart;
 
-export './src/generated/bridge_definitions.dart';
+export './src/generated/frb_generated.dart';
 
 export './src/root.dart';

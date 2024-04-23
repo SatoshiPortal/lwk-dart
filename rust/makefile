@@ -3,7 +3,7 @@ PROJECTNAME=$(shell basename "$(PWD)")
 # ##############################################################################
 # # GENERAL
 # ##############################################################################
-VERSION="0.1.2"
+VERSION="0.1.3"
 .PHONY: help
 help: makefile
 	@echo
@@ -14,7 +14,6 @@ help: makefile
 
 ## init: Install missing dependencies.
 init:
-	cargo install flutter_rust_bridge_codegen
 	cargo install cargo-ndk
 	@if [ $$(uname) == "Darwin" ] ; then cargo install cargo-lipo ; fi
 ## :

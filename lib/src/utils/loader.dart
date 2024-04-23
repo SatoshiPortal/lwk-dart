@@ -1,11 +1,12 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
 import 'package:flutter/services.dart' show Uint8List, rootBundle;
+import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:http/http.dart' as http;
+import 'package:lwk_dart/lwk_dart.dart';
 
-import '../generated/bindings.dart';
+import '../generated/frb_generated.dart';
 
 const name = "liblwkbridge";
 
@@ -62,6 +63,7 @@ class Dylib {
     final assetsDir = '${currentDirectory.path}/build/unit_test_assets';
 
     if (Platform.isMacOS) {
+      // return "$assetsDir/$libName/macos/libboltzclient.dylib";
       return "$assetsDir/$name.dylib";
     } else if (Platform.isLinux) {
       return "$assetsDir/$name.so";
@@ -70,24 +72,34 @@ class Dylib {
     }
   }
 
-  static DynamicLibrary getDylib() {
+  static ExternalLibrary getDylib() {
     if (Platform.environment['FLUTTER_TEST'] == 'true') {
       try {
-        return DynamicLibrary.open(_getUniTestDylibDir(Directory.current));
+        return ExternalLibrary.open(_getUniTestDylibDir(Directory.current));
       } catch (e) {
         throw Exception("Unable to open the unit test dylib!");
       }
     }
     if (Platform.isIOS || Platform.isMacOS) {
-      return DynamicLibrary.executable();
+      return ExternalLibrary.open("$name.dylib");
     } else if (Platform.isAndroid) {
-      return DynamicLibrary.open("$name.so");
+      return ExternalLibrary.open("$name.so");
     } else if (Platform.isLinux) {
-      return DynamicLibrary.open("$name.so");
+      return ExternalLibrary.open("$name.so");
     } else {
       throw Exception("not support platform:${Platform.operatingSystem}");
     }
   }
 }
 
-final ffi = LwkBridgeImpl(Dylib.getDylib());
+class LibLwk {
+  static Future<void> init() async {
+    try {
+      if (!LwkCore.instance.initialized) {
+        await LwkCore.init(externalLibrary: Dylib.getDylib());
+      }
+    } catch (e) {
+      throw Exception("Failed to initialize boltz-client");
+    }
+  }
+}
