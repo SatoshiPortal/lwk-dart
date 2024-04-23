@@ -731,9 +731,9 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge"
-version = "2.0.0-dev.28"
+version = "2.0.0-dev.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ce0ad7ece8037d2e85f53413c5cc1e6b33b56ff63fc0a530c08eec7c4b8b3f26"
+checksum = "34014207992d96657886c50c90ab503bb4581cc9c2b1ea7ffad2ec12400032da"
 dependencies = [
  "allo-isolate",
  "android_logger",
@@ -758,9 +758,9 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge_codegen"
-version = "2.0.0-dev.28"
+version = "2.0.0-dev.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9e7121d658626cf3921aa75de2cae9f77814b4317a1353e7be7c6be8d656cf01"
+checksum = "fb089f0e86a6873eb9538ee5dea459e9bb029feeb6777ecf1f996c805451a507"
 dependencies = [
  "anyhow",
  "atty",
@@ -775,6 +775,7 @@ dependencies = [
  "enum_dispatch",
  "fern",
  "glob",
+ "hex",
  "include_dir",
  "indicatif",
  "indicatif-log-bridge",
@@ -802,9 +803,14 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge_macros"
-version = "2.0.0-dev.28"
+version = "2.0.0-dev.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5844c71d6ea7f6023838838e6d01aeeef41920abc8e628ca24bac19d09c8fea6"
+checksum = "fd250246955bb9548a99733859946a5721289ec152de5fcc6eb03da7d3143dd1"
+dependencies = [
+ "hex",
+ "quote",
+ "syn 2.0.60",
+]
 
 [[package]]
 name = "fsevent-sys"
