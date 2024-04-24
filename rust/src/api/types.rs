@@ -2,7 +2,7 @@ use elements::hex::{FromHex, ToHex};
 use elements::{secp256k1_zkp, AddressParams, AssetId, Script};
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
-use lwk_wollet::{AddressResult, WalletTx};
+use lwk_wollet::{AddressResult, WalletTx, WalletTxOut};
 use std::collections::HashMap;
 use std::str::FromStr;
 use elements::Address as LwkAddress;
@@ -63,6 +63,25 @@ impl From<AssetIdMapUInt> for Balances {
                 }
             })
             .collect()
+    }
+}
+
+impl From<WalletTxOut> for TxOut {
+    fn from(wallet_tx_out: WalletTxOut) -> Self {
+        TxOut {
+            script_pubkey: wallet_tx_out.script_pubkey.to_hex(),
+            height: wallet_tx_out.height,
+            unblinded: TxOutSecrets {
+                value: wallet_tx_out.unblinded.value,
+                value_bf: wallet_tx_out.unblinded.value_bf.to_string(),
+                asset: wallet_tx_out.unblinded.asset.to_string(),
+                asset_bf: wallet_tx_out.unblinded.asset_bf.to_string(),
+            },
+            outpoint: OutPoint {
+                txid: wallet_tx_out.outpoint.txid.to_string(),
+                vout: wallet_tx_out.outpoint.vout,
+            },
+        }
     }
 }
 

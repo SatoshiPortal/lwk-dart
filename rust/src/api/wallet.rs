@@ -29,6 +29,7 @@ use super::types::Balances;
 use super::types::Network;
 use super::types::PsetAmounts;
 use super::types::Tx;
+use super::types::TxOut;
 
 pub struct Wallet {
     pub inner: RustOpaque<Mutex<lwk_wollet::Wollet>>,
@@ -183,6 +184,12 @@ impl Wallet {
         let tx = Transaction::deserialize(&tx_bytes)?;
         let txid: Txid = electrum_client.broadcast(&tx)?;
         Ok(txid.to_string())
+    }
+
+    pub fn utxos(&self) -> anyhow::Result<Vec<TxOut>, LwkError> {
+        let wallet_tx_outs = self.get_wallet()?.utxos()?;
+        let tx_outs = wallet_tx_outs.into_iter().map(TxOut::from).collect();
+        Ok(tx_outs)
     }
 }
 
