@@ -24,7 +24,6 @@ void main() {
         network: network,
         dbpath: dbPath,
         descriptor: descriptor,
-        electrumUrl: electrumUrl,
       );
       await wallet.sync(electrumUrl: electrumUrl);
       final address = await wallet.addressLastUnused();
@@ -39,7 +38,7 @@ void main() {
       final pset = await wallet.buildLbtcTx(
           sats: outAmount, outAddress: outAddress, feeRate: feeRate);
       final decodedPset = await wallet.decodeTx(pset: pset);
-      print("Amount: ${decodedPset.balances} , Fee: ${decodedPset.fee}");
+      print("Amount: ${decodedPset.balances} , Fee: ${decodedPset.absoluteFees}");
       final signedTxBytes =
           await wallet.signTx(network: network, pset: pset, mnemonic: mnemonic);
       final tx = await Wallet.broadcastTx(
@@ -50,6 +49,9 @@ void main() {
       print('Post Balance: ${postBalance}');
       final getUnspendUtxos = await wallet.utxos();
       print('Unspent Utxos: $getUnspendUtxos');
+      final signedPset = await wallet.signedPsetWithExtraDetails(
+          network: network, pset: pset, mnemonic: mnemonic);
+      print(signedPset);
     });
   });
 }

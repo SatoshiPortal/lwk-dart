@@ -191,7 +191,9 @@ impl Wallet {
 
     fn get_txout(&self, outpoint: &OutPoint) -> Result<elements::TxOut, LwkError> {
         let wallet_transaction = self.get_wallet()?.transaction(&outpoint.txid)?;
-        let transaction = wallet_transaction.unwrap();
+        let transaction = wallet_transaction.ok_or(LwkError {
+            msg: "Wallet transaction not found".to_string(),
+        })?;
         let txout = transaction
             .tx
             .output
@@ -223,7 +225,6 @@ impl Wallet {
             }
         }
         self.get_wallet()?.add_details(&mut pset)?;
-
         let _ = signer.sign(&mut pset);
         Ok(pset.to_string())
     }
