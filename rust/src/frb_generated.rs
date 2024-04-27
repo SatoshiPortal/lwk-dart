@@ -109,14 +109,14 @@ fn wire_address_validate_impl(
         },
     )
 }
-fn wire_wallet_address_impl(
+fn wire_lwk_wallet_address_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
     index: impl CstDecode<u32>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_address",
+            debug_name: "lwk_wallet_address",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -125,19 +125,19 @@ fn wire_wallet_address_impl(
             let api_index = index.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::address(&api_that, api_index)
+                    crate::api::wallet::LwkWallet::address(&api_that, api_index)
                 })())
             }
         },
     )
 }
-fn wire_wallet_address_last_unused_impl(
+fn wire_lwk_wallet_address_last_unused_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_address_last_unused",
+            debug_name: "lwk_wallet_address_last_unused",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -145,37 +145,37 @@ fn wire_wallet_address_last_unused_impl(
             let api_that = that.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::address_last_unused(&api_that)
+                    crate::api::wallet::LwkWallet::address_last_unused(&api_that)
                 })())
             }
         },
     )
 }
-fn wire_wallet_balances_impl(
+fn wire_lwk_wallet_balances_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_balances",
+            debug_name: "lwk_wallet_balances",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
             let api_that = that.cst_decode();
             move |context| {
-                transform_result_dco((move || crate::api::wallet::Wallet::balances(&api_that))())
+                transform_result_dco((move || crate::api::wallet::LwkWallet::balances(&api_that))())
             }
         },
     )
 }
-fn wire_wallet_blinding_key_impl(
+fn wire_lwk_wallet_blinding_key_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_blinding_key",
+            debug_name: "lwk_wallet_blinding_key",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -183,20 +183,20 @@ fn wire_wallet_blinding_key_impl(
             let api_that = that.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::blinding_key(&api_that)
+                    crate::api::wallet::LwkWallet::blinding_key(&api_that)
                 })())
             }
         },
     )
 }
-fn wire_wallet_broadcast_tx_impl(
+fn wire_lwk_wallet_broadcast_tx_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     electrum_url: impl CstDecode<String>,
     tx_bytes: impl CstDecode<Vec<u8>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_broadcast_tx",
+            debug_name: "lwk_wallet_broadcast_tx",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -205,15 +205,15 @@ fn wire_wallet_broadcast_tx_impl(
             let api_tx_bytes = tx_bytes.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::broadcast_tx(api_electrum_url, api_tx_bytes)
+                    crate::api::wallet::LwkWallet::broadcast_tx(api_electrum_url, api_tx_bytes)
                 })())
             }
         },
     )
 }
-fn wire_wallet_build_asset_tx_impl(
+fn wire_lwk_wallet_build_asset_tx_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
     sats: impl CstDecode<u64>,
     out_address: impl CstDecode<String>,
     abs_fee: impl CstDecode<f32>,
@@ -221,7 +221,7 @@ fn wire_wallet_build_asset_tx_impl(
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_build_asset_tx",
+            debug_name: "lwk_wallet_build_asset_tx",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -233,7 +233,7 @@ fn wire_wallet_build_asset_tx_impl(
             let api_asset = asset.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::build_asset_tx(
+                    crate::api::wallet::LwkWallet::build_asset_tx(
                         &api_that,
                         api_sats,
                         api_out_address,
@@ -245,16 +245,16 @@ fn wire_wallet_build_asset_tx_impl(
         },
     )
 }
-fn wire_wallet_build_lbtc_tx_impl(
+fn wire_lwk_wallet_build_lbtc_tx_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
     sats: impl CstDecode<u64>,
     out_address: impl CstDecode<String>,
     abs_fee: impl CstDecode<f32>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_build_lbtc_tx",
+            debug_name: "lwk_wallet_build_lbtc_tx",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -265,7 +265,7 @@ fn wire_wallet_build_lbtc_tx_impl(
             let api_abs_fee = abs_fee.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::build_lbtc_tx(
+                    crate::api::wallet::LwkWallet::build_lbtc_tx(
                         &api_that,
                         api_sats,
                         api_out_address,
@@ -276,14 +276,14 @@ fn wire_wallet_build_lbtc_tx_impl(
         },
     )
 }
-fn wire_wallet_decode_tx_impl(
+fn wire_lwk_wallet_decode_tx_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
     pset: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_decode_tx",
+            debug_name: "lwk_wallet_decode_tx",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -292,31 +292,33 @@ fn wire_wallet_decode_tx_impl(
             let api_pset = pset.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::decode_tx(&api_that, api_pset)
+                    crate::api::wallet::LwkWallet::decode_tx(&api_that, api_pset)
                 })())
             }
         },
     )
 }
-fn wire_wallet_descriptor_impl(
+fn wire_lwk_wallet_descriptor_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_descriptor",
+            debug_name: "lwk_wallet_descriptor",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
             let api_that = that.cst_decode();
             move |context| {
-                transform_result_dco((move || crate::api::wallet::Wallet::descriptor(&api_that))())
+                transform_result_dco((move || {
+                    crate::api::wallet::LwkWallet::descriptor(&api_that)
+                })())
             }
         },
     )
 }
-fn wire_wallet_init_impl(
+fn wire_lwk_wallet_init_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     network: impl CstDecode<crate::api::types::Network>,
     dbpath: impl CstDecode<String>,
@@ -324,7 +326,7 @@ fn wire_wallet_init_impl(
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_init",
+            debug_name: "lwk_wallet_init",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -334,22 +336,22 @@ fn wire_wallet_init_impl(
             let api_descriptor = descriptor.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::init(api_network, api_dbpath, api_descriptor)
+                    crate::api::wallet::LwkWallet::init(api_network, api_dbpath, api_descriptor)
                 })())
             }
         },
     )
 }
-fn wire_wallet_sign_tx_impl(
+fn wire_lwk_wallet_sign_tx_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
     network: impl CstDecode<crate::api::types::Network>,
     pset: impl CstDecode<String>,
     mnemonic: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_sign_tx",
+            debug_name: "lwk_wallet_sign_tx",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -360,7 +362,7 @@ fn wire_wallet_sign_tx_impl(
             let api_mnemonic = mnemonic.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::sign_tx(
+                    crate::api::wallet::LwkWallet::sign_tx(
                         &api_that,
                         api_network,
                         api_pset,
@@ -371,14 +373,14 @@ fn wire_wallet_sign_tx_impl(
         },
     )
 }
-fn wire_wallet_sync_impl(
+fn wire_lwk_wallet_sync_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
     electrum_url: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_sync",
+            debug_name: "lwk_wallet_sync",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -387,26 +389,26 @@ fn wire_wallet_sync_impl(
             let api_electrum_url = electrum_url.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::sync(&api_that, api_electrum_url)
+                    crate::api::wallet::LwkWallet::sync(&api_that, api_electrum_url)
                 })())
             }
         },
     )
 }
-fn wire_wallet_txs_impl(
+fn wire_lwk_wallet_txs_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
+    that: impl CstDecode<crate::api::wallet::LwkWallet>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_txs",
+            debug_name: "lwk_wallet_txs",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
             let api_that = that.cst_decode();
             move |context| {
-                transform_result_dco((move || crate::api::wallet::Wallet::txs(&api_that))())
+                transform_result_dco((move || crate::api::wallet::LwkWallet::txs(&api_that))())
             }
         },
     )
@@ -595,6 +597,14 @@ impl SseDecode for crate::api::error::LwkError {
     }
 }
 
+impl SseDecode for crate::api::wallet::LwkWallet {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_inner = <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_decode(deserializer);
+        return crate::api::wallet::LwkWallet { inner: var_inner };
+    }
+}
+
 impl SseDecode for crate::api::types::Network {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -729,14 +739,6 @@ impl SseDecode for usize {
     }
 }
 
-impl SseDecode for crate::api::wallet::Wallet {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_inner = <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_decode(deserializer);
-        return crate::api::wallet::Wallet { inner: var_inner };
-    }
-}
-
 impl SseDecode for bool {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -832,6 +834,20 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::error::LwkError>
     for crate::api::error::LwkError
 {
     fn into_into_dart(self) -> crate::api::error::LwkError {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::wallet::LwkWallet {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [self.inner.into_into_dart().into_dart()].into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::wallet::LwkWallet {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::wallet::LwkWallet>
+    for crate::api::wallet::LwkWallet
+{
+    fn into_into_dart(self) -> crate::api::wallet::LwkWallet {
         self
     }
 }
@@ -951,18 +967,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::TxOutSecrets>
         self
     }
 }
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::wallet::Wallet {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        [self.inner.into_into_dart().into_dart()].into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::wallet::Wallet {}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::wallet::Wallet> for crate::api::wallet::Wallet {
-    fn into_into_dart(self) -> crate::api::wallet::Wallet {
-        self
-    }
-}
 
 impl SseEncode for RustOpaqueNom<Mutex<lwk_wollet::Wollet>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -1069,6 +1073,13 @@ impl SseEncode for crate::api::error::LwkError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.msg, serializer);
+    }
+}
+
+impl SseEncode for crate::api::wallet::LwkWallet {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_encode(self.inner, serializer);
     }
 }
 
@@ -1180,13 +1191,6 @@ impl SseEncode for usize {
             .cursor
             .write_u64::<NativeEndian>(self as _)
             .unwrap();
-    }
-}
-
-impl SseEncode for crate::api::wallet::Wallet {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_encode(self.inner, serializer);
     }
 }
 

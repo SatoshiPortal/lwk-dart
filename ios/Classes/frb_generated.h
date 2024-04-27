@@ -19,9 +19,9 @@ typedef struct wire_cst_list_prim_u_8_strict {
   int32_t len;
 } wire_cst_list_prim_u_8_strict;
 
-typedef struct wire_cst_wallet {
+typedef struct wire_cst_lwk_wallet {
   uintptr_t inner;
-} wire_cst_wallet;
+} wire_cst_lwk_wallet;
 
 typedef struct wire_cst_list_prim_u_8_loose {
   uint8_t *ptr;
@@ -108,55 +108,56 @@ void frbgen_lwk_dart_wire_address_address_from_script(int64_t port_,
 void frbgen_lwk_dart_wire_address_validate(int64_t port_,
                                            struct wire_cst_list_prim_u_8_strict *address_string);
 
-void frbgen_lwk_dart_wire_wallet_address(int64_t port_,
-                                         struct wire_cst_wallet *that,
-                                         uint32_t index);
+void frbgen_lwk_dart_wire_lwk_wallet_address(int64_t port_,
+                                             struct wire_cst_lwk_wallet *that,
+                                             uint32_t index);
 
-void frbgen_lwk_dart_wire_wallet_address_last_unused(int64_t port_, struct wire_cst_wallet *that);
+void frbgen_lwk_dart_wire_lwk_wallet_address_last_unused(int64_t port_,
+                                                         struct wire_cst_lwk_wallet *that);
 
-void frbgen_lwk_dart_wire_wallet_balances(int64_t port_, struct wire_cst_wallet *that);
+void frbgen_lwk_dart_wire_lwk_wallet_balances(int64_t port_, struct wire_cst_lwk_wallet *that);
 
-void frbgen_lwk_dart_wire_wallet_blinding_key(int64_t port_, struct wire_cst_wallet *that);
+void frbgen_lwk_dart_wire_lwk_wallet_blinding_key(int64_t port_, struct wire_cst_lwk_wallet *that);
 
-void frbgen_lwk_dart_wire_wallet_broadcast_tx(int64_t port_,
-                                              struct wire_cst_list_prim_u_8_strict *electrum_url,
-                                              struct wire_cst_list_prim_u_8_loose *tx_bytes);
+void frbgen_lwk_dart_wire_lwk_wallet_broadcast_tx(int64_t port_,
+                                                  struct wire_cst_list_prim_u_8_strict *electrum_url,
+                                                  struct wire_cst_list_prim_u_8_loose *tx_bytes);
 
-void frbgen_lwk_dart_wire_wallet_build_asset_tx(int64_t port_,
-                                                struct wire_cst_wallet *that,
-                                                uint64_t sats,
-                                                struct wire_cst_list_prim_u_8_strict *out_address,
-                                                float abs_fee,
-                                                struct wire_cst_list_prim_u_8_strict *asset);
+void frbgen_lwk_dart_wire_lwk_wallet_build_asset_tx(int64_t port_,
+                                                    struct wire_cst_lwk_wallet *that,
+                                                    uint64_t sats,
+                                                    struct wire_cst_list_prim_u_8_strict *out_address,
+                                                    float abs_fee,
+                                                    struct wire_cst_list_prim_u_8_strict *asset);
 
-void frbgen_lwk_dart_wire_wallet_build_lbtc_tx(int64_t port_,
-                                               struct wire_cst_wallet *that,
-                                               uint64_t sats,
-                                               struct wire_cst_list_prim_u_8_strict *out_address,
-                                               float abs_fee);
+void frbgen_lwk_dart_wire_lwk_wallet_build_lbtc_tx(int64_t port_,
+                                                   struct wire_cst_lwk_wallet *that,
+                                                   uint64_t sats,
+                                                   struct wire_cst_list_prim_u_8_strict *out_address,
+                                                   float abs_fee);
 
-void frbgen_lwk_dart_wire_wallet_decode_tx(int64_t port_,
-                                           struct wire_cst_wallet *that,
-                                           struct wire_cst_list_prim_u_8_strict *pset);
+void frbgen_lwk_dart_wire_lwk_wallet_decode_tx(int64_t port_,
+                                               struct wire_cst_lwk_wallet *that,
+                                               struct wire_cst_list_prim_u_8_strict *pset);
 
-void frbgen_lwk_dart_wire_wallet_descriptor(int64_t port_, struct wire_cst_wallet *that);
+void frbgen_lwk_dart_wire_lwk_wallet_descriptor(int64_t port_, struct wire_cst_lwk_wallet *that);
 
-void frbgen_lwk_dart_wire_wallet_init(int64_t port_,
-                                      int32_t network,
-                                      struct wire_cst_list_prim_u_8_strict *dbpath,
-                                      struct wire_cst_descriptor *descriptor);
+void frbgen_lwk_dart_wire_lwk_wallet_init(int64_t port_,
+                                          int32_t network,
+                                          struct wire_cst_list_prim_u_8_strict *dbpath,
+                                          struct wire_cst_descriptor *descriptor);
 
-void frbgen_lwk_dart_wire_wallet_sign_tx(int64_t port_,
-                                         struct wire_cst_wallet *that,
-                                         int32_t network,
-                                         struct wire_cst_list_prim_u_8_strict *pset,
-                                         struct wire_cst_list_prim_u_8_strict *mnemonic);
+void frbgen_lwk_dart_wire_lwk_wallet_sign_tx(int64_t port_,
+                                             struct wire_cst_lwk_wallet *that,
+                                             int32_t network,
+                                             struct wire_cst_list_prim_u_8_strict *pset,
+                                             struct wire_cst_list_prim_u_8_strict *mnemonic);
 
-void frbgen_lwk_dart_wire_wallet_sync(int64_t port_,
-                                      struct wire_cst_wallet *that,
-                                      struct wire_cst_list_prim_u_8_strict *electrum_url);
+void frbgen_lwk_dart_wire_lwk_wallet_sync(int64_t port_,
+                                          struct wire_cst_lwk_wallet *that,
+                                          struct wire_cst_list_prim_u_8_strict *electrum_url);
 
-void frbgen_lwk_dart_wire_wallet_txs(int64_t port_, struct wire_cst_wallet *that);
+void frbgen_lwk_dart_wire_lwk_wallet_txs(int64_t port_, struct wire_cst_lwk_wallet *that);
 
 void frbgen_lwk_dart_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(const void *ptr);
 
@@ -164,9 +165,9 @@ void frbgen_lwk_dart_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletW
 
 struct wire_cst_descriptor *frbgen_lwk_dart_cst_new_box_autoadd_descriptor(void);
 
-uint32_t *frbgen_lwk_dart_cst_new_box_autoadd_u_32(uint32_t value);
+struct wire_cst_lwk_wallet *frbgen_lwk_dart_cst_new_box_autoadd_lwk_wallet(void);
 
-struct wire_cst_wallet *frbgen_lwk_dart_cst_new_box_autoadd_wallet(void);
+uint32_t *frbgen_lwk_dart_cst_new_box_autoadd_u_32(uint32_t value);
 
 struct wire_cst_list_balance *frbgen_lwk_dart_cst_new_list_balance(int32_t len);
 
@@ -180,8 +181,8 @@ struct wire_cst_list_tx_out *frbgen_lwk_dart_cst_new_list_tx_out(int32_t len);
 static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_box_autoadd_descriptor);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_box_autoadd_lwk_wallet);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_box_autoadd_u_32);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_box_autoadd_wallet);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_list_balance);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_list_prim_u_8_loose);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_list_prim_u_8_strict);
@@ -192,19 +193,19 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_address_address_from_script);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_address_validate);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_descriptor_new_confidential);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_address);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_address_last_unused);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_balances);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_blinding_key);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_broadcast_tx);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_build_asset_tx);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_build_lbtc_tx);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_decode_tx);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_descriptor);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_init);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_sign_tx);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_sync);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_txs);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_address);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_address_last_unused);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_balances);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_blinding_key);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_broadcast_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_build_asset_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_build_lbtc_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_decode_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_descriptor);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_init);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_sign_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_sync);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_lwk_wallet_txs);
     dummy_var ^= ((int64_t) (void*) store_dart_post_cobject);
     return dummy_var;
 }

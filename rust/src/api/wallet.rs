@@ -32,11 +32,11 @@ use super::types::Network;
 use super::types::PsetAmounts;
 use super::types::Tx;
 
-pub struct Wallet {
+pub struct LwkWallet {
     pub inner: RustOpaque<Mutex<lwk_wollet::Wollet>>,
 }
 
-impl Wallet {
+impl LwkWallet {
     fn get_wallet(&self) -> Result<MutexGuard<lwk_wollet::Wollet>, LwkError> {
         {
             match self.inner.lock() {
@@ -52,7 +52,7 @@ impl Wallet {
         network: Network,
         dbpath: String,
         descriptor: Descriptor,
-    ) -> anyhow::Result<Wallet, LwkError> {
+    ) -> anyhow::Result<LwkWallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
         let wollet = Wollet::new(
@@ -60,7 +60,7 @@ impl Wallet {
             EncryptedFsPersister::new(dbpath, network.into(), &descriptor)?,
             &descriptor.clone().to_string(),
         )?;
-        Ok(Wallet {
+        Ok(LwkWallet {
             inner: RustOpaque::new(Mutex::new(wollet)),
         })
     }
