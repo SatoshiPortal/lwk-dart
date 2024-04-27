@@ -154,28 +154,26 @@ class Wallet extends LwkWallet {
     }
   }
 
-  @override
-  Future<String> buildAssetTx({
-    required int sats,
-    required String outAddress,
-    required double absFee,
-    required String asset,
-    required String assetId,
-    hint,
-  }) async {
-    try {
-      final res = await super.buildAssetTx(
-        sats: sats,
-        outAddress: outAddress,
-        absFee: absFee,
-        asset: asset,
-        assetId: assetId,
-      );
-      return res;
-    } catch (e) {
-      rethrow;
-    }
-  }
+  // @override
+  // Future<String> buildAssetTx({
+  //   required int sats,
+  //   required String outAddress,
+  //   required double absFee,
+  //   required String asset,
+  //   hint,
+  // }) async {
+  //   try {
+  //     final res = await super.buildAssetTx(
+  //       sats: sats,
+  //       outAddress: outAddress,
+  //       absFee: absFee,
+  //       asset: asset,
+  //     );
+  //     return res;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   @override
   Future<PsetAmounts> decodeTx({required String pset, hint}) async {
