@@ -47,11 +47,11 @@ impl CstDecode<crate::api::types::Balance> for wire_cst_balance {
         }
     }
 }
-impl CstDecode<crate::api::descriptor::DescriptorBase> for *mut wire_cst_descriptor_base {
+impl CstDecode<crate::api::descriptor::Descriptor> for *mut wire_cst_descriptor {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> crate::api::descriptor::DescriptorBase {
+    fn cst_decode(self) -> crate::api::descriptor::Descriptor {
         let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-        CstDecode::<crate::api::descriptor::DescriptorBase>::cst_decode(*wrap).into()
+        CstDecode::<crate::api::descriptor::Descriptor>::cst_decode(*wrap).into()
     }
 }
 impl CstDecode<u32> for *mut u32 {
@@ -67,10 +67,10 @@ impl CstDecode<crate::api::wallet::Wallet> for *mut wire_cst_wallet {
         CstDecode::<crate::api::wallet::Wallet>::cst_decode(*wrap).into()
     }
 }
-impl CstDecode<crate::api::descriptor::DescriptorBase> for wire_cst_descriptor_base {
+impl CstDecode<crate::api::descriptor::Descriptor> for wire_cst_descriptor {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> crate::api::descriptor::DescriptorBase {
-        crate::api::descriptor::DescriptorBase {
+    fn cst_decode(self) -> crate::api::descriptor::Descriptor {
+        crate::api::descriptor::Descriptor {
             ct_descriptor: self.ct_descriptor.cst_decode(),
         }
     }
@@ -220,14 +220,14 @@ impl Default for wire_cst_balance {
         Self::new_with_null_ptr()
     }
 }
-impl NewWithNullPtr for wire_cst_descriptor_base {
+impl NewWithNullPtr for wire_cst_descriptor {
     fn new_with_null_ptr() -> Self {
         Self {
             ct_descriptor: core::ptr::null_mut(),
         }
     }
 }
-impl Default for wire_cst_descriptor_base {
+impl Default for wire_cst_descriptor {
     fn default() -> Self {
         Self::new_with_null_ptr()
     }
@@ -332,11 +332,12 @@ impl Default for wire_cst_wallet {
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_descriptor_base_new(
+pub extern "C" fn frbgen_lwk_dart_wire_descriptor_new_confidential(
+    port_: i64,
     network: i32,
     mnemonic: *mut wire_cst_list_prim_u_8_strict,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-    wire_descriptor_base_new_impl(network, mnemonic)
+) {
+    wire_descriptor_new_confidential_impl(port_, network, mnemonic)
 }
 
 #[no_mangle]
@@ -435,7 +436,7 @@ pub extern "C" fn frbgen_lwk_dart_wire_wallet_init(
     port_: i64,
     network: i32,
     dbpath: *mut wire_cst_list_prim_u_8_strict,
-    descriptor: *mut wire_cst_descriptor_base,
+    descriptor: *mut wire_cst_descriptor,
 ) {
     wire_wallet_init_impl(port_, network, dbpath, descriptor)
 }
@@ -484,11 +485,8 @@ pub extern "C" fn frbgen_lwk_dart_rust_arc_decrement_strong_count_RustOpaque_Mut
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_descriptor_base(
-) -> *mut wire_cst_descriptor_base {
-    flutter_rust_bridge::for_generated::new_leak_box_ptr(
-        wire_cst_descriptor_base::new_with_null_ptr(),
-    )
+pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_descriptor() -> *mut wire_cst_descriptor {
+    flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_descriptor::new_with_null_ptr())
 }
 
 #[no_mangle]
@@ -574,7 +572,7 @@ pub struct wire_cst_balance {
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
-pub struct wire_cst_descriptor_base {
+pub struct wire_cst_descriptor {
     ct_descriptor: *mut wire_cst_list_prim_u_8_strict,
 }
 #[repr(C)]

@@ -8,17 +8,17 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
-class DescriptorBase {
+class Descriptor {
   final String ctDescriptor;
 
-  const DescriptorBase.raw({
+  const Descriptor({
     required this.ctDescriptor,
   });
 
-  factory DescriptorBase(
+  static Future<Descriptor> newConfidential(
           {required Network network, required String mnemonic, dynamic hint}) =>
-      LwkCore.instance.api
-          .descriptorBaseNew(network: network, mnemonic: mnemonic, hint: hint);
+      LwkCore.instance.api.descriptorNewConfidential(
+          network: network, mnemonic: mnemonic, hint: hint);
 
   @override
   int get hashCode => ctDescriptor.hashCode;
@@ -26,7 +26,7 @@ class DescriptorBase {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DescriptorBase &&
+      other is Descriptor &&
           runtimeType == other.runtimeType &&
           ctDescriptor == other.ctDescriptor;
 }

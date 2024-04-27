@@ -16,11 +16,11 @@ void main() {
       const outAddress =
           "tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu";
       const absFee = 300.0;
-      final descriptor = DescriptorBase(
+      final descriptor = await Descriptor.newConfidential(
         network: network,
         mnemonic: mnemonic,
       );
-      final wallet = await Wallet.new(
+      final wallet = await Wallet.init(
         network: network,
         dbpath: dbPath,
         descriptor: descriptor,

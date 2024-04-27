@@ -23,7 +23,7 @@ use lwk_wollet::BlockchainBackend;
 use lwk_wollet::Wollet;
 use std::str::FromStr;
 
-use super::descriptor::DescriptorBase;
+use super::descriptor::Descriptor;
 use super::error::LwkError;
 use super::types::Address;
 use super::types::AssetIdMapUInt;
@@ -51,7 +51,7 @@ impl Wallet {
     pub fn init(
         network: Network,
         dbpath: String,
-        descriptor: DescriptorBase,
+        descriptor: Descriptor,
     ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;

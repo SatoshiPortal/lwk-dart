@@ -89,7 +89,7 @@ class Wallet {
   static Future<Wallet> init(
           {required Network network,
           required String dbpath,
-          required DescriptorBase descriptor,
+          required Descriptor descriptor,
           dynamic hint}) =>
       LwkCore.instance.api.walletInit(
           network: network, dbpath: dbpath, descriptor: descriptor, hint: hint);
