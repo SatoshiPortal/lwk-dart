@@ -74,8 +74,7 @@ impl Wallet {
         } else {
             return Ok(());
         };
-        let _ = wallet.apply_update(update)?;
-        Ok(())
+        Ok(wallet.apply_update(update)?)
     }
 
     pub fn descriptor(&self) -> anyhow::Result<String, LwkError> {
