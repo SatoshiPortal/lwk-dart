@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('Wallet', () {
     test('Wallet Flow', () async {
-      await LwkCore.init();
+      await LibLwk.init();
       const mnemonic =
           "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
       const network = Network.testnet;
