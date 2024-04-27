@@ -140,9 +140,10 @@ void frbgen_lwk_dart_wire_wallet_decode_tx(int64_t port_,
 
 void frbgen_lwk_dart_wire_wallet_descriptor(int64_t port_, struct wire_cst_wallet *that);
 
-WireSyncRust2DartDco frbgen_lwk_dart_wire_wallet_new(int32_t network,
-                                                     struct wire_cst_list_prim_u_8_strict *dbpath,
-                                                     struct wire_cst_descriptor_base *descriptor);
+void frbgen_lwk_dart_wire_wallet_new(int64_t port_,
+                                     int32_t network,
+                                     struct wire_cst_list_prim_u_8_strict *dbpath,
+                                     struct wire_cst_descriptor_base *descriptor);
 
 void frbgen_lwk_dart_wire_wallet_sign_tx(int64_t port_,
                                          struct wire_cst_wallet *that,

@@ -432,11 +432,12 @@ pub extern "C" fn frbgen_lwk_dart_wire_wallet_descriptor(port_: i64, that: *mut 
 
 #[no_mangle]
 pub extern "C" fn frbgen_lwk_dart_wire_wallet_new(
+    port_: i64,
     network: i32,
     dbpath: *mut wire_cst_list_prim_u_8_strict,
     descriptor: *mut wire_cst_descriptor_base,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-    wire_wallet_new_impl(network, dbpath, descriptor)
+) {
+    wire_wallet_new_impl(port_, network, dbpath, descriptor)
 }
 
 #[no_mangle]

@@ -540,7 +540,7 @@ class LwkCoreWire implements BaseWire {
       : _lookup = lookup;
 
   void store_dart_post_cobject(
-    DartPostCObjectFnType ptr,
+    int ptr,
   ) {
     return _store_dart_post_cobject(
       ptr,
@@ -548,10 +548,10 @@ class LwkCoreWire implements BaseWire {
   }
 
   late final _store_dart_post_cobjectPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(DartPostCObjectFnType)>>(
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>(
           'store_dart_post_cobject');
-  late final _store_dart_post_cobject = _store_dart_post_cobjectPtr
-      .asFunction<void Function(DartPostCObjectFnType)>();
+  late final _store_dart_post_cobject =
+      _store_dart_post_cobjectPtr.asFunction<void Function(int)>();
 
   WireSyncRust2DartDco wire_descriptor_base_new(
     int network,
@@ -818,12 +818,14 @@ class LwkCoreWire implements BaseWire {
   late final _wire_wallet_descriptor = _wire_wallet_descriptorPtr
       .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
 
-  WireSyncRust2DartDco wire_wallet_new(
+  void wire_wallet_new(
+    int port_,
     int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> dbpath,
     ffi.Pointer<wire_cst_descriptor_base> descriptor,
   ) {
     return _wire_wallet_new(
+      port_,
       network,
       dbpath,
       descriptor,
@@ -832,15 +834,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire_wallet_newPtr = _lookup<
           ffi.NativeFunction<
-              WireSyncRust2DartDco Function(
+              ffi.Void Function(
+                  ffi.Int64,
                   ffi.Int32,
                   ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                   ffi.Pointer<wire_cst_descriptor_base>)>>(
       'frbgen_lwk_dart_wire_wallet_new');
   late final _wire_wallet_new = _wire_wallet_newPtr.asFunction<
-      WireSyncRust2DartDco Function(
-          int,
-          ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+      void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           ffi.Pointer<wire_cst_descriptor_base>)>();
 
   void wire_wallet_sign_tx(
@@ -1064,11 +1065,6 @@ class LwkCoreWire implements BaseWire {
   late final _dummy_method_to_enforce_bundling =
       _dummy_method_to_enforce_bundlingPtr.asFunction<int Function()>();
 }
-
-typedef DartPostCObjectFnType = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Bool Function(DartPort port_id, ffi.Pointer<ffi.Void> message)>>;
-typedef DartPort = ffi.Int64;
 
 final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
   external ffi.Pointer<ffi.Uint8> ptr;

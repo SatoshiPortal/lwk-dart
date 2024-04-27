@@ -31,7 +31,7 @@ class MutexLwkWolletWollet extends RustOpaque {
 class Wallet {
   final MutexLwkWolletWollet inner;
 
-  const Wallet.raw({
+  const Wallet({
     required this.inner,
   });
 
@@ -86,7 +86,8 @@ class Wallet {
   Future<String> descriptor({dynamic hint}) =>
       LwkCore.instance.api.walletDescriptor(that: this, hint: hint);
 
-  factory Wallet(
+  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  static Future<Wallet> newInstance(
           {required Network network,
           required String dbpath,
           required DescriptorBase descriptor,

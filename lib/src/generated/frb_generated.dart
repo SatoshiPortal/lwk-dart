@@ -108,7 +108,7 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<String> walletDescriptor({required Wallet that, dynamic hint});
 
-  Wallet walletNew(
+  Future<Wallet> walletNew(
       {required Network network,
       required String dbpath,
       required DescriptorBase descriptor,
@@ -455,17 +455,17 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  Wallet walletNew(
+  Future<Wallet> walletNew(
       {required Network network,
       required String dbpath,
       required DescriptorBase descriptor,
       dynamic hint}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
         var arg0 = cst_encode_network(network);
         var arg1 = cst_encode_String(dbpath);
         var arg2 = cst_encode_box_autoadd_descriptor_base(descriptor);
-        return wire.wire_wallet_new(arg0, arg1, arg2);
+        return wire.wire_wallet_new(port_, arg0, arg1, arg2);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_wallet,
@@ -813,7 +813,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     final arr = raw as List<dynamic>;
     if (arr.length != 1)
       throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
-    return Wallet.raw(
+    return Wallet(
       inner: dco_decode_RustOpaque_Mutexlwk_wolletWollet(arr[0]),
     );
   }
@@ -1069,7 +1069,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   Wallet sse_decode_wallet(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_inner = sse_decode_RustOpaque_Mutexlwk_wolletWollet(deserializer);
-    return Wallet.raw(inner: var_inner);
+    return Wallet(inner: var_inner);
   }
 
   @protected

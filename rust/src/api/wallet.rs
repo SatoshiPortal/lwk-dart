@@ -48,12 +48,11 @@ impl Wallet {
         }
     }
 
-    #[frb(sync)]
     pub fn new(
         network: Network,
         dbpath: String,
         descriptor: DescriptorBase,
-    ) -> Result<Self, LwkError> {
+    ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
         let wollet = Wollet::new(

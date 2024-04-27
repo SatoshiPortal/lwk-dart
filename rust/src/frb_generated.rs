@@ -314,23 +314,26 @@ fn wire_wallet_descriptor_impl(
     )
 }
 fn wire_wallet_new_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
     network: impl CstDecode<crate::api::types::Network>,
     dbpath: impl CstDecode<String>,
     descriptor: impl CstDecode<crate::api::descriptor::DescriptorBase>,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
             debug_name: "wallet_new",
-            port: None,
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
             let api_network = network.cst_decode();
             let api_dbpath = dbpath.cst_decode();
             let api_descriptor = descriptor.cst_decode();
-            transform_result_dco((move || {
-                crate::api::wallet::Wallet::new(api_network, api_dbpath, api_descriptor)
-            })())
+            move |context| {
+                transform_result_dco((move || {
+                    crate::api::wallet::Wallet::new(api_network, api_dbpath, api_descriptor)
+                })())
+            }
         },
     )
 }
