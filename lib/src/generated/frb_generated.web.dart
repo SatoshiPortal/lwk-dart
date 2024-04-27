@@ -537,9 +537,9 @@ class LwkCoreWire implements BaseWire {
   void wire_wallet_descriptor(NativePortType port_, List<dynamic> that) =>
       wasmModule.wire_wallet_descriptor(port_, that);
 
-  void wire_wallet_new(NativePortType port_, int network, String dbpath,
+  void wire_wallet_init(NativePortType port_, int network, String dbpath,
           List<dynamic> descriptor) =>
-      wasmModule.wire_wallet_new(port_, network, dbpath, descriptor);
+      wasmModule.wire_wallet_init(port_, network, dbpath, descriptor);
 
   void wire_wallet_sign_tx(NativePortType port_, List<dynamic> that,
           int network, String pset, String mnemonic) =>
@@ -617,7 +617,7 @@ class LwkCoreWasmModule implements WasmModule {
   external void wire_wallet_descriptor(
       NativePortType port_, List<dynamic> that);
 
-  external void wire_wallet_new(NativePortType port_, int network,
+  external void wire_wallet_init(NativePortType port_, int network,
       String dbpath, List<dynamic> descriptor);
 
   external void wire_wallet_sign_tx(NativePortType port_, List<dynamic> that,

@@ -108,7 +108,7 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<String> walletDescriptor({required Wallet that, dynamic hint});
 
-  Future<Wallet> walletNew(
+  Future<Wallet> walletInit(
       {required Network network,
       required String dbpath,
       required DescriptorBase descriptor,
@@ -455,7 +455,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  Future<Wallet> walletNew(
+  Future<Wallet> walletInit(
       {required Network network,
       required String dbpath,
       required DescriptorBase descriptor,
@@ -465,21 +465,21 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         var arg0 = cst_encode_network(network);
         var arg1 = cst_encode_String(dbpath);
         var arg2 = cst_encode_box_autoadd_descriptor_base(descriptor);
-        return wire.wire_wallet_new(port_, arg0, arg1, arg2);
+        return wire.wire_wallet_init(port_, arg0, arg1, arg2);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_wallet,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kWalletNewConstMeta,
+      constMeta: kWalletInitConstMeta,
       argValues: [network, dbpath, descriptor],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kWalletNewConstMeta => const TaskConstMeta(
-        debugName: "wallet_new",
+  TaskConstMeta get kWalletInitConstMeta => const TaskConstMeta(
+        debugName: "wallet_init",
         argNames: ["network", "dbpath", "descriptor"],
       );
 

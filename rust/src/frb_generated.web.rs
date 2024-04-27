@@ -466,13 +466,13 @@ pub fn wire_wallet_descriptor(
 }
 
 #[wasm_bindgen]
-pub fn wire_wallet_new(
+pub fn wire_wallet_init(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     network: i32,
     dbpath: String,
     descriptor: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
 ) {
-    wire_wallet_new_impl(port_, network, dbpath, descriptor)
+    wire_wallet_init_impl(port_, network, dbpath, descriptor)
 }
 
 #[wasm_bindgen]

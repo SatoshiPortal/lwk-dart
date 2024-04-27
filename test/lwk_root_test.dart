@@ -20,7 +20,7 @@ void main() {
         network: network,
         mnemonic: mnemonic,
       );
-      final wallet = Wallet(
+      final wallet = await Wallet.new(
         network: network,
         dbpath: dbPath,
         descriptor: descriptor,

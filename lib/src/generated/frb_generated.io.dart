@@ -818,13 +818,13 @@ class LwkCoreWire implements BaseWire {
   late final _wire_wallet_descriptor = _wire_wallet_descriptorPtr
       .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
 
-  void wire_wallet_new(
+  void wire_wallet_init(
     int port_,
     int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> dbpath,
     ffi.Pointer<wire_cst_descriptor_base> descriptor,
   ) {
-    return _wire_wallet_new(
+    return _wire_wallet_init(
       port_,
       network,
       dbpath,
@@ -832,15 +832,15 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire_wallet_newPtr = _lookup<
+  late final _wire_wallet_initPtr = _lookup<
           ffi.NativeFunction<
               ffi.Void Function(
                   ffi.Int64,
                   ffi.Int32,
                   ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                   ffi.Pointer<wire_cst_descriptor_base>)>>(
-      'frbgen_lwk_dart_wire_wallet_new');
-  late final _wire_wallet_new = _wire_wallet_newPtr.asFunction<
+      'frbgen_lwk_dart_wire_wallet_init');
+  late final _wire_wallet_init = _wire_wallet_initPtr.asFunction<
       void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           ffi.Pointer<wire_cst_descriptor_base>)>();
 

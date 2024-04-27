@@ -86,13 +86,12 @@ class Wallet {
   Future<String> descriptor({dynamic hint}) =>
       LwkCore.instance.api.walletDescriptor(that: this, hint: hint);
 
-  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
-  static Future<Wallet> newInstance(
+  static Future<Wallet> init(
           {required Network network,
           required String dbpath,
           required DescriptorBase descriptor,
           dynamic hint}) =>
-      LwkCore.instance.api.walletNew(
+      LwkCore.instance.api.walletInit(
           network: network, dbpath: dbpath, descriptor: descriptor, hint: hint);
 
   Future<Uint8List> signTx(

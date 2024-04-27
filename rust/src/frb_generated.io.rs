@@ -431,13 +431,13 @@ pub extern "C" fn frbgen_lwk_dart_wire_wallet_descriptor(port_: i64, that: *mut 
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_wallet_new(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_init(
     port_: i64,
     network: i32,
     dbpath: *mut wire_cst_list_prim_u_8_strict,
     descriptor: *mut wire_cst_descriptor_base,
 ) {
-    wire_wallet_new_impl(port_, network, dbpath, descriptor)
+    wire_wallet_init_impl(port_, network, dbpath, descriptor)
 }
 
 #[no_mangle]

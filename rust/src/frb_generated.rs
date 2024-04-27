@@ -313,7 +313,7 @@ fn wire_wallet_descriptor_impl(
         },
     )
 }
-fn wire_wallet_new_impl(
+fn wire_wallet_init_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     network: impl CstDecode<crate::api::types::Network>,
     dbpath: impl CstDecode<String>,
@@ -321,7 +321,7 @@ fn wire_wallet_new_impl(
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_new",
+            debug_name: "wallet_init",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -331,7 +331,7 @@ fn wire_wallet_new_impl(
             let api_descriptor = descriptor.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::new(api_network, api_dbpath, api_descriptor)
+                    crate::api::wallet::Wallet::init(api_network, api_dbpath, api_descriptor)
                 })())
             }
         },

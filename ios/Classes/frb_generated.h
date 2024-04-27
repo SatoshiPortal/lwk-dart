@@ -140,10 +140,10 @@ void frbgen_lwk_dart_wire_wallet_decode_tx(int64_t port_,
 
 void frbgen_lwk_dart_wire_wallet_descriptor(int64_t port_, struct wire_cst_wallet *that);
 
-void frbgen_lwk_dart_wire_wallet_new(int64_t port_,
-                                     int32_t network,
-                                     struct wire_cst_list_prim_u_8_strict *dbpath,
-                                     struct wire_cst_descriptor_base *descriptor);
+void frbgen_lwk_dart_wire_wallet_init(int64_t port_,
+                                      int32_t network,
+                                      struct wire_cst_list_prim_u_8_strict *dbpath,
+                                      struct wire_cst_descriptor_base *descriptor);
 
 void frbgen_lwk_dart_wire_wallet_sign_tx(int64_t port_,
                                          struct wire_cst_wallet *that,
@@ -200,7 +200,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_build_lbtc_tx);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_decode_tx);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_descriptor);
-    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_new);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_init);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_sign_tx);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_sync);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_txs);

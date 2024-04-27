@@ -48,7 +48,7 @@ impl Wallet {
         }
     }
 
-    pub fn new(
+    pub fn init(
         network: Network,
         dbpath: String,
         descriptor: DescriptorBase,
