@@ -206,21 +206,20 @@ class Wallet extends LwkWallet {
       rethrow;
     }
   }
-
-  Future<String> broadcast({
-    required String electrumUrl,
-    required Uint8List txBytes,
-  }) async {
-    try {
-      final res = await LwkWallet.broadcastTx(
-          electrumUrl: electrumUrl, txBytes: txBytes);
-      return res;
-    } catch (e) {
-      rethrow;
-    }
-  }
 }
 
+Future<String> broadcast({
+  required String electrumUrl,
+  required Uint8List txBytes,
+}) async {
+  try {
+    final res =
+        await LwkWallet.broadcastTx(electrumUrl: electrumUrl, txBytes: txBytes);
+    return res;
+  } catch (e) {
+    rethrow;
+  }
+}
 // Future<Address> scriptToAddress({
 //   required Network network,
 //   required String script,
