@@ -360,7 +360,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   @protected
   List<dynamic> cst_encode_wallet(Wallet raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return [cst_encode_RustOpaque_Mutexlwk_wolletWollet(raw.ptr)];
+    return [cst_encode_RustOpaque_Mutexlwk_wolletWollet(raw.inner)];
   }
 
   @protected

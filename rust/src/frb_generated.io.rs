@@ -189,7 +189,7 @@ impl CstDecode<crate::api::wallet::Wallet> for wire_cst_wallet {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> crate::api::wallet::Wallet {
         crate::api::wallet::Wallet {
-            ptr: self.ptr.cst_decode(),
+            inner: self.inner.cst_decode(),
         }
     }
 }
@@ -321,7 +321,7 @@ impl Default for wire_cst_tx_out_secrets {
 impl NewWithNullPtr for wire_cst_wallet {
     fn new_with_null_ptr() -> Self {
         Self {
-            ptr: Default::default(),
+            inner: Default::default(),
         }
     }
 }
@@ -653,5 +653,5 @@ pub struct wire_cst_tx_out_secrets {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct wire_cst_wallet {
-    ptr: usize,
+    inner: usize,
 }

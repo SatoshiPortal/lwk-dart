@@ -15,6 +15,7 @@ use lwk_wollet::WolletDescriptor;
 
 pub use std::sync::Mutex;
 use std::sync::MutexGuard;
+use std::sync::PoisonError;
 
 use crate::frb_generated::RustOpaque;
 
@@ -32,12 +33,19 @@ use super::types::PsetAmounts;
 use super::types::Tx;
 
 pub struct Wallet {
-    pub ptr: RustOpaque<Mutex<lwk_wollet::Wollet>>,
+    pub inner: RustOpaque<Mutex<lwk_wollet::Wollet>>,
 }
 
 impl Wallet {
-    fn get_wallet(&self) -> MutexGuard<lwk_wollet::Wollet> {
-        self.ptr.lock().expect("")
+    fn get_wallet(&self) -> Result<MutexGuard<lwk_wollet::Wollet>, LwkError> {
+        {
+            match self.inner.lock() {
+                Ok(result) => Ok(result),
+                Err(_) => Err(LwkError {
+                    msg: "Could not aquire lock on wallet".to_string(),
+                }),
+            }
+        }
     }
 
     #[frb(sync)]
@@ -54,53 +62,49 @@ impl Wallet {
             &descriptor.clone().to_string(),
         )?;
         Ok(Wallet {
-            ptr: RustOpaque::new(Mutex::new(wollet)),
+            inner: RustOpaque::new(Mutex::new(wollet)),
         })
     }
 
     pub fn sync(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
         let mut electrum_client: ElectrumClient =
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
-        let update: Update =
-            if let Some(value) = electrum_client.full_scan(&mut self.get_wallet())? {
-                value
-            } else {
-                return Ok(());
-            };
-        let _ = self.get_wallet().apply_update(update)?;
+        let mut wallet = self.get_wallet()?;
+        let update: Update = if let Some(value) = electrum_client.full_scan(&mut wallet)? {
+            value
+        } else {
+            return Ok(());
+        };
+        let _ = wallet.apply_update(update)?;
         Ok(())
     }
 
     pub fn descriptor(&self) -> anyhow::Result<String, LwkError> {
-        Ok(self.get_wallet().descriptor().to_string())
+        Ok(self.get_wallet()?.descriptor().to_string())
     }
 
     pub fn blinding_key(&self) -> anyhow::Result<String, LwkError> {
-        Ok(self
-            .get_wallet()
-            .descriptor()
-            .key
-            .to_string())
+        Ok(self.get_wallet()?.descriptor().key.to_string())
     }
 
     pub fn address_last_unused(&self) -> anyhow::Result<Address, LwkError> {
-        let address: AddressResult = self.get_wallet().address(None)?.into();
+        let address: AddressResult = self.get_wallet()?.address(None)?.into();
         Ok(address.into())
     }
 
     pub fn address(&self, index: u32) -> anyhow::Result<Address, LwkError> {
-        let address: AddressResult = self.get_wallet().address(Some(index))?.into();
+        let address: AddressResult = self.get_wallet()?.address(Some(index))?.into();
         Ok(address.into())
     }
 
     pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
-        let balance = Balances::from(AssetIdMapUInt(self.get_wallet().balance()?));
+        let balance = Balances::from(AssetIdMapUInt(self.get_wallet()?.balance()?));
         Ok(balance)
     }
 
     pub fn txs(&self) -> anyhow::Result<Vec<Tx>, LwkError> {
         let txs = self
-            .get_wallet()
+            .get_wallet()?
             .transactions()?
             .iter()
             .map(|x| Tx::from(x.to_owned()))
@@ -115,7 +119,7 @@ impl Wallet {
         abs_fee: f32,
     ) -> anyhow::Result<String, LwkError> {
         let pset: PartiallySignedTransaction =
-            self.get_wallet()
+            self.get_wallet()?
                 .send_lbtc(sats, &out_address, Some(abs_fee))?;
         Ok(pset.to_string())
     }
@@ -128,14 +132,14 @@ impl Wallet {
         asset: String,
     ) -> anyhow::Result<String, LwkError> {
         let pset: PartiallySignedTransaction =
-            self.get_wallet()
+            self.get_wallet()?
                 .send_asset(sats, &out_address, &asset, Some(abs_fee))?;
         Ok(pset.to_string())
     }
 
     pub fn decode_tx(&self, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-        let pset_details = self.get_wallet().get_details(&mut pset)?;
+        let pset_details = self.get_wallet()?.get_details(&mut pset)?;
         Ok(PsetAmounts::from(pset_details.balance))
     }
 
@@ -149,7 +153,7 @@ impl Wallet {
         let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         let _ = signer.sign(&mut pset);
-        let tx = self.get_wallet().finalize(&mut pset)?;
+        let tx = self.get_wallet()?.finalize(&mut pset)?;
         Ok(tx.serialize())
     }
 

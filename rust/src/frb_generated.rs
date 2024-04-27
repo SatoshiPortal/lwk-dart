@@ -726,8 +726,8 @@ impl SseDecode for usize {
 impl SseDecode for crate::api::wallet::Wallet {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_ptr = <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_decode(deserializer);
-        return crate::api::wallet::Wallet { ptr: var_ptr };
+        let mut var_inner = <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_decode(deserializer);
+        return crate::api::wallet::Wallet { inner: var_inner };
     }
 }
 
@@ -948,7 +948,7 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::TxOutSecrets>
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::wallet::Wallet {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        [self.ptr.into_into_dart().into_dart()].into_dart()
+        [self.inner.into_into_dart().into_dart()].into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::wallet::Wallet {}
@@ -1180,7 +1180,7 @@ impl SseEncode for usize {
 impl SseEncode for crate::api::wallet::Wallet {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_encode(self.ptr, serializer);
+        <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_encode(self.inner, serializer);
     }
 }
 

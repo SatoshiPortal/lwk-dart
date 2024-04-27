@@ -814,7 +814,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     if (arr.length != 1)
       throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
     return Wallet.raw(
-      ptr: dco_decode_RustOpaque_Mutexlwk_wolletWollet(arr[0]),
+      inner: dco_decode_RustOpaque_Mutexlwk_wolletWollet(arr[0]),
     );
   }
 
@@ -1068,8 +1068,8 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   @protected
   Wallet sse_decode_wallet(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_ptr = sse_decode_RustOpaque_Mutexlwk_wolletWollet(deserializer);
-    return Wallet.raw(ptr: var_ptr);
+    var var_inner = sse_decode_RustOpaque_Mutexlwk_wolletWollet(deserializer);
+    return Wallet.raw(inner: var_inner);
   }
 
   @protected
@@ -1341,7 +1341,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   @protected
   void sse_encode_wallet(Wallet self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_RustOpaque_Mutexlwk_wolletWollet(self.ptr, serializer);
+    sse_encode_RustOpaque_Mutexlwk_wolletWollet(self.inner, serializer);
   }
 
   @protected

@@ -268,7 +268,7 @@ impl CstDecode<crate::api::wallet::Wallet>
             self_.length()
         );
         crate::api::wallet::Wallet {
-            ptr: self_.get(0).cst_decode(),
+            inner: self_.get(0).cst_decode(),
         }
     }
 }

@@ -387,7 +387,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_api_fill_to_wire_wallet(Wallet apiObj, wire_cst_wallet wireObj) {
-    wireObj.ptr = cst_encode_RustOpaque_Mutexlwk_wolletWollet(apiObj.ptr);
+    wireObj.inner = cst_encode_RustOpaque_Mutexlwk_wolletWollet(apiObj.inner);
   }
 
   @protected
@@ -1079,7 +1079,7 @@ final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
 
 final class wire_cst_wallet extends ffi.Struct {
   @ffi.UintPtr()
-  external int ptr;
+  external int inner;
 }
 
 final class wire_cst_list_prim_u_8_loose extends ffi.Struct {

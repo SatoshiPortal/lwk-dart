@@ -29,10 +29,10 @@ class MutexLwkWolletWollet extends RustOpaque {
 }
 
 class Wallet {
-  final MutexLwkWolletWollet ptr;
+  final MutexLwkWolletWollet inner;
 
   const Wallet.raw({
-    required this.ptr,
+    required this.inner,
   });
 
   Future<Address> address({required int index, dynamic hint}) =>
@@ -114,10 +114,12 @@ class Wallet {
       LwkCore.instance.api.walletTxs(that: this, hint: hint);
 
   @override
-  int get hashCode => ptr.hashCode;
+  int get hashCode => inner.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Wallet && runtimeType == other.runtimeType && ptr == other.ptr;
+      other is Wallet &&
+          runtimeType == other.runtimeType &&
+          inner == other.inner;
 }

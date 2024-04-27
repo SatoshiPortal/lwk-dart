@@ -17,6 +17,14 @@ impl From<lwk_wollet::Error> for LwkError {
     }
 }
 
+// impl From<PoisonError<MutexGuard<'_, lwk_wollet::Wollet>>> for LwkError {
+//     fn from(value: lwk_wollet::Error) -> Self {
+//         LwkError{
+//             msg: format!("{:?}", value),
+//         }
+//     }
+// }
+
 impl From<ParseError> for LwkError {
     fn from(value: ParseError) -> Self {
         LwkError{

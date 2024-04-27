@@ -20,7 +20,7 @@ typedef struct wire_cst_list_prim_u_8_strict {
 } wire_cst_list_prim_u_8_strict;
 
 typedef struct wire_cst_wallet {
-  uintptr_t ptr;
+  uintptr_t inner;
 } wire_cst_wallet;
 
 typedef struct wire_cst_list_prim_u_8_loose {
