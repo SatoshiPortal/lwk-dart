@@ -3,7 +3,6 @@ use elements::pset::serialize::Serialize;
 use elements::pset::PartiallySignedTransaction;
 use elements::Transaction;
 use elements::Txid;
-use flutter_rust_bridge::frb;
 use lwk_common::Signer;
 use lwk_signer::SwSigner;
 // use lwk_wollet::elements_miniscript::descriptor;
@@ -15,7 +14,6 @@ use lwk_wollet::WolletDescriptor;
 
 pub use std::sync::Mutex;
 use std::sync::MutexGuard;
-use std::sync::PoisonError;
 
 use crate::frb_generated::RustOpaque;
 
