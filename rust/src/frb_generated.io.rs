@@ -54,17 +54,17 @@ impl CstDecode<crate::api::descriptor::Descriptor> for *mut wire_cst_descriptor 
         CstDecode::<crate::api::descriptor::Descriptor>::cst_decode(*wrap).into()
     }
 }
-impl CstDecode<crate::api::wallet::LwkWallet> for *mut wire_cst_lwk_wallet {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> crate::api::wallet::LwkWallet {
-        let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-        CstDecode::<crate::api::wallet::LwkWallet>::cst_decode(*wrap).into()
-    }
-}
 impl CstDecode<u32> for *mut u32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> u32 {
         unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
+    }
+}
+impl CstDecode<crate::api::wallet::Wallet> for *mut wire_cst_wallet {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> crate::api::wallet::Wallet {
+        let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+        CstDecode::<crate::api::wallet::Wallet>::cst_decode(*wrap).into()
     }
 }
 impl CstDecode<crate::api::descriptor::Descriptor> for wire_cst_descriptor {
@@ -131,14 +131,6 @@ impl CstDecode<crate::api::error::LwkError> for wire_cst_lwk_error {
         }
     }
 }
-impl CstDecode<crate::api::wallet::LwkWallet> for wire_cst_lwk_wallet {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> crate::api::wallet::LwkWallet {
-        crate::api::wallet::LwkWallet {
-            inner: self.inner.cst_decode(),
-        }
-    }
-}
 impl CstDecode<crate::api::types::OutPoint> for wire_cst_out_point {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> crate::api::types::OutPoint {
@@ -193,6 +185,14 @@ impl CstDecode<crate::api::types::TxOutSecrets> for wire_cst_tx_out_secrets {
         }
     }
 }
+impl CstDecode<crate::api::wallet::Wallet> for wire_cst_wallet {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> crate::api::wallet::Wallet {
+        crate::api::wallet::Wallet {
+            inner: self.inner.cst_decode(),
+        }
+    }
+}
 impl NewWithNullPtr for wire_cst_address {
     fn new_with_null_ptr() -> Self {
         Self {
@@ -240,18 +240,6 @@ impl NewWithNullPtr for wire_cst_lwk_error {
     }
 }
 impl Default for wire_cst_lwk_error {
-    fn default() -> Self {
-        Self::new_with_null_ptr()
-    }
-}
-impl NewWithNullPtr for wire_cst_lwk_wallet {
-    fn new_with_null_ptr() -> Self {
-        Self {
-            inner: Default::default(),
-        }
-    }
-}
-impl Default for wire_cst_lwk_wallet {
     fn default() -> Self {
         Self::new_with_null_ptr()
     }
@@ -330,6 +318,18 @@ impl Default for wire_cst_tx_out_secrets {
         Self::new_with_null_ptr()
     }
 }
+impl NewWithNullPtr for wire_cst_wallet {
+    fn new_with_null_ptr() -> Self {
+        Self {
+            inner: Default::default(),
+        }
+    }
+}
+impl Default for wire_cst_wallet {
+    fn default() -> Self {
+        Self::new_with_null_ptr()
+    }
+}
 
 #[no_mangle]
 pub extern "C" fn frbgen_lwk_dart_wire_descriptor_new_confidential(
@@ -359,120 +359,111 @@ pub extern "C" fn frbgen_lwk_dart_wire_address_validate(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_address(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_address(
     port_: i64,
-    that: *mut wire_cst_lwk_wallet,
+    that: *mut wire_cst_wallet,
     index: u32,
 ) {
-    wire_lwk_wallet_address_impl(port_, that, index)
+    wire_wallet_address_impl(port_, that, index)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_address_last_unused(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_address_last_unused(
     port_: i64,
-    that: *mut wire_cst_lwk_wallet,
+    that: *mut wire_cst_wallet,
 ) {
-    wire_lwk_wallet_address_last_unused_impl(port_, that)
+    wire_wallet_address_last_unused_impl(port_, that)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_balances(
-    port_: i64,
-    that: *mut wire_cst_lwk_wallet,
-) {
-    wire_lwk_wallet_balances_impl(port_, that)
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_balances(port_: i64, that: *mut wire_cst_wallet) {
+    wire_wallet_balances_impl(port_, that)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_blinding_key(
-    port_: i64,
-    that: *mut wire_cst_lwk_wallet,
-) {
-    wire_lwk_wallet_blinding_key_impl(port_, that)
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_blinding_key(port_: i64, that: *mut wire_cst_wallet) {
+    wire_wallet_blinding_key_impl(port_, that)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_broadcast_tx(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_broadcast_tx(
     port_: i64,
     electrum_url: *mut wire_cst_list_prim_u_8_strict,
     tx_bytes: *mut wire_cst_list_prim_u_8_loose,
 ) {
-    wire_lwk_wallet_broadcast_tx_impl(port_, electrum_url, tx_bytes)
+    wire_wallet_broadcast_tx_impl(port_, electrum_url, tx_bytes)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_build_asset_tx(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_build_asset_tx(
     port_: i64,
-    that: *mut wire_cst_lwk_wallet,
+    that: *mut wire_cst_wallet,
     sats: u64,
     out_address: *mut wire_cst_list_prim_u_8_strict,
     abs_fee: f32,
     asset: *mut wire_cst_list_prim_u_8_strict,
 ) {
-    wire_lwk_wallet_build_asset_tx_impl(port_, that, sats, out_address, abs_fee, asset)
+    wire_wallet_build_asset_tx_impl(port_, that, sats, out_address, abs_fee, asset)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_build_lbtc_tx(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_build_lbtc_tx(
     port_: i64,
-    that: *mut wire_cst_lwk_wallet,
+    that: *mut wire_cst_wallet,
     sats: u64,
     out_address: *mut wire_cst_list_prim_u_8_strict,
     abs_fee: f32,
 ) {
-    wire_lwk_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, abs_fee)
+    wire_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, abs_fee)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_decode_tx(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_decode_tx(
     port_: i64,
-    that: *mut wire_cst_lwk_wallet,
+    that: *mut wire_cst_wallet,
     pset: *mut wire_cst_list_prim_u_8_strict,
 ) {
-    wire_lwk_wallet_decode_tx_impl(port_, that, pset)
+    wire_wallet_decode_tx_impl(port_, that, pset)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_descriptor(
-    port_: i64,
-    that: *mut wire_cst_lwk_wallet,
-) {
-    wire_lwk_wallet_descriptor_impl(port_, that)
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_descriptor(port_: i64, that: *mut wire_cst_wallet) {
+    wire_wallet_descriptor_impl(port_, that)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_init(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_init(
     port_: i64,
     network: i32,
     dbpath: *mut wire_cst_list_prim_u_8_strict,
     descriptor: *mut wire_cst_descriptor,
 ) {
-    wire_lwk_wallet_init_impl(port_, network, dbpath, descriptor)
+    wire_wallet_init_impl(port_, network, dbpath, descriptor)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_sign_tx(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_sign_tx(
     port_: i64,
-    that: *mut wire_cst_lwk_wallet,
+    that: *mut wire_cst_wallet,
     network: i32,
     pset: *mut wire_cst_list_prim_u_8_strict,
     mnemonic: *mut wire_cst_list_prim_u_8_strict,
 ) {
-    wire_lwk_wallet_sign_tx_impl(port_, that, network, pset, mnemonic)
+    wire_wallet_sign_tx_impl(port_, that, network, pset, mnemonic)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_sync(
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_sync(
     port_: i64,
-    that: *mut wire_cst_lwk_wallet,
+    that: *mut wire_cst_wallet,
     electrum_url: *mut wire_cst_list_prim_u_8_strict,
 ) {
-    wire_lwk_wallet_sync_impl(port_, that, electrum_url)
+    wire_wallet_sync_impl(port_, that, electrum_url)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire_lwk_wallet_txs(port_: i64, that: *mut wire_cst_lwk_wallet) {
-    wire_lwk_wallet_txs_impl(port_, that)
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_txs(port_: i64, that: *mut wire_cst_wallet) {
+    wire_wallet_txs_impl(port_, that)
 }
 
 #[no_mangle]
@@ -499,13 +490,13 @@ pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_descriptor() -> *mut wire_
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_lwk_wallet() -> *mut wire_cst_lwk_wallet {
-    flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_lwk_wallet::new_with_null_ptr())
+pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_u_32(value: u32) -> *mut u32 {
+    flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_u_32(value: u32) -> *mut u32 {
-    flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_wallet() -> *mut wire_cst_wallet {
+    flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_wallet::new_with_null_ptr())
 }
 
 #[no_mangle]
@@ -621,11 +612,6 @@ pub struct wire_cst_lwk_error {
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
-pub struct wire_cst_lwk_wallet {
-    inner: usize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
 pub struct wire_cst_out_point {
     txid: *mut wire_cst_list_prim_u_8_strict,
     vout: u32,
@@ -662,4 +648,9 @@ pub struct wire_cst_tx_out_secrets {
     value_bf: *mut wire_cst_list_prim_u_8_strict,
     asset: *mut wire_cst_list_prim_u_8_strict,
     asset_bf: *mut wire_cst_list_prim_u_8_strict,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct wire_cst_wallet {
+    inner: usize,
 }

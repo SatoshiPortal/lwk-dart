@@ -32,11 +32,11 @@ use super::types::Network;
 use super::types::PsetAmounts;
 use super::types::Tx;
 
-pub struct LwkWallet {
+pub struct Wallet {
     pub inner: RustOpaque<Mutex<lwk_wollet::Wollet>>,
 }
 
-impl LwkWallet {
+impl Wallet {
     fn get_wallet(&self) -> Result<MutexGuard<lwk_wollet::Wollet>, LwkError> {
         {
             match self.inner.lock() {
@@ -52,7 +52,7 @@ impl LwkWallet {
         network: Network,
         dbpath: String,
         descriptor: Descriptor,
-    ) -> anyhow::Result<LwkWallet, LwkError> {
+    ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
         let wollet = Wollet::new(
@@ -60,7 +60,7 @@ impl LwkWallet {
             EncryptedFsPersister::new(dbpath, network.into(), &descriptor)?,
             &descriptor.clone().to_string(),
         )?;
-        Ok(LwkWallet {
+        Ok(Wallet {
             inner: RustOpaque::new(Mutex::new(wollet)),
         })
     }
@@ -165,4 +165,25 @@ impl LwkWallet {
         let txid: Txid = electrum_client.broadcast(&tx)?;
         Ok(txid.to_string())
     }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn testable_wallets() {
+        let mnemonic = "fossil install fever ticket wisdom outer broken aspect lucky still flavor dial";
+        let electrum_url = "blockstream.info:465".to_string();
+        let desc = Descriptor::new_confidential(Network::Testnet, mnemonic.to_string()).expect("");
+        let wallet = Wallet::init(Network::Testnet, "/tmp/lwk".to_string(),desc).expect("");
+        let _ = wallet.sync(electrum_url);
+        let _txs = wallet.txs();
+        let balances = wallet.balances();
+        let address = wallet.address_last_unused();
+        println!("{:#?}", address);
+        println!("{:#?}", balances);
+        
+    }
+
 }

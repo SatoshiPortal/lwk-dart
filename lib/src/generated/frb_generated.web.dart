@@ -40,10 +40,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Descriptor dco_decode_box_autoadd_descriptor(dynamic raw);
 
   @protected
-  LwkWallet dco_decode_box_autoadd_lwk_wallet(dynamic raw);
+  int dco_decode_box_autoadd_u_32(dynamic raw);
 
   @protected
-  int dco_decode_box_autoadd_u_32(dynamic raw);
+  Wallet dco_decode_box_autoadd_wallet(dynamic raw);
 
   @protected
   Descriptor dco_decode_descriptor(dynamic raw);
@@ -74,9 +74,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   LwkError dco_decode_lwk_error(dynamic raw);
-
-  @protected
-  LwkWallet dco_decode_lwk_wallet(dynamic raw);
 
   @protected
   Network dco_decode_network(dynamic raw);
@@ -115,6 +112,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int dco_decode_usize(dynamic raw);
 
   @protected
+  Wallet dco_decode_wallet(dynamic raw);
+
+  @protected
   MutexLwkWolletWollet sse_decode_RustOpaque_Mutexlwk_wolletWollet(
       SseDeserializer deserializer);
 
@@ -131,10 +131,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Descriptor sse_decode_box_autoadd_descriptor(SseDeserializer deserializer);
 
   @protected
-  LwkWallet sse_decode_box_autoadd_lwk_wallet(SseDeserializer deserializer);
+  int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
 
   @protected
-  int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
+  Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer);
 
   @protected
   Descriptor sse_decode_descriptor(SseDeserializer deserializer);
@@ -165,9 +165,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   LwkError sse_decode_lwk_error(SseDeserializer deserializer);
-
-  @protected
-  LwkWallet sse_decode_lwk_wallet(SseDeserializer deserializer);
 
   @protected
   Network sse_decode_network(SseDeserializer deserializer);
@@ -206,6 +203,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int sse_decode_usize(SseDeserializer deserializer);
 
   @protected
+  Wallet sse_decode_wallet(SseDeserializer deserializer);
+
+  @protected
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
@@ -237,15 +237,15 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
-  List<dynamic> cst_encode_box_autoadd_lwk_wallet(LwkWallet raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return cst_encode_lwk_wallet(raw);
-  }
-
-  @protected
   int cst_encode_box_autoadd_u_32(int raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_u_32(raw);
+  }
+
+  @protected
+  List<dynamic> cst_encode_box_autoadd_wallet(Wallet raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_wallet(raw);
   }
 
   @protected
@@ -294,12 +294,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<dynamic> cst_encode_lwk_error(LwkError raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [cst_encode_String(raw.msg)];
-  }
-
-  @protected
-  List<dynamic> cst_encode_lwk_wallet(LwkWallet raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return [cst_encode_RustOpaque_Mutexlwk_wolletWollet(raw.inner)];
   }
 
   @protected
@@ -363,6 +357,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  List<dynamic> cst_encode_wallet(Wallet raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [cst_encode_RustOpaque_Mutexlwk_wolletWollet(raw.inner)];
+  }
+
+  @protected
   int cst_encode_RustOpaque_Mutexlwk_wolletWollet(MutexLwkWolletWollet raw);
 
   @protected
@@ -404,11 +404,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       Descriptor self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_lwk_wallet(
-      LwkWallet self, SseSerializer serializer);
+  void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
+  void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer);
 
   @protected
   void sse_encode_descriptor(Descriptor self, SseSerializer serializer);
@@ -440,9 +439,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_lwk_wallet(LwkWallet self, SseSerializer serializer);
 
   @protected
   void sse_encode_network(Network self, SseSerializer serializer);
@@ -481,6 +477,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_usize(int self, SseSerializer serializer);
 
   @protected
+  void sse_encode_wallet(Wallet self, SseSerializer serializer);
+
+  @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
 }
 
@@ -501,55 +500,55 @@ class LwkCoreWire implements BaseWire {
   void wire_address_validate(NativePortType port_, String address_string) =>
       wasmModule.wire_address_validate(port_, address_string);
 
-  void wire_lwk_wallet_address(
+  void wire_wallet_address(
           NativePortType port_, List<dynamic> that, int index) =>
-      wasmModule.wire_lwk_wallet_address(port_, that, index);
+      wasmModule.wire_wallet_address(port_, that, index);
 
-  void wire_lwk_wallet_address_last_unused(
+  void wire_wallet_address_last_unused(
           NativePortType port_, List<dynamic> that) =>
-      wasmModule.wire_lwk_wallet_address_last_unused(port_, that);
+      wasmModule.wire_wallet_address_last_unused(port_, that);
 
-  void wire_lwk_wallet_balances(NativePortType port_, List<dynamic> that) =>
-      wasmModule.wire_lwk_wallet_balances(port_, that);
+  void wire_wallet_balances(NativePortType port_, List<dynamic> that) =>
+      wasmModule.wire_wallet_balances(port_, that);
 
-  void wire_lwk_wallet_blinding_key(NativePortType port_, List<dynamic> that) =>
-      wasmModule.wire_lwk_wallet_blinding_key(port_, that);
+  void wire_wallet_blinding_key(NativePortType port_, List<dynamic> that) =>
+      wasmModule.wire_wallet_blinding_key(port_, that);
 
-  void wire_lwk_wallet_broadcast_tx(
+  void wire_wallet_broadcast_tx(
           NativePortType port_, String electrum_url, List<int> tx_bytes) =>
-      wasmModule.wire_lwk_wallet_broadcast_tx(port_, electrum_url, tx_bytes);
+      wasmModule.wire_wallet_broadcast_tx(port_, electrum_url, tx_bytes);
 
-  void wire_lwk_wallet_build_asset_tx(NativePortType port_, List<dynamic> that,
+  void wire_wallet_build_asset_tx(NativePortType port_, List<dynamic> that,
           Object sats, String out_address, double abs_fee, String asset) =>
-      wasmModule.wire_lwk_wallet_build_asset_tx(
+      wasmModule.wire_wallet_build_asset_tx(
           port_, that, sats, out_address, abs_fee, asset);
 
-  void wire_lwk_wallet_build_lbtc_tx(NativePortType port_, List<dynamic> that,
+  void wire_wallet_build_lbtc_tx(NativePortType port_, List<dynamic> that,
           Object sats, String out_address, double abs_fee) =>
-      wasmModule.wire_lwk_wallet_build_lbtc_tx(
+      wasmModule.wire_wallet_build_lbtc_tx(
           port_, that, sats, out_address, abs_fee);
 
-  void wire_lwk_wallet_decode_tx(
+  void wire_wallet_decode_tx(
           NativePortType port_, List<dynamic> that, String pset) =>
-      wasmModule.wire_lwk_wallet_decode_tx(port_, that, pset);
+      wasmModule.wire_wallet_decode_tx(port_, that, pset);
 
-  void wire_lwk_wallet_descriptor(NativePortType port_, List<dynamic> that) =>
-      wasmModule.wire_lwk_wallet_descriptor(port_, that);
+  void wire_wallet_descriptor(NativePortType port_, List<dynamic> that) =>
+      wasmModule.wire_wallet_descriptor(port_, that);
 
-  void wire_lwk_wallet_init(NativePortType port_, int network, String dbpath,
+  void wire_wallet_init(NativePortType port_, int network, String dbpath,
           List<dynamic> descriptor) =>
-      wasmModule.wire_lwk_wallet_init(port_, network, dbpath, descriptor);
+      wasmModule.wire_wallet_init(port_, network, dbpath, descriptor);
 
-  void wire_lwk_wallet_sign_tx(NativePortType port_, List<dynamic> that,
+  void wire_wallet_sign_tx(NativePortType port_, List<dynamic> that,
           int network, String pset, String mnemonic) =>
-      wasmModule.wire_lwk_wallet_sign_tx(port_, that, network, pset, mnemonic);
+      wasmModule.wire_wallet_sign_tx(port_, that, network, pset, mnemonic);
 
-  void wire_lwk_wallet_sync(
+  void wire_wallet_sync(
           NativePortType port_, List<dynamic> that, String electrum_url) =>
-      wasmModule.wire_lwk_wallet_sync(port_, that, electrum_url);
+      wasmModule.wire_wallet_sync(port_, that, electrum_url);
 
-  void wire_lwk_wallet_txs(NativePortType port_, List<dynamic> that) =>
-      wasmModule.wire_lwk_wallet_txs(port_, that);
+  void wire_wallet_txs(NativePortType port_, List<dynamic> that) =>
+      wasmModule.wire_wallet_txs(port_, that);
 
   void rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(
           dynamic ptr) =>
@@ -585,22 +584,21 @@ class LwkCoreWasmModule implements WasmModule {
   external void wire_address_validate(
       NativePortType port_, String address_string);
 
-  external void wire_lwk_wallet_address(
+  external void wire_wallet_address(
       NativePortType port_, List<dynamic> that, int index);
 
-  external void wire_lwk_wallet_address_last_unused(
+  external void wire_wallet_address_last_unused(
       NativePortType port_, List<dynamic> that);
 
-  external void wire_lwk_wallet_balances(
+  external void wire_wallet_balances(NativePortType port_, List<dynamic> that);
+
+  external void wire_wallet_blinding_key(
       NativePortType port_, List<dynamic> that);
 
-  external void wire_lwk_wallet_blinding_key(
-      NativePortType port_, List<dynamic> that);
-
-  external void wire_lwk_wallet_broadcast_tx(
+  external void wire_wallet_broadcast_tx(
       NativePortType port_, String electrum_url, List<int> tx_bytes);
 
-  external void wire_lwk_wallet_build_asset_tx(
+  external void wire_wallet_build_asset_tx(
       NativePortType port_,
       List<dynamic> that,
       Object sats,
@@ -608,25 +606,25 @@ class LwkCoreWasmModule implements WasmModule {
       double abs_fee,
       String asset);
 
-  external void wire_lwk_wallet_build_lbtc_tx(NativePortType port_,
+  external void wire_wallet_build_lbtc_tx(NativePortType port_,
       List<dynamic> that, Object sats, String out_address, double abs_fee);
 
-  external void wire_lwk_wallet_decode_tx(
+  external void wire_wallet_decode_tx(
       NativePortType port_, List<dynamic> that, String pset);
 
-  external void wire_lwk_wallet_descriptor(
+  external void wire_wallet_descriptor(
       NativePortType port_, List<dynamic> that);
 
-  external void wire_lwk_wallet_init(NativePortType port_, int network,
+  external void wire_wallet_init(NativePortType port_, int network,
       String dbpath, List<dynamic> descriptor);
 
-  external void wire_lwk_wallet_sign_tx(NativePortType port_,
-      List<dynamic> that, int network, String pset, String mnemonic);
+  external void wire_wallet_sign_tx(NativePortType port_, List<dynamic> that,
+      int network, String pset, String mnemonic);
 
-  external void wire_lwk_wallet_sync(
+  external void wire_wallet_sync(
       NativePortType port_, List<dynamic> that, String electrum_url);
 
-  external void wire_lwk_wallet_txs(NativePortType port_, List<dynamic> that);
+  external void wire_wallet_txs(NativePortType port_, List<dynamic> that);
 
   external void
       rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(

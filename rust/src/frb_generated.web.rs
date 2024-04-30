@@ -144,25 +144,6 @@ impl CstDecode<crate::api::error::LwkError>
         }
     }
 }
-impl CstDecode<crate::api::wallet::LwkWallet>
-    for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
-{
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> crate::api::wallet::LwkWallet {
-        let self_ = self
-            .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
-            .unwrap();
-        assert_eq!(
-            self_.length(),
-            1,
-            "Expected 1 elements, got {}",
-            self_.length()
-        );
-        crate::api::wallet::LwkWallet {
-            inner: self_.get(0).cst_decode(),
-        }
-    }
-}
 impl CstDecode<crate::api::types::OutPoint>
     for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
 {
@@ -269,6 +250,25 @@ impl CstDecode<crate::api::types::TxOutSecrets>
             value_bf: self_.get(1).cst_decode(),
             asset: self_.get(2).cst_decode(),
             asset_bf: self_.get(3).cst_decode(),
+        }
+    }
+}
+impl CstDecode<crate::api::wallet::Wallet>
+    for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+{
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> crate::api::wallet::Wallet {
+        let self_ = self
+            .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+            .unwrap();
+        assert_eq!(
+            self_.length(),
+            1,
+            "Expected 1 elements, got {}",
+            self_.length()
+        );
+        crate::api::wallet::Wallet {
+            inner: self_.get(0).cst_decode(),
         }
     }
 }
@@ -385,49 +385,49 @@ pub fn wire_address_validate(
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_address(
+pub fn wire_wallet_address(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     index: u32,
 ) {
-    wire_lwk_wallet_address_impl(port_, that, index)
+    wire_wallet_address_impl(port_, that, index)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_address_last_unused(
+pub fn wire_wallet_address_last_unused(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
 ) {
-    wire_lwk_wallet_address_last_unused_impl(port_, that)
+    wire_wallet_address_last_unused_impl(port_, that)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_balances(
+pub fn wire_wallet_balances(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
 ) {
-    wire_lwk_wallet_balances_impl(port_, that)
+    wire_wallet_balances_impl(port_, that)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_blinding_key(
+pub fn wire_wallet_blinding_key(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
 ) {
-    wire_lwk_wallet_blinding_key_impl(port_, that)
+    wire_wallet_blinding_key_impl(port_, that)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_broadcast_tx(
+pub fn wire_wallet_broadcast_tx(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     electrum_url: String,
     tx_bytes: Box<[u8]>,
 ) {
-    wire_lwk_wallet_broadcast_tx_impl(port_, electrum_url, tx_bytes)
+    wire_wallet_broadcast_tx_impl(port_, electrum_url, tx_bytes)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_build_asset_tx(
+pub fn wire_wallet_build_asset_tx(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     sats: u64,
@@ -435,73 +435,73 @@ pub fn wire_lwk_wallet_build_asset_tx(
     abs_fee: f32,
     asset: String,
 ) {
-    wire_lwk_wallet_build_asset_tx_impl(port_, that, sats, out_address, abs_fee, asset)
+    wire_wallet_build_asset_tx_impl(port_, that, sats, out_address, abs_fee, asset)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_build_lbtc_tx(
+pub fn wire_wallet_build_lbtc_tx(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     sats: u64,
     out_address: String,
     abs_fee: f32,
 ) {
-    wire_lwk_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, abs_fee)
+    wire_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, abs_fee)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_decode_tx(
+pub fn wire_wallet_decode_tx(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     pset: String,
 ) {
-    wire_lwk_wallet_decode_tx_impl(port_, that, pset)
+    wire_wallet_decode_tx_impl(port_, that, pset)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_descriptor(
+pub fn wire_wallet_descriptor(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
 ) {
-    wire_lwk_wallet_descriptor_impl(port_, that)
+    wire_wallet_descriptor_impl(port_, that)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_init(
+pub fn wire_wallet_init(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     network: i32,
     dbpath: String,
     descriptor: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
 ) {
-    wire_lwk_wallet_init_impl(port_, network, dbpath, descriptor)
+    wire_wallet_init_impl(port_, network, dbpath, descriptor)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_sign_tx(
+pub fn wire_wallet_sign_tx(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     network: i32,
     pset: String,
     mnemonic: String,
 ) {
-    wire_lwk_wallet_sign_tx_impl(port_, that, network, pset, mnemonic)
+    wire_wallet_sign_tx_impl(port_, that, network, pset, mnemonic)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_sync(
+pub fn wire_wallet_sync(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     electrum_url: String,
 ) {
-    wire_lwk_wallet_sync_impl(port_, that, electrum_url)
+    wire_wallet_sync_impl(port_, that, electrum_url)
 }
 
 #[wasm_bindgen]
-pub fn wire_lwk_wallet_txs(
+pub fn wire_wallet_txs(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
 ) {
-    wire_lwk_wallet_txs_impl(port_, that)
+    wire_wallet_txs_impl(port_, that)
 }
 
 #[wasm_bindgen]

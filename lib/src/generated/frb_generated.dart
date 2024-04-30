@@ -76,57 +76,55 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<void> addressValidate({required String addressString, dynamic hint});
 
-  Future<Address> lwkWalletAddress(
-      {required LwkWallet that, required int index, dynamic hint});
+  Future<Address> walletAddress(
+      {required Wallet that, required int index, dynamic hint});
 
-  Future<Address> lwkWalletAddressLastUnused(
-      {required LwkWallet that, dynamic hint});
+  Future<Address> walletAddressLastUnused({required Wallet that, dynamic hint});
 
-  Future<List<Balance>> lwkWalletBalances(
-      {required LwkWallet that, dynamic hint});
+  Future<List<Balance>> walletBalances({required Wallet that, dynamic hint});
 
-  Future<String> lwkWalletBlindingKey({required LwkWallet that, dynamic hint});
+  Future<String> walletBlindingKey({required Wallet that, dynamic hint});
 
-  Future<String> lwkWalletBroadcastTx(
+  Future<String> walletBroadcastTx(
       {required String electrumUrl, required List<int> txBytes, dynamic hint});
 
-  Future<String> lwkWalletBuildAssetTx(
-      {required LwkWallet that,
+  Future<String> walletBuildAssetTx(
+      {required Wallet that,
       required int sats,
       required String outAddress,
       required double absFee,
       required String asset,
       dynamic hint});
 
-  Future<String> lwkWalletBuildLbtcTx(
-      {required LwkWallet that,
+  Future<String> walletBuildLbtcTx(
+      {required Wallet that,
       required int sats,
       required String outAddress,
       required double absFee,
       dynamic hint});
 
-  Future<PsetAmounts> lwkWalletDecodeTx(
-      {required LwkWallet that, required String pset, dynamic hint});
+  Future<PsetAmounts> walletDecodeTx(
+      {required Wallet that, required String pset, dynamic hint});
 
-  Future<String> lwkWalletDescriptor({required LwkWallet that, dynamic hint});
+  Future<String> walletDescriptor({required Wallet that, dynamic hint});
 
-  Future<LwkWallet> lwkWalletInit(
+  Future<Wallet> walletInit(
       {required Network network,
       required String dbpath,
       required Descriptor descriptor,
       dynamic hint});
 
-  Future<Uint8List> lwkWalletSignTx(
-      {required LwkWallet that,
+  Future<Uint8List> walletSignTx(
+      {required Wallet that,
       required Network network,
       required String pset,
       required String mnemonic,
       dynamic hint});
 
-  Future<void> lwkWalletSync(
-      {required LwkWallet that, required String electrumUrl, dynamic hint});
+  Future<void> walletSync(
+      {required Wallet that, required String electrumUrl, dynamic hint});
 
-  Future<List<Tx>> lwkWalletTxs({required LwkWallet that, dynamic hint});
+  Future<List<Tx>> walletTxs({required Wallet that, dynamic hint});
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_MutexLwkWolletWollet;
@@ -224,129 +222,128 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  Future<Address> lwkWalletAddress(
-      {required LwkWallet that, required int index, dynamic hint}) {
+  Future<Address> walletAddress(
+      {required Wallet that, required int index, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_u_32(index);
-        return wire.wire_lwk_wallet_address(port_, arg0, arg1);
+        return wire.wire_wallet_address(port_, arg0, arg1);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_address,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletAddressConstMeta,
+      constMeta: kWalletAddressConstMeta,
       argValues: [that, index],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletAddressConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_address",
+  TaskConstMeta get kWalletAddressConstMeta => const TaskConstMeta(
+        debugName: "wallet_address",
         argNames: ["that", "index"],
       );
 
   @override
-  Future<Address> lwkWalletAddressLastUnused(
-      {required LwkWallet that, dynamic hint}) {
+  Future<Address> walletAddressLastUnused(
+      {required Wallet that, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
-        return wire.wire_lwk_wallet_address_last_unused(port_, arg0);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        return wire.wire_wallet_address_last_unused(port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_address,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletAddressLastUnusedConstMeta,
+      constMeta: kWalletAddressLastUnusedConstMeta,
       argValues: [that],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletAddressLastUnusedConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_address_last_unused",
+  TaskConstMeta get kWalletAddressLastUnusedConstMeta => const TaskConstMeta(
+        debugName: "wallet_address_last_unused",
         argNames: ["that"],
       );
 
   @override
-  Future<List<Balance>> lwkWalletBalances(
-      {required LwkWallet that, dynamic hint}) {
+  Future<List<Balance>> walletBalances({required Wallet that, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
-        return wire.wire_lwk_wallet_balances(port_, arg0);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        return wire.wire_wallet_balances(port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_list_balance,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletBalancesConstMeta,
+      constMeta: kWalletBalancesConstMeta,
       argValues: [that],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletBalancesConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_balances",
+  TaskConstMeta get kWalletBalancesConstMeta => const TaskConstMeta(
+        debugName: "wallet_balances",
         argNames: ["that"],
       );
 
   @override
-  Future<String> lwkWalletBlindingKey({required LwkWallet that, dynamic hint}) {
+  Future<String> walletBlindingKey({required Wallet that, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
-        return wire.wire_lwk_wallet_blinding_key(port_, arg0);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        return wire.wire_wallet_blinding_key(port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_String,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletBlindingKeyConstMeta,
+      constMeta: kWalletBlindingKeyConstMeta,
       argValues: [that],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletBlindingKeyConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_blinding_key",
+  TaskConstMeta get kWalletBlindingKeyConstMeta => const TaskConstMeta(
+        debugName: "wallet_blinding_key",
         argNames: ["that"],
       );
 
   @override
-  Future<String> lwkWalletBroadcastTx(
+  Future<String> walletBroadcastTx(
       {required String electrumUrl, required List<int> txBytes, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_String(electrumUrl);
         var arg1 = cst_encode_list_prim_u_8_loose(txBytes);
-        return wire.wire_lwk_wallet_broadcast_tx(port_, arg0, arg1);
+        return wire.wire_wallet_broadcast_tx(port_, arg0, arg1);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_String,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletBroadcastTxConstMeta,
+      constMeta: kWalletBroadcastTxConstMeta,
       argValues: [electrumUrl, txBytes],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletBroadcastTxConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_broadcast_tx",
+  TaskConstMeta get kWalletBroadcastTxConstMeta => const TaskConstMeta(
+        debugName: "wallet_broadcast_tx",
         argNames: ["electrumUrl", "txBytes"],
       );
 
   @override
-  Future<String> lwkWalletBuildAssetTx(
-      {required LwkWallet that,
+  Future<String> walletBuildAssetTx(
+      {required Wallet that,
       required int sats,
       required String outAddress,
       required double absFee,
@@ -354,112 +351,111 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_u_64(sats);
         var arg2 = cst_encode_String(outAddress);
         var arg3 = cst_encode_f_32(absFee);
         var arg4 = cst_encode_String(asset);
-        return wire.wire_lwk_wallet_build_asset_tx(
+        return wire.wire_wallet_build_asset_tx(
             port_, arg0, arg1, arg2, arg3, arg4);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_String,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletBuildAssetTxConstMeta,
+      constMeta: kWalletBuildAssetTxConstMeta,
       argValues: [that, sats, outAddress, absFee, asset],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletBuildAssetTxConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_build_asset_tx",
+  TaskConstMeta get kWalletBuildAssetTxConstMeta => const TaskConstMeta(
+        debugName: "wallet_build_asset_tx",
         argNames: ["that", "sats", "outAddress", "absFee", "asset"],
       );
 
   @override
-  Future<String> lwkWalletBuildLbtcTx(
-      {required LwkWallet that,
+  Future<String> walletBuildLbtcTx(
+      {required Wallet that,
       required int sats,
       required String outAddress,
       required double absFee,
       dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_u_64(sats);
         var arg2 = cst_encode_String(outAddress);
         var arg3 = cst_encode_f_32(absFee);
-        return wire.wire_lwk_wallet_build_lbtc_tx(
-            port_, arg0, arg1, arg2, arg3);
+        return wire.wire_wallet_build_lbtc_tx(port_, arg0, arg1, arg2, arg3);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_String,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletBuildLbtcTxConstMeta,
+      constMeta: kWalletBuildLbtcTxConstMeta,
       argValues: [that, sats, outAddress, absFee],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletBuildLbtcTxConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_build_lbtc_tx",
+  TaskConstMeta get kWalletBuildLbtcTxConstMeta => const TaskConstMeta(
+        debugName: "wallet_build_lbtc_tx",
         argNames: ["that", "sats", "outAddress", "absFee"],
       );
 
   @override
-  Future<PsetAmounts> lwkWalletDecodeTx(
-      {required LwkWallet that, required String pset, dynamic hint}) {
+  Future<PsetAmounts> walletDecodeTx(
+      {required Wallet that, required String pset, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_String(pset);
-        return wire.wire_lwk_wallet_decode_tx(port_, arg0, arg1);
+        return wire.wire_wallet_decode_tx(port_, arg0, arg1);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_pset_amounts,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletDecodeTxConstMeta,
+      constMeta: kWalletDecodeTxConstMeta,
       argValues: [that, pset],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletDecodeTxConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_decode_tx",
+  TaskConstMeta get kWalletDecodeTxConstMeta => const TaskConstMeta(
+        debugName: "wallet_decode_tx",
         argNames: ["that", "pset"],
       );
 
   @override
-  Future<String> lwkWalletDescriptor({required LwkWallet that, dynamic hint}) {
+  Future<String> walletDescriptor({required Wallet that, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
-        return wire.wire_lwk_wallet_descriptor(port_, arg0);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        return wire.wire_wallet_descriptor(port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_String,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletDescriptorConstMeta,
+      constMeta: kWalletDescriptorConstMeta,
       argValues: [that],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletDescriptorConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_descriptor",
+  TaskConstMeta get kWalletDescriptorConstMeta => const TaskConstMeta(
+        debugName: "wallet_descriptor",
         argNames: ["that"],
       );
 
   @override
-  Future<LwkWallet> lwkWalletInit(
+  Future<Wallet> walletInit(
       {required Network network,
       required String dbpath,
       required Descriptor descriptor,
@@ -469,100 +465,100 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         var arg0 = cst_encode_network(network);
         var arg1 = cst_encode_String(dbpath);
         var arg2 = cst_encode_box_autoadd_descriptor(descriptor);
-        return wire.wire_lwk_wallet_init(port_, arg0, arg1, arg2);
+        return wire.wire_wallet_init(port_, arg0, arg1, arg2);
       },
       codec: DcoCodec(
-        decodeSuccessData: dco_decode_lwk_wallet,
+        decodeSuccessData: dco_decode_wallet,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletInitConstMeta,
+      constMeta: kWalletInitConstMeta,
       argValues: [network, dbpath, descriptor],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletInitConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_init",
+  TaskConstMeta get kWalletInitConstMeta => const TaskConstMeta(
+        debugName: "wallet_init",
         argNames: ["network", "dbpath", "descriptor"],
       );
 
   @override
-  Future<Uint8List> lwkWalletSignTx(
-      {required LwkWallet that,
+  Future<Uint8List> walletSignTx(
+      {required Wallet that,
       required Network network,
       required String pset,
       required String mnemonic,
       dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_network(network);
         var arg2 = cst_encode_String(pset);
         var arg3 = cst_encode_String(mnemonic);
-        return wire.wire_lwk_wallet_sign_tx(port_, arg0, arg1, arg2, arg3);
+        return wire.wire_wallet_sign_tx(port_, arg0, arg1, arg2, arg3);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_list_prim_u_8_strict,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletSignTxConstMeta,
+      constMeta: kWalletSignTxConstMeta,
       argValues: [that, network, pset, mnemonic],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletSignTxConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_sign_tx",
+  TaskConstMeta get kWalletSignTxConstMeta => const TaskConstMeta(
+        debugName: "wallet_sign_tx",
         argNames: ["that", "network", "pset", "mnemonic"],
       );
 
   @override
-  Future<void> lwkWalletSync(
-      {required LwkWallet that, required String electrumUrl, dynamic hint}) {
+  Future<void> walletSync(
+      {required Wallet that, required String electrumUrl, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_String(electrumUrl);
-        return wire.wire_lwk_wallet_sync(port_, arg0, arg1);
+        return wire.wire_wallet_sync(port_, arg0, arg1);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_unit,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletSyncConstMeta,
+      constMeta: kWalletSyncConstMeta,
       argValues: [that, electrumUrl],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletSyncConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_sync",
+  TaskConstMeta get kWalletSyncConstMeta => const TaskConstMeta(
+        debugName: "wallet_sync",
         argNames: ["that", "electrumUrl"],
       );
 
   @override
-  Future<List<Tx>> lwkWalletTxs({required LwkWallet that, dynamic hint}) {
+  Future<List<Tx>> walletTxs({required Wallet that, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_lwk_wallet(that);
-        return wire.wire_lwk_wallet_txs(port_, arg0);
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        return wire.wire_wallet_txs(port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_list_tx,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kLwkWalletTxsConstMeta,
+      constMeta: kWalletTxsConstMeta,
       argValues: [that],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kLwkWalletTxsConstMeta => const TaskConstMeta(
-        debugName: "lwk_wallet_txs",
+  TaskConstMeta get kWalletTxsConstMeta => const TaskConstMeta(
+        debugName: "wallet_txs",
         argNames: ["that"],
       );
 
@@ -619,15 +615,15 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  LwkWallet dco_decode_box_autoadd_lwk_wallet(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_lwk_wallet(raw);
-  }
-
-  @protected
   int dco_decode_box_autoadd_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
+  }
+
+  @protected
+  Wallet dco_decode_box_autoadd_wallet(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_wallet(raw);
   }
 
   @protected
@@ -697,17 +693,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
     return LwkError(
       msg: dco_decode_String(arr[0]),
-    );
-  }
-
-  @protected
-  LwkWallet dco_decode_lwk_wallet(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 1)
-      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
-    return LwkWallet(
-      inner: dco_decode_RustOpaque_Mutexlwk_wolletWollet(arr[0]),
     );
   }
 
@@ -823,6 +808,17 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  Wallet dco_decode_wallet(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return Wallet(
+      inner: dco_decode_RustOpaque_Mutexlwk_wolletWollet(arr[0]),
+    );
+  }
+
+  @protected
   MutexLwkWolletWollet sse_decode_RustOpaque_Mutexlwk_wolletWollet(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -864,15 +860,15 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  LwkWallet sse_decode_box_autoadd_lwk_wallet(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_lwk_wallet(deserializer));
-  }
-
-  @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_u_32(deserializer));
+  }
+
+  @protected
+  Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_wallet(deserializer));
   }
 
   @protected
@@ -955,13 +951,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_msg = sse_decode_String(deserializer);
     return LwkError(msg: var_msg);
-  }
-
-  @protected
-  LwkWallet sse_decode_lwk_wallet(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_inner = sse_decode_RustOpaque_Mutexlwk_wolletWollet(deserializer);
-    return LwkWallet(inner: var_inner);
   }
 
   @protected
@@ -1076,6 +1065,13 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  Wallet sse_decode_wallet(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_inner = sse_decode_RustOpaque_Mutexlwk_wolletWollet(deserializer);
+    return Wallet(inner: var_inner);
+  }
+
+  @protected
   bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8() != 0;
@@ -1166,16 +1162,15 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_lwk_wallet(
-      LwkWallet self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_lwk_wallet(self, serializer);
-  }
-
-  @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_32(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_wallet(self, serializer);
   }
 
   @protected
@@ -1250,12 +1245,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.msg, serializer);
-  }
-
-  @protected
-  void sse_encode_lwk_wallet(LwkWallet self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_RustOpaque_Mutexlwk_wolletWollet(self.inner, serializer);
   }
 
   @protected
@@ -1345,6 +1334,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   void sse_encode_usize(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint64(self);
+  }
+
+  @protected
+  void sse_encode_wallet(Wallet self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_RustOpaque_Mutexlwk_wolletWollet(self.inner, serializer);
   }
 
   @protected

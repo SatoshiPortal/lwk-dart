@@ -28,31 +28,30 @@ class MutexLwkWolletWollet extends RustOpaque {
   );
 }
 
-class LwkWallet {
+class Wallet {
   final MutexLwkWolletWollet inner;
 
-  const LwkWallet({
+  const Wallet({
     required this.inner,
   });
 
   Future<Address> address({required int index, dynamic hint}) =>
-      LwkCore.instance.api
-          .lwkWalletAddress(that: this, index: index, hint: hint);
+      LwkCore.instance.api.walletAddress(that: this, index: index, hint: hint);
 
   Future<Address> addressLastUnused({dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletAddressLastUnused(that: this, hint: hint);
+      LwkCore.instance.api.walletAddressLastUnused(that: this, hint: hint);
 
   Future<List<Balance>> balances({dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletBalances(that: this, hint: hint);
+      LwkCore.instance.api.walletBalances(that: this, hint: hint);
 
   Future<String> blindingKey({dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletBlindingKey(that: this, hint: hint);
+      LwkCore.instance.api.walletBlindingKey(that: this, hint: hint);
 
   static Future<String> broadcastTx(
           {required String electrumUrl,
           required List<int> txBytes,
           dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletBroadcastTx(
+      LwkCore.instance.api.walletBroadcastTx(
           electrumUrl: electrumUrl, txBytes: txBytes, hint: hint);
 
   Future<String> buildAssetTx(
@@ -61,7 +60,7 @@ class LwkWallet {
           required double absFee,
           required String asset,
           dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletBuildAssetTx(
+      LwkCore.instance.api.walletBuildAssetTx(
           that: this,
           sats: sats,
           outAddress: outAddress,
@@ -74,7 +73,7 @@ class LwkWallet {
           required String outAddress,
           required double absFee,
           dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletBuildLbtcTx(
+      LwkCore.instance.api.walletBuildLbtcTx(
           that: this,
           sats: sats,
           outAddress: outAddress,
@@ -82,18 +81,17 @@ class LwkWallet {
           hint: hint);
 
   Future<PsetAmounts> decodeTx({required String pset, dynamic hint}) =>
-      LwkCore.instance.api
-          .lwkWalletDecodeTx(that: this, pset: pset, hint: hint);
+      LwkCore.instance.api.walletDecodeTx(that: this, pset: pset, hint: hint);
 
   Future<String> descriptor({dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletDescriptor(that: this, hint: hint);
+      LwkCore.instance.api.walletDescriptor(that: this, hint: hint);
 
-  static Future<LwkWallet> init(
+  static Future<Wallet> init(
           {required Network network,
           required String dbpath,
           required Descriptor descriptor,
           dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletInit(
+      LwkCore.instance.api.walletInit(
           network: network, dbpath: dbpath, descriptor: descriptor, hint: hint);
 
   Future<Uint8List> signTx(
@@ -101,7 +99,7 @@ class LwkWallet {
           required String pset,
           required String mnemonic,
           dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletSignTx(
+      LwkCore.instance.api.walletSignTx(
           that: this,
           network: network,
           pset: pset,
@@ -110,10 +108,10 @@ class LwkWallet {
 
   Future<void> sync({required String electrumUrl, dynamic hint}) =>
       LwkCore.instance.api
-          .lwkWalletSync(that: this, electrumUrl: electrumUrl, hint: hint);
+          .walletSync(that: this, electrumUrl: electrumUrl, hint: hint);
 
   Future<List<Tx>> txs({dynamic hint}) =>
-      LwkCore.instance.api.lwkWalletTxs(that: this, hint: hint);
+      LwkCore.instance.api.walletTxs(that: this, hint: hint);
 
   @override
   int get hashCode => inner.hashCode;
@@ -121,7 +119,7 @@ class LwkWallet {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is LwkWallet &&
+      other is Wallet &&
           runtimeType == other.runtimeType &&
           inner == other.inner;
 }
