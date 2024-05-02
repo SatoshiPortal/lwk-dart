@@ -53,26 +53,51 @@ impl Wallet {
     ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
+        println!("---rust---Loading Db @ {} for {}", dbpath, descriptor);
+        let db = EncryptedFsPersister::new(dbpath, network.into(), &descriptor)?;
+        println!("---rust---Db Loaded");
+        println!("---rust---Initializing Wallet");
         let wollet = Wollet::new(
             network.into(),
-            EncryptedFsPersister::new(dbpath, network.into(), &descriptor)?,
+            db,
             &descriptor.clone().to_string(),
         )?;
-        Ok(Wallet {
-            inner: RustOpaque::new(Mutex::new(wollet)),
-        })
-    }
 
+        println!("---rust---Wallet Ready. Creating Wallet Struct.");
+
+        let opaque = RustOpaque::new(Mutex::new(wollet));
+        
+        println!("---rust---Created Opaque Mutex Wallet");
+
+        let wallet = Wallet {
+            inner: opaque,
+        };
+
+        println!("---rust---Wallet Struct Created");
+
+        Ok(wallet)
+    }
     pub fn sync(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
         let mut electrum_client: ElectrumClient =
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
+        println!("---rust---Locking Wallet");
+
         let mut wallet = self.get_wallet()?;
+        println!("---rust---Wallet Locked");
+        println!("---rust---Syncing Wallet");
+
         let update: Update = if let Some(value) = electrum_client.full_scan(&mut wallet)? {
+            println!("---rust---Has Update");
             value
         } else {
+            println!("---rust---No Update");
             return Ok(());
         };
-        Ok(wallet.apply_update(update)?)
+        println!("---rust---Wallet Synced");
+        println!("---rust---Updateing Wallet");
+        let _ = wallet.apply_update(update)?;
+        println!("---rust---Wallet Updated");
+        Ok(())
     }
 
     pub fn descriptor(&self) -> anyhow::Result<String, LwkError> {
@@ -165,23 +190,21 @@ impl Wallet {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn testable_wallets() {
-        let mnemonic = "fossil install fever ticket wisdom outer broken aspect lucky still flavor dial";
+        let mnemonic =
+            "fossil install fever ticket wisdom outer broken aspect lucky still flavor dial";
         let electrum_url = "blockstream.info:465".to_string();
         let desc = Descriptor::new_confidential(Network::Testnet, mnemonic.to_string()).expect("");
-        let wallet = Wallet::init(Network::Testnet, "/tmp/lwk".to_string(),desc).expect("");
+        let wallet = Wallet::init(Network::Testnet, "/tmp/lwk".to_string(), desc).expect("");
         let _ = wallet.sync(electrum_url);
         let _txs = wallet.txs();
         let balances = wallet.balances();
         let address = wallet.address_last_unused();
         println!("{:#?}", address);
         println!("{:#?}", balances);
-        
     }
-
 }
