@@ -104,6 +104,10 @@ impl Api {
         Wallet::retrieve_wallet(wallet_id)?.txs()
     }
 
+    pub fn utxos(wallet_id: String) -> anyhow::Result<Vec<Tx>, LwkError> {
+        Wallet::retrieve_wallet(wallet_id)?.utxos()
+    }
+
     pub fn build_lbtc_tx(
         wallet_id: String,
         sats: u64,

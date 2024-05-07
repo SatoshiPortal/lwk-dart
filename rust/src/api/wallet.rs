@@ -30,6 +30,7 @@ use super::types::Balances;
 use super::types::Network;
 use super::types::PsetAmounts;
 use super::types::Tx;
+use super::types::TxOut;
 
 pub struct Wallet {
     pub ptr: RustOpaque<Mutex<lwk_wollet::Wollet>>,
@@ -106,6 +107,12 @@ impl Wallet {
             .map(|x| Tx::from(x.to_owned()))
             .collect();
         Ok(txs)
+    }
+
+    pub fn utxos(&self) -> anyhow::Result<Vec<TxOut>, LwkError> {
+        let wallet_tx_outs = self.get_wallet().utxos()?;
+        let tx_outs = wallet_tx_outs.into_iter().map(TxOut::from).collect();
+        Ok(tx_outs)
     }
 
     pub fn build_lbtc_tx(
