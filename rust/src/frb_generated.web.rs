@@ -472,8 +472,9 @@ pub fn wire_wallet_init(
     network: i32,
     dbpath: String,
     descriptor: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    electrum_url: String,
 ) {
-    wire_wallet_init_impl(port_, network, dbpath, descriptor)
+    wire_wallet_init_impl(port_, network, dbpath, descriptor, electrum_url)
 }
 
 #[wasm_bindgen]

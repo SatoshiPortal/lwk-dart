@@ -321,6 +321,7 @@ fn wire_wallet_init_impl(
     network: impl CstDecode<crate::api::types::Network>,
     dbpath: impl CstDecode<String>,
     descriptor: impl CstDecode<crate::api::descriptor::Descriptor>,
+    electrum_url: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
@@ -332,9 +333,15 @@ fn wire_wallet_init_impl(
             let api_network = network.cst_decode();
             let api_dbpath = dbpath.cst_decode();
             let api_descriptor = descriptor.cst_decode();
+            let api_electrum_url = electrum_url.cst_decode();
             move |context| {
                 transform_result_dco((move || {
-                    crate::api::wallet::Wallet::init(api_network, api_dbpath, api_descriptor)
+                    crate::api::wallet::Wallet::init(
+                        api_network,
+                        api_dbpath,
+                        api_descriptor,
+                        api_electrum_url,
+                    )
                 })())
             }
         },

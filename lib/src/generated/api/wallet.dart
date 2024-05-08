@@ -90,9 +90,14 @@ class Wallet {
           {required Network network,
           required String dbpath,
           required Descriptor descriptor,
+          required String electrumUrl,
           dynamic hint}) =>
       LwkCore.instance.api.walletInit(
-          network: network, dbpath: dbpath, descriptor: descriptor, hint: hint);
+          network: network,
+          dbpath: dbpath,
+          descriptor: descriptor,
+          electrumUrl: electrumUrl,
+          hint: hint);
 
   Future<Uint8List> signTx(
           {required Network network,

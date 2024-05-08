@@ -51,24 +51,15 @@ impl Wallet {
         network: Network,
         dbpath: String,
         descriptor: Descriptor,
+        electrum_url: String,
     ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
         let db = FsPersister::new(dbpath, network.into(), &descriptor)?;
-        println!("---rust---Db Loaded");
-        println!("---rust---Initializing Wallet");
         let wollet = Wollet::new(network.into(), db, descriptor)?;
-
-        println!("---rust---Wallet Ready. Creating Wallet Struct.");
-
         let opaque = RustOpaque::new(Mutex::new(wollet));
-
-        println!("---rust---Created Opaque Mutex Wallet");
-
         let wallet = Wallet { inner: opaque };
-
-        println!("---rust---Wallet Struct Created");
-
+        wallet.sync(electrum_url)?;
         Ok(wallet)
     }
     pub fn sync(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
@@ -136,7 +127,10 @@ impl Wallet {
         let wallet = self.get_wallet()?;
         let tx_builder = wallet.tx_builder();
         let address = elements::Address::from_str(&out_address)?;
-        let pset = tx_builder.add_lbtc_recipient(&address, sats)?.fee_rate(Some(fee_rate)).finish()?;
+        let pset = tx_builder
+            .add_lbtc_recipient(&address, sats)?
+            .fee_rate(Some(fee_rate))
+            .finish()?;
         Ok(pset.to_string())
     }
 
@@ -151,7 +145,10 @@ impl Wallet {
         let tx_builder = wallet.tx_builder();
         let address = elements::Address::from_str(&out_address)?;
         let asset = elements::AssetId::from_str(&asset)?;
-        let pset = tx_builder.add_recipient(&address, sats, asset)?.fee_rate(Some(fee_rate)).finish()?;
+        let pset = tx_builder
+            .add_recipient(&address, sats, asset)?
+            .fee_rate(Some(fee_rate))
+            .finish()?;
         Ok(pset.to_string())
     }
 
@@ -202,7 +199,13 @@ mod tests {
             "fossil install fever ticket wisdom outer broken aspect lucky still flavor dial";
         let electrum_url = "blockstream.info:465".to_string();
         let desc = Descriptor::new_confidential(Network::Testnet, mnemonic.to_string()).expect("");
-        let wallet = Wallet::init(Network::Testnet, "/tmp/lwk".to_string(), desc).expect("");
+        let wallet = Wallet::init(
+            Network::Testnet,
+            "/tmp/lwk".to_string(),
+            desc,
+            electrum_url.clone(),
+        )
+        .expect("");
         let _ = wallet.sync(electrum_url);
         let _txs = wallet.txs();
         let balances = wallet.balances();

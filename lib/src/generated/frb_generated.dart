@@ -112,6 +112,7 @@ abstract class LwkCoreApi extends BaseApi {
       {required Network network,
       required String dbpath,
       required Descriptor descriptor,
+      required String electrumUrl,
       dynamic hint});
 
   Future<Uint8List> walletSignTx(
@@ -461,20 +462,22 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       {required Network network,
       required String dbpath,
       required Descriptor descriptor,
+      required String electrumUrl,
       dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_network(network);
         var arg1 = cst_encode_String(dbpath);
         var arg2 = cst_encode_box_autoadd_descriptor(descriptor);
-        return wire.wire_wallet_init(port_, arg0, arg1, arg2);
+        var arg3 = cst_encode_String(electrumUrl);
+        return wire.wire_wallet_init(port_, arg0, arg1, arg2, arg3);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_wallet,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kWalletInitConstMeta,
-      argValues: [network, dbpath, descriptor],
+      argValues: [network, dbpath, descriptor, electrumUrl],
       apiImpl: this,
       hint: hint,
     ));
@@ -482,7 +485,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
   TaskConstMeta get kWalletInitConstMeta => const TaskConstMeta(
         debugName: "wallet_init",
-        argNames: ["network", "dbpath", "descriptor"],
+        argNames: ["network", "dbpath", "descriptor", "electrumUrl"],
       );
 
   @override
