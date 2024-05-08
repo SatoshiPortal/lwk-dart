@@ -55,8 +55,8 @@ impl Wallet {
     ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
-        let db = FsPersister::new(dbpath, network.into(), &descriptor)?;
-        let wollet = Wollet::new(network.into(), db, descriptor)?;
+        // let db = FsPersister::new(dbpath.clone(), network.into(), &descriptor)?;
+        let wollet = Wollet::with_fs_persist(network.into(), descriptor, dbpath.clone())?;
         let opaque = RustOpaque::new(Mutex::new(wollet));
         let wallet = Wallet { inner: opaque };
         // wallet.sync(electrum_url)?;
