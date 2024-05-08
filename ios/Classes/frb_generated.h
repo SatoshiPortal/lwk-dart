@@ -126,14 +126,14 @@ void frbgen_lwk_dart_wire_wallet_build_asset_tx(int64_t port_,
                                                 struct wire_cst_wallet *that,
                                                 uint64_t sats,
                                                 struct wire_cst_list_prim_u_8_strict *out_address,
-                                                float abs_fee,
+                                                float fee_rate,
                                                 struct wire_cst_list_prim_u_8_strict *asset);
 
 void frbgen_lwk_dart_wire_wallet_build_lbtc_tx(int64_t port_,
                                                struct wire_cst_wallet *that,
                                                uint64_t sats,
                                                struct wire_cst_list_prim_u_8_strict *out_address,
-                                               float abs_fee);
+                                               float fee_rate);
 
 void frbgen_lwk_dart_wire_wallet_decode_tx(int64_t port_,
                                            struct wire_cst_wallet *that,

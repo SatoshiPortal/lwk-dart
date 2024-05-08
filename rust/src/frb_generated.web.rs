@@ -432,10 +432,10 @@ pub fn wire_wallet_build_asset_tx(
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     sats: u64,
     out_address: String,
-    abs_fee: f32,
+    fee_rate: f32,
     asset: String,
 ) {
-    wire_wallet_build_asset_tx_impl(port_, that, sats, out_address, abs_fee, asset)
+    wire_wallet_build_asset_tx_impl(port_, that, sats, out_address, fee_rate, asset)
 }
 
 #[wasm_bindgen]
@@ -444,9 +444,9 @@ pub fn wire_wallet_build_lbtc_tx(
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     sats: u64,
     out_address: String,
-    abs_fee: f32,
+    fee_rate: f32,
 ) {
-    wire_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, abs_fee)
+    wire_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, fee_rate)
 }
 
 #[wasm_bindgen]

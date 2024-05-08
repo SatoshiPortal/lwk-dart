@@ -8,7 +8,7 @@ use lwk_signer::SwSigner;
 // use lwk_wollet::elements_miniscript::descriptor;
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
-use lwk_wollet::EncryptedFsPersister;
+use lwk_wollet::FsPersister;
 use lwk_wollet::Update;
 use lwk_wollet::WolletDescriptor;
 
@@ -53,25 +53,18 @@ impl Wallet {
     ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
-        println!("---rust---Loading Db @ {} for {}", dbpath, descriptor);
-        let db = EncryptedFsPersister::new(dbpath, network.into(), &descriptor)?;
+        let db = FsPersister::new(dbpath, network.into(), &descriptor)?;
         println!("---rust---Db Loaded");
         println!("---rust---Initializing Wallet");
-        let wollet = Wollet::new(
-            network.into(),
-            db,
-            &descriptor.clone().to_string(),
-        )?;
+        let wollet = Wollet::new(network.into(), db, descriptor)?;
 
         println!("---rust---Wallet Ready. Creating Wallet Struct.");
 
         let opaque = RustOpaque::new(Mutex::new(wollet));
-        
+
         println!("---rust---Created Opaque Mutex Wallet");
 
-        let wallet = Wallet {
-            inner: opaque,
-        };
+        let wallet = Wallet { inner: opaque };
 
         println!("---rust---Wallet Struct Created");
 
@@ -137,11 +130,12 @@ impl Wallet {
         &self,
         sats: u64,
         out_address: String,
-        abs_fee: f32,
+        fee_rate: f32,
     ) -> anyhow::Result<String, LwkError> {
-        let pset: PartiallySignedTransaction =
-            self.get_wallet()?
-                .send_lbtc(sats, &out_address, Some(abs_fee))?;
+        let wallet = self.get_wallet()?;
+        let tx_builder = wallet.tx_builder();
+        let address = elements::Address::from_str(&out_address)?;
+        let pset = tx_builder.add_lbtc_recipient(&address, sats)?.fee_rate(Some(fee_rate)).finish()?;
         Ok(pset.to_string())
     }
 
@@ -149,12 +143,14 @@ impl Wallet {
         &self,
         sats: u64,
         out_address: String,
-        abs_fee: f32,
+        fee_rate: f32,
         asset: String,
     ) -> anyhow::Result<String, LwkError> {
-        let pset: PartiallySignedTransaction =
-            self.get_wallet()?
-                .send_asset(sats, &out_address, &asset, Some(abs_fee))?;
+        let wallet = self.get_wallet()?;
+        let tx_builder = wallet.tx_builder();
+        let address = elements::Address::from_str(&out_address)?;
+        let asset = elements::AssetId::from_str(&asset)?;
+        let pset = tx_builder.add_recipient(&address, sats, asset)?.fee_rate(Some(fee_rate)).finish()?;
         Ok(pset.to_string())
     }
 

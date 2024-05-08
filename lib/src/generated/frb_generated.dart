@@ -92,7 +92,7 @@ abstract class LwkCoreApi extends BaseApi {
       {required Wallet that,
       required int sats,
       required String outAddress,
-      required double absFee,
+      required double feeRate,
       required String asset,
       dynamic hint});
 
@@ -100,7 +100,7 @@ abstract class LwkCoreApi extends BaseApi {
       {required Wallet that,
       required int sats,
       required String outAddress,
-      required double absFee,
+      required double feeRate,
       dynamic hint});
 
   Future<PsetAmounts> walletDecodeTx(
@@ -346,7 +346,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       {required Wallet that,
       required int sats,
       required String outAddress,
-      required double absFee,
+      required double feeRate,
       required String asset,
       dynamic hint}) {
     return handler.executeNormal(NormalTask(
@@ -354,7 +354,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_u_64(sats);
         var arg2 = cst_encode_String(outAddress);
-        var arg3 = cst_encode_f_32(absFee);
+        var arg3 = cst_encode_f_32(feeRate);
         var arg4 = cst_encode_String(asset);
         return wire.wire_wallet_build_asset_tx(
             port_, arg0, arg1, arg2, arg3, arg4);
@@ -364,7 +364,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kWalletBuildAssetTxConstMeta,
-      argValues: [that, sats, outAddress, absFee, asset],
+      argValues: [that, sats, outAddress, feeRate, asset],
       apiImpl: this,
       hint: hint,
     ));
@@ -372,7 +372,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
   TaskConstMeta get kWalletBuildAssetTxConstMeta => const TaskConstMeta(
         debugName: "wallet_build_asset_tx",
-        argNames: ["that", "sats", "outAddress", "absFee", "asset"],
+        argNames: ["that", "sats", "outAddress", "feeRate", "asset"],
       );
 
   @override
@@ -380,14 +380,14 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       {required Wallet that,
       required int sats,
       required String outAddress,
-      required double absFee,
+      required double feeRate,
       dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_u_64(sats);
         var arg2 = cst_encode_String(outAddress);
-        var arg3 = cst_encode_f_32(absFee);
+        var arg3 = cst_encode_f_32(feeRate);
         return wire.wire_wallet_build_lbtc_tx(port_, arg0, arg1, arg2, arg3);
       },
       codec: DcoCodec(
@@ -395,7 +395,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kWalletBuildLbtcTxConstMeta,
-      argValues: [that, sats, outAddress, absFee],
+      argValues: [that, sats, outAddress, feeRate],
       apiImpl: this,
       hint: hint,
     ));
@@ -403,7 +403,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
   TaskConstMeta get kWalletBuildLbtcTxConstMeta => const TaskConstMeta(
         debugName: "wallet_build_lbtc_tx",
-        argNames: ["that", "sats", "outAddress", "absFee"],
+        argNames: ["that", "sats", "outAddress", "feeRate"],
       );
 
   @override

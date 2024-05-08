@@ -519,14 +519,14 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire_wallet_broadcast_tx(port_, electrum_url, tx_bytes);
 
   void wire_wallet_build_asset_tx(NativePortType port_, List<dynamic> that,
-          Object sats, String out_address, double abs_fee, String asset) =>
+          Object sats, String out_address, double fee_rate, String asset) =>
       wasmModule.wire_wallet_build_asset_tx(
-          port_, that, sats, out_address, abs_fee, asset);
+          port_, that, sats, out_address, fee_rate, asset);
 
   void wire_wallet_build_lbtc_tx(NativePortType port_, List<dynamic> that,
-          Object sats, String out_address, double abs_fee) =>
+          Object sats, String out_address, double fee_rate) =>
       wasmModule.wire_wallet_build_lbtc_tx(
-          port_, that, sats, out_address, abs_fee);
+          port_, that, sats, out_address, fee_rate);
 
   void wire_wallet_decode_tx(
           NativePortType port_, List<dynamic> that, String pset) =>
@@ -603,11 +603,11 @@ class LwkCoreWasmModule implements WasmModule {
       List<dynamic> that,
       Object sats,
       String out_address,
-      double abs_fee,
+      double fee_rate,
       String asset);
 
   external void wire_wallet_build_lbtc_tx(NativePortType port_,
-      List<dynamic> that, Object sats, String out_address, double abs_fee);
+      List<dynamic> that, Object sats, String out_address, double fee_rate);
 
   external void wire_wallet_decode_tx(
       NativePortType port_, List<dynamic> that, String pset);

@@ -11,9 +11,9 @@ doctest = false
 crate-type = ["staticlib", "cdylib"] 
 
 [dependencies]
-lwk_wollet = { version = "0.2.0" }
-lwk_signer = { version = "0.2.0" }
-lwk_common = {version = "0.2.0" }
+lwk_wollet = { version = "0.4.0" }
+lwk_signer = { version = "0.4.0" }
+lwk_common = {version = "0.4.0" }
 thiserror = "1.0.50"
 elements = "0.24.0"
 flutter_rust_bridge = "=2.0.0-dev.31"
