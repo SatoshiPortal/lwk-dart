@@ -505,6 +505,14 @@ pub fn wire_wallet_txs(
 }
 
 #[wasm_bindgen]
+pub fn wire_wallet_utxos(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+) {
+    wire_wallet_utxos_impl(port_, that)
+}
+
+#[wasm_bindgen]
 pub fn rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(
     ptr: *const std::ffi::c_void,
 ) {

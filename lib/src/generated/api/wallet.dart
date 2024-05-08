@@ -113,6 +113,9 @@ class Wallet {
   Future<List<Tx>> txs({dynamic hint}) =>
       LwkCore.instance.api.walletTxs(that: this, hint: hint);
 
+  Future<List<TxOut>> utxos({dynamic hint}) =>
+      LwkCore.instance.api.walletUtxos(that: this, hint: hint);
+
   @override
   int get hashCode => inner.hashCode;
 

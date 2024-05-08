@@ -158,6 +158,8 @@ void frbgen_lwk_dart_wire_wallet_sync(int64_t port_,
 
 void frbgen_lwk_dart_wire_wallet_txs(int64_t port_, struct wire_cst_wallet *that);
 
+void frbgen_lwk_dart_wire_wallet_utxos(int64_t port_, struct wire_cst_wallet *that);
+
 void frbgen_lwk_dart_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(const void *ptr);
 
 void frbgen_lwk_dart_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet(const void *ptr);
@@ -205,6 +207,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_sign_tx);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_sync);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_txs);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_utxos);
     dummy_var ^= ((int64_t) (void*) store_dart_post_cobject);
     return dummy_var;
 }

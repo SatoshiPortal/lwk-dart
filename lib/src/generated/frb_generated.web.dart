@@ -550,6 +550,9 @@ class LwkCoreWire implements BaseWire {
   void wire_wallet_txs(NativePortType port_, List<dynamic> that) =>
       wasmModule.wire_wallet_txs(port_, that);
 
+  void wire_wallet_utxos(NativePortType port_, List<dynamic> that) =>
+      wasmModule.wire_wallet_utxos(port_, that);
+
   void rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(
           dynamic ptr) =>
       wasmModule
@@ -625,6 +628,8 @@ class LwkCoreWasmModule implements WasmModule {
       NativePortType port_, List<dynamic> that, String electrum_url);
 
   external void wire_wallet_txs(NativePortType port_, List<dynamic> that);
+
+  external void wire_wallet_utxos(NativePortType port_, List<dynamic> that);
 
   external void
       rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(
