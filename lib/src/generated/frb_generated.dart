@@ -65,7 +65,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
 }
 
 abstract class LwkCoreApi extends BaseApi {
-  DescriptorBase descriptorBaseNew(
+  Future<Descriptor> descriptorNewConfidential(
       {required Network network, required String mnemonic, dynamic hint});
 
   Future<Address> addressAddressFromScript(
@@ -108,10 +108,10 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<String> walletDescriptor({required Wallet that, dynamic hint});
 
-  Wallet walletNew(
+  Future<Wallet> walletInit(
       {required Network network,
       required String dbpath,
-      required DescriptorBase descriptor,
+      required Descriptor descriptor,
       dynamic hint});
 
   Future<Uint8List> walletSignTx(
@@ -145,27 +145,27 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   });
 
   @override
-  DescriptorBase descriptorBaseNew(
+  Future<Descriptor> descriptorNewConfidential(
       {required Network network, required String mnemonic, dynamic hint}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
         var arg0 = cst_encode_network(network);
         var arg1 = cst_encode_String(mnemonic);
-        return wire.wire_descriptor_base_new(arg0, arg1);
+        return wire.wire_descriptor_new_confidential(port_, arg0, arg1);
       },
       codec: DcoCodec(
-        decodeSuccessData: dco_decode_descriptor_base,
+        decodeSuccessData: dco_decode_descriptor,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kDescriptorBaseNewConstMeta,
+      constMeta: kDescriptorNewConfidentialConstMeta,
       argValues: [network, mnemonic],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kDescriptorBaseNewConstMeta => const TaskConstMeta(
-        debugName: "descriptor_base_new",
+  TaskConstMeta get kDescriptorNewConfidentialConstMeta => const TaskConstMeta(
+        debugName: "descriptor_new_confidential",
         argNames: ["network", "mnemonic"],
       );
 
@@ -455,31 +455,31 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  Wallet walletNew(
+  Future<Wallet> walletInit(
       {required Network network,
       required String dbpath,
-      required DescriptorBase descriptor,
+      required Descriptor descriptor,
       dynamic hint}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
         var arg0 = cst_encode_network(network);
         var arg1 = cst_encode_String(dbpath);
-        var arg2 = cst_encode_box_autoadd_descriptor_base(descriptor);
-        return wire.wire_wallet_new(arg0, arg1, arg2);
+        var arg2 = cst_encode_box_autoadd_descriptor(descriptor);
+        return wire.wire_wallet_init(port_, arg0, arg1, arg2);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_wallet,
         decodeErrorData: dco_decode_lwk_error,
       ),
-      constMeta: kWalletNewConstMeta,
+      constMeta: kWalletInitConstMeta,
       argValues: [network, dbpath, descriptor],
       apiImpl: this,
       hint: hint,
     ));
   }
 
-  TaskConstMeta get kWalletNewConstMeta => const TaskConstMeta(
-        debugName: "wallet_new",
+  TaskConstMeta get kWalletInitConstMeta => const TaskConstMeta(
+        debugName: "wallet_init",
         argNames: ["network", "dbpath", "descriptor"],
       );
 
@@ -609,9 +609,9 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  DescriptorBase dco_decode_box_autoadd_descriptor_base(dynamic raw) {
+  Descriptor dco_decode_box_autoadd_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_descriptor_base(raw);
+    return dco_decode_descriptor(raw);
   }
 
   @protected
@@ -627,12 +627,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  DescriptorBase dco_decode_descriptor_base(dynamic raw) {
+  Descriptor dco_decode_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
     if (arr.length != 1)
       throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
-    return DescriptorBase.raw(
+    return Descriptor(
       ctDescriptor: dco_decode_String(arr[0]),
     );
   }
@@ -813,8 +813,8 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     final arr = raw as List<dynamic>;
     if (arr.length != 1)
       throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
-    return Wallet.raw(
-      ptr: dco_decode_RustOpaque_Mutexlwk_wolletWollet(arr[0]),
+    return Wallet(
+      inner: dco_decode_RustOpaque_Mutexlwk_wolletWollet(arr[0]),
     );
   }
 
@@ -854,10 +854,9 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  DescriptorBase sse_decode_box_autoadd_descriptor_base(
-      SseDeserializer deserializer) {
+  Descriptor sse_decode_box_autoadd_descriptor(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_descriptor_base(deserializer));
+    return (sse_decode_descriptor(deserializer));
   }
 
   @protected
@@ -873,10 +872,10 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  DescriptorBase sse_decode_descriptor_base(SseDeserializer deserializer) {
+  Descriptor sse_decode_descriptor(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_ctDescriptor = sse_decode_String(deserializer);
-    return DescriptorBase.raw(ctDescriptor: var_ctDescriptor);
+    return Descriptor(ctDescriptor: var_ctDescriptor);
   }
 
   @protected
@@ -1068,8 +1067,8 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   @protected
   Wallet sse_decode_wallet(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_ptr = sse_decode_RustOpaque_Mutexlwk_wolletWollet(deserializer);
-    return Wallet.raw(ptr: var_ptr);
+    var var_inner = sse_decode_RustOpaque_Mutexlwk_wolletWollet(deserializer);
+    return Wallet(inner: var_inner);
   }
 
   @protected
@@ -1156,10 +1155,10 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_descriptor_base(
-      DescriptorBase self, SseSerializer serializer) {
+  void sse_encode_box_autoadd_descriptor(
+      Descriptor self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_descriptor_base(self, serializer);
+    sse_encode_descriptor(self, serializer);
   }
 
   @protected
@@ -1175,8 +1174,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  void sse_encode_descriptor_base(
-      DescriptorBase self, SseSerializer serializer) {
+  void sse_encode_descriptor(Descriptor self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.ctDescriptor, serializer);
   }
@@ -1341,7 +1339,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   @protected
   void sse_encode_wallet(Wallet self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_RustOpaque_Mutexlwk_wolletWollet(self.ptr, serializer);
+    sse_encode_RustOpaque_Mutexlwk_wolletWollet(self.inner, serializer);
   }
 
   @protected

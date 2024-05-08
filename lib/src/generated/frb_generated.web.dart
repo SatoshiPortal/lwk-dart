@@ -37,7 +37,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Balance dco_decode_balance(dynamic raw);
 
   @protected
-  DescriptorBase dco_decode_box_autoadd_descriptor_base(dynamic raw);
+  Descriptor dco_decode_box_autoadd_descriptor(dynamic raw);
 
   @protected
   int dco_decode_box_autoadd_u_32(dynamic raw);
@@ -46,7 +46,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet dco_decode_box_autoadd_wallet(dynamic raw);
 
   @protected
-  DescriptorBase dco_decode_descriptor_base(dynamic raw);
+  Descriptor dco_decode_descriptor(dynamic raw);
 
   @protected
   double dco_decode_f_32(dynamic raw);
@@ -128,8 +128,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Balance sse_decode_balance(SseDeserializer deserializer);
 
   @protected
-  DescriptorBase sse_decode_box_autoadd_descriptor_base(
-      SseDeserializer deserializer);
+  Descriptor sse_decode_box_autoadd_descriptor(SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
@@ -138,7 +137,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer);
 
   @protected
-  DescriptorBase sse_decode_descriptor_base(SseDeserializer deserializer);
+  Descriptor sse_decode_descriptor(SseDeserializer deserializer);
 
   @protected
   double sse_decode_f_32(SseDeserializer deserializer);
@@ -232,9 +231,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
-  List<dynamic> cst_encode_box_autoadd_descriptor_base(DescriptorBase raw) {
+  List<dynamic> cst_encode_box_autoadd_descriptor(Descriptor raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return cst_encode_descriptor_base(raw);
+    return cst_encode_descriptor(raw);
   }
 
   @protected
@@ -250,7 +249,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
-  List<dynamic> cst_encode_descriptor_base(DescriptorBase raw) {
+  List<dynamic> cst_encode_descriptor(Descriptor raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [cst_encode_String(raw.ctDescriptor)];
   }
@@ -360,7 +359,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   @protected
   List<dynamic> cst_encode_wallet(Wallet raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return [cst_encode_RustOpaque_Mutexlwk_wolletWollet(raw.ptr)];
+    return [cst_encode_RustOpaque_Mutexlwk_wolletWollet(raw.inner)];
   }
 
   @protected
@@ -401,8 +400,8 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_balance(Balance self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_descriptor_base(
-      DescriptorBase self, SseSerializer serializer);
+  void sse_encode_box_autoadd_descriptor(
+      Descriptor self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
@@ -411,8 +410,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer);
 
   @protected
-  void sse_encode_descriptor_base(
-      DescriptorBase self, SseSerializer serializer);
+  void sse_encode_descriptor(Descriptor self, SseSerializer serializer);
 
   @protected
   void sse_encode_f_32(double self, SseSerializer serializer);
@@ -490,9 +488,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 class LwkCoreWire implements BaseWire {
   LwkCoreWire.fromExternalLibrary(ExternalLibrary lib);
 
-  dynamic /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
-      wire_descriptor_base_new(int network, String mnemonic) =>
-          wasmModule.wire_descriptor_base_new(network, mnemonic);
+  void wire_descriptor_new_confidential(
+          NativePortType port_, int network, String mnemonic) =>
+      wasmModule.wire_descriptor_new_confidential(port_, network, mnemonic);
 
   void wire_address_address_from_script(NativePortType port_, int network,
           String script, String blinding_key) =>
@@ -537,9 +535,9 @@ class LwkCoreWire implements BaseWire {
   void wire_wallet_descriptor(NativePortType port_, List<dynamic> that) =>
       wasmModule.wire_wallet_descriptor(port_, that);
 
-  dynamic /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
-      wire_wallet_new(int network, String dbpath, List<dynamic> descriptor) =>
-          wasmModule.wire_wallet_new(network, dbpath, descriptor);
+  void wire_wallet_init(NativePortType port_, int network, String dbpath,
+          List<dynamic> descriptor) =>
+      wasmModule.wire_wallet_init(port_, network, dbpath, descriptor);
 
   void wire_wallet_sign_tx(NativePortType port_, List<dynamic> that,
           int network, String pset, String mnemonic) =>
@@ -577,8 +575,8 @@ class LwkCoreWasmModule implements WasmModule {
   @override
   external LwkCoreWasmModule bind(dynamic thisArg, String moduleName);
 
-  external dynamic /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
-      wire_descriptor_base_new(int network, String mnemonic);
+  external void wire_descriptor_new_confidential(
+      NativePortType port_, int network, String mnemonic);
 
   external void wire_address_address_from_script(
       NativePortType port_, int network, String script, String blinding_key);
@@ -617,8 +615,8 @@ class LwkCoreWasmModule implements WasmModule {
   external void wire_wallet_descriptor(
       NativePortType port_, List<dynamic> that);
 
-  external dynamic /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
-      wire_wallet_new(int network, String dbpath, List<dynamic> descriptor);
+  external void wire_wallet_init(NativePortType port_, int network,
+      String dbpath, List<dynamic> descriptor);
 
   external void wire_wallet_sign_tx(NativePortType port_, List<dynamic> that,
       int network, String pset, String mnemonic);

@@ -1,8 +1,10 @@
 import 'dart:io';
+// import 'dart:typed_data';
 // import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
-import 'package:lwk_dart/src/generated/api/types.dart';
+import 'package:lwk_dart/lwk_dart.dart';
+// import 'package:lwk_dart/src/generated/api/types.dart';
 // import 'package:lwk_dart/src/generated/api/wallet.dart';
-import 'package:lwk_dart/src/utils/loader.dart';
+// import 'package:lwk_dart/src/utils/loader.dart';
 // import 'generated/frb_generated.dart';
 
 const lBtcAssetId =
@@ -40,192 +42,25 @@ class BalanceUtils {
   }
 }
 
-// class Wallet extends WalletBase {
-//   Wallet._({required super.ptr});
-
-//   static Future<Wallet> create({
-//     required Network network,
-//     required String dbPath,
-//     required String descriptor,
-//     dynamic hint,
-//   }) async {
-//     try {
-//       await LwkCore.init();
-//       final res = await WalletBase(
-//         network: network,
-//         dbPath: dbPath,
-//         descriptor: descriptor,
-//       );
-//       return Wallet._(ptr: res.ptr);
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<void> sync(
-//     String electrumUrl,
-//   ) async {
-//     try {
-//       final res = await ffi.syncStaticMethodApi(
-//         walletId: _liquidWallet,
-//         electrumUrl: electrumUrl,
-//       );
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<Address> addressAtIndex(int index) async {
-//     try {
-//       final res = await ffi.addressStaticMethodApi(
-//           walletId: _liquidWallet, index: index);
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<Address> lastUnusedAddress() async {
-//     try {
-//       final res = await ffi.addressLastUnusedStaticMethodApi(
-//         walletId: _liquidWallet,
-//       );
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<String> descriptor() async {
-//     try {
-//       final res = await ffi.walletDescriptorStaticMethodApi(
-//         walletId: _liquidWallet,
-//       );
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<String> blinding_key() async {
-//     try {
-//       final res = await ffi.blindingKeyStaticMethodApi(
-//         walletId: _liquidWallet,
-//       );
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<Balances> balance() async {
-//     try {
-//       final res = await ffi.balanceStaticMethodApi(walletId: _liquidWallet);
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<List<Tx>> txs() async {
-//     try {
-//       final res = await ffi.txsStaticMethodApi(walletId: _liquidWallet);
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<String> build_lbtc_tx({
-//     required int sats,
-//     required String outAddress,
-//     required double absFee,
-//   }) async {
-//     try {
-//       final res = await ffi.buildLbtcTxStaticMethodApi(
-//         walletId: _liquidWallet,
-//         sats: sats,
-//         outAddress: outAddress,
-//         absFee: absFee,
-//       );
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<String> build_asset_tx({
-//     required int sats,
-//     required String outAddress,
-//     required double absFee,
-//     required String assetId,
-//   }) async {
-//     try {
-//       final res = await ffi.buildAssetTxStaticMethodApi(
-//         walletId: _liquidWallet,
-//         sats: sats,
-//         outAddress: outAddress,
-//         absFee: absFee,
-//         assetId: assetId,
-//       );
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<PsetAmounts> decode({required String pset}) async {
-//     try {
-//       final res = await ffi.decodeTxStaticMethodApi(
-//         walletId: _liquidWallet,
-//         pset: pset,
-//       );
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<Uint8List> sign({
-//     required Network network,
-//     required String pset,
-//     required String mnemonic,
-//   }) async {
-//     try {
-//       final res = await ffi.signTxStaticMethodApi(
-//         walletId: _liquidWallet,
-//         network: network,
-//         pset: pset,
-//         mnemonic: mnemonic,
-//       );
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-
-//   Future<String> broadcast({
-//     required String electrumUrl,
-//     required Uint8List txBytes,
-//   }) async {
-//     try {
-//       final res = await ffi.broadcastTxStaticMethodApi(
-//           electrumUrl: electrumUrl, txBytes: txBytes);
-//       return res;
-//     } catch (e) {
-//       rethrow;
-//     }
+// Future<String> broadcast({
+//   required String electrumUrl,
+//   required Uint8List txBytes,
+// }) async {
+//   try {
+//     final res =
+//         await LwkWallet.broadcastTx(electrumUrl: electrumUrl, txBytes: txBytes);
+//     return res;
+//   } catch (e) {
+//     rethrow;
 //   }
 // }
-
 // Future<Address> scriptToAddress({
 //   required Network network,
 //   required String script,
 //   String? blindingKey,
 // }) async {
 //   try {
-//     LwkCore.init();
+//     // LwkCore.init();
 //     final res = await ffi.addressFromScriptStaticMethodApi(
 //       script: script,
 //       network: network,

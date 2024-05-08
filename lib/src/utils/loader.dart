@@ -98,7 +98,7 @@ class LibLwk {
         await LwkCore.init(externalLibrary: Dylib.getDylib());
       }
     } catch (e) {
-      throw Exception("Failed to initialize boltz-client");
+      throw Exception("Failed to initialize lwk.");
     }
   }
 }

@@ -39,22 +39,25 @@ flutter_rust_bridge::frb_generated_default_handler!();
 
 // Section: wire_funcs
 
-fn wire_descriptor_base_new_impl(
+fn wire_descriptor_new_confidential_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
     network: impl CstDecode<crate::api::types::Network>,
     mnemonic: impl CstDecode<String>,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "descriptor_base_new",
-            port: None,
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+            debug_name: "descriptor_new_confidential",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
             let api_network = network.cst_decode();
             let api_mnemonic = mnemonic.cst_decode();
-            transform_result_dco((move || {
-                crate::api::descriptor::DescriptorBase::new(api_network, api_mnemonic)
-            })())
+            move |context| {
+                transform_result_dco((move || {
+                    crate::api::descriptor::Descriptor::new_confidential(api_network, api_mnemonic)
+                })())
+            }
         },
     )
 }
@@ -313,24 +316,27 @@ fn wire_wallet_descriptor_impl(
         },
     )
 }
-fn wire_wallet_new_impl(
+fn wire_wallet_init_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
     network: impl CstDecode<crate::api::types::Network>,
     dbpath: impl CstDecode<String>,
-    descriptor: impl CstDecode<crate::api::descriptor::DescriptorBase>,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+    descriptor: impl CstDecode<crate::api::descriptor::Descriptor>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_new",
-            port: None,
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+            debug_name: "wallet_init",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
             let api_network = network.cst_decode();
             let api_dbpath = dbpath.cst_decode();
             let api_descriptor = descriptor.cst_decode();
-            transform_result_dco((move || {
-                crate::api::wallet::Wallet::new(api_network, api_dbpath, api_descriptor)
-            })())
+            move |context| {
+                transform_result_dco((move || {
+                    crate::api::wallet::Wallet::init(api_network, api_dbpath, api_descriptor)
+                })())
+            }
         },
     )
 }
@@ -502,11 +508,11 @@ impl SseDecode for crate::api::types::Balance {
     }
 }
 
-impl SseDecode for crate::api::descriptor::DescriptorBase {
+impl SseDecode for crate::api::descriptor::Descriptor {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_ctDescriptor = <String>::sse_decode(deserializer);
-        return crate::api::descriptor::DescriptorBase {
+        return crate::api::descriptor::Descriptor {
             ct_descriptor: var_ctDescriptor,
         };
     }
@@ -726,8 +732,8 @@ impl SseDecode for usize {
 impl SseDecode for crate::api::wallet::Wallet {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_ptr = <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_decode(deserializer);
-        return crate::api::wallet::Wallet { ptr: var_ptr };
+        let mut var_inner = <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_decode(deserializer);
+        return crate::api::wallet::Wallet { inner: var_inner };
     }
 }
 
@@ -799,19 +805,19 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::Balance> for crate::ap
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::descriptor::DescriptorBase {
+impl flutter_rust_bridge::IntoDart for crate::api::descriptor::Descriptor {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [self.ct_descriptor.into_into_dart().into_dart()].into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::descriptor::DescriptorBase
+    for crate::api::descriptor::Descriptor
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::descriptor::DescriptorBase>
-    for crate::api::descriptor::DescriptorBase
+impl flutter_rust_bridge::IntoIntoDart<crate::api::descriptor::Descriptor>
+    for crate::api::descriptor::Descriptor
 {
-    fn into_into_dart(self) -> crate::api::descriptor::DescriptorBase {
+    fn into_into_dart(self) -> crate::api::descriptor::Descriptor {
         self
     }
 }
@@ -948,7 +954,7 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::TxOutSecrets>
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::wallet::Wallet {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        [self.ptr.into_into_dart().into_dart()].into_dart()
+        [self.inner.into_into_dart().into_dart()].into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::wallet::Wallet {}
@@ -991,7 +997,7 @@ impl SseEncode for crate::api::types::Balance {
     }
 }
 
-impl SseEncode for crate::api::descriptor::DescriptorBase {
+impl SseEncode for crate::api::descriptor::Descriptor {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.ct_descriptor, serializer);
@@ -1180,7 +1186,7 @@ impl SseEncode for usize {
 impl SseEncode for crate::api::wallet::Wallet {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_encode(self.ptr, serializer);
+        <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_encode(self.inner, serializer);
     }
 }
 

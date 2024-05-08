@@ -64,11 +64,11 @@ impl CstDecode<crate::api::types::Balance>
         }
     }
 }
-impl CstDecode<crate::api::descriptor::DescriptorBase>
+impl CstDecode<crate::api::descriptor::Descriptor>
     for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
 {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> crate::api::descriptor::DescriptorBase {
+    fn cst_decode(self) -> crate::api::descriptor::Descriptor {
         let self_ = self
             .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
             .unwrap();
@@ -78,7 +78,7 @@ impl CstDecode<crate::api::descriptor::DescriptorBase>
             "Expected 1 elements, got {}",
             self_.length()
         );
-        crate::api::descriptor::DescriptorBase {
+        crate::api::descriptor::Descriptor {
             ct_descriptor: self_.get(0).cst_decode(),
         }
     }
@@ -268,7 +268,7 @@ impl CstDecode<crate::api::wallet::Wallet>
             self_.length()
         );
         crate::api::wallet::Wallet {
-            ptr: self_.get(0).cst_decode(),
+            inner: self_.get(0).cst_decode(),
         }
     }
 }
@@ -358,11 +358,12 @@ impl CstDecode<usize> for flutter_rust_bridge::for_generated::wasm_bindgen::JsVa
 }
 
 #[wasm_bindgen]
-pub fn wire_descriptor_base_new(
+pub fn wire_descriptor_new_confidential(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
     network: i32,
     mnemonic: String,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-    wire_descriptor_base_new_impl(network, mnemonic)
+) {
+    wire_descriptor_new_confidential_impl(port_, network, mnemonic)
 }
 
 #[wasm_bindgen]
@@ -466,12 +467,13 @@ pub fn wire_wallet_descriptor(
 }
 
 #[wasm_bindgen]
-pub fn wire_wallet_new(
+pub fn wire_wallet_init(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
     network: i32,
     dbpath: String,
     descriptor: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-    wire_wallet_new_impl(network, dbpath, descriptor)
+) {
+    wire_wallet_init_impl(port_, network, dbpath, descriptor)
 }
 
 #[wasm_bindgen]

@@ -38,7 +38,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Balance dco_decode_balance(dynamic raw);
 
   @protected
-  DescriptorBase dco_decode_box_autoadd_descriptor_base(dynamic raw);
+  Descriptor dco_decode_box_autoadd_descriptor(dynamic raw);
 
   @protected
   int dco_decode_box_autoadd_u_32(dynamic raw);
@@ -47,7 +47,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet dco_decode_box_autoadd_wallet(dynamic raw);
 
   @protected
-  DescriptorBase dco_decode_descriptor_base(dynamic raw);
+  Descriptor dco_decode_descriptor(dynamic raw);
 
   @protected
   double dco_decode_f_32(dynamic raw);
@@ -129,8 +129,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Balance sse_decode_balance(SseDeserializer deserializer);
 
   @protected
-  DescriptorBase sse_decode_box_autoadd_descriptor_base(
-      SseDeserializer deserializer);
+  Descriptor sse_decode_box_autoadd_descriptor(SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
@@ -139,7 +138,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer);
 
   @protected
-  DescriptorBase sse_decode_descriptor_base(SseDeserializer deserializer);
+  Descriptor sse_decode_descriptor(SseDeserializer deserializer);
 
   @protected
   double sse_decode_f_32(SseDeserializer deserializer);
@@ -217,11 +216,11 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_descriptor_base> cst_encode_box_autoadd_descriptor_base(
-      DescriptorBase raw) {
+  ffi.Pointer<wire_cst_descriptor> cst_encode_box_autoadd_descriptor(
+      Descriptor raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_autoadd_descriptor_base();
-    cst_api_fill_to_wire_descriptor_base(raw, ptr.ref);
+    final ptr = wire.cst_new_box_autoadd_descriptor();
+    cst_api_fill_to_wire_descriptor(raw, ptr.ref);
     return ptr;
   }
 
@@ -320,9 +319,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_box_autoadd_descriptor_base(
-      DescriptorBase apiObj, ffi.Pointer<wire_cst_descriptor_base> wireObj) {
-    cst_api_fill_to_wire_descriptor_base(apiObj, wireObj.ref);
+  void cst_api_fill_to_wire_box_autoadd_descriptor(
+      Descriptor apiObj, ffi.Pointer<wire_cst_descriptor> wireObj) {
+    cst_api_fill_to_wire_descriptor(apiObj, wireObj.ref);
   }
 
   @protected
@@ -332,8 +331,8 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_descriptor_base(
-      DescriptorBase apiObj, wire_cst_descriptor_base wireObj) {
+  void cst_api_fill_to_wire_descriptor(
+      Descriptor apiObj, wire_cst_descriptor wireObj) {
     wireObj.ct_descriptor = cst_encode_String(apiObj.ctDescriptor);
   }
 
@@ -387,7 +386,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_api_fill_to_wire_wallet(Wallet apiObj, wire_cst_wallet wireObj) {
-    wireObj.ptr = cst_encode_RustOpaque_Mutexlwk_wolletWollet(apiObj.ptr);
+    wireObj.inner = cst_encode_RustOpaque_Mutexlwk_wolletWollet(apiObj.inner);
   }
 
   @protected
@@ -428,8 +427,8 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_balance(Balance self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_descriptor_base(
-      DescriptorBase self, SseSerializer serializer);
+  void sse_encode_box_autoadd_descriptor(
+      Descriptor self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
@@ -438,8 +437,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer);
 
   @protected
-  void sse_encode_descriptor_base(
-      DescriptorBase self, SseSerializer serializer);
+  void sse_encode_descriptor(Descriptor self, SseSerializer serializer);
 
   @protected
   void sse_encode_f_32(double self, SseSerializer serializer);
@@ -553,25 +551,27 @@ class LwkCoreWire implements BaseWire {
   late final _store_dart_post_cobject = _store_dart_post_cobjectPtr
       .asFunction<void Function(DartPostCObjectFnType)>();
 
-  WireSyncRust2DartDco wire_descriptor_base_new(
+  void wire_descriptor_new_confidential(
+    int port_,
     int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> mnemonic,
   ) {
-    return _wire_descriptor_base_new(
+    return _wire_descriptor_new_confidential(
+      port_,
       network,
       mnemonic,
     );
   }
 
-  late final _wire_descriptor_base_newPtr = _lookup<
+  late final _wire_descriptor_new_confidentialPtr = _lookup<
           ffi.NativeFunction<
-              WireSyncRust2DartDco Function(
-                  ffi.Int32, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
-      'frbgen_lwk_dart_wire_descriptor_base_new');
-  late final _wire_descriptor_base_new =
-      _wire_descriptor_base_newPtr.asFunction<
-          WireSyncRust2DartDco Function(
-              int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+              ffi.Void Function(ffi.Int64, ffi.Int32,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+      'frbgen_lwk_dart_wire_descriptor_new_confidential');
+  late final _wire_descriptor_new_confidential =
+      _wire_descriptor_new_confidentialPtr.asFunction<
+          void Function(
+              int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   void wire_address_address_from_script(
     int port_,
@@ -818,30 +818,31 @@ class LwkCoreWire implements BaseWire {
   late final _wire_wallet_descriptor = _wire_wallet_descriptorPtr
       .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
 
-  WireSyncRust2DartDco wire_wallet_new(
+  void wire_wallet_init(
+    int port_,
     int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> dbpath,
-    ffi.Pointer<wire_cst_descriptor_base> descriptor,
+    ffi.Pointer<wire_cst_descriptor> descriptor,
   ) {
-    return _wire_wallet_new(
+    return _wire_wallet_init(
+      port_,
       network,
       dbpath,
       descriptor,
     );
   }
 
-  late final _wire_wallet_newPtr = _lookup<
+  late final _wire_wallet_initPtr = _lookup<
           ffi.NativeFunction<
-              WireSyncRust2DartDco Function(
+              ffi.Void Function(
+                  ffi.Int64,
                   ffi.Int32,
                   ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                  ffi.Pointer<wire_cst_descriptor_base>)>>(
-      'frbgen_lwk_dart_wire_wallet_new');
-  late final _wire_wallet_new = _wire_wallet_newPtr.asFunction<
-      WireSyncRust2DartDco Function(
-          int,
-          ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          ffi.Pointer<wire_cst_descriptor_base>)>();
+                  ffi.Pointer<wire_cst_descriptor>)>>(
+      'frbgen_lwk_dart_wire_wallet_init');
+  late final _wire_wallet_init = _wire_wallet_initPtr.asFunction<
+      void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          ffi.Pointer<wire_cst_descriptor>)>();
 
   void wire_wallet_sign_tx(
     int port_,
@@ -944,16 +945,16 @@ class LwkCoreWire implements BaseWire {
       _rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
-  ffi.Pointer<wire_cst_descriptor_base> cst_new_box_autoadd_descriptor_base() {
-    return _cst_new_box_autoadd_descriptor_base();
+  ffi.Pointer<wire_cst_descriptor> cst_new_box_autoadd_descriptor() {
+    return _cst_new_box_autoadd_descriptor();
   }
 
-  late final _cst_new_box_autoadd_descriptor_basePtr = _lookup<
-          ffi.NativeFunction<ffi.Pointer<wire_cst_descriptor_base> Function()>>(
-      'frbgen_lwk_dart_cst_new_box_autoadd_descriptor_base');
-  late final _cst_new_box_autoadd_descriptor_base =
-      _cst_new_box_autoadd_descriptor_basePtr
-          .asFunction<ffi.Pointer<wire_cst_descriptor_base> Function()>();
+  late final _cst_new_box_autoadd_descriptorPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_descriptor> Function()>>(
+          'frbgen_lwk_dart_cst_new_box_autoadd_descriptor');
+  late final _cst_new_box_autoadd_descriptor =
+      _cst_new_box_autoadd_descriptorPtr
+          .asFunction<ffi.Pointer<wire_cst_descriptor> Function()>();
 
   ffi.Pointer<ffi.Uint32> cst_new_box_autoadd_u_32(
     int value,
@@ -1079,7 +1080,7 @@ final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
 
 final class wire_cst_wallet extends ffi.Struct {
   @ffi.UintPtr()
-  external int ptr;
+  external int inner;
 }
 
 final class wire_cst_list_prim_u_8_loose extends ffi.Struct {
@@ -1089,7 +1090,7 @@ final class wire_cst_list_prim_u_8_loose extends ffi.Struct {
   external int len;
 }
 
-final class wire_cst_descriptor_base extends ffi.Struct {
+final class wire_cst_descriptor extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> ct_descriptor;
 }
 

@@ -2,6 +2,17 @@
 
 A dart/flutter library with language bindings for rust library [lwk](https://github.com/Blockstream/lwk)` - Liquid Wallet Kit.
 
+## Usage
+
+Initialize the library once, in main()
+
+```
+await LibLwk.init();
+```
+
+This will load the binary. It does not need to be called again. 
+
+Now use the library as usual. See `test/lwk_root_test.dart`
 
 ## Dependencies
 Docker is required for linux builds.
