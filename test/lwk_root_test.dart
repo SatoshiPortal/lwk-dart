@@ -47,6 +47,8 @@ void main() {
       await wallet.sync(electrumUrl: electrumUrl);
       final postBalance = await wallet.balances();
       print('Post Balance: ${postBalance}');
+      final getUnspendUtxos = await wallet.utxos();
+      print('Unspent Utxos: $getUnspendUtxos');
     });
   });
 }

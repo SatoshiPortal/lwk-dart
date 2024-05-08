@@ -914,6 +914,23 @@ class LwkCoreWire implements BaseWire {
   late final _wire_wallet_txs = _wire_wallet_txsPtr
       .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
 
+  void wire_wallet_utxos(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+  ) {
+    return _wire_wallet_utxos(
+      port_,
+      that,
+    );
+  }
+
+  late final _wire_wallet_utxosPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)>>(
+      'frbgen_lwk_dart_wire_wallet_utxos');
+  late final _wire_wallet_utxos = _wire_wallet_utxosPtr
+      .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
+
   void rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(
     ffi.Pointer<ffi.Void> ptr,
   ) {

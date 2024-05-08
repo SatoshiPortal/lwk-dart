@@ -126,6 +126,8 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<List<Tx>> walletTxs({required Wallet that, dynamic hint});
 
+  Future<List<TxOut>> walletUtxos({required Wallet that, dynamic hint});
+
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_MutexLwkWolletWollet;
 
@@ -559,6 +561,29 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
   TaskConstMeta get kWalletTxsConstMeta => const TaskConstMeta(
         debugName: "wallet_txs",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<List<TxOut>> walletUtxos({required Wallet that, dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        return wire.wire_wallet_utxos(port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_list_tx_out,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta: kWalletUtxosConstMeta,
+      argValues: [that],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kWalletUtxosConstMeta => const TaskConstMeta(
+        debugName: "wallet_utxos",
         argNames: ["that"],
       );
 

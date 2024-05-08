@@ -465,6 +465,11 @@ pub extern "C" fn frbgen_lwk_dart_wire_wallet_txs(port_: i64, that: *mut wire_cs
 }
 
 #[no_mangle]
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_utxos(port_: i64, that: *mut wire_cst_wallet) {
+    wire_wallet_utxos_impl(port_, that)
+}
+
+#[no_mangle]
 pub extern "C" fn frbgen_lwk_dart_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(
     ptr: *const std::ffi::c_void,
 ) {
