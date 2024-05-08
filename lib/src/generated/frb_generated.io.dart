@@ -823,14 +823,12 @@ class LwkCoreWire implements BaseWire {
     int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> dbpath,
     ffi.Pointer<wire_cst_descriptor> descriptor,
-    ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
   ) {
     return _wire_wallet_init(
       port_,
       network,
       dbpath,
       descriptor,
-      electrum_url,
     );
   }
 
@@ -840,16 +838,11 @@ class LwkCoreWire implements BaseWire {
                   ffi.Int64,
                   ffi.Int32,
                   ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                  ffi.Pointer<wire_cst_descriptor>,
-                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+                  ffi.Pointer<wire_cst_descriptor>)>>(
       'frbgen_lwk_dart_wire_wallet_init');
   late final _wire_wallet_init = _wire_wallet_initPtr.asFunction<
-      void Function(
-          int,
-          int,
-          ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          ffi.Pointer<wire_cst_descriptor>,
-          ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+      void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          ffi.Pointer<wire_cst_descriptor>)>();
 
   void wire_wallet_sign_tx(
     int port_,

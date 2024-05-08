@@ -51,7 +51,7 @@ impl Wallet {
         network: Network,
         dbpath: String,
         descriptor: Descriptor,
-        electrum_url: String,
+        // electrum_url: String,
     ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
@@ -59,7 +59,7 @@ impl Wallet {
         let wollet = Wollet::new(network.into(), db, descriptor)?;
         let opaque = RustOpaque::new(Mutex::new(wollet));
         let wallet = Wallet { inner: opaque };
-        wallet.sync(electrum_url)?;
+        // wallet.sync(electrum_url)?;
         Ok(wallet)
     }
     pub fn sync(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
@@ -203,7 +203,6 @@ mod tests {
             Network::Testnet,
             "/tmp/lwk".to_string(),
             desc,
-            electrum_url.clone(),
         )
         .expect("");
         let _ = wallet.sync(electrum_url);

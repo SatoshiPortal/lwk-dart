@@ -1,11 +1,11 @@
 use elements::hex::{FromHex, ToHex};
-use elements::Address as LwkAddress;
 use elements::{secp256k1_zkp, AddressParams, AssetId, Script};
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
 use lwk_wollet::{AddressResult, WalletTx, WalletTxOut};
 use std::collections::HashMap;
 use std::str::FromStr;
+use elements::Address as LwkAddress;
 
 use lwk_wollet::ElementsNetwork;
 
@@ -33,9 +33,7 @@ pub type Balances = Vec<Balance>;
 
 impl From<AssetIdMapInt> for Balances {
     fn from(asset_id_map: AssetIdMapInt) -> Self {
-        asset_id_map
-            .0
-            .into_iter()
+        asset_id_map.0.into_iter()
             .map(|(key, value)| Balance {
                 asset_id: key.to_string(),
                 value,
@@ -51,17 +49,17 @@ use super::error::LwkError;
 
 impl From<AssetIdMapUInt> for Balances {
     fn from(asset_id_map: AssetIdMapUInt) -> Self {
-        asset_id_map
-            .0
-            .into_iter()
-            .filter_map(|(key, value)| match i64::try_from(value) {
-                Ok(converted_value) => Some(Balance {
-                    asset_id: key.to_string(),
-                    value: converted_value,
-                }),
-                Err(_) => {
-                    eprintln!("Warning: Overflow encountered converting {} to i64", value);
-                    None
+        asset_id_map.0.into_iter()
+            .filter_map(|(key, value)| {
+                match i64::try_from(value) {
+                    Ok(converted_value) => Some(Balance {
+                        asset_id: key.to_string(),
+                        value: converted_value,
+                    }),
+                    Err(_) => {
+                        eprintln!("Warning: Overflow encountered converting {} to i64", value);
+                        None
+                    }
                 }
             })
             .collect()
@@ -87,11 +85,12 @@ impl From<WalletTxOut> for TxOut {
     }
 }
 
+
 #[derive(Clone, Debug, PartialEq)]
 #[frb(dart_metadata=("freezed"))]
 pub struct Balance {
     pub asset_id: String,
-    pub value: i64,
+    pub value: i64
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -157,6 +156,7 @@ impl Address {
             })
         }
     }
+
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -177,7 +177,7 @@ pub struct TxOut {
 
 #[derive(Clone, Debug, PartialEq)]
 #[frb(dart_metadata=("freezed"))]
-pub struct TxOutSecrets {
+pub struct TxOutSecrets{
     pub value: u64,
     pub value_bf: String,
     pub asset: String,
@@ -202,11 +202,10 @@ impl From<WalletTx> for Tx {
         let mut inputs: Vec<TxOut> = Vec::new();
 
         for output in wallet_tx.outputs {
-            if output.is_some() {
-                // safe to unwrap
+            if output.is_some() { // safe to unwrap
                 let script_pubkey = output.clone().unwrap().script_pubkey;
                 outputs.push(TxOut {
-                    script_pubkey: script_pubkey.to_hex(),
+                    script_pubkey:script_pubkey.to_hex(),
                     height: output.clone().unwrap().height,
                     unblinded: TxOutSecrets {
                         value: output.clone().unwrap().unblinded.value,
@@ -217,17 +216,16 @@ impl From<WalletTx> for Tx {
                     outpoint: OutPoint {
                         txid: output.clone().unwrap().outpoint.txid.to_string(),
                         vout: output.clone().unwrap().outpoint.vout,
-                    },
+                    } ,
                 })
             }
         }
 
         for input in wallet_tx.inputs {
-            if input.is_some() {
-                // safe to unwrap
+            if input.is_some() { // safe to unwrap
                 let script_pubkey = input.clone().unwrap().script_pubkey;
                 inputs.push(TxOut {
-                    script_pubkey: script_pubkey.to_string(),
+                    script_pubkey:script_pubkey.to_string(),
                     height: input.clone().unwrap().height,
                     unblinded: TxOutSecrets {
                         value: input.clone().unwrap().unblinded.value,
@@ -238,22 +236,22 @@ impl From<WalletTx> for Tx {
                     outpoint: OutPoint {
                         txid: input.clone().unwrap().outpoint.txid.to_string(),
                         vout: input.clone().unwrap().outpoint.vout,
-                    },
+                    } ,
                 })
             }
         }
         let now = SystemTime::now();
-        let since_the_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
+        let since_the_epoch = now.duration_since(UNIX_EPOCH)
+            .expect("Time went backwards");
         Tx {
             kind: wallet_tx.type_,
-            balances: Balances::from(AssetIdMapInt(wallet_tx.balance)),
+            balances: Balances::from(AssetIdMapInt(wallet_tx
+                .balance)),
             txid: wallet_tx.tx.txid().to_string(),
             outputs: outputs,
             inputs: inputs,
             fee: wallet_tx.fee,
-            timestamp: wallet_tx
-                .timestamp
-                .unwrap_or(since_the_epoch.as_secs() as u32),
+            timestamp: wallet_tx.timestamp.unwrap_or(since_the_epoch.as_secs() as u32),
         }
     }
 }
@@ -271,3 +269,4 @@ impl From<PsetBalance> for PsetAmounts {
         }
     }
 }
+

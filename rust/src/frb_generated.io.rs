@@ -437,9 +437,8 @@ pub extern "C" fn frbgen_lwk_dart_wire_wallet_init(
     network: i32,
     dbpath: *mut wire_cst_list_prim_u_8_strict,
     descriptor: *mut wire_cst_descriptor,
-    electrum_url: *mut wire_cst_list_prim_u_8_strict,
 ) {
-    wire_wallet_init_impl(port_, network, dbpath, descriptor, electrum_url)
+    wire_wallet_init_impl(port_, network, dbpath, descriptor)
 }
 
 #[no_mangle]

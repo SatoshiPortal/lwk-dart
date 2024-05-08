@@ -144,8 +144,7 @@ void frbgen_lwk_dart_wire_wallet_descriptor(int64_t port_, struct wire_cst_walle
 void frbgen_lwk_dart_wire_wallet_init(int64_t port_,
                                       int32_t network,
                                       struct wire_cst_list_prim_u_8_strict *dbpath,
-                                      struct wire_cst_descriptor *descriptor,
-                                      struct wire_cst_list_prim_u_8_strict *electrum_url);
+                                      struct wire_cst_descriptor *descriptor);
 
 void frbgen_lwk_dart_wire_wallet_sign_tx(int64_t port_,
                                          struct wire_cst_wallet *that,
