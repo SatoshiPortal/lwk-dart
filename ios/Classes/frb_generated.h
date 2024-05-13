@@ -74,6 +74,7 @@ typedef struct wire_cst_tx {
   struct wire_cst_list_tx_out *outputs;
   struct wire_cst_list_tx_out *inputs;
   uint64_t fee;
+  uint32_t height;
 } wire_cst_tx;
 
 typedef struct wire_cst_list_tx {

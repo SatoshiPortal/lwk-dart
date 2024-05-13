@@ -88,6 +88,7 @@ class Tx with _$Tx {
     required List<TxOut> outputs,
     required List<TxOut> inputs,
     required int fee,
+    required int height,
   }) = _Tx;
 }
 

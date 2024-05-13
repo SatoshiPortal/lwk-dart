@@ -160,6 +160,7 @@ impl CstDecode<crate::api::types::Tx> for wire_cst_tx {
             outputs: self.outputs.cst_decode(),
             inputs: self.inputs.cst_decode(),
             fee: self.fee.cst_decode(),
+            height: self.height.cst_decode(),
         }
     }
 }
@@ -280,6 +281,7 @@ impl NewWithNullPtr for wire_cst_tx {
             outputs: core::ptr::null_mut(),
             inputs: core::ptr::null_mut(),
             fee: Default::default(),
+            height: Default::default(),
         }
     }
 }
@@ -637,6 +639,7 @@ pub struct wire_cst_tx {
     outputs: *mut wire_cst_list_tx_out,
     inputs: *mut wire_cst_list_tx_out,
     fee: u64,
+    height: u32,
 }
 #[repr(C)]
 #[derive(Clone, Copy)]

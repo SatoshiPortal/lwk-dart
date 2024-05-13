@@ -365,6 +365,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     wireObj.outputs = cst_encode_list_tx_out(apiObj.outputs);
     wireObj.inputs = cst_encode_list_tx_out(apiObj.inputs);
     wireObj.fee = cst_encode_u_64(apiObj.fee);
+    wireObj.height = cst_encode_u_32(apiObj.height);
   }
 
   @protected
@@ -1176,6 +1177,9 @@ final class wire_cst_tx extends ffi.Struct {
 
   @ffi.Uint64()
   external int fee;
+
+  @ffi.Uint32()
+  external int height;
 }
 
 final class wire_cst_list_tx extends ffi.Struct {
