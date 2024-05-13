@@ -352,7 +352,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   @protected
   void cst_api_fill_to_wire_pset_amounts(
       PsetAmounts apiObj, wire_cst_pset_amounts wireObj) {
-    wireObj.fee = cst_encode_u_64(apiObj.fee);
+    wireObj.absolute_fees = cst_encode_u_64(apiObj.absoluteFees);
     wireObj.balances = cst_encode_list_balance(apiObj.balances);
   }
 
@@ -878,6 +878,40 @@ class LwkCoreWire implements BaseWire {
           ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
+  void wire_wallet_signed_pset_with_extra_details(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+    int network,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> pset,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> mnemonic,
+  ) {
+    return _wire_wallet_signed_pset_with_extra_details(
+      port_,
+      that,
+      network,
+      pset,
+      mnemonic,
+    );
+  }
+
+  late final _wire_wallet_signed_pset_with_extra_detailsPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Int64,
+                  ffi.Pointer<wire_cst_wallet>,
+                  ffi.Int32,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+      'frbgen_lwk_dart_wire_wallet_signed_pset_with_extra_details');
+  late final _wire_wallet_signed_pset_with_extra_details =
+      _wire_wallet_signed_pset_with_extra_detailsPtr.asFunction<
+          void Function(
+              int,
+              ffi.Pointer<wire_cst_wallet>,
+              int,
+              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+
   void wire_wallet_sync(
     int port_,
     ffi.Pointer<wire_cst_wallet> that,
@@ -1204,7 +1238,7 @@ final class wire_cst_lwk_error extends ffi.Struct {
 
 final class wire_cst_pset_amounts extends ffi.Struct {
   @ffi.Uint64()
-  external int fee;
+  external int absolute_fees;
 
   external ffi.Pointer<wire_cst_list_balance> balances;
 }

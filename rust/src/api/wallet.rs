@@ -1,7 +1,7 @@
 use elements::pset::serialize::Deserialize;
 use elements::pset::serialize::Serialize;
 use elements::pset::PartiallySignedTransaction;
-use elements::Transaction;
+use elements::{OutPoint, Transaction};
 use elements::Txid;
 use lwk_common::Signer;
 use lwk_signer::SwSigner;
@@ -188,6 +188,45 @@ impl Wallet {
         let tx_outs = wallet_tx_outs.into_iter().map(TxOut::from).collect();
         Ok(tx_outs)
     }
+
+    fn get_txout(&self, outpoint: &OutPoint) -> Result<elements::TxOut, LwkError> {
+        let wallet_transaction = self.get_wallet()?.transaction(&outpoint.txid)?;
+        let transaction = wallet_transaction.unwrap();
+        let txout = transaction
+            .tx
+            .output
+            .get(outpoint.vout as usize)
+            .ok_or(LwkError {
+                msg: "Could not find txout".to_string(),
+            })?;
+        Ok(txout.clone())
+    }
+
+    pub fn signed_pset_with_extra_details(
+        &self,
+        network: Network,
+        pset: String,
+        mnemonic: String,
+    ) -> anyhow::Result<String, LwkError> {
+        let is_mainnet = network == Network::Testnet;
+        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
+        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
+
+        for input in pset.inputs_mut().iter_mut() {
+            let res = self.get_txout(&elements::OutPoint {
+                txid: input.previous_txid,
+                vout: input.previous_output_index,
+            });
+            if let Ok(mut txout) = res {
+                input.in_utxo_rangeproof = txout.witness.rangeproof.take();
+                input.witness_utxo = Some(txout);
+            }
+        }
+        self.get_wallet()?.add_details(&mut pset)?;
+
+        let _ = signer.sign(&mut pset);
+        Ok(pset.to_string())
+    }
 }
 
 #[cfg(test)]
@@ -199,12 +238,7 @@ mod tests {
             "fossil install fever ticket wisdom outer broken aspect lucky still flavor dial";
         let electrum_url = "blockstream.info:465".to_string();
         let desc = Descriptor::new_confidential(Network::Testnet, mnemonic.to_string()).expect("");
-        let wallet = Wallet::init(
-            Network::Testnet,
-            "/tmp/lwk".to_string(),
-            desc,
-        )
-        .expect("");
+        let wallet = Wallet::init(Network::Testnet, "/tmp/lwk".to_string(), desc).expect("");
         let _ = wallet.sync(electrum_url);
         let _txs = wallet.txs();
         let balances = wallet.balances();

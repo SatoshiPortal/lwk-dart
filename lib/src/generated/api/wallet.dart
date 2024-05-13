@@ -106,6 +106,18 @@ class Wallet {
           mnemonic: mnemonic,
           hint: hint);
 
+  Future<String> signedPsetWithExtraDetails(
+          {required Network network,
+          required String pset,
+          required String mnemonic,
+          dynamic hint}) =>
+      LwkCore.instance.api.walletSignedPsetWithExtraDetails(
+          that: this,
+          network: network,
+          pset: pset,
+          mnemonic: mnemonic,
+          hint: hint);
+
   Future<void> sync({required String electrumUrl, dynamic hint}) =>
       LwkCore.instance.api
           .walletSync(that: this, electrumUrl: electrumUrl, hint: hint);

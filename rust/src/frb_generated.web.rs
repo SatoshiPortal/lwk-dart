@@ -179,7 +179,7 @@ impl CstDecode<crate::api::types::PsetAmounts>
             self_.length()
         );
         crate::api::types::PsetAmounts {
-            fee: self_.get(0).cst_decode(),
+            absolute_fees: self_.get(0).cst_decode(),
             balances: self_.get(1).cst_decode(),
         }
     }
@@ -486,6 +486,17 @@ pub fn wire_wallet_sign_tx(
     mnemonic: String,
 ) {
     wire_wallet_sign_tx_impl(port_, that, network, pset, mnemonic)
+}
+
+#[wasm_bindgen]
+pub fn wire_wallet_signed_pset_with_extra_details(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    network: i32,
+    pset: String,
+    mnemonic: String,
+) {
+    wire_wallet_signed_pset_with_extra_details_impl(port_, that, network, pset, mnemonic)
 }
 
 #[wasm_bindgen]

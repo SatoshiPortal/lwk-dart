@@ -371,6 +371,37 @@ fn wire_wallet_sign_tx_impl(
         },
     )
 }
+fn wire_wallet_signed_pset_with_extra_details_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<crate::api::wallet::Wallet>,
+    network: impl CstDecode<crate::api::types::Network>,
+    pset: impl CstDecode<String>,
+    mnemonic: impl CstDecode<String>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "wallet_signed_pset_with_extra_details",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_network = network.cst_decode();
+            let api_pset = pset.cst_decode();
+            let api_mnemonic = mnemonic.cst_decode();
+            move |context| {
+                transform_result_dco((move || {
+                    crate::api::wallet::Wallet::signed_pset_with_extra_details(
+                        &api_that,
+                        api_network,
+                        api_pset,
+                        api_mnemonic,
+                    )
+                })())
+            }
+        },
+    )
+}
 fn wire_wallet_sync_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<crate::api::wallet::Wallet>,
@@ -651,10 +682,10 @@ impl SseDecode for crate::api::types::OutPoint {
 impl SseDecode for crate::api::types::PsetAmounts {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_fee = <u64>::sse_decode(deserializer);
+        let mut var_absoluteFees = <u64>::sse_decode(deserializer);
         let mut var_balances = <Vec<crate::api::types::Balance>>::sse_decode(deserializer);
         return crate::api::types::PsetAmounts {
-            fee: var_fee,
+            absolute_fees: var_absoluteFees,
             balances: var_balances,
         };
     }
@@ -892,7 +923,7 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::OutPoint>
 impl flutter_rust_bridge::IntoDart for crate::api::types::PsetAmounts {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.fee.into_into_dart().into_dart(),
+            self.absolute_fees.into_into_dart().into_dart(),
             self.balances.into_into_dart().into_dart(),
         ]
         .into_dart()
@@ -1130,7 +1161,7 @@ impl SseEncode for crate::api::types::OutPoint {
 impl SseEncode for crate::api::types::PsetAmounts {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <u64>::sse_encode(self.fee, serializer);
+        <u64>::sse_encode(self.absolute_fees, serializer);
         <Vec<crate::api::types::Balance>>::sse_encode(self.balances, serializer);
     }
 }
