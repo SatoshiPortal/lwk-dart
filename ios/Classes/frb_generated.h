@@ -93,7 +93,7 @@ typedef struct wire_cst_lwk_error {
 } wire_cst_lwk_error;
 
 typedef struct wire_cst_pset_amounts {
-  uint64_t fee;
+  uint64_t absolute_fees;
   struct wire_cst_list_balance *balances;
 } wire_cst_pset_amounts;
 
@@ -153,6 +153,12 @@ void frbgen_lwk_dart_wire_wallet_sign_tx(int64_t port_,
                                          struct wire_cst_list_prim_u_8_strict *pset,
                                          struct wire_cst_list_prim_u_8_strict *mnemonic);
 
+void frbgen_lwk_dart_wire_wallet_signed_pset_with_extra_details(int64_t port_,
+                                                                struct wire_cst_wallet *that,
+                                                                int32_t network,
+                                                                struct wire_cst_list_prim_u_8_strict *pset,
+                                                                struct wire_cst_list_prim_u_8_strict *mnemonic);
+
 void frbgen_lwk_dart_wire_wallet_sync(int64_t port_,
                                       struct wire_cst_wallet *that,
                                       struct wire_cst_list_prim_u_8_strict *electrum_url);
@@ -206,6 +212,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_descriptor);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_init);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_sign_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_signed_pset_with_extra_details);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_sync);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_txs);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_utxos);

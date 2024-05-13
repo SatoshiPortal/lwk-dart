@@ -121,6 +121,13 @@ abstract class LwkCoreApi extends BaseApi {
       required String mnemonic,
       dynamic hint});
 
+  Future<String> walletSignedPsetWithExtraDetails(
+      {required Wallet that,
+      required Network network,
+      required String pset,
+      required String mnemonic,
+      dynamic hint});
+
   Future<void> walletSync(
       {required Wallet that, required String electrumUrl, dynamic hint});
 
@@ -517,6 +524,39 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
+  Future<String> walletSignedPsetWithExtraDetails(
+      {required Wallet that,
+      required Network network,
+      required String pset,
+      required String mnemonic,
+      dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        var arg1 = cst_encode_network(network);
+        var arg2 = cst_encode_String(pset);
+        var arg3 = cst_encode_String(mnemonic);
+        return wire.wire_wallet_signed_pset_with_extra_details(
+            port_, arg0, arg1, arg2, arg3);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_String,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta: kWalletSignedPsetWithExtraDetailsConstMeta,
+      argValues: [that, network, pset, mnemonic],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kWalletSignedPsetWithExtraDetailsConstMeta =>
+      const TaskConstMeta(
+        debugName: "wallet_signed_pset_with_extra_details",
+        argNames: ["that", "network", "pset", "mnemonic"],
+      );
+
+  @override
   Future<void> walletSync(
       {required Wallet that, required String electrumUrl, dynamic hint}) {
     return handler.executeNormal(NormalTask(
@@ -752,7 +792,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     if (arr.length != 2)
       throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return PsetAmounts(
-      fee: dco_decode_u_64(arr[0]),
+      absoluteFees: dco_decode_u_64(arr[0]),
       balances: dco_decode_list_balance(arr[1]),
     );
   }
@@ -1008,9 +1048,9 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   @protected
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_fee = sse_decode_u_64(deserializer);
+    var var_absoluteFees = sse_decode_u_64(deserializer);
     var var_balances = sse_decode_list_balance(deserializer);
-    return PsetAmounts(fee: var_fee, balances: var_balances);
+    return PsetAmounts(absoluteFees: var_absoluteFees, balances: var_balances);
   }
 
   @protected
@@ -1301,7 +1341,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   @protected
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_u_64(self.fee, serializer);
+    sse_encode_u_64(self.absoluteFees, serializer);
     sse_encode_list_balance(self.balances, serializer);
   }
 

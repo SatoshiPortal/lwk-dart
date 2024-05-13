@@ -144,7 +144,7 @@ impl CstDecode<crate::api::types::PsetAmounts> for wire_cst_pset_amounts {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> crate::api::types::PsetAmounts {
         crate::api::types::PsetAmounts {
-            fee: self.fee.cst_decode(),
+            absolute_fees: self.absolute_fees.cst_decode(),
             balances: self.balances.cst_decode(),
         }
     }
@@ -261,7 +261,7 @@ impl Default for wire_cst_out_point {
 impl NewWithNullPtr for wire_cst_pset_amounts {
     fn new_with_null_ptr() -> Self {
         Self {
-            fee: Default::default(),
+            absolute_fees: Default::default(),
             balances: core::ptr::null_mut(),
         }
     }
@@ -455,6 +455,17 @@ pub extern "C" fn frbgen_lwk_dart_wire_wallet_sign_tx(
 }
 
 #[no_mangle]
+pub extern "C" fn frbgen_lwk_dart_wire_wallet_signed_pset_with_extra_details(
+    port_: i64,
+    that: *mut wire_cst_wallet,
+    network: i32,
+    pset: *mut wire_cst_list_prim_u_8_strict,
+    mnemonic: *mut wire_cst_list_prim_u_8_strict,
+) {
+    wire_wallet_signed_pset_with_extra_details_impl(port_, that, network, pset, mnemonic)
+}
+
+#[no_mangle]
 pub extern "C" fn frbgen_lwk_dart_wire_wallet_sync(
     port_: i64,
     that: *mut wire_cst_wallet,
@@ -626,7 +637,7 @@ pub struct wire_cst_out_point {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct wire_cst_pset_amounts {
-    fee: u64,
+    absolute_fees: u64,
     balances: *mut wire_cst_list_balance,
 }
 #[repr(C)]

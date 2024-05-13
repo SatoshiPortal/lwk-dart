@@ -58,23 +58,23 @@ class OutPoint with _$OutPoint {
 }
 
 class PsetAmounts {
-  final int fee;
+  final int absoluteFees;
   final List<Balance> balances;
 
   const PsetAmounts({
-    required this.fee,
+    required this.absoluteFees,
     required this.balances,
   });
 
   @override
-  int get hashCode => fee.hashCode ^ balances.hashCode;
+  int get hashCode => absoluteFees.hashCode ^ balances.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PsetAmounts &&
           runtimeType == other.runtimeType &&
-          fee == other.fee &&
+          absoluteFees == other.absoluteFees &&
           balances == other.balances;
 }
 
