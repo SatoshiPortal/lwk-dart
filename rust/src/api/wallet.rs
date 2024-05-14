@@ -226,6 +226,13 @@ impl Wallet {
         }
         self.get_wallet()?.add_details(&mut pset)?;
         let _ = signer.sign(&mut pset);
+
+        for input in pset.inputs_mut() {
+            if let Some((public_key, input_sign)) = input.partial_sigs.iter().next() {
+                input.final_script_witness = Some(vec![input_sign.clone(), public_key.to_bytes()]);
+            }
+        }
+
         Ok(pset.to_string())
     }
 }
