@@ -1,11 +1,15 @@
 # lwk_dart
-A dart/flutter library with language bindings for rust library [lwk](https://github.com/Blockstream/lwk)` - Liquid Wallet Kit.
+A dart/flutter library with language bindings for rust library [lwk](https://github.com/Blockstream/lwk) - Liquid Wallet Kit.
 
 ## BREAKING CHANGE FROM 0.1.3 -> 0.1.4
 
 If you are currently using 0.1.3 - updating to 0.1.4 will create a breaking change that will make it difficult for you to spend your existing utxos.
 
 If you are using 0.1.3 sweep your wallets before updating. 
+
+### legacy branch
+
+To access legacy 0.1.3 wallets, use the legacy branch.
 
 ## Usage
 

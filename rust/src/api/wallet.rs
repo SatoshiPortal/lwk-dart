@@ -8,7 +8,6 @@ use lwk_signer::SwSigner;
 // use lwk_wollet::elements_miniscript::descriptor;
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
-use lwk_wollet::FsPersister;
 use lwk_wollet::Update;
 use lwk_wollet::WolletDescriptor;
 
