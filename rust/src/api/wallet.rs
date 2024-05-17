@@ -1,8 +1,8 @@
 use elements::pset::serialize::Deserialize;
 use elements::pset::serialize::Serialize;
 use elements::pset::PartiallySignedTransaction;
-use elements::{OutPoint, Transaction};
 use elements::Txid;
+use elements::{OutPoint, Transaction};
 use lwk_common::Signer;
 use lwk_signer::SwSigner;
 // use lwk_wollet::elements_miniscript::descriptor;
