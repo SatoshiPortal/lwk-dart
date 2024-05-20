@@ -109,6 +109,28 @@ fn wire_address_validate_impl(
         },
     )
 }
+fn wire_blockchain_test_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<crate::api::types::Blockchain>,
+    electrum_url: impl CstDecode<String>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "blockchain_test",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_electrum_url = electrum_url.cst_decode();
+            move |context| {
+                transform_result_dco((move || {
+                    crate::api::types::Blockchain::test(&api_that, api_electrum_url)
+                })())
+            }
+        },
+    )
+}
 fn wire_wallet_address_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<crate::api::wallet::Wallet>,
@@ -557,6 +579,13 @@ impl SseDecode for crate::api::types::Balance {
     }
 }
 
+impl SseDecode for crate::api::types::Blockchain {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        return crate::api::types::Blockchain {};
+    }
+}
+
 impl SseDecode for crate::api::descriptor::Descriptor {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -856,6 +885,20 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::Balance> for crate::ap
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::types::Blockchain {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        Vec::<u8>::new().into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::types::Blockchain {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::Blockchain>
+    for crate::api::types::Blockchain
+{
+    fn into_into_dart(self) -> crate::api::types::Blockchain {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::descriptor::Descriptor {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [self.ct_descriptor.into_into_dart().into_dart()].into_dart()
@@ -1047,6 +1090,11 @@ impl SseEncode for crate::api::types::Balance {
         <String>::sse_encode(self.asset_id, serializer);
         <i64>::sse_encode(self.value, serializer);
     }
+}
+
+impl SseEncode for crate::api::types::Blockchain {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
 impl SseEncode for crate::api::descriptor::Descriptor {

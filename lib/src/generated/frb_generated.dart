@@ -76,6 +76,9 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<void> addressValidate({required String addressString, dynamic hint});
 
+  Future<void> blockchainTest(
+      {required Blockchain that, required String electrumUrl, dynamic hint});
+
   Future<Address> walletAddress(
       {required Wallet that, required int index, dynamic hint});
 
@@ -228,6 +231,31 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   TaskConstMeta get kAddressValidateConstMeta => const TaskConstMeta(
         debugName: "address_validate",
         argNames: ["addressString"],
+      );
+
+  @override
+  Future<void> blockchainTest(
+      {required Blockchain that, required String electrumUrl, dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_box_autoadd_blockchain(that);
+        var arg1 = cst_encode_String(electrumUrl);
+        return wire.wire_blockchain_test(port_, arg0, arg1);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta: kBlockchainTestConstMeta,
+      argValues: [that, electrumUrl],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kBlockchainTestConstMeta => const TaskConstMeta(
+        debugName: "blockchain_test",
+        argNames: ["that", "electrumUrl"],
       );
 
   @override
@@ -674,6 +702,21 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  Blockchain dco_decode_blockchain(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 0)
+      throw Exception('unexpected arr length: expect 0 but see ${arr.length}');
+    return Blockchain();
+  }
+
+  @protected
+  Blockchain dco_decode_box_autoadd_blockchain(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_blockchain(raw);
+  }
+
+  @protected
   Descriptor dco_decode_box_autoadd_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_descriptor(raw);
@@ -917,6 +960,18 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     var var_assetId = sse_decode_String(deserializer);
     var var_value = sse_decode_i_64(deserializer);
     return Balance(assetId: var_assetId, value: var_value);
+  }
+
+  @protected
+  Blockchain sse_decode_blockchain(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return Blockchain();
+  }
+
+  @protected
+  Blockchain sse_decode_box_autoadd_blockchain(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_blockchain(deserializer));
   }
 
   @protected
@@ -1220,6 +1275,18 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.assetId, serializer);
     sse_encode_i_64(self.value, serializer);
+  }
+
+  @protected
+  void sse_encode_blockchain(Blockchain self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+  }
+
+  @protected
+  void sse_encode_box_autoadd_blockchain(
+      Blockchain self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_blockchain(self, serializer);
   }
 
   @protected

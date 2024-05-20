@@ -64,6 +64,23 @@ impl CstDecode<crate::api::types::Balance>
         }
     }
 }
+impl CstDecode<crate::api::types::Blockchain>
+    for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+{
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> crate::api::types::Blockchain {
+        let self_ = self
+            .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+            .unwrap();
+        assert_eq!(
+            self_.length(),
+            0,
+            "Expected 0 elements, got {}",
+            self_.length()
+        );
+        crate::api::types::Blockchain {}
+    }
+}
 impl CstDecode<crate::api::descriptor::Descriptor>
     for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
 {
@@ -383,6 +400,15 @@ pub fn wire_address_validate(
     address_string: String,
 ) {
     wire_address_validate_impl(port_, address_string)
+}
+
+#[wasm_bindgen]
+pub fn wire_blockchain_test(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    electrum_url: String,
+) {
+    wire_blockchain_test_impl(port_, that, electrum_url)
 }
 
 #[wasm_bindgen]

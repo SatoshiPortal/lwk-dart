@@ -19,6 +19,10 @@ typedef struct wire_cst_list_prim_u_8_strict {
   int32_t len;
 } wire_cst_list_prim_u_8_strict;
 
+typedef struct wire_cst_blockchain {
+
+} wire_cst_blockchain;
+
 typedef struct wire_cst_wallet {
   uintptr_t inner;
 } wire_cst_wallet;
@@ -109,6 +113,10 @@ void frbgen_lwk_dart_wire_address_address_from_script(int64_t port_,
 void frbgen_lwk_dart_wire_address_validate(int64_t port_,
                                            struct wire_cst_list_prim_u_8_strict *address_string);
 
+void frbgen_lwk_dart_wire_blockchain_test(int64_t port_,
+                                          struct wire_cst_blockchain *that,
+                                          struct wire_cst_list_prim_u_8_strict *electrum_url);
+
 void frbgen_lwk_dart_wire_wallet_address(int64_t port_,
                                          struct wire_cst_wallet *that,
                                          uint32_t index);
@@ -171,6 +179,8 @@ void frbgen_lwk_dart_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletW
 
 void frbgen_lwk_dart_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet(const void *ptr);
 
+struct wire_cst_blockchain *frbgen_lwk_dart_cst_new_box_autoadd_blockchain(void);
+
 struct wire_cst_descriptor *frbgen_lwk_dart_cst_new_box_autoadd_descriptor(void);
 
 uint32_t *frbgen_lwk_dart_cst_new_box_autoadd_u_32(uint32_t value);
@@ -188,6 +198,7 @@ struct wire_cst_list_tx *frbgen_lwk_dart_cst_new_list_tx(int32_t len);
 struct wire_cst_list_tx_out *frbgen_lwk_dart_cst_new_list_tx_out(int32_t len);
 static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_box_autoadd_blockchain);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_box_autoadd_descriptor);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_box_autoadd_u_32);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_cst_new_box_autoadd_wallet);
@@ -200,6 +211,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_address_address_from_script);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_address_validate);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_blockchain_test);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_descriptor_new_confidential);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_address);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_dart_wire_wallet_address_last_unused);

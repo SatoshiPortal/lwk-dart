@@ -37,6 +37,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Balance dco_decode_balance(dynamic raw);
 
   @protected
+  Blockchain dco_decode_blockchain(dynamic raw);
+
+  @protected
+  Blockchain dco_decode_box_autoadd_blockchain(dynamic raw);
+
+  @protected
   Descriptor dco_decode_box_autoadd_descriptor(dynamic raw);
 
   @protected
@@ -126,6 +132,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   Balance sse_decode_balance(SseDeserializer deserializer);
+
+  @protected
+  Blockchain sse_decode_blockchain(SseDeserializer deserializer);
+
+  @protected
+  Blockchain sse_decode_box_autoadd_blockchain(SseDeserializer deserializer);
 
   @protected
   Descriptor sse_decode_box_autoadd_descriptor(SseDeserializer deserializer);
@@ -228,6 +240,18 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<dynamic> cst_encode_balance(Balance raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [cst_encode_String(raw.assetId), cst_encode_i_64(raw.value)];
+  }
+
+  @protected
+  List<dynamic> cst_encode_blockchain(Blockchain raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [];
+  }
+
+  @protected
+  List<dynamic> cst_encode_box_autoadd_blockchain(Blockchain raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_blockchain(raw);
   }
 
   @protected
@@ -404,6 +428,13 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_balance(Balance self, SseSerializer serializer);
 
   @protected
+  void sse_encode_blockchain(Blockchain self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_blockchain(
+      Blockchain self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_descriptor(
       Descriptor self, SseSerializer serializer);
 
@@ -504,6 +535,10 @@ class LwkCoreWire implements BaseWire {
   void wire_address_validate(NativePortType port_, String address_string) =>
       wasmModule.wire_address_validate(port_, address_string);
 
+  void wire_blockchain_test(
+          NativePortType port_, List<dynamic> that, String electrum_url) =>
+      wasmModule.wire_blockchain_test(port_, that, electrum_url);
+
   void wire_wallet_address(
           NativePortType port_, List<dynamic> that, int index) =>
       wasmModule.wire_wallet_address(port_, that, index);
@@ -595,6 +630,9 @@ class LwkCoreWasmModule implements WasmModule {
 
   external void wire_address_validate(
       NativePortType port_, String address_string);
+
+  external void wire_blockchain_test(
+      NativePortType port_, List<dynamic> that, String electrum_url);
 
   external void wire_wallet_address(
       NativePortType port_, List<dynamic> that, int index);

@@ -44,6 +44,22 @@ class Balance with _$Balance {
   }) = _Balance;
 }
 
+class Blockchain {
+  const Blockchain();
+
+  Future<void> test({required String electrumUrl, dynamic hint}) =>
+      LwkCore.instance.api
+          .blockchainTest(that: this, electrumUrl: electrumUrl, hint: hint);
+
+  @override
+  int get hashCode => 0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Blockchain && runtimeType == other.runtimeType;
+}
+
 enum Network {
   mainnet,
   testnet,

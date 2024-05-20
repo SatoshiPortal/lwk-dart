@@ -38,6 +38,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Balance dco_decode_balance(dynamic raw);
 
   @protected
+  Blockchain dco_decode_blockchain(dynamic raw);
+
+  @protected
+  Blockchain dco_decode_box_autoadd_blockchain(dynamic raw);
+
+  @protected
   Descriptor dco_decode_box_autoadd_descriptor(dynamic raw);
 
   @protected
@@ -129,6 +135,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Balance sse_decode_balance(SseDeserializer deserializer);
 
   @protected
+  Blockchain sse_decode_blockchain(SseDeserializer deserializer);
+
+  @protected
+  Blockchain sse_decode_box_autoadd_blockchain(SseDeserializer deserializer);
+
+  @protected
   Descriptor sse_decode_box_autoadd_descriptor(SseDeserializer deserializer);
 
   @protected
@@ -213,6 +225,15 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_String(String raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_list_prim_u_8_strict(utf8.encoder.convert(raw));
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_blockchain> cst_encode_box_autoadd_blockchain(
+      Blockchain raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_blockchain();
+
+    return ptr;
   }
 
   @protected
@@ -317,6 +338,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     wireObj.asset_id = cst_encode_String(apiObj.assetId);
     wireObj.value = cst_encode_i_64(apiObj.value);
   }
+
+  @protected
+  void cst_api_fill_to_wire_blockchain(
+      Blockchain apiObj, wire_cst_blockchain wireObj) {}
 
   @protected
   void cst_api_fill_to_wire_box_autoadd_descriptor(
@@ -426,6 +451,13 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_balance(Balance self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_blockchain(Blockchain self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_blockchain(
+      Blockchain self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_descriptor(
@@ -618,6 +650,27 @@ class LwkCoreWire implements BaseWire {
       'frbgen_lwk_dart_wire_address_validate');
   late final _wire_address_validate = _wire_address_validatePtr.asFunction<
       void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+
+  void wire_blockchain_test(
+    int port_,
+    ffi.Pointer<wire_cst_blockchain> that,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
+  ) {
+    return _wire_blockchain_test(
+      port_,
+      that,
+      electrum_url,
+    );
+  }
+
+  late final _wire_blockchain_testPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_blockchain>,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+      'frbgen_lwk_dart_wire_blockchain_test');
+  late final _wire_blockchain_test = _wire_blockchain_testPtr.asFunction<
+      void Function(int, ffi.Pointer<wire_cst_blockchain>,
+          ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   void wire_wallet_address(
     int port_,
@@ -997,6 +1050,17 @@ class LwkCoreWire implements BaseWire {
       _rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
+  ffi.Pointer<wire_cst_blockchain> cst_new_box_autoadd_blockchain() {
+    return _cst_new_box_autoadd_blockchain();
+  }
+
+  late final _cst_new_box_autoadd_blockchainPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_blockchain> Function()>>(
+          'frbgen_lwk_dart_cst_new_box_autoadd_blockchain');
+  late final _cst_new_box_autoadd_blockchain =
+      _cst_new_box_autoadd_blockchainPtr
+          .asFunction<ffi.Pointer<wire_cst_blockchain> Function()>();
+
   ffi.Pointer<wire_cst_descriptor> cst_new_box_autoadd_descriptor() {
     return _cst_new_box_autoadd_descriptor();
   }
@@ -1129,6 +1193,8 @@ final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
   @ffi.Int32()
   external int len;
 }
+
+final class wire_cst_blockchain extends ffi.Opaque {}
 
 final class wire_cst_wallet extends ffi.Struct {
   @ffi.UintPtr()

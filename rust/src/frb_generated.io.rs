@@ -47,6 +47,19 @@ impl CstDecode<crate::api::types::Balance> for wire_cst_balance {
         }
     }
 }
+impl CstDecode<crate::api::types::Blockchain> for wire_cst_blockchain {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> crate::api::types::Blockchain {
+        crate::api::types::Blockchain {}
+    }
+}
+impl CstDecode<crate::api::types::Blockchain> for *mut wire_cst_blockchain {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> crate::api::types::Blockchain {
+        let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+        CstDecode::<crate::api::types::Blockchain>::cst_decode(*wrap).into()
+    }
+}
 impl CstDecode<crate::api::descriptor::Descriptor> for *mut wire_cst_descriptor {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> crate::api::descriptor::Descriptor {
@@ -221,6 +234,16 @@ impl Default for wire_cst_balance {
         Self::new_with_null_ptr()
     }
 }
+impl NewWithNullPtr for wire_cst_blockchain {
+    fn new_with_null_ptr() -> Self {
+        Self {}
+    }
+}
+impl Default for wire_cst_blockchain {
+    fn default() -> Self {
+        Self::new_with_null_ptr()
+    }
+}
 impl NewWithNullPtr for wire_cst_descriptor {
     fn new_with_null_ptr() -> Self {
         Self {
@@ -358,6 +381,15 @@ pub extern "C" fn frbgen_lwk_dart_wire_address_validate(
     address_string: *mut wire_cst_list_prim_u_8_strict,
 ) {
     wire_address_validate_impl(port_, address_string)
+}
+
+#[no_mangle]
+pub extern "C" fn frbgen_lwk_dart_wire_blockchain_test(
+    port_: i64,
+    that: *mut wire_cst_blockchain,
+    electrum_url: *mut wire_cst_list_prim_u_8_strict,
+) {
+    wire_blockchain_test_impl(port_, that, electrum_url)
 }
 
 #[no_mangle]
@@ -503,6 +535,11 @@ pub extern "C" fn frbgen_lwk_dart_rust_arc_decrement_strong_count_RustOpaque_Mut
 }
 
 #[no_mangle]
+pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_blockchain() -> *mut wire_cst_blockchain {
+    flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_blockchain::new_with_null_ptr())
+}
+
+#[no_mangle]
 pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_descriptor() -> *mut wire_cst_descriptor {
     flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_descriptor::new_with_null_ptr())
 }
@@ -588,6 +625,9 @@ pub struct wire_cst_balance {
     asset_id: *mut wire_cst_list_prim_u_8_strict,
     value: i64,
 }
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct wire_cst_blockchain {}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct wire_cst_descriptor {
