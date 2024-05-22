@@ -447,8 +447,9 @@ pub extern "C" fn frbgen_lwk_dart_wire_wallet_build_lbtc_tx(
     sats: u64,
     out_address: *mut wire_cst_list_prim_u_8_strict,
     fee_rate: f32,
+    drain: bool,
 ) {
-    wire_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, fee_rate)
+    wire_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, fee_rate, drain)
 }
 
 #[no_mangle]

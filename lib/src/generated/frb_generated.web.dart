@@ -40,6 +40,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Blockchain dco_decode_blockchain(dynamic raw);
 
   @protected
+  bool dco_decode_bool(dynamic raw);
+
+  @protected
   Blockchain dco_decode_box_autoadd_blockchain(dynamic raw);
 
   @protected
@@ -137,6 +140,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Blockchain sse_decode_blockchain(SseDeserializer deserializer);
 
   @protected
+  bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
   Blockchain sse_decode_box_autoadd_blockchain(SseDeserializer deserializer);
 
   @protected
@@ -216,9 +222,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   Wallet sse_decode_wallet(SseDeserializer deserializer);
-
-  @protected
-  bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
   String cst_encode_String(String raw) {
@@ -394,6 +397,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int cst_encode_RustOpaque_Mutexlwk_wolletWollet(MutexLwkWolletWollet raw);
 
   @protected
+  bool cst_encode_bool(bool raw);
+
+  @protected
   double cst_encode_f_32(double raw);
 
   @protected
@@ -429,6 +435,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_blockchain(Blockchain self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_blockchain(
@@ -513,9 +522,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_wallet(Wallet self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer);
 }
 
 // Section: wire_class
@@ -563,9 +569,9 @@ class LwkCoreWire implements BaseWire {
           port_, that, sats, out_address, fee_rate, asset);
 
   void wire_wallet_build_lbtc_tx(NativePortType port_, List<dynamic> that,
-          Object sats, String out_address, double fee_rate) =>
+          Object sats, String out_address, double fee_rate, bool drain) =>
       wasmModule.wire_wallet_build_lbtc_tx(
-          port_, that, sats, out_address, fee_rate);
+          port_, that, sats, out_address, fee_rate, drain);
 
   void wire_wallet_decode_tx(
           NativePortType port_, List<dynamic> that, String pset) =>
@@ -656,8 +662,13 @@ class LwkCoreWasmModule implements WasmModule {
       double fee_rate,
       String asset);
 
-  external void wire_wallet_build_lbtc_tx(NativePortType port_,
-      List<dynamic> that, Object sats, String out_address, double fee_rate);
+  external void wire_wallet_build_lbtc_tx(
+      NativePortType port_,
+      List<dynamic> that,
+      Object sats,
+      String out_address,
+      double fee_rate,
+      bool drain);
 
   external void wire_wallet_decode_tx(
       NativePortType port_, List<dynamic> that, String pset);

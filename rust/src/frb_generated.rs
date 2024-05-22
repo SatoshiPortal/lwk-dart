@@ -273,6 +273,7 @@ fn wire_wallet_build_lbtc_tx_impl(
     sats: impl CstDecode<u64>,
     out_address: impl CstDecode<String>,
     fee_rate: impl CstDecode<f32>,
+    drain: impl CstDecode<bool>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
@@ -285,6 +286,7 @@ fn wire_wallet_build_lbtc_tx_impl(
             let api_sats = sats.cst_decode();
             let api_out_address = out_address.cst_decode();
             let api_fee_rate = fee_rate.cst_decode();
+            let api_drain = drain.cst_decode();
             move |context| {
                 transform_result_dco((move || {
                     crate::api::wallet::Wallet::build_lbtc_tx(
@@ -292,6 +294,7 @@ fn wire_wallet_build_lbtc_tx_impl(
                         api_sats,
                         api_out_address,
                         api_fee_rate,
+                        api_drain,
                     )
                 })())
             }
@@ -485,6 +488,12 @@ fn wire_wallet_utxos_impl(
 
 // Section: dart2rust
 
+impl CstDecode<bool> for bool {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> bool {
+        self
+    }
+}
 impl CstDecode<f32> for f32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> f32 {
@@ -583,6 +592,13 @@ impl SseDecode for crate::api::types::Blockchain {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         return crate::api::types::Blockchain {};
+    }
+}
+
+impl SseDecode for bool {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u8().unwrap() != 0
     }
 }
 
@@ -814,13 +830,6 @@ impl SseDecode for crate::api::wallet::Wallet {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_inner = <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_decode(deserializer);
         return crate::api::wallet::Wallet { inner: var_inner };
-    }
-}
-
-impl SseDecode for bool {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        deserializer.cursor.read_u8().unwrap() != 0
     }
 }
 
@@ -1097,6 +1106,13 @@ impl SseEncode for crate::api::types::Blockchain {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
+impl SseEncode for bool {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_u8(self as _).unwrap();
+    }
+}
+
 impl SseEncode for crate::api::descriptor::Descriptor {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1288,13 +1304,6 @@ impl SseEncode for crate::api::wallet::Wallet {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_encode(self.inner, serializer);
-    }
-}
-
-impl SseEncode for bool {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        serializer.cursor.write_u8(self as _).unwrap();
     }
 }
 

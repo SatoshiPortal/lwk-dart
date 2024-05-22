@@ -9,7 +9,8 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'types.freezed.dart';
 
-// The type `AssetIdMapInt` is not used by any `pub` functions, thus it is ignored.
+// The type `AssetIdBTreeMapInt` is not used by any `pub` functions, thus it is ignored.
+// The type `AssetIdHashMapInt` is not used by any `pub` functions, thus it is ignored.
 // The type `AssetIdMapUInt` is not used by any `pub` functions, thus it is ignored.
 
 @freezed

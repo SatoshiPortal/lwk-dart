@@ -72,12 +72,14 @@ class Wallet {
           {required int sats,
           required String outAddress,
           required double feeRate,
+          required bool drain,
           dynamic hint}) =>
       LwkCore.instance.api.walletBuildLbtcTx(
           that: this,
           sats: sats,
           outAddress: outAddress,
           feeRate: feeRate,
+          drain: drain,
           hint: hint);
 
   Future<PsetAmounts> decodeTx({required String pset, dynamic hint}) =>

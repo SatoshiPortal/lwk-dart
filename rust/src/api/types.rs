@@ -4,7 +4,7 @@ use elements::{secp256k1_zkp, AddressParams, AssetId, Script};
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
 use lwk_wollet::{AddressResult, BlockchainBackend, ElectrumClient, WalletTx, WalletTxOut};
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::str::FromStr;
 
 use lwk_wollet::ElementsNetwork;
@@ -25,14 +25,27 @@ impl Into<ElementsNetwork> for Network {
     }
 }
 
-pub struct AssetIdMapUInt(pub HashMap<AssetId, u64>);
-pub struct AssetIdMapInt(pub HashMap<AssetId, i64>);
+pub struct AssetIdMapUInt(pub BTreeMap<AssetId, u64>);
+pub struct AssetIdBTreeMapInt(pub BTreeMap<AssetId, i64>);
+pub struct AssetIdHashMapInt(pub HashMap<AssetId, i64>);
 
 #[frb(dart_metadata=("freezed"))]
 pub type Balances = Vec<Balance>;
 
-impl From<AssetIdMapInt> for Balances {
-    fn from(asset_id_map: AssetIdMapInt) -> Self {
+impl From<AssetIdBTreeMapInt> for Balances {
+    fn from(asset_id_map: AssetIdBTreeMapInt) -> Self {
+        asset_id_map
+            .0
+            .into_iter()
+            .map(|(key, value)| Balance {
+                asset_id: key.to_string(),
+                value,
+            })
+            .collect()
+    }
+}
+impl From<AssetIdHashMapInt> for Balances {
+    fn from(asset_id_map: AssetIdHashMapInt) -> Self {
         asset_id_map
             .0
             .into_iter()
@@ -247,7 +260,7 @@ impl From<WalletTx> for Tx {
         let since_the_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
         Tx {
             kind: wallet_tx.type_,
-            balances: Balances::from(AssetIdMapInt(wallet_tx.balance)),
+            balances: Balances::from(AssetIdHashMapInt(wallet_tx.balance)),
             txid: wallet_tx.tx.txid().to_string(),
             outputs: outputs,
             inputs: inputs,
@@ -269,7 +282,7 @@ impl From<PsetBalance> for PsetAmounts {
     fn from(balance: PsetBalance) -> Self {
         PsetAmounts {
             absolute_fees: balance.fee,
-            balances: Balances::from(AssetIdMapInt(balance.balances)),
+            balances: Balances::from(AssetIdBTreeMapInt(balance.balances)),
         }
     }
 }

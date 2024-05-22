@@ -142,7 +142,8 @@ void frbgen_lwk_dart_wire_wallet_build_lbtc_tx(int64_t port_,
                                                struct wire_cst_wallet *that,
                                                uint64_t sats,
                                                struct wire_cst_list_prim_u_8_strict *out_address,
-                                               float fee_rate);
+                                               float fee_rate,
+                                               bool drain);
 
 void frbgen_lwk_dart_wire_wallet_decode_tx(int64_t port_,
                                            struct wire_cst_wallet *that,

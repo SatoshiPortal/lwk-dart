@@ -104,6 +104,7 @@ abstract class LwkCoreApi extends BaseApi {
       required int sats,
       required String outAddress,
       required double feeRate,
+      required bool drain,
       dynamic hint});
 
   Future<PsetAmounts> walletDecodeTx(
@@ -418,6 +419,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       required int sats,
       required String outAddress,
       required double feeRate,
+      required bool drain,
       dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -425,14 +427,16 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         var arg1 = cst_encode_u_64(sats);
         var arg2 = cst_encode_String(outAddress);
         var arg3 = cst_encode_f_32(feeRate);
-        return wire.wire_wallet_build_lbtc_tx(port_, arg0, arg1, arg2, arg3);
+        var arg4 = cst_encode_bool(drain);
+        return wire.wire_wallet_build_lbtc_tx(
+            port_, arg0, arg1, arg2, arg3, arg4);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_String,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kWalletBuildLbtcTxConstMeta,
-      argValues: [that, sats, outAddress, feeRate],
+      argValues: [that, sats, outAddress, feeRate, drain],
       apiImpl: this,
       hint: hint,
     ));
@@ -440,7 +444,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
   TaskConstMeta get kWalletBuildLbtcTxConstMeta => const TaskConstMeta(
         debugName: "wallet_build_lbtc_tx",
-        argNames: ["that", "sats", "outAddress", "feeRate"],
+        argNames: ["that", "sats", "outAddress", "feeRate", "drain"],
       );
 
   @override
@@ -711,6 +715,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  bool dco_decode_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as bool;
+  }
+
+  @protected
   Blockchain dco_decode_box_autoadd_blockchain(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_blockchain(raw);
@@ -969,6 +979,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  bool sse_decode_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint8() != 0;
+  }
+
+  @protected
   Blockchain sse_decode_box_autoadd_blockchain(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_blockchain(deserializer));
@@ -1195,16 +1211,16 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  bool sse_decode_bool(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8() != 0;
-  }
-
-  @protected
   int cst_encode_RustOpaque_Mutexlwk_wolletWollet(MutexLwkWolletWollet raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
 // ignore: invalid_use_of_internal_member
     return raw.cstEncode();
+  }
+
+  @protected
+  bool cst_encode_bool(bool raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw;
   }
 
   @protected
@@ -1280,6 +1296,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   @protected
   void sse_encode_blockchain(Blockchain self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
+  }
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint8(self ? 1 : 0);
   }
 
   @protected
@@ -1476,11 +1498,5 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   void sse_encode_wallet(Wallet self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_RustOpaque_Mutexlwk_wolletWollet(self.inner, serializer);
-  }
-
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self ? 1 : 0);
   }
 }

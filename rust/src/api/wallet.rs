@@ -122,15 +122,24 @@ impl Wallet {
         sats: u64,
         out_address: String,
         fee_rate: f32,
+        drain: bool,
     ) -> anyhow::Result<String, LwkError> {
         let wallet = self.get_wallet()?;
         let tx_builder = wallet.tx_builder();
         let address = elements::Address::from_str(&out_address)?;
-        let pset = tx_builder
-            .add_lbtc_recipient(&address, sats)?
-            .fee_rate(Some(fee_rate))
-            .finish()?;
-        Ok(pset.to_string())
+        if drain {
+            let pset = tx_builder
+                .drain_lbtc_to(address)
+                .fee_rate(Some(fee_rate))
+                .finish()?;
+            Ok(pset.to_string())
+        } else {
+            let pset = tx_builder
+                .add_lbtc_recipient(&address, sats)?
+                .fee_rate(Some(fee_rate))
+                .finish()?;
+            Ok(pset.to_string())
+        }
     }
 
     pub fn build_asset_tx(

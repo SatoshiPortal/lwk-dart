@@ -308,6 +308,12 @@ impl CstDecode<String> for flutter_rust_bridge::for_generated::wasm_bindgen::JsV
         self.as_string().expect("non-UTF-8 string, or not a string")
     }
 }
+impl CstDecode<bool> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> bool {
+        self.is_truthy()
+    }
+}
 impl CstDecode<f32> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> f32 {
@@ -472,8 +478,9 @@ pub fn wire_wallet_build_lbtc_tx(
     sats: u64,
     out_address: String,
     fee_rate: f32,
+    drain: bool,
 ) {
-    wire_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, fee_rate)
+    wire_wallet_build_lbtc_tx_impl(port_, that, sats, out_address, fee_rate, drain)
 }
 
 #[wasm_bindgen]

@@ -1450,9 +1450,9 @@ dependencies = [
 
 [[package]]
 name = "lwk_common"
-version = "0.5.1"
+version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "451ed06b50b1bb76d6a910c36039a687f891868bd199c110e78529cc2e1cf634"
+checksum = "b2c34354811d24b6bfd94fce8f1d3a611e034dbc91489f6be5192c0e8cda0998"
 dependencies = [
  "base64 0.21.7",
  "elements",
@@ -1465,9 +1465,9 @@ dependencies = [
 
 [[package]]
 name = "lwk_jade"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fbe9d86bbe7584ff7081760b4476a47e2c1621a05dd9ad880c3ed5d46da1059b"
+checksum = "93707e1dfd7e5eda8f13f2587376e91d6b82061bb820b0d81c1f1f9ffed5cb9a"
 dependencies = [
  "elements",
  "elements-miniscript",
@@ -1486,9 +1486,9 @@ dependencies = [
 
 [[package]]
 name = "lwk_signer"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "06cab7a342823207e9a3f05ed2564547bbddf13fd61de75d2d5e1ef5bc45b241"
+checksum = "74a34fedb7cfb3e7746273bfe02d10d489b16413f291f04afd9410e6979dce6e"
 dependencies = [
  "base64 0.13.1",
  "bip39",
@@ -1500,9 +1500,9 @@ dependencies = [
 
 [[package]]
 name = "lwk_wollet"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4690a5a99097790e2411ae4a91ccf655a3d3e58610415e12a781dca9389930cb"
+checksum = "23e38fe0faf119f2cf6fb95f4ed3712ce694a1ec791e1c419097f4cbeb49a83e"
 dependencies = [
  "aes-gcm-siv",
  "base64 0.21.7",
@@ -1518,7 +1518,6 @@ dependencies = [
  "regex-lite",
  "reqwest",
  "serde",
- "serde_cbor",
  "serde_json",
  "thiserror",
  "tracing",
