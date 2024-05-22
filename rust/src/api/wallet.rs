@@ -64,23 +64,13 @@ impl Wallet {
     pub fn sync(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
         let mut electrum_client: ElectrumClient =
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
-        println!("---rust---Locking Wallet");
-
         let mut wallet = self.get_wallet()?;
-        println!("---rust---Wallet Locked");
-        println!("---rust---Syncing Wallet");
-
         let update: Update = if let Some(value) = electrum_client.full_scan(&mut wallet)? {
-            println!("---rust---Has Update");
             value
         } else {
-            println!("---rust---No Update");
             return Ok(());
         };
-        println!("---rust---Wallet Synced");
-        println!("---rust---Updateing Wallet");
         let _ = wallet.apply_update(update)?;
-        println!("---rust---Wallet Updated");
         Ok(())
     }
 
@@ -129,6 +119,7 @@ impl Wallet {
         let address = elements::Address::from_str(&out_address)?;
         if drain {
             let pset = tx_builder
+                .drain_lbtc_wallet()
                 .drain_lbtc_to(address)
                 .fee_rate(Some(fee_rate))
                 .finish()?;
