@@ -106,6 +106,7 @@ class Tx with _$Tx {
     required List<TxOut> inputs,
     required int fee,
     required int height,
+    required String unblindedUrl,
   }) = _Tx;
 }
 

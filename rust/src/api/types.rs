@@ -208,6 +208,7 @@ pub struct Tx {
     pub inputs: Vec<TxOut>,
     pub fee: u64,
     pub height: u32,
+    pub unblinded_url: String,
 }
 
 impl From<WalletTx> for Tx {
@@ -215,7 +216,7 @@ impl From<WalletTx> for Tx {
         let mut outputs: Vec<TxOut> = Vec::new();
         let mut inputs: Vec<TxOut> = Vec::new();
 
-        for output in wallet_tx.outputs {
+        for output in &wallet_tx.outputs {
             if output.is_some() {
                 // safe to unwrap
                 let script_pubkey = output.clone().unwrap().script_pubkey;
@@ -236,7 +237,7 @@ impl From<WalletTx> for Tx {
             }
         }
 
-        for input in wallet_tx.inputs {
+        for input in &wallet_tx.inputs {
             if input.is_some() {
                 // safe to unwrap
                 let script_pubkey = input.clone().unwrap().script_pubkey;
@@ -259,20 +260,26 @@ impl From<WalletTx> for Tx {
         let now = SystemTime::now();
         let since_the_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
         Tx {
-            kind: wallet_tx.type_,
-            balances: Balances::from(AssetIdHashMapInt(wallet_tx.balance)),
-            txid: wallet_tx.tx.txid().to_string(),
+            kind: wallet_tx.type_.clone(),
+            balances: Balances::from(AssetIdHashMapInt(wallet_tx.balance.clone())),
+            txid: wallet_tx.tx.txid().to_string().clone(),
             outputs: outputs,
             inputs: inputs,
-            fee: wallet_tx.fee,
+            fee: wallet_tx.fee.clone(),
             timestamp: wallet_tx
                 .timestamp
-                .unwrap_or(since_the_epoch.as_secs() as u32),
-            height: wallet_tx.height.unwrap_or(0),
+                .unwrap_or(since_the_epoch.as_secs() as u32).clone(),
+            height: wallet_tx.height.unwrap_or(0).clone(),
+            unblinded_url: wallet_tx.unblinded_url("").clone()
         }
     }
 }
-
+// impl Tx{
+//     pub fn unblinded_url(&self, explorer_url: String)->String{
+//         let wollet_tx: WalletTx = self.into();
+//         wollet_tx.unblinded_url(&explorer_url);
+//     }
+// }
 #[derive(Clone, Debug, PartialEq)]
 pub struct PsetAmounts {
     pub absolute_fees: u64,

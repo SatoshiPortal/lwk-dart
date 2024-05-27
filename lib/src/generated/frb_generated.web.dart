@@ -355,7 +355,8 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       cst_encode_list_tx_out(raw.outputs),
       cst_encode_list_tx_out(raw.inputs),
       cst_encode_u_64(raw.fee),
-      cst_encode_u_32(raw.height)
+      cst_encode_u_32(raw.height),
+      cst_encode_String(raw.unblindedUrl)
     ];
   }
 

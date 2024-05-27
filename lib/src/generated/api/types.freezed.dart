@@ -443,6 +443,7 @@ mixin _$Tx {
   List<TxOut> get inputs => throw _privateConstructorUsedError;
   int get fee => throw _privateConstructorUsedError;
   int get height => throw _privateConstructorUsedError;
+  String get unblindedUrl => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TxCopyWith<Tx> get copyWith => throw _privateConstructorUsedError;
@@ -461,7 +462,8 @@ abstract class $TxCopyWith<$Res> {
       List<TxOut> outputs,
       List<TxOut> inputs,
       int fee,
-      int height});
+      int height,
+      String unblindedUrl});
 }
 
 /// @nodoc
@@ -484,6 +486,7 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
     Object? inputs = null,
     Object? fee = null,
     Object? height = null,
+    Object? unblindedUrl = null,
   }) {
     return _then(_value.copyWith(
       timestamp: null == timestamp
@@ -518,6 +521,10 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
               as int,
+      unblindedUrl: null == unblindedUrl
+          ? _value.unblindedUrl
+          : unblindedUrl // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -536,7 +543,8 @@ abstract class _$$TxImplCopyWith<$Res> implements $TxCopyWith<$Res> {
       List<TxOut> outputs,
       List<TxOut> inputs,
       int fee,
-      int height});
+      int height,
+      String unblindedUrl});
 }
 
 /// @nodoc
@@ -556,6 +564,7 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
     Object? inputs = null,
     Object? fee = null,
     Object? height = null,
+    Object? unblindedUrl = null,
   }) {
     return _then(_$TxImpl(
       timestamp: null == timestamp
@@ -590,6 +599,10 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
               as int,
+      unblindedUrl: null == unblindedUrl
+          ? _value.unblindedUrl
+          : unblindedUrl // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -605,7 +618,8 @@ class _$TxImpl implements _Tx {
       required final List<TxOut> outputs,
       required final List<TxOut> inputs,
       required this.fee,
-      required this.height})
+      required this.height,
+      required this.unblindedUrl})
       : _balances = balances,
         _outputs = outputs,
         _inputs = inputs;
@@ -644,10 +658,12 @@ class _$TxImpl implements _Tx {
   final int fee;
   @override
   final int height;
+  @override
+  final String unblindedUrl;
 
   @override
   String toString() {
-    return 'Tx(timestamp: $timestamp, kind: $kind, balances: $balances, txid: $txid, outputs: $outputs, inputs: $inputs, fee: $fee, height: $height)';
+    return 'Tx(timestamp: $timestamp, kind: $kind, balances: $balances, txid: $txid, outputs: $outputs, inputs: $inputs, fee: $fee, height: $height, unblindedUrl: $unblindedUrl)';
   }
 
   @override
@@ -663,7 +679,9 @@ class _$TxImpl implements _Tx {
             const DeepCollectionEquality().equals(other._outputs, _outputs) &&
             const DeepCollectionEquality().equals(other._inputs, _inputs) &&
             (identical(other.fee, fee) || other.fee == fee) &&
-            (identical(other.height, height) || other.height == height));
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.unblindedUrl, unblindedUrl) ||
+                other.unblindedUrl == unblindedUrl));
   }
 
   @override
@@ -676,7 +694,8 @@ class _$TxImpl implements _Tx {
       const DeepCollectionEquality().hash(_outputs),
       const DeepCollectionEquality().hash(_inputs),
       fee,
-      height);
+      height,
+      unblindedUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -694,7 +713,8 @@ abstract class _Tx implements Tx {
       required final List<TxOut> outputs,
       required final List<TxOut> inputs,
       required final int fee,
-      required final int height}) = _$TxImpl;
+      required final int height,
+      required final String unblindedUrl}) = _$TxImpl;
 
   @override
   int get timestamp;
@@ -712,6 +732,8 @@ abstract class _Tx implements Tx {
   int get fee;
   @override
   int get height;
+  @override
+  String get unblindedUrl;
   @override
   @JsonKey(ignore: true)
   _$$TxImplCopyWith<_$TxImpl> get copyWith =>

@@ -394,6 +394,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     wireObj.inputs = cst_encode_list_tx_out(apiObj.inputs);
     wireObj.fee = cst_encode_u_64(apiObj.fee);
     wireObj.height = cst_encode_u_32(apiObj.height);
+    wireObj.unblinded_url = cst_encode_String(apiObj.unblindedUrl);
   }
 
   @protected
@@ -1289,6 +1290,8 @@ final class wire_cst_tx extends ffi.Struct {
 
   @ffi.Uint32()
   external int height;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> unblinded_url;
 }
 
 final class wire_cst_list_tx extends ffi.Struct {

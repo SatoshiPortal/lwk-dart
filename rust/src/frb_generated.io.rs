@@ -174,6 +174,7 @@ impl CstDecode<crate::api::types::Tx> for wire_cst_tx {
             inputs: self.inputs.cst_decode(),
             fee: self.fee.cst_decode(),
             height: self.height.cst_decode(),
+            unblinded_url: self.unblinded_url.cst_decode(),
         }
     }
 }
@@ -305,6 +306,7 @@ impl NewWithNullPtr for wire_cst_tx {
             inputs: core::ptr::null_mut(),
             fee: Default::default(),
             height: Default::default(),
+            unblinded_url: core::ptr::null_mut(),
         }
     }
 }
@@ -692,6 +694,7 @@ pub struct wire_cst_tx {
     inputs: *mut wire_cst_list_tx_out,
     fee: u64,
     height: u32,
+    unblinded_url: *mut wire_cst_list_prim_u_8_strict,
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
