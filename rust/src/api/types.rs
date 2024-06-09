@@ -200,14 +200,14 @@ pub struct TxOutSecrets {
 #[derive(Clone, Debug, PartialEq)]
 #[frb(dart_metadata=("freezed"))]
 pub struct Tx {
-    pub timestamp: u32,
+    pub timestamp: Option<u32>,
     pub kind: String,
     pub balances: Balances,
     pub txid: String,
     pub outputs: Vec<TxOut>,
     pub inputs: Vec<TxOut>,
     pub fee: u64,
-    pub height: u32,
+    pub height: Option<u32>,
     pub unblinded_url: String,
 }
 
@@ -257,8 +257,8 @@ impl From<WalletTx> for Tx {
                 })
             }
         }
-        let now = SystemTime::now();
-        let since_the_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
+        // let now = SystemTime::now();
+        // let since_the_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
         Tx {
             kind: wallet_tx.type_.clone(),
             balances: Balances::from(AssetIdHashMapInt(wallet_tx.balance.clone())),
@@ -267,9 +267,8 @@ impl From<WalletTx> for Tx {
             inputs: inputs,
             fee: wallet_tx.fee.clone(),
             timestamp: wallet_tx
-                .timestamp
-                .unwrap_or(since_the_epoch.as_secs() as u32).clone(),
-            height: wallet_tx.height.unwrap_or(0).clone(),
+                .timestamp,
+            height: wallet_tx.height,
             unblinded_url: wallet_tx.unblinded_url("").clone()
         }
     }
