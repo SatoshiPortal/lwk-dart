@@ -246,10 +246,13 @@ mod tests {
         let mnemonic =
             "fossil install fever ticket wisdom outer broken aspect lucky still flavor dial";
         let electrum_url = "blockstream.info:465".to_string();
-        let desc = Descriptor::new_confidential(Network::Testnet, mnemonic.to_string()).expect("");
+        let network = Network::Mainnet;
+        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).expect("");
         let wallet = Wallet::init(Network::Testnet, "/tmp/lwk".to_string(), desc).expect("");
         let _ = wallet.sync(electrum_url);
         let _txs = wallet.txs();
+        println!("{:#?}", _txs);
+
         let balances = wallet.balances();
         let address = wallet.address_last_unused();
         println!("{:#?}", address);
