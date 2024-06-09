@@ -857,14 +857,14 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     if (arr.length != 9)
       throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
     return Tx(
-      timestamp: dco_decode_u_32(arr[0]),
+      timestamp: dco_decode_opt_box_autoadd_u_32(arr[0]),
       kind: dco_decode_String(arr[1]),
       balances: dco_decode_list_balance(arr[2]),
       txid: dco_decode_String(arr[3]),
       outputs: dco_decode_list_tx_out(arr[4]),
       inputs: dco_decode_list_tx_out(arr[5]),
       fee: dco_decode_u_64(arr[6]),
-      height: dco_decode_u_32(arr[7]),
+      height: dco_decode_opt_box_autoadd_u_32(arr[7]),
       unblindedUrl: dco_decode_String(arr[8]),
     );
   }
@@ -1128,14 +1128,14 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   @protected
   Tx sse_decode_tx(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_timestamp = sse_decode_u_32(deserializer);
+    var var_timestamp = sse_decode_opt_box_autoadd_u_32(deserializer);
     var var_kind = sse_decode_String(deserializer);
     var var_balances = sse_decode_list_balance(deserializer);
     var var_txid = sse_decode_String(deserializer);
     var var_outputs = sse_decode_list_tx_out(deserializer);
     var var_inputs = sse_decode_list_tx_out(deserializer);
     var var_fee = sse_decode_u_64(deserializer);
-    var var_height = sse_decode_u_32(deserializer);
+    var var_height = sse_decode_opt_box_autoadd_u_32(deserializer);
     var var_unblindedUrl = sse_decode_String(deserializer);
     return Tx(
         timestamp: var_timestamp,
@@ -1440,14 +1440,14 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   @protected
   void sse_encode_tx(Tx self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_u_32(self.timestamp, serializer);
+    sse_encode_opt_box_autoadd_u_32(self.timestamp, serializer);
     sse_encode_String(self.kind, serializer);
     sse_encode_list_balance(self.balances, serializer);
     sse_encode_String(self.txid, serializer);
     sse_encode_list_tx_out(self.outputs, serializer);
     sse_encode_list_tx_out(self.inputs, serializer);
     sse_encode_u_64(self.fee, serializer);
-    sse_encode_u_32(self.height, serializer);
+    sse_encode_opt_box_autoadd_u_32(self.height, serializer);
     sse_encode_String(self.unblindedUrl, serializer);
   }
 

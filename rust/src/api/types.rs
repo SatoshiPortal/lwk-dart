@@ -266,10 +266,9 @@ impl From<WalletTx> for Tx {
             outputs: outputs,
             inputs: inputs,
             fee: wallet_tx.fee.clone(),
-            timestamp: wallet_tx
-                .timestamp,
+            timestamp: wallet_tx.timestamp,
             height: wallet_tx.height,
-            unblinded_url: wallet_tx.unblinded_url("").clone()
+            unblinded_url: wallet_tx.unblinded_url("").clone(),
         }
     }
 }

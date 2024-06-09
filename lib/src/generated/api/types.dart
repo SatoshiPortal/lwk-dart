@@ -98,14 +98,14 @@ class PsetAmounts {
 @freezed
 class Tx with _$Tx {
   const factory Tx({
-    required int timestamp,
+    int? timestamp,
     required String kind,
     required List<Balance> balances,
     required String txid,
     required List<TxOut> outputs,
     required List<TxOut> inputs,
     required int fee,
-    required int height,
+    int? height,
     required String unblindedUrl,
   }) = _Tx;
 }

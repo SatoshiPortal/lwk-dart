@@ -348,14 +348,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<dynamic> cst_encode_tx(Tx raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [
-      cst_encode_u_32(raw.timestamp),
+      cst_encode_opt_box_autoadd_u_32(raw.timestamp),
       cst_encode_String(raw.kind),
       cst_encode_list_balance(raw.balances),
       cst_encode_String(raw.txid),
       cst_encode_list_tx_out(raw.outputs),
       cst_encode_list_tx_out(raw.inputs),
       cst_encode_u_64(raw.fee),
-      cst_encode_u_32(raw.height),
+      cst_encode_opt_box_autoadd_u_32(raw.height),
       cst_encode_String(raw.unblindedUrl)
     ];
   }

@@ -435,14 +435,14 @@ abstract class _OutPoint implements OutPoint {
 
 /// @nodoc
 mixin _$Tx {
-  int get timestamp => throw _privateConstructorUsedError;
+  int? get timestamp => throw _privateConstructorUsedError;
   String get kind => throw _privateConstructorUsedError;
   List<Balance> get balances => throw _privateConstructorUsedError;
   String get txid => throw _privateConstructorUsedError;
   List<TxOut> get outputs => throw _privateConstructorUsedError;
   List<TxOut> get inputs => throw _privateConstructorUsedError;
   int get fee => throw _privateConstructorUsedError;
-  int get height => throw _privateConstructorUsedError;
+  int? get height => throw _privateConstructorUsedError;
   String get unblindedUrl => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -455,14 +455,14 @@ abstract class $TxCopyWith<$Res> {
       _$TxCopyWithImpl<$Res, Tx>;
   @useResult
   $Res call(
-      {int timestamp,
+      {int? timestamp,
       String kind,
       List<Balance> balances,
       String txid,
       List<TxOut> outputs,
       List<TxOut> inputs,
       int fee,
-      int height,
+      int? height,
       String unblindedUrl});
 }
 
@@ -478,21 +478,21 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? timestamp = null,
+    Object? timestamp = freezed,
     Object? kind = null,
     Object? balances = null,
     Object? txid = null,
     Object? outputs = null,
     Object? inputs = null,
     Object? fee = null,
-    Object? height = null,
+    Object? height = freezed,
     Object? unblindedUrl = null,
   }) {
     return _then(_value.copyWith(
-      timestamp: null == timestamp
+      timestamp: freezed == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       kind: null == kind
           ? _value.kind
           : kind // ignore: cast_nullable_to_non_nullable
@@ -517,10 +517,10 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
           ? _value.fee
           : fee // ignore: cast_nullable_to_non_nullable
               as int,
-      height: null == height
+      height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       unblindedUrl: null == unblindedUrl
           ? _value.unblindedUrl
           : unblindedUrl // ignore: cast_nullable_to_non_nullable
@@ -536,14 +536,14 @@ abstract class _$$TxImplCopyWith<$Res> implements $TxCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int timestamp,
+      {int? timestamp,
       String kind,
       List<Balance> balances,
       String txid,
       List<TxOut> outputs,
       List<TxOut> inputs,
       int fee,
-      int height,
+      int? height,
       String unblindedUrl});
 }
 
@@ -556,21 +556,21 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? timestamp = null,
+    Object? timestamp = freezed,
     Object? kind = null,
     Object? balances = null,
     Object? txid = null,
     Object? outputs = null,
     Object? inputs = null,
     Object? fee = null,
-    Object? height = null,
+    Object? height = freezed,
     Object? unblindedUrl = null,
   }) {
     return _then(_$TxImpl(
-      timestamp: null == timestamp
+      timestamp: freezed == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       kind: null == kind
           ? _value.kind
           : kind // ignore: cast_nullable_to_non_nullable
@@ -595,10 +595,10 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
           ? _value.fee
           : fee // ignore: cast_nullable_to_non_nullable
               as int,
-      height: null == height
+      height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       unblindedUrl: null == unblindedUrl
           ? _value.unblindedUrl
           : unblindedUrl // ignore: cast_nullable_to_non_nullable
@@ -611,21 +611,21 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
 
 class _$TxImpl implements _Tx {
   const _$TxImpl(
-      {required this.timestamp,
+      {this.timestamp,
       required this.kind,
       required final List<Balance> balances,
       required this.txid,
       required final List<TxOut> outputs,
       required final List<TxOut> inputs,
       required this.fee,
-      required this.height,
+      this.height,
       required this.unblindedUrl})
       : _balances = balances,
         _outputs = outputs,
         _inputs = inputs;
 
   @override
-  final int timestamp;
+  final int? timestamp;
   @override
   final String kind;
   final List<Balance> _balances;
@@ -657,7 +657,7 @@ class _$TxImpl implements _Tx {
   @override
   final int fee;
   @override
-  final int height;
+  final int? height;
   @override
   final String unblindedUrl;
 
@@ -706,18 +706,18 @@ class _$TxImpl implements _Tx {
 
 abstract class _Tx implements Tx {
   const factory _Tx(
-      {required final int timestamp,
+      {final int? timestamp,
       required final String kind,
       required final List<Balance> balances,
       required final String txid,
       required final List<TxOut> outputs,
       required final List<TxOut> inputs,
       required final int fee,
-      required final int height,
+      final int? height,
       required final String unblindedUrl}) = _$TxImpl;
 
   @override
-  int get timestamp;
+  int? get timestamp;
   @override
   String get kind;
   @override
@@ -731,7 +731,7 @@ abstract class _Tx implements Tx {
   @override
   int get fee;
   @override
-  int get height;
+  int? get height;
   @override
   String get unblindedUrl;
   @override

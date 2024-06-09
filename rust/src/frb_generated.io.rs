@@ -298,14 +298,14 @@ impl Default for wire_cst_pset_amounts {
 impl NewWithNullPtr for wire_cst_tx {
     fn new_with_null_ptr() -> Self {
         Self {
-            timestamp: Default::default(),
+            timestamp: core::ptr::null_mut(),
             kind: core::ptr::null_mut(),
             balances: core::ptr::null_mut(),
             txid: core::ptr::null_mut(),
             outputs: core::ptr::null_mut(),
             inputs: core::ptr::null_mut(),
             fee: Default::default(),
-            height: Default::default(),
+            height: core::ptr::null_mut(),
             unblinded_url: core::ptr::null_mut(),
         }
     }
@@ -686,14 +686,14 @@ pub struct wire_cst_pset_amounts {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct wire_cst_tx {
-    timestamp: u32,
+    timestamp: *mut u32,
     kind: *mut wire_cst_list_prim_u_8_strict,
     balances: *mut wire_cst_list_balance,
     txid: *mut wire_cst_list_prim_u_8_strict,
     outputs: *mut wire_cst_list_tx_out,
     inputs: *mut wire_cst_list_tx_out,
     fee: u64,
-    height: u32,
+    height: *mut u32,
     unblinded_url: *mut wire_cst_list_prim_u_8_strict,
 }
 #[repr(C)]

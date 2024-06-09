@@ -386,14 +386,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_api_fill_to_wire_tx(Tx apiObj, wire_cst_tx wireObj) {
-    wireObj.timestamp = cst_encode_u_32(apiObj.timestamp);
+    wireObj.timestamp = cst_encode_opt_box_autoadd_u_32(apiObj.timestamp);
     wireObj.kind = cst_encode_String(apiObj.kind);
     wireObj.balances = cst_encode_list_balance(apiObj.balances);
     wireObj.txid = cst_encode_String(apiObj.txid);
     wireObj.outputs = cst_encode_list_tx_out(apiObj.outputs);
     wireObj.inputs = cst_encode_list_tx_out(apiObj.inputs);
     wireObj.fee = cst_encode_u_64(apiObj.fee);
-    wireObj.height = cst_encode_u_32(apiObj.height);
+    wireObj.height = cst_encode_opt_box_autoadd_u_32(apiObj.height);
     wireObj.unblinded_url = cst_encode_String(apiObj.unblindedUrl);
   }
 
@@ -1272,8 +1272,7 @@ final class wire_cst_list_tx_out extends ffi.Struct {
 }
 
 final class wire_cst_tx extends ffi.Struct {
-  @ffi.Uint32()
-  external int timestamp;
+  external ffi.Pointer<ffi.Uint32> timestamp;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> kind;
 
@@ -1288,8 +1287,7 @@ final class wire_cst_tx extends ffi.Struct {
   @ffi.Uint64()
   external int fee;
 
-  @ffi.Uint32()
-  external int height;
+  external ffi.Pointer<ffi.Uint32> height;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> unblinded_url;
 }

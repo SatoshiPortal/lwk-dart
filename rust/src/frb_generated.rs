@@ -739,14 +739,14 @@ impl SseDecode for crate::api::types::PsetAmounts {
 impl SseDecode for crate::api::types::Tx {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_timestamp = <u32>::sse_decode(deserializer);
+        let mut var_timestamp = <Option<u32>>::sse_decode(deserializer);
         let mut var_kind = <String>::sse_decode(deserializer);
         let mut var_balances = <Vec<crate::api::types::Balance>>::sse_decode(deserializer);
         let mut var_txid = <String>::sse_decode(deserializer);
         let mut var_outputs = <Vec<crate::api::types::TxOut>>::sse_decode(deserializer);
         let mut var_inputs = <Vec<crate::api::types::TxOut>>::sse_decode(deserializer);
         let mut var_fee = <u64>::sse_decode(deserializer);
-        let mut var_height = <u32>::sse_decode(deserializer);
+        let mut var_height = <Option<u32>>::sse_decode(deserializer);
         let mut var_unblindedUrl = <String>::sse_decode(deserializer);
         return crate::api::types::Tx {
             timestamp: var_timestamp,
@@ -1236,14 +1236,14 @@ impl SseEncode for crate::api::types::PsetAmounts {
 impl SseEncode for crate::api::types::Tx {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <u32>::sse_encode(self.timestamp, serializer);
+        <Option<u32>>::sse_encode(self.timestamp, serializer);
         <String>::sse_encode(self.kind, serializer);
         <Vec<crate::api::types::Balance>>::sse_encode(self.balances, serializer);
         <String>::sse_encode(self.txid, serializer);
         <Vec<crate::api::types::TxOut>>::sse_encode(self.outputs, serializer);
         <Vec<crate::api::types::TxOut>>::sse_encode(self.inputs, serializer);
         <u64>::sse_encode(self.fee, serializer);
-        <u32>::sse_encode(self.height, serializer);
+        <Option<u32>>::sse_encode(self.height, serializer);
         <String>::sse_encode(self.unblinded_url, serializer);
     }
 }

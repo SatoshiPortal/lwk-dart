@@ -71,14 +71,14 @@ typedef struct wire_cst_list_tx_out {
 } wire_cst_list_tx_out;
 
 typedef struct wire_cst_tx {
-  uint32_t timestamp;
+  uint32_t *timestamp;
   struct wire_cst_list_prim_u_8_strict *kind;
   struct wire_cst_list_balance *balances;
   struct wire_cst_list_prim_u_8_strict *txid;
   struct wire_cst_list_tx_out *outputs;
   struct wire_cst_list_tx_out *inputs;
   uint64_t fee;
-  uint32_t height;
+  uint32_t *height;
   struct wire_cst_list_prim_u_8_strict *unblinded_url;
 } wire_cst_tx;
 

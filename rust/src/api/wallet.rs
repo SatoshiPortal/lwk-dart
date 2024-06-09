@@ -168,7 +168,7 @@ impl Wallet {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         let _ = signer.sign(&mut pset);
         let tx = self.get_wallet()?.finalize(&mut pset)?;
-        
+
         Ok(tx.serialize())
     }
 
@@ -235,7 +235,6 @@ impl Wallet {
 
         Ok(pset.to_string())
     }
-
 }
 
 #[cfg(test)]
@@ -255,7 +254,6 @@ mod tests {
         let address = wallet.address_last_unused();
         println!("{:#?}", address);
         println!("{:#?}", balances);
-
     }
     #[test]
     fn test_broadcast() {
