@@ -242,8 +242,8 @@ mod tests {
     fn testable_wallets() {
         let mnemonic =
             "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
-        let electrum_url = "les.bullbitcoin.com:995".to_string();
-        let network = Network::Mainnet;
+        let electrum_url = "blockstream.info:465".to_string();
+        let network = Network::Testnet;
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).expect("");
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).expect("");
         let _ = wallet.sync(electrum_url);
