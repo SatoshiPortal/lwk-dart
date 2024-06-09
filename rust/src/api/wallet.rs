@@ -50,15 +50,12 @@ impl Wallet {
         network: Network,
         dbpath: String,
         descriptor: Descriptor,
-        // electrum_url: String,
     ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
-        // let db = FsPersister::new(dbpath.clone(), network.into(), &descriptor)?;
         let wollet = Wollet::with_fs_persist(network.into(), descriptor, dbpath.clone())?;
         let opaque = RustOpaque::new(Mutex::new(wollet));
         let wallet = Wallet { inner: opaque };
-        // wallet.sync(electrum_url)?;
         Ok(wallet)
     }
     pub fn sync(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
@@ -244,15 +241,16 @@ mod tests {
     #[test]
     fn testable_wallets() {
         let mnemonic =
-            "fossil install fever ticket wisdom outer broken aspect lucky still flavor dial";
-        let electrum_url = "blockstream.info:465".to_string();
+            "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
+        let electrum_url = "les.bullbitcoin.com:995".to_string();
         let network = Network::Mainnet;
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).expect("");
-        let wallet = Wallet::init(Network::Testnet, "/tmp/lwk".to_string(), desc).expect("");
+        let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).expect("");
         let _ = wallet.sync(electrum_url);
         let _txs = wallet.txs();
-        println!("{:#?}", _txs);
-
+        for tx in _txs.unwrap(){
+            println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
+        }
         let balances = wallet.balances();
         let address = wallet.address_last_unused();
         println!("{:#?}", address);
