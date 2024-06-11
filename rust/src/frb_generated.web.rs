@@ -211,8 +211,8 @@ impl CstDecode<crate::api::types::Tx>
             .unwrap();
         assert_eq!(
             self_.length(),
-            9,
-            "Expected 9 elements, got {}",
+            10,
+            "Expected 10 elements, got {}",
             self_.length()
         );
         crate::api::types::Tx {
@@ -225,6 +225,7 @@ impl CstDecode<crate::api::types::Tx>
             fee: self_.get(6).cst_decode(),
             height: self_.get(7).cst_decode(),
             unblinded_url: self_.get(8).cst_decode(),
+            vsize: self_.get(9).cst_decode(),
         }
     }
 }

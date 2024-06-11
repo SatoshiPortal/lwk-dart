@@ -237,24 +237,42 @@ impl Wallet {
 #[cfg(test)]
 mod tests {
 
+    use std::{thread, time::Duration};
+
     use super::*;
     #[test]
     fn testable_wallets() {
         let mnemonic =
-            "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
-        let electrum_url = "blockstream.info:465".to_string();
-        let network = Network::Testnet;
+            "umbrella response wide outer mystery drastic crew festival poet coconut error act";
+        let electrum_url = "les.bullbitcoin.com:995".to_string();
+        let network = Network::Mainnet;
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).expect("");
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).expect("");
-        let _ = wallet.sync(electrum_url);
+        let _ = wallet.sync(electrum_url.clone());
         let _txs = wallet.txs();
         for tx in _txs.unwrap(){
             println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
         }
         let balances = wallet.balances();
         let address = wallet.address_last_unused();
-        println!("{:#?}", address);
-        println!("{:#?}", balances);
+        // println!("{:#?}", address);
+        // println!("{:#?}", balances);
+        // let out_address = "lq1qqdvmhsrn8fehfurv0yzgve2xfhrfxj9yax7t6wymzuvfj2w2y49v4jf3730067gp3xhkhw73083tvx3xryasvf32pe06sajwu".to_string();
+        // let pset = wallet.build_lbtc_tx(0, out_address, 1000.0, true).unwrap();
+        // let signed = wallet.sign_tx(network, pset, mnemonic.to_string()).unwrap();
+        // let _ = Wallet::broadcast_tx(electrum_url.clone(), signed).unwrap();
+        // let _ = wallet.sync(electrum_url.clone());
+        // let _txs = wallet.txs();
+        // for tx in _txs.unwrap(){
+        //     println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
+        // }
+        // thread::sleep(Duration::from_secs(60));
+        // let _ = wallet.sync(electrum_url.clone());
+        // let _txs = wallet.txs();
+        // for tx in _txs.unwrap(){
+        //     println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
+        // }
+
     }
     #[test]
     fn test_broadcast() {

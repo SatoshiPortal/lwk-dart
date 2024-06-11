@@ -209,6 +209,7 @@ pub struct Tx {
     pub fee: u64,
     pub height: Option<u32>,
     pub unblinded_url: String,
+    pub vsize: usize,
 }
 
 impl From<WalletTx> for Tx {
@@ -269,6 +270,7 @@ impl From<WalletTx> for Tx {
             timestamp: wallet_tx.timestamp,
             height: wallet_tx.height,
             unblinded_url: wallet_tx.unblinded_url("").clone(),
+            vsize: wallet_tx.tx.vsize(),
         }
     }
 }

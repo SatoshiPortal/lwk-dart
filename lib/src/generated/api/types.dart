@@ -107,6 +107,7 @@ class Tx with _$Tx {
     required int fee,
     int? height,
     required String unblindedUrl,
+    required int vsize,
   }) = _Tx;
 }
 

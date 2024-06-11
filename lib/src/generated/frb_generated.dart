@@ -854,8 +854,8 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   Tx dco_decode_tx(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 9)
-      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    if (arr.length != 10)
+      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
     return Tx(
       timestamp: dco_decode_opt_box_autoadd_u_32(arr[0]),
       kind: dco_decode_String(arr[1]),
@@ -866,6 +866,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       fee: dco_decode_u_64(arr[6]),
       height: dco_decode_opt_box_autoadd_u_32(arr[7]),
       unblindedUrl: dco_decode_String(arr[8]),
+      vsize: dco_decode_usize(arr[9]),
     );
   }
 
@@ -1137,6 +1138,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     var var_fee = sse_decode_u_64(deserializer);
     var var_height = sse_decode_opt_box_autoadd_u_32(deserializer);
     var var_unblindedUrl = sse_decode_String(deserializer);
+    var var_vsize = sse_decode_usize(deserializer);
     return Tx(
         timestamp: var_timestamp,
         kind: var_kind,
@@ -1146,7 +1148,8 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         inputs: var_inputs,
         fee: var_fee,
         height: var_height,
-        unblindedUrl: var_unblindedUrl);
+        unblindedUrl: var_unblindedUrl,
+        vsize: var_vsize);
   }
 
   @protected
@@ -1449,6 +1452,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     sse_encode_u_64(self.fee, serializer);
     sse_encode_opt_box_autoadd_u_32(self.height, serializer);
     sse_encode_String(self.unblindedUrl, serializer);
+    sse_encode_usize(self.vsize, serializer);
   }
 
   @protected

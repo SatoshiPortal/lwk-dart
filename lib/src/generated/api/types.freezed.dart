@@ -444,6 +444,7 @@ mixin _$Tx {
   int get fee => throw _privateConstructorUsedError;
   int? get height => throw _privateConstructorUsedError;
   String get unblindedUrl => throw _privateConstructorUsedError;
+  int get vsize => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TxCopyWith<Tx> get copyWith => throw _privateConstructorUsedError;
@@ -463,7 +464,8 @@ abstract class $TxCopyWith<$Res> {
       List<TxOut> inputs,
       int fee,
       int? height,
-      String unblindedUrl});
+      String unblindedUrl,
+      int vsize});
 }
 
 /// @nodoc
@@ -487,6 +489,7 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
     Object? fee = null,
     Object? height = freezed,
     Object? unblindedUrl = null,
+    Object? vsize = null,
   }) {
     return _then(_value.copyWith(
       timestamp: freezed == timestamp
@@ -525,6 +528,10 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
           ? _value.unblindedUrl
           : unblindedUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      vsize: null == vsize
+          ? _value.vsize
+          : vsize // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -544,7 +551,8 @@ abstract class _$$TxImplCopyWith<$Res> implements $TxCopyWith<$Res> {
       List<TxOut> inputs,
       int fee,
       int? height,
-      String unblindedUrl});
+      String unblindedUrl,
+      int vsize});
 }
 
 /// @nodoc
@@ -565,6 +573,7 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
     Object? fee = null,
     Object? height = freezed,
     Object? unblindedUrl = null,
+    Object? vsize = null,
   }) {
     return _then(_$TxImpl(
       timestamp: freezed == timestamp
@@ -603,6 +612,10 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
           ? _value.unblindedUrl
           : unblindedUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      vsize: null == vsize
+          ? _value.vsize
+          : vsize // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -619,7 +632,8 @@ class _$TxImpl implements _Tx {
       required final List<TxOut> inputs,
       required this.fee,
       this.height,
-      required this.unblindedUrl})
+      required this.unblindedUrl,
+      required this.vsize})
       : _balances = balances,
         _outputs = outputs,
         _inputs = inputs;
@@ -660,10 +674,12 @@ class _$TxImpl implements _Tx {
   final int? height;
   @override
   final String unblindedUrl;
+  @override
+  final int vsize;
 
   @override
   String toString() {
-    return 'Tx(timestamp: $timestamp, kind: $kind, balances: $balances, txid: $txid, outputs: $outputs, inputs: $inputs, fee: $fee, height: $height, unblindedUrl: $unblindedUrl)';
+    return 'Tx(timestamp: $timestamp, kind: $kind, balances: $balances, txid: $txid, outputs: $outputs, inputs: $inputs, fee: $fee, height: $height, unblindedUrl: $unblindedUrl, vsize: $vsize)';
   }
 
   @override
@@ -681,7 +697,8 @@ class _$TxImpl implements _Tx {
             (identical(other.fee, fee) || other.fee == fee) &&
             (identical(other.height, height) || other.height == height) &&
             (identical(other.unblindedUrl, unblindedUrl) ||
-                other.unblindedUrl == unblindedUrl));
+                other.unblindedUrl == unblindedUrl) &&
+            (identical(other.vsize, vsize) || other.vsize == vsize));
   }
 
   @override
@@ -695,7 +712,8 @@ class _$TxImpl implements _Tx {
       const DeepCollectionEquality().hash(_inputs),
       fee,
       height,
-      unblindedUrl);
+      unblindedUrl,
+      vsize);
 
   @JsonKey(ignore: true)
   @override
@@ -714,7 +732,8 @@ abstract class _Tx implements Tx {
       required final List<TxOut> inputs,
       required final int fee,
       final int? height,
-      required final String unblindedUrl}) = _$TxImpl;
+      required final String unblindedUrl,
+      required final int vsize}) = _$TxImpl;
 
   @override
   int? get timestamp;
@@ -734,6 +753,8 @@ abstract class _Tx implements Tx {
   int? get height;
   @override
   String get unblindedUrl;
+  @override
+  int get vsize;
   @override
   @JsonKey(ignore: true)
   _$$TxImplCopyWith<_$TxImpl> get copyWith =>

@@ -80,6 +80,7 @@ typedef struct wire_cst_tx {
   uint64_t fee;
   uint32_t *height;
   struct wire_cst_list_prim_u_8_strict *unblinded_url;
+  uintptr_t vsize;
 } wire_cst_tx;
 
 typedef struct wire_cst_list_tx {
