@@ -195,6 +195,7 @@ pub struct Tx {
     pub inputs: Vec<TxOut>,
     pub fee: u64,
     pub height: u32,
+    pub vsize: u32,
 }
 
 impl From<WalletTx> for Tx {
@@ -254,6 +255,7 @@ impl From<WalletTx> for Tx {
             fee: wallet_tx.fee,
             timestamp: wallet_tx.timestamp.unwrap_or(since_the_epoch.as_secs() as u32),
             height: wallet_tx.height.unwrap_or(0),
+            vsize: wallet_tx.tx.vsize() as u32,
         }
     }
 }
