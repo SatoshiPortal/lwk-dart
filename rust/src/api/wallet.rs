@@ -250,7 +250,7 @@ mod tests {
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).expect("");
         let _ = wallet.sync(electrum_url.clone());
         let _txs = wallet.txs();
-        for tx in _txs.unwrap(){
+        for tx in _txs.unwrap() {
             println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
         }
         let balances = wallet.balances();
@@ -272,7 +272,6 @@ mod tests {
         // for tx in _txs.unwrap(){
         //     println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
         // }
-
     }
     #[test]
     fn test_broadcast() {
@@ -282,4 +281,168 @@ mod tests {
         let txid = Wallet::broadcast_tx(electrum_url, tx_bytes).unwrap();
         println!("TXID: {}", txid);
     }
+
+    // #[test]
+    // fn test_external_utxo() {
+    //     // Send tx with external utxos
+    //     let server = setup(false);
+    //     let signer1 = generate_signer();
+    //     let view_key1 = generate_view_key();
+    //     let desc1 = format!("ct({},elwpkh({}/*))", view_key1, signer1.xpub());
+    //     let mut w1 = TestWollet::new(&server.electrs.electrum_url, &desc1);
+
+    //     let signer2 = generate_signer();
+    //     let view_key2 = generate_view_key();
+    //     let desc2 = format!("ct({},elwpkh({}/*))", view_key2, signer2.xpub());
+    //     let mut w2 = TestWollet::new(&server.electrs.electrum_url, &desc2);
+
+    //     let policy_asset = w1.policy_asset();
+
+    //     let address = w1.address();
+    //     w1.fund(&server, 100_000, Some(address), None);
+
+    //     let address = w2.address();
+    //     w2.fund(&server, 100_000, Some(address), None);
+
+    //     let utxo = &w2.wollet.utxos().unwrap()[0];
+    //     let external_utxo = w2.make_external(utxo);
+
+    //     let node_address = server.node_getnewaddress();
+    //     let mut pset = w1
+    //         .tx_builder()
+    //         .add_lbtc_recipient(&node_address, 110_000)
+    //         .unwrap()
+    //         .add_external_utxos(vec![external_utxo])
+    //         .unwrap()
+    //         .finish()
+    //         .unwrap();
+
+    //     // Add the details for the extenal wallet to sign
+    //     w2.wollet.add_details(&mut pset).unwrap();
+    //     let details = w1.wollet.get_details(&pset).unwrap();
+    //     assert_eq!(details.sig_details.len(), 2);
+    //     assert_eq!(details.sig_details[0].missing_signature.len(), 1);
+    //     assert_eq!(details.sig_details[1].missing_signature.len(), 1);
+
+    //     let signers = [&AnySigner::Software(signer1), &AnySigner::Software(signer2)];
+    //     for signer in signers {
+    //         w1.sign(signer, &mut pset);
+    //     }
+
+    //     let details = w1.wollet.get_details(&pset).unwrap();
+    //     let fee = details.balance.fee;
+
+    //     w1.send(&mut pset);
+
+    //     let balance = w1.balance(&policy_asset);
+    //     // utxo w1, utxo w2, sent to node, fee
+    //     assert_eq!(balance, 100_000 + 100_000 - 110_000 - fee);
+
+    //     // External UTXO cannot be asset UTXOs
+    //     w2.sync();
+    //     w2.fund_asset(&server);
+    //     let utxo = &w2.wollet.utxos().unwrap()[0];
+    //     let external_utxo = w2.make_external(utxo);
+
+    //     let err = w1
+    //         .tx_builder()
+    //         .add_external_utxos(vec![external_utxo])
+    //         .unwrap_err();
+    //     assert_eq!(err.to_string(), "External utxos must be L-BTC");
+    // }
+
+    // #[test]
+    // fn test_unblinded_utxo() {
+    //     // Receive unblinded utxo and spend it
+    //     let server = setup(false);
+
+    //     let signer = generate_signer();
+    //     let view_key = generate_view_key();
+    //     let desc = format!("ct({},elwpkh({}/*))", view_key, signer.xpub());
+    //     let mut w = TestWollet::new(&server.electrs.electrum_url, &desc);
+    //     let signers = [&AnySigner::Software(signer)];
+
+    //     let policy_asset = w.policy_asset();
+
+    //     // Fund the wallet with an unblinded UTXO
+    //     let address = w.address().to_unconfidential();
+    //     let satoshi = 100_000;
+    //     let txid = server.node_sendtoaddress(&address, satoshi, None);
+    //     // Wait for the transaction
+    //     let mut found = false;
+    //     let mut electrum_client: ElectrumClient = ElectrumClient::new(&w.electrum_url).unwrap();
+    //     for _ in 0..120 {
+    //         full_scan_with_electrum_client(&mut w.wollet, &mut electrum_client).unwrap();
+    //         if w.wollet.transaction(&txid).unwrap().is_some() {
+    //             found = true;
+    //             break;
+    //         }
+    //         std::thread::sleep(std::time::Duration::from_millis(500));
+    //     }
+    //     assert!(found, "Wallet have not received {}", txid);
+
+    //     assert_eq!(w.balance(&policy_asset), 0);
+
+    //     // TODO: expose a better way to fetch these utxos
+    //     let tx = w.wollet.transaction(&txid).unwrap().unwrap();
+    //     let vout = tx
+    //         .tx
+    //         .output
+    //         .iter()
+    //         .position(|o| o.script_pubkey == address.script_pubkey())
+    //         .unwrap();
+    //     let txout = tx.tx.output[vout].clone();
+    //     let outpoint = elements::OutPoint::new(tx.txid, vout as u32);
+    //     let unblinded = elements::TxOutSecrets::new(
+    //         policy_asset,
+    //         elements::confidential::AssetBlindingFactor::zero(),
+    //         satoshi,
+    //         elements::confidential::ValueBlindingFactor::zero(),
+    //     );
+    //     let external_utxo = lwk_wollet::ExternalUtxo {
+    //         outpoint,
+    //         txout,
+    //         unblinded,
+    //         max_weight_to_satisfy: 200, // TODO
+    //     };
+
+    //     // FIXME: this should be failing, transaction cannot be blinded
+    //     /*
+    //     let err = w
+    //         .tx_builder()
+    //         .add_external_utxos(vec![external_utxo.clone()])
+    //         .unwrap()
+    //         .drain_lbtc_wallet()
+    //         .finish()
+    //         .unwrap_err();
+    //     assert_eq!(err.to_string(), "FIXME");
+    //      * */
+
+    //     // Create tx sending the unblinded utxo
+    //     let node_address = server.node_getnewaddress();
+
+    //     let mut pset = w
+    //         .tx_builder()
+    //         .add_lbtc_recipient(&node_address, 10_000)
+    //         .unwrap()
+    //         .add_external_utxos(vec![external_utxo])
+    //         .unwrap()
+    //         .finish()
+    //         .unwrap();
+
+    //     for signer in signers {
+    //         w.sign(signer, &mut pset);
+    //     }
+
+    //     // Cannot get details
+    //     let err = w.wollet.get_details(&pset).unwrap_err();
+    //     assert_eq!(err.to_string(), "Input #0 is not blinded");
+
+    //     w.send(&mut pset);
+
+    //     // Received the change output
+    //     assert!(w.balance(&policy_asset) > 0);
+
+    //     // TODO: more cases
+    // }
 }

@@ -1,9 +1,10 @@
-#!/bin/bash
+!#/bin/bash
+
 ROOT="target"
 VERSION=$1
-JNI="liblwk"
-UNIT_TEST="unittest.liblwk"
+NAME="liblwk"
 # LIB=$ROOT/$NAME.$VERSION
-cd "$ROOT"
-zip -r $JNI.$VERSION.zip $JNI.$VERSION
-zip -r $UNIT_TEST.$VERSION.zip $UNIT_TEST.$VERSION
+cd $ROOT || exit 1
+zip -r $NAME.$VERSION.zip $NAME.$VERSION
+zip -r unittest.$NAME.$VERSION.zip $NAME.$VERSION
+cd - || exit 1
