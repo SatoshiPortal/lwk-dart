@@ -43,7 +43,7 @@ A liquid wallet development kit
   s.author           = { 'SatoshiPortal' => 'ishi@satoshiportal.com' }
   s.source           = { :http => "#{url}" }
   s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes**/*.h'
+  s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.platform = :ios, '12'
 

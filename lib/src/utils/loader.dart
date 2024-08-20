@@ -80,7 +80,7 @@ class Dylib {
       }
     }
     if (Platform.isIOS || Platform.isMacOS) {
-      return ExternalLibrary.open("$name.dylib");
+      return ExternalLibrary.open("$name.a");
     } else if (Platform.isAndroid) {
       return ExternalLibrary.open("$name.so");
     } else if (Platform.isLinux) {
@@ -98,7 +98,7 @@ class LibLwk {
         await LwkCore.init(externalLibrary: Dylib.getDylib());
       }
     } catch (e) {
-      throw Exception("Failed to initialize lwk.");
+      throw Exception("Failed to initialize lwk: $e");
     }
   }
 }
