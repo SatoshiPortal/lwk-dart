@@ -31,10 +31,6 @@ system <<-SCRIPT
   fi
 SCRIPT
 
-#
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint boltz_dart.podspec` to validate before publishing.
-#
 Pod::Spec.new do |s|
   s.name             = 'lwk_dart'
   s.version          = "#{tag_version}"
