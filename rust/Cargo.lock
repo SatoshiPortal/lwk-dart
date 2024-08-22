@@ -1455,22 +1455,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a7a70ba024b9dc04c27ea2f0c0548feb474ec5c54bba33a7f72f873a39d07b24"
 
 [[package]]
-name = "lwk-bridge"
-version = "0.1.5"
-dependencies = [
- "anyhow",
- "elements",
- "flutter_rust_bridge",
- "flutter_rust_bridge_codegen",
- "hex",
- "lazy_static",
- "lwk_common",
- "lwk_signer",
- "lwk_wollet",
- "thiserror",
-]
-
-[[package]]
 name = "lwk_common"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1482,6 +1466,22 @@ dependencies = [
  "getrandom",
  "qr_code",
  "rand",
+ "thiserror",
+]
+
+[[package]]
+name = "lwk_dart"
+version = "0.1.5"
+dependencies = [
+ "anyhow",
+ "elements",
+ "flutter_rust_bridge",
+ "flutter_rust_bridge_codegen",
+ "hex",
+ "lazy_static",
+ "lwk_common",
+ "lwk_signer",
+ "lwk_wollet",
  "thiserror",
 ]
 
