@@ -63,10 +63,19 @@ impl Wallet {
         let mut electrum_client: ElectrumClient =
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
         let mut wallet = self.get_wallet()?;
-        Ok(full_scan_with_electrum_client(
-            &mut wallet,
-            &mut electrum_client,
-        )?)
+        
+                let update: Update = if let Some(value) = electrum_client.full_scan(&mut wallet)? {
+                        value
+                    } else {
+                        return Ok(());
+                    };
+                    let _ = wallet.apply_update(update)?;
+                    Ok(())
+
+        // Ok(full_scan_with_electrum_client(
+        //     &mut wallet,
+        //     &mut electrum_client,
+        // )?)
     }
 
     pub fn descriptor(&self) -> anyhow::Result<String, LwkError> {

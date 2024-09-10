@@ -20,9 +20,7 @@ mixin _$Address {
   String get confidential => throw _privateConstructorUsedError;
   int get index => throw _privateConstructorUsedError;
 
-  /// Create a copy of Address
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $AddressCopyWith<Address> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -44,8 +42,6 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Address
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -88,8 +84,6 @@ class __$$AddressImplCopyWithImpl<$Res>
       _$AddressImpl _value, $Res Function(_$AddressImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Address
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -148,9 +142,7 @@ class _$AddressImpl extends _Address {
   @override
   int get hashCode => Object.hash(runtimeType, standard, confidential, index);
 
-  /// Create a copy of Address
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AddressImplCopyWith<_$AddressImpl> get copyWith =>
@@ -170,11 +162,8 @@ abstract class _Address extends Address {
   String get confidential;
   @override
   int get index;
-
-  /// Create a copy of Address
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AddressImplCopyWith<_$AddressImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -184,9 +173,7 @@ mixin _$Balance {
   String get assetId => throw _privateConstructorUsedError;
   int get value => throw _privateConstructorUsedError;
 
-  /// Create a copy of Balance
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $BalanceCopyWith<Balance> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -208,8 +195,6 @@ class _$BalanceCopyWithImpl<$Res, $Val extends Balance>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Balance
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -247,8 +232,6 @@ class __$$BalanceImplCopyWithImpl<$Res>
       _$BalanceImpl _value, $Res Function(_$BalanceImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Balance
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -295,9 +278,7 @@ class _$BalanceImpl implements _Balance {
   @override
   int get hashCode => Object.hash(runtimeType, assetId, value);
 
-  /// Create a copy of Balance
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$BalanceImplCopyWith<_$BalanceImpl> get copyWith =>
@@ -313,11 +294,8 @@ abstract class _Balance implements Balance {
   String get assetId;
   @override
   int get value;
-
-  /// Create a copy of Balance
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$BalanceImplCopyWith<_$BalanceImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -327,9 +305,7 @@ mixin _$OutPoint {
   String get txid => throw _privateConstructorUsedError;
   int get vout => throw _privateConstructorUsedError;
 
-  /// Create a copy of OutPoint
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $OutPointCopyWith<OutPoint> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -352,8 +328,6 @@ class _$OutPointCopyWithImpl<$Res, $Val extends OutPoint>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of OutPoint
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -392,8 +366,6 @@ class __$$OutPointImplCopyWithImpl<$Res>
       _$OutPointImpl _value, $Res Function(_$OutPointImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of OutPoint
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -440,9 +412,7 @@ class _$OutPointImpl implements _OutPoint {
   @override
   int get hashCode => Object.hash(runtimeType, txid, vout);
 
-  /// Create a copy of OutPoint
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OutPointImplCopyWith<_$OutPointImpl> get copyWith =>
@@ -457,11 +427,8 @@ abstract class _OutPoint implements OutPoint {
   String get txid;
   @override
   int get vout;
-
-  /// Create a copy of OutPoint
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OutPointImplCopyWith<_$OutPointImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -474,14 +441,12 @@ mixin _$Tx {
   String get txid => throw _privateConstructorUsedError;
   List<TxOut> get outputs => throw _privateConstructorUsedError;
   List<TxOut> get inputs => throw _privateConstructorUsedError;
-  int get fee => throw _privateConstructorUsedError;
+  BigInt get fee => throw _privateConstructorUsedError;
   int? get height => throw _privateConstructorUsedError;
   String get unblindedUrl => throw _privateConstructorUsedError;
-  int get vsize => throw _privateConstructorUsedError;
+  BigInt get vsize => throw _privateConstructorUsedError;
 
-  /// Create a copy of Tx
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $TxCopyWith<Tx> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -497,10 +462,10 @@ abstract class $TxCopyWith<$Res> {
       String txid,
       List<TxOut> outputs,
       List<TxOut> inputs,
-      int fee,
+      BigInt fee,
       int? height,
       String unblindedUrl,
-      int vsize});
+      BigInt vsize});
 }
 
 /// @nodoc
@@ -512,8 +477,6 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Tx
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -556,7 +519,7 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
       fee: null == fee
           ? _value.fee
           : fee // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
@@ -568,7 +531,7 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
       vsize: null == vsize
           ? _value.vsize
           : vsize // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
     ) as $Val);
   }
 }
@@ -586,10 +549,10 @@ abstract class _$$TxImplCopyWith<$Res> implements $TxCopyWith<$Res> {
       String txid,
       List<TxOut> outputs,
       List<TxOut> inputs,
-      int fee,
+      BigInt fee,
       int? height,
       String unblindedUrl,
-      int vsize});
+      BigInt vsize});
 }
 
 /// @nodoc
@@ -598,8 +561,6 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
   __$$TxImplCopyWithImpl(_$TxImpl _value, $Res Function(_$TxImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Tx
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -642,7 +603,7 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
       fee: null == fee
           ? _value.fee
           : fee // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
@@ -654,7 +615,7 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
       vsize: null == vsize
           ? _value.vsize
           : vsize // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
     ));
   }
 }
@@ -708,13 +669,13 @@ class _$TxImpl implements _Tx {
   }
 
   @override
-  final int fee;
+  final BigInt fee;
   @override
   final int? height;
   @override
   final String unblindedUrl;
   @override
-  final int vsize;
+  final BigInt vsize;
 
   @override
   String toString() {
@@ -754,9 +715,7 @@ class _$TxImpl implements _Tx {
       unblindedUrl,
       vsize);
 
-  /// Create a copy of Tx
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TxImplCopyWith<_$TxImpl> get copyWith =>
@@ -771,10 +730,10 @@ abstract class _Tx implements Tx {
       required final String txid,
       required final List<TxOut> outputs,
       required final List<TxOut> inputs,
-      required final int fee,
+      required final BigInt fee,
       final int? height,
       required final String unblindedUrl,
-      required final int vsize}) = _$TxImpl;
+      required final BigInt vsize}) = _$TxImpl;
 
   @override
   int? get timestamp;
@@ -789,18 +748,15 @@ abstract class _Tx implements Tx {
   @override
   List<TxOut> get inputs;
   @override
-  int get fee;
+  BigInt get fee;
   @override
   int? get height;
   @override
   String get unblindedUrl;
   @override
-  int get vsize;
-
-  /// Create a copy of Tx
-  /// with the given fields replaced by the non-null parameter values.
+  BigInt get vsize;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TxImplCopyWith<_$TxImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -812,9 +768,7 @@ mixin _$TxOut {
   int? get height => throw _privateConstructorUsedError;
   TxOutSecrets get unblinded => throw _privateConstructorUsedError;
 
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $TxOutCopyWith<TxOut> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -843,8 +797,6 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -873,8 +825,6 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
     ) as $Val);
   }
 
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $OutPointCopyWith<$Res> get outpoint {
@@ -883,8 +833,6 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
     });
   }
 
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TxOutSecretsCopyWith<$Res> get unblinded {
@@ -921,8 +869,6 @@ class __$$TxOutImplCopyWithImpl<$Res>
       _$TxOutImpl _value, $Res Function(_$TxOutImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -993,9 +939,7 @@ class _$TxOutImpl implements _TxOut {
   int get hashCode =>
       Object.hash(runtimeType, scriptPubkey, outpoint, height, unblinded);
 
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TxOutImplCopyWith<_$TxOutImpl> get copyWith =>
@@ -1017,25 +961,20 @@ abstract class _TxOut implements TxOut {
   int? get height;
   @override
   TxOutSecrets get unblinded;
-
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TxOutImplCopyWith<_$TxOutImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 mixin _$TxOutSecrets {
-  int get value => throw _privateConstructorUsedError;
+  BigInt get value => throw _privateConstructorUsedError;
   String get valueBf => throw _privateConstructorUsedError;
   String get asset => throw _privateConstructorUsedError;
   String get assetBf => throw _privateConstructorUsedError;
 
-  /// Create a copy of TxOutSecrets
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $TxOutSecretsCopyWith<TxOutSecrets> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1046,7 +985,7 @@ abstract class $TxOutSecretsCopyWith<$Res> {
           TxOutSecrets value, $Res Function(TxOutSecrets) then) =
       _$TxOutSecretsCopyWithImpl<$Res, TxOutSecrets>;
   @useResult
-  $Res call({int value, String valueBf, String asset, String assetBf});
+  $Res call({BigInt value, String valueBf, String asset, String assetBf});
 }
 
 /// @nodoc
@@ -1059,8 +998,6 @@ class _$TxOutSecretsCopyWithImpl<$Res, $Val extends TxOutSecrets>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of TxOutSecrets
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1073,7 +1010,7 @@ class _$TxOutSecretsCopyWithImpl<$Res, $Val extends TxOutSecrets>
       value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       valueBf: null == valueBf
           ? _value.valueBf
           : valueBf // ignore: cast_nullable_to_non_nullable
@@ -1098,7 +1035,7 @@ abstract class _$$TxOutSecretsImplCopyWith<$Res>
       __$$TxOutSecretsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int value, String valueBf, String asset, String assetBf});
+  $Res call({BigInt value, String valueBf, String asset, String assetBf});
 }
 
 /// @nodoc
@@ -1109,8 +1046,6 @@ class __$$TxOutSecretsImplCopyWithImpl<$Res>
       _$TxOutSecretsImpl _value, $Res Function(_$TxOutSecretsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TxOutSecrets
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1123,7 +1058,7 @@ class __$$TxOutSecretsImplCopyWithImpl<$Res>
       value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       valueBf: null == valueBf
           ? _value.valueBf
           : valueBf // ignore: cast_nullable_to_non_nullable
@@ -1150,7 +1085,7 @@ class _$TxOutSecretsImpl implements _TxOutSecrets {
       required this.assetBf});
 
   @override
-  final int value;
+  final BigInt value;
   @override
   final String valueBf;
   @override
@@ -1177,9 +1112,7 @@ class _$TxOutSecretsImpl implements _TxOutSecrets {
   @override
   int get hashCode => Object.hash(runtimeType, value, valueBf, asset, assetBf);
 
-  /// Create a copy of TxOutSecrets
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TxOutSecretsImplCopyWith<_$TxOutSecretsImpl> get copyWith =>
@@ -1188,24 +1121,21 @@ class _$TxOutSecretsImpl implements _TxOutSecrets {
 
 abstract class _TxOutSecrets implements TxOutSecrets {
   const factory _TxOutSecrets(
-      {required final int value,
+      {required final BigInt value,
       required final String valueBf,
       required final String asset,
       required final String assetBf}) = _$TxOutSecretsImpl;
 
   @override
-  int get value;
+  BigInt get value;
   @override
   String get valueBf;
   @override
   String get asset;
   @override
   String get assetBf;
-
-  /// Create a copy of TxOutSecrets
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TxOutSecretsImplCopyWith<_$TxOutSecretsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
