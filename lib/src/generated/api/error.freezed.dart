@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$LwkError {
   String get msg => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LwkError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LwkErrorCopyWith<LwkError> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -41,6 +43,8 @@ class _$LwkErrorCopyWithImpl<$Res, $Val extends LwkError>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of LwkError
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,6 +78,8 @@ class __$$LwkErrorImplCopyWithImpl<$Res>
       _$LwkErrorImpl _value, $Res Function(_$LwkErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LwkError
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -112,7 +118,9 @@ class _$LwkErrorImpl implements _LwkError {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LwkError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LwkErrorImplCopyWith<_$LwkErrorImpl> get copyWith =>
@@ -124,8 +132,11 @@ abstract class _LwkError implements LwkError {
 
   @override
   String get msg;
+
+  /// Create a copy of LwkError
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LwkErrorImplCopyWith<_$LwkErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -58,7 +58,6 @@ impl From<AssetIdHashMapInt> for Balances {
 }
 
 use std::convert::TryFrom;
-use std::time::{SystemTime, UNIX_EPOCH};
 
 use super::error::LwkError;
 
@@ -262,7 +261,7 @@ impl From<WalletTx> for Tx {
         // let since_the_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
         Tx {
             kind: wallet_tx.type_.clone(),
-            balances: Balances::from(AssetIdHashMapInt(wallet_tx.balance.clone())),
+            balances: Balances::from(AssetIdBTreeMapInt(wallet_tx.balance.clone())),
             txid: wallet_tx.tx.txid().to_string().clone(),
             outputs: outputs,
             inputs: inputs,
