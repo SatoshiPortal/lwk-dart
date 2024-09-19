@@ -32,7 +32,8 @@ class Address with _$Address {
           blindingKey: blindingKey,
           hint: hint);
 
-  static Future<void> validate({required String addressString, dynamic hint}) =>
+  static Future<Network> validate(
+          {required String addressString, dynamic hint}) =>
       LwkCore.instance.api
           .addressValidate(addressString: addressString, hint: hint);
 }

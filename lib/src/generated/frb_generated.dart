@@ -74,7 +74,8 @@ abstract class LwkCoreApi extends BaseApi {
       required String blindingKey,
       dynamic hint});
 
-  Future<void> addressValidate({required String addressString, dynamic hint});
+  Future<Network> addressValidate(
+      {required String addressString, dynamic hint});
 
   Future<void> blockchainTest(
       {required Blockchain that, required String electrumUrl, dynamic hint});
@@ -212,14 +213,15 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  Future<void> addressValidate({required String addressString, dynamic hint}) {
+  Future<Network> addressValidate(
+      {required String addressString, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_String(addressString);
         return wire.wire_address_validate(port_, arg0);
       },
       codec: DcoCodec(
-        decodeSuccessData: dco_decode_unit,
+        decodeSuccessData: dco_decode_network,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kAddressValidateConstMeta,

@@ -125,9 +125,13 @@ impl From<AddressResult> for Address {
 }
 
 impl Address {
-    pub fn validate(address_string: String) -> anyhow::Result<(), LwkError> {
-        LwkAddress::from_str(&address_string)?;
-        Ok(())
+    pub fn validate(address_string: String) -> anyhow::Result<Network, LwkError> {
+        let address = LwkAddress::from_str(&address_string)?;
+        if address.params.to_owned() == AddressParams::LIQUID {
+            Ok(Network::Mainnet)
+        } else {
+            Ok(Network::Testnet)
+        }
     }
 
     pub fn address_from_script(
