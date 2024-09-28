@@ -1,10 +1,8 @@
-use elements::hex::{FromHex, ToHex};
-use elements::Address as LwkAddress;
-use elements::{secp256k1_zkp, AddressParams, AssetId, Script};
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
-use lwk_wollet::{AddressResult, BlockchainBackend, ElectrumClient, WalletTx, WalletTxOut};
-use std::collections::{BTreeMap, HashMap};
+use lwk_wollet::{ elements::{Address as LwkAddress,hex::{FromHex, ToHex},secp256k1_zkp, AddressParams, AssetId, Script},AddressResult, ElectrumClient, WalletTx, WalletTxOut};
+pub use std::collections::{BTreeMap, HashMap};
+pub use std::vec::Vec;
 use std::str::FromStr;
 
 use lwk_wollet::ElementsNetwork;
@@ -25,9 +23,28 @@ impl Into<ElementsNetwork> for Network {
     }
 }
 
-pub struct AssetIdMapUInt(pub BTreeMap<AssetId, u64>);
-pub struct AssetIdBTreeMapInt(pub BTreeMap<AssetId, i64>);
-pub struct AssetIdHashMapInt(pub HashMap<AssetId, i64>);
+pub struct AssetIdBTreeMapUInt(BTreeMap<AssetId, u64>);
+pub struct AssetIdBTreeMapInt(BTreeMap<AssetId, i64>);
+pub struct AssetIdHashMapInt(HashMap<AssetId, i64>);
+
+// Implement From for BTreeMap and HashMap
+impl From<BTreeMap<AssetId, i64>> for AssetIdBTreeMapInt {
+    fn from(map: BTreeMap<AssetId, i64>) -> Self {
+        AssetIdBTreeMapInt(map)
+    }
+}
+
+impl From<BTreeMap<AssetId, u64>> for AssetIdBTreeMapUInt {
+    fn from(map: BTreeMap<AssetId, u64>) -> Self {
+        AssetIdBTreeMapUInt(map)
+    }
+}
+
+impl From<HashMap<AssetId, i64>> for AssetIdHashMapInt {
+    fn from(map: HashMap<AssetId, i64>) -> Self {
+        AssetIdHashMapInt(map)
+    }
+}
 
 #[frb(dart_metadata=("freezed"))]
 pub type Balances = Vec<Balance>;
@@ -61,8 +78,8 @@ use std::convert::TryFrom;
 
 use super::error::LwkError;
 
-impl From<AssetIdMapUInt> for Balances {
-    fn from(asset_id_map: AssetIdMapUInt) -> Self {
+impl From<AssetIdBTreeMapUInt> for Balances {
+    fn from(asset_id_map: AssetIdBTreeMapUInt) -> Self {
         asset_id_map
             .0
             .into_iter()

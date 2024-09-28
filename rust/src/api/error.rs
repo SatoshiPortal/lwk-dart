@@ -1,6 +1,11 @@
 use std::sync::{MutexGuard, PoisonError};
 
-use elements::pset::ParseError;
+use lwk_wollet::elements::pset::ParseError;
+use lwk_wollet::elements::encode::Error as EncodeError;
+
+// use lwk_wollet::elements::pset::ParseError;
+
+// use std::string::ParseError;
 use flutter_rust_bridge::frb;
 
 /// Possible errors emitted
@@ -12,6 +17,14 @@ pub struct LwkError {
 
 impl From<lwk_wollet::Error> for LwkError {
     fn from(value: lwk_wollet::Error) -> Self {
+        LwkError {
+            msg: format!("{:?}", value),
+        }
+    }
+}
+
+impl From<EncodeError> for LwkError {
+    fn from(value: EncodeError) -> Self {
         LwkError {
             msg: format!("{:?}", value),
         }
@@ -34,48 +47,41 @@ impl From<ParseError> for LwkError {
     }
 }
 
-impl From<elements::pset::Error> for LwkError {
-    fn from(value: elements::pset::Error) -> Self {
+impl From<lwk_wollet::elements::pset::Error> for LwkError {
+    fn from(value: lwk_wollet::elements::pset::Error) -> Self {
         LwkError {
             msg: format!("{:?}", value),
         }
     }
 }
 
-impl From<elements::encode::Error> for LwkError {
-    fn from(value: elements::encode::Error) -> Self {
+
+impl From<lwk_wollet::elements::bitcoin::transaction::ParseOutPointError> for LwkError {
+    fn from(value: lwk_wollet::elements::bitcoin::transaction::ParseOutPointError) -> Self {
         LwkError {
             msg: format!("{:?}", value),
         }
     }
 }
 
-impl From<elements::bitcoin::transaction::ParseOutPointError> for LwkError {
-    fn from(value: elements::bitcoin::transaction::ParseOutPointError) -> Self {
+impl From<lwk_wollet::elements::hashes::hex::HexToBytesError> for LwkError {
+    fn from(value: lwk_wollet::elements::hashes::hex::HexToBytesError) -> Self {
         LwkError {
             msg: format!("{:?}", value),
         }
     }
 }
 
-impl From<elements::hashes::hex::HexToBytesError> for LwkError {
-    fn from(value: elements::hashes::hex::HexToBytesError) -> Self {
+impl From<lwk_wollet::elements::hashes::hex::HexToArrayError> for LwkError {
+    fn from(value: lwk_wollet::elements::hashes::hex::HexToArrayError) -> Self {
         LwkError {
             msg: format!("{:?}", value),
         }
     }
 }
 
-impl From<elements::hashes::hex::HexToArrayError> for LwkError {
-    fn from(value: elements::hashes::hex::HexToArrayError) -> Self {
-        LwkError {
-            msg: format!("{:?}", value),
-        }
-    }
-}
-
-impl From<elements::AddressError> for LwkError {
-    fn from(value: elements::AddressError) -> Self {
+impl From<lwk_wollet::elements::AddressError> for LwkError {
+    fn from(value: lwk_wollet::elements::AddressError) -> Self {
         LwkError {
             msg: format!("{:?}", value),
         }
@@ -111,6 +117,7 @@ impl From<String> for LwkError {
         LwkError { msg }
     }
 }
+
 
 impl<T> From<PoisonError<MutexGuard<'_, T>>> for LwkError {
     fn from(e: PoisonError<MutexGuard<'_, T>>) -> Self {

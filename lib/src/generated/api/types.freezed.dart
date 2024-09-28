@@ -474,10 +474,10 @@ mixin _$Tx {
   String get txid => throw _privateConstructorUsedError;
   List<TxOut> get outputs => throw _privateConstructorUsedError;
   List<TxOut> get inputs => throw _privateConstructorUsedError;
-  int get fee => throw _privateConstructorUsedError;
+  BigInt get fee => throw _privateConstructorUsedError;
   int? get height => throw _privateConstructorUsedError;
   String get unblindedUrl => throw _privateConstructorUsedError;
-  int get vsize => throw _privateConstructorUsedError;
+  BigInt get vsize => throw _privateConstructorUsedError;
 
   /// Create a copy of Tx
   /// with the given fields replaced by the non-null parameter values.
@@ -497,10 +497,10 @@ abstract class $TxCopyWith<$Res> {
       String txid,
       List<TxOut> outputs,
       List<TxOut> inputs,
-      int fee,
+      BigInt fee,
       int? height,
       String unblindedUrl,
-      int vsize});
+      BigInt vsize});
 }
 
 /// @nodoc
@@ -556,7 +556,7 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
       fee: null == fee
           ? _value.fee
           : fee // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
@@ -568,7 +568,7 @@ class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
       vsize: null == vsize
           ? _value.vsize
           : vsize // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
     ) as $Val);
   }
 }
@@ -586,10 +586,10 @@ abstract class _$$TxImplCopyWith<$Res> implements $TxCopyWith<$Res> {
       String txid,
       List<TxOut> outputs,
       List<TxOut> inputs,
-      int fee,
+      BigInt fee,
       int? height,
       String unblindedUrl,
-      int vsize});
+      BigInt vsize});
 }
 
 /// @nodoc
@@ -642,7 +642,7 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
       fee: null == fee
           ? _value.fee
           : fee // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
@@ -654,7 +654,7 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
       vsize: null == vsize
           ? _value.vsize
           : vsize // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
     ));
   }
 }
@@ -708,13 +708,13 @@ class _$TxImpl implements _Tx {
   }
 
   @override
-  final int fee;
+  final BigInt fee;
   @override
   final int? height;
   @override
   final String unblindedUrl;
   @override
-  final int vsize;
+  final BigInt vsize;
 
   @override
   String toString() {
@@ -771,10 +771,10 @@ abstract class _Tx implements Tx {
       required final String txid,
       required final List<TxOut> outputs,
       required final List<TxOut> inputs,
-      required final int fee,
+      required final BigInt fee,
       final int? height,
       required final String unblindedUrl,
-      required final int vsize}) = _$TxImpl;
+      required final BigInt vsize}) = _$TxImpl;
 
   @override
   int? get timestamp;
@@ -789,13 +789,13 @@ abstract class _Tx implements Tx {
   @override
   List<TxOut> get inputs;
   @override
-  int get fee;
+  BigInt get fee;
   @override
   int? get height;
   @override
   String get unblindedUrl;
   @override
-  int get vsize;
+  BigInt get vsize;
 
   /// Create a copy of Tx
   /// with the given fields replaced by the non-null parameter values.
@@ -1028,7 +1028,7 @@ abstract class _TxOut implements TxOut {
 
 /// @nodoc
 mixin _$TxOutSecrets {
-  int get value => throw _privateConstructorUsedError;
+  BigInt get value => throw _privateConstructorUsedError;
   String get valueBf => throw _privateConstructorUsedError;
   String get asset => throw _privateConstructorUsedError;
   String get assetBf => throw _privateConstructorUsedError;
@@ -1046,7 +1046,7 @@ abstract class $TxOutSecretsCopyWith<$Res> {
           TxOutSecrets value, $Res Function(TxOutSecrets) then) =
       _$TxOutSecretsCopyWithImpl<$Res, TxOutSecrets>;
   @useResult
-  $Res call({int value, String valueBf, String asset, String assetBf});
+  $Res call({BigInt value, String valueBf, String asset, String assetBf});
 }
 
 /// @nodoc
@@ -1073,7 +1073,7 @@ class _$TxOutSecretsCopyWithImpl<$Res, $Val extends TxOutSecrets>
       value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       valueBf: null == valueBf
           ? _value.valueBf
           : valueBf // ignore: cast_nullable_to_non_nullable
@@ -1098,7 +1098,7 @@ abstract class _$$TxOutSecretsImplCopyWith<$Res>
       __$$TxOutSecretsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int value, String valueBf, String asset, String assetBf});
+  $Res call({BigInt value, String valueBf, String asset, String assetBf});
 }
 
 /// @nodoc
@@ -1123,7 +1123,7 @@ class __$$TxOutSecretsImplCopyWithImpl<$Res>
       value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       valueBf: null == valueBf
           ? _value.valueBf
           : valueBf // ignore: cast_nullable_to_non_nullable
@@ -1150,7 +1150,7 @@ class _$TxOutSecretsImpl implements _TxOutSecrets {
       required this.assetBf});
 
   @override
-  final int value;
+  final BigInt value;
   @override
   final String valueBf;
   @override
@@ -1188,13 +1188,13 @@ class _$TxOutSecretsImpl implements _TxOutSecrets {
 
 abstract class _TxOutSecrets implements TxOutSecrets {
   const factory _TxOutSecrets(
-      {required final int value,
+      {required final BigInt value,
       required final String valueBf,
       required final String asset,
       required final String assetBf}) = _$TxOutSecretsImpl;
 
   @override
-  int get value;
+  BigInt get value;
   @override
   String get valueBf;
   @override

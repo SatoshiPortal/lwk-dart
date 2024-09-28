@@ -1,22 +1,15 @@
-use elements::pset::serialize::Deserialize;
-use elements::pset::serialize::Serialize;
-use elements::pset::PartiallySignedTransaction;
-use elements::Txid;
-use elements::{OutPoint, Transaction};
 use lwk_common::Signer;
 use lwk_signer::SwSigner;
 use lwk_wollet::full_scan_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
-use lwk_wollet::Update;
 use lwk_wollet::WolletDescriptor;
-
+use lwk_wollet::elements::{Txid,OutPoint, Transaction,Address as LwkAddress, AssetId as LwkAssetId, pset::{PartiallySignedTransaction, serialize::{Deserialize,Serialize}}};
 pub use std::sync::Mutex;
 use std::sync::MutexGuard;
 
 use crate::frb_generated::RustOpaque;
-
 use lwk_wollet::BlockchainBackend;
 use lwk_wollet::Wollet;
 use std::str::FromStr;
@@ -24,7 +17,7 @@ use std::str::FromStr;
 use super::descriptor::Descriptor;
 use super::error::LwkError;
 use super::types::Address;
-use super::types::AssetIdMapUInt;
+use super::types::AssetIdBTreeMapUInt;
 use super::types::Balances;
 use super::types::Network;
 use super::types::PsetAmounts;
@@ -88,7 +81,8 @@ impl Wallet {
     }
 
     pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
-        let balance = Balances::from(AssetIdMapUInt(self.get_wallet()?.balance()?));
+        let balance_map: AssetIdBTreeMapUInt = (self.get_wallet()?.balance()?).into();
+        let balance = Balances::from(balance_map);
         Ok(balance)
     }
 
@@ -111,7 +105,7 @@ impl Wallet {
     ) -> anyhow::Result<String, LwkError> {
         let wallet = self.get_wallet()?;
         let tx_builder = wallet.tx_builder();
-        let address = elements::Address::from_str(&out_address)?;
+        let address = LwkAddress::from_str(&out_address)?;
         if drain {
             let pset = tx_builder
                 .drain_lbtc_wallet()
@@ -137,8 +131,11 @@ impl Wallet {
     ) -> anyhow::Result<String, LwkError> {
         let wallet = self.get_wallet()?;
         let tx_builder = wallet.tx_builder();
-        let address = elements::Address::from_str(&out_address)?;
-        let asset = elements::AssetId::from_str(&asset)?;
+        let address = LwkAddress::from_str(&out_address)?;
+        let asset = match LwkAssetId::from_str(&asset){
+            Ok(result) => result,
+            Err(_) => return Err(LwkError { msg: "Invalid asset".to_string() }),
+        };
         let pset = tx_builder
             .add_recipient(&address, sats, asset)?
             .fee_rate(Some(fee_rate))
@@ -147,7 +144,7 @@ impl Wallet {
     }
 
     pub fn decode_tx(&self, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
-        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
+        let mut pset =  PartiallySignedTransaction::from_str(&pset)?;
         let pset_details = self.get_wallet()?.get_details(&mut pset)?;
         Ok(PsetAmounts::from(pset_details.balance))
     }
@@ -184,7 +181,7 @@ impl Wallet {
         Ok(tx_outs)
     }
 
-    fn get_txout(&self, outpoint: &OutPoint) -> Result<elements::TxOut, LwkError> {
+    fn get_txout(&self, outpoint: &OutPoint) -> Result<lwk_wollet::elements::TxOut, LwkError> {
         let wallet_transaction = self.get_wallet()?.transaction(&outpoint.txid)?;
         let transaction = wallet_transaction.ok_or(LwkError {
             msg: "Wallet transaction not found".to_string(),
@@ -210,7 +207,7 @@ impl Wallet {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
 
         for input in pset.inputs_mut().iter_mut() {
-            let res = self.get_txout(&elements::OutPoint {
+            let res = self.get_txout(&lwk_wollet::elements::OutPoint {
                 txid: input.previous_txid,
                 vout: input.previous_output_index,
             });
@@ -244,8 +241,8 @@ mod tests {
             "umbrella response wide outer mystery drastic crew festival poet coconut error act";
         let electrum_url = "les.bullbitcoin.com:995".to_string();
         let network = Network::Mainnet;
-        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).expect("");
-        let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).expect("");
+        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
         let _ = wallet.sync(electrum_url.clone());
         let _txs = wallet.txs();
         for tx in _txs.unwrap() {
