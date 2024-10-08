@@ -9,6 +9,7 @@ use lwk_wollet::full_scan_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
+use lwk_wollet::ExternalUtxo;
 use lwk_wollet::Update;
 use lwk_wollet::WolletDescriptor;
 
@@ -57,6 +58,9 @@ impl Wallet {
         let wollet = Wollet::with_fs_persist(network.into(), descriptor, dbpath.clone())?;
         let opaque = RustOpaque::new(Mutex::new(wollet));
         let wallet = Wallet { inner: opaque };
+        let utxo = wallet.utxos()?;
+        let explicit_utxo = wallet.get_wallet()?.explicit_utxos().unwrap();
+        let policy_asset = wallet.get_wallet()?.policy_asset();
         Ok(wallet)
     }
     pub fn sync(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
@@ -89,6 +93,7 @@ impl Wallet {
 
     pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
         let balance = Balances::from(AssetIdMapUInt(self.get_wallet()?.balance()?));
+        // Received the change output
         Ok(balance)
     }
 
@@ -143,6 +148,41 @@ impl Wallet {
             .add_recipient(&address, sats, asset)?
             .fee_rate(Some(fee_rate))
             .finish()?;
+        Ok(pset.to_string())
+    }
+
+    pub fn make_external(&mut self, utxo: &lwk_wollet::WalletTxOut) -> lwk_wollet::ExternalUtxo {
+        let wallet = self.get_wallet().unwrap();
+        let tx = wallet.transaction(&utxo.outpoint.txid).unwrap().unwrap().tx;
+        let txout = tx.output.get(utxo.outpoint.vout as usize).unwrap().clone();
+        lwk_wollet::ExternalUtxo {
+            outpoint: utxo.outpoint,
+            txout,
+            unblinded: utxo.unblinded,
+            max_weight_to_satisfy: 100, // TODO
+        }
+    }
+
+    pub fn build_with_unblinded_tx(
+        &self,
+        sats: u64,
+        out_address: String,
+        fee_rate: f32,
+        asset: String,
+        external_utxo: ExternalUtxo,
+    ) -> anyhow::Result<String, LwkError> {
+        let wallet = self.get_wallet()?;
+        let tx_builder = wallet.tx_builder();
+        let address = elements::Address::from_str(&out_address)?;
+        let asset = elements::AssetId::from_str(&asset)?;
+        let mut pset = wallet
+            .tx_builder()
+            .add_recipient(&address, sats, asset)?
+            .add_external_utxos(vec![external_utxo])
+            .unwrap()
+            .fee_rate(Some(fee_rate))
+            .finish()
+            .unwrap();
         Ok(pset.to_string())
     }
 

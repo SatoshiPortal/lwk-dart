@@ -11,7 +11,7 @@ doctest = false
 crate-type = ["staticlib", "cdylib"] 
 
 [dependencies]
-lwk_wollet = { version = "0.7.0" }
+lwk_wollet = { git = "https://github.com/Blockstream/lwk", branch = "master"}
 lwk_signer = { version = "0.7.0" }
 lwk_common = {version = "0.7.0" }
 thiserror = "1.0.50"
