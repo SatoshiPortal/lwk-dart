@@ -9,7 +9,6 @@ use lwk_wollet::full_scan_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
-use lwk_wollet::Update;
 use lwk_wollet::WolletDescriptor;
 
 pub use std::sync::Mutex;
@@ -234,10 +233,10 @@ impl Wallet {
 
 #[cfg(test)]
 mod tests {
-
-    use std::{thread, time::Duration};
-
     use super::*;
+    use elements::AssetId;
+    use lwk_wollet::bitcoin::Address;
+    use std::{thread, time::Duration};
     #[test]
     fn testable_wallets() {
         let mnemonic =
@@ -415,7 +414,6 @@ mod tests {
     //         .unwrap_err();
     //     assert_eq!(err.to_string(), "FIXME");
     //      * */
-
     //     // Create tx sending the unblinded utxo
     //     let node_address = server.node_getnewaddress();
 
@@ -443,4 +441,40 @@ mod tests {
 
     //     // TODO: more cases
     // }
+
+    #[test]
+    fn test_unblinded_detection() {
+        let network = Network::Testnet;
+        let mnemonic = "";
+        let descriptor = Descriptor::new_confidential(network, mnemonic.to_string())
+            .expect("Failed to create descriptor");
+        let wallet = Wallet::init(network, "/tmp/lwk_test".to_string(), descriptor).expect("");
+
+        let confidential_address = wallet.address_last_unused().unwrap();
+        println!("The confidential address is {}", confidential_address);
+
+        //Write code to halt for the payment to be made. maybe we can add a timer? or take an input from user that confirms that he did the pyment or not.
+
+        let electrum_url = "les.bullbitcoin.com:995".to_string();
+        wallet.sync(electrum_url.clone()).unwrap();
+
+        let balance_before = wallet.balances().unwrap();
+        let txs_before = wallet.txs().unwrap();
+
+        assert!(balance.get(0), >0);
+        assert!(!txs_before.is_empty());
+
+        let blinding_key = wallet.blinding_key().unwrap();
+        let unblinded_address = "";
+        let unblinded_address = println!("The unblinded address is {}", unblinded_address);
+        println!("Fund the unblinded address");
+
+        wallet.sync(electrum_url.clone()).unwrap();
+
+        let balance_after = wallet.balances().unwrap();
+        let txs_after = wallet.txs().unwrap();
+
+        assert!(balance_after.get(0), "{}", balance_before.get(0));
+        println!("Payment to unblinded address not detected");
+    }
 }
