@@ -9,7 +9,6 @@ use lwk_wollet::full_scan_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
-use lwk_wollet::Update;
 use lwk_wollet::WolletDescriptor;
 
 pub use std::sync::Mutex;
@@ -234,10 +233,10 @@ impl Wallet {
 
 #[cfg(test)]
 mod tests {
-
-    use std::{thread, time::Duration};
-
     use super::*;
+    use std::io;
+    use std::io::Write;
+
     #[test]
     fn testable_wallets() {
         let mnemonic =
@@ -415,7 +414,6 @@ mod tests {
     //         .unwrap_err();
     //     assert_eq!(err.to_string(), "FIXME");
     //      * */
-
     //     // Create tx sending the unblinded utxo
     //     let node_address = server.node_getnewaddress();
 
@@ -443,4 +441,41 @@ mod tests {
 
     //     // TODO: more cases
     // }
+    pub fn pause_and_wait(msg: &str) {
+        println!("******{}******", msg);
+        println!("Press enter to continue");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to read line");
+    }
+    #[test]
+    fn test_unblinded_detection() {
+        let network = Network::Testnet;
+        let mnemonic = "coyote error drink treat canal spider company fat bridge drink amateur injury";
+        let descriptor = Descriptor::new_confidential(network, mnemonic.to_string())
+            .expect("Failed to create descriptor");
+        let wallet = Wallet::init(network, "/tmp/lwk_test".to_string(), descriptor).expect("");
+
+        let confidential_address = wallet.address_last_unused().unwrap();
+        println!("The confidential address is {:?}", confidential_address);
+
+        let electrum_url = "blockstream.info:465".to_string();
+        pause_and_wait(&format!("Fund confidential address {:?}", confidential_address));
+        wallet.sync(electrum_url.clone()).unwrap();
+
+        let balance_before = wallet.balances().unwrap();
+        let txs_before = wallet.txs().unwrap();
+        assert!(balance_before.get(0).is_some(), "No balance before funding");
+        assert!(!txs_before.is_empty(), "No transactions before funding");
+
+        let unblinded_address = confidential_address.standard;
+        println!("The unblinded address is {}", unblinded_address);
+
+        pause_and_wait(&format!("Fund unblinded address {}", unblinded_address));
+        wallet.sync(electrum_url.clone()).unwrap();
+
+        let balance_after = wallet.balances().unwrap();
+
+        assert_eq!(balance_after.get(0), balance_before.get(0));
+        println!("Payment to unblinded address not detected.")
+    }
 }
