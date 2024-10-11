@@ -234,9 +234,9 @@ impl Wallet {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use elements::AssetId;
-    use lwk_wollet::bitcoin::Address;
-    use std::{thread, time::Duration};
+    use std::io;
+    use std::io::Write;
+
     #[test]
     fn testable_wallets() {
         let mnemonic =
@@ -441,40 +441,41 @@ mod tests {
 
     //     // TODO: more cases
     // }
-
+    pub fn pause_and_wait(msg: &str) {
+        println!("******{}******", msg);
+        println!("Press enter to continue");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to read line");
+    }
     #[test]
     fn test_unblinded_detection() {
         let network = Network::Testnet;
-        let mnemonic = "";
+        let mnemonic = "coyote error drink treat canal spider company fat bridge drink amateur injury";
         let descriptor = Descriptor::new_confidential(network, mnemonic.to_string())
             .expect("Failed to create descriptor");
         let wallet = Wallet::init(network, "/tmp/lwk_test".to_string(), descriptor).expect("");
 
         let confidential_address = wallet.address_last_unused().unwrap();
-        println!("The confidential address is {}", confidential_address);
+        println!("The confidential address is {:?}", confidential_address);
 
-        //Write code to halt for the payment to be made. maybe we can add a timer? or take an input from user that confirms that he did the pyment or not.
-
-        let electrum_url = "les.bullbitcoin.com:995".to_string();
+        let electrum_url = "blockstream.info:465".to_string();
+        pause_and_wait(&format!("Fund confidential address {:?}", confidential_address));
         wallet.sync(electrum_url.clone()).unwrap();
 
         let balance_before = wallet.balances().unwrap();
         let txs_before = wallet.txs().unwrap();
+        assert!(balance_before.get(0).is_some(), "No balance before funding");
+        assert!(!txs_before.is_empty(), "No transactions before funding");
 
-        assert!(balance.get(0), >0);
-        assert!(!txs_before.is_empty());
+        let unblinded_address = confidential_address.standard;
+        println!("The unblinded address is {}", unblinded_address);
 
-        let blinding_key = wallet.blinding_key().unwrap();
-        let unblinded_address = "";
-        let unblinded_address = println!("The unblinded address is {}", unblinded_address);
-        println!("Fund the unblinded address");
-
+        pause_and_wait(&format!("Fund unblinded address {}", unblinded_address));
         wallet.sync(electrum_url.clone()).unwrap();
 
         let balance_after = wallet.balances().unwrap();
-        let txs_after = wallet.txs().unwrap();
 
-        assert!(balance_after.get(0), "{}", balance_before.get(0));
-        println!("Payment to unblinded address not detected");
+        assert_eq!(balance_after.get(0), balance_before.get(0));
+        println!("Payment to unblinded address not detected.")
     }
 }
