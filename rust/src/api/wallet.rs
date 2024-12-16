@@ -2,17 +2,23 @@ use lwk_common::Signer;
 use lwk_signer::SwSigner;
 use lwk_wollet::full_scan_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
+use crate::frb_generated::RustOpaque;
+use log::{info, warn};
+use lwk_wollet::elements::{
+    pset::{
+        serialize::{Deserialize, Serialize},
+        PartiallySignedTransaction,
+    },
+    Address as LwkAddress, AssetId as LwkAssetId, OutPoint, Transaction, Txid,
+};
 use lwk_wollet::AddressResult;
+use lwk_wollet::BlockchainBackend;
 use lwk_wollet::ElectrumClient;
+use lwk_wollet::Wollet;
 use lwk_wollet::WolletDescriptor;
-use lwk_wollet::elements::{Txid,OutPoint, Transaction,Address as LwkAddress, AssetId as LwkAssetId, pset::{PartiallySignedTransaction, serialize::{Deserialize,Serialize}}};
+use std::str::FromStr;
 pub use std::sync::Mutex;
 use std::sync::MutexGuard;
-
-use crate::frb_generated::RustOpaque;
-use lwk_wollet::BlockchainBackend;
-use lwk_wollet::Wollet;
-use std::str::FromStr;
 
 use super::descriptor::Descriptor;
 use super::error::LwkError;
@@ -54,12 +60,16 @@ impl Wallet {
     }
     pub fn sync(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
         let mut electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
+            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, true))?;
+        info!("{:?}", electrum_client.capabilities());
         let mut wallet = self.get_wallet()?;
-        Ok(full_scan_with_electrum_client(
-            &mut wallet,
-            &mut electrum_client,
-        )?)
+        match full_scan_with_electrum_client(&mut wallet, &mut electrum_client) {
+            Ok(_) => Ok(()),
+            Err(e) => {
+                warn!("{:?}", e.to_string());
+                Err(e.into())
+            }
+        }
     }
 
     pub fn descriptor(&self) -> anyhow::Result<String, LwkError> {
@@ -132,9 +142,13 @@ impl Wallet {
         let wallet = self.get_wallet()?;
         let tx_builder = wallet.tx_builder();
         let address = LwkAddress::from_str(&out_address)?;
-        let asset = match LwkAssetId::from_str(&asset){
+        let asset = match LwkAssetId::from_str(&asset) {
             Ok(result) => result,
-            Err(_) => return Err(LwkError { msg: "Invalid asset".to_string() }),
+            Err(_) => {
+                return Err(LwkError {
+                    msg: "Invalid asset".to_string(),
+                })
+            }
         };
         let pset = tx_builder
             .add_recipient(&address, sats, asset)?
@@ -144,7 +158,7 @@ impl Wallet {
     }
 
     pub fn decode_tx(&self, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
-        let mut pset =  PartiallySignedTransaction::from_str(&pset)?;
+        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         let pset_details = self.get_wallet()?.get_details(&mut pset)?;
         Ok(PsetAmounts::from(pset_details.balance))
     }
@@ -251,7 +265,7 @@ mod tests {
         let balances = wallet.balances();
         let address = wallet.address_last_unused();
         // println!("{:#?}", address);
-        // println!("{:#?}", balances);
+        println!("{:#?}", balances);
         // let out_address = "lq1qqdvmhsrn8fehfurv0yzgve2xfhrfxj9yax7t6wymzuvfj2w2y49v4jf3730067gp3xhkhw73083tvx3xryasvf32pe06sajwu".to_string();
         // let pset = wallet.build_lbtc_tx(0, out_address, 1000.0, true).unwrap();
         // let signed = wallet.sign_tx(network, pset, mnemonic.to_string()).unwrap();
