@@ -176,7 +176,8 @@ void frbgen_lwk_dart_wire__crate__api__wallet__wallet_signed_pset_with_extra_det
 
 void frbgen_lwk_dart_wire__crate__api__wallet__wallet_sync(int64_t port_,
                                                            struct wire_cst_wallet *that,
-                                                           struct wire_cst_list_prim_u_8_strict *electrum_url);
+                                                           struct wire_cst_list_prim_u_8_strict *electrum_url,
+                                                           bool validate_domain);
 
 void frbgen_lwk_dart_wire__crate__api__wallet__wallet_txs(int64_t port_,
                                                           struct wire_cst_wallet *that);

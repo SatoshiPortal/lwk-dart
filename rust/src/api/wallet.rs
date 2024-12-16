@@ -3,7 +3,7 @@ use lwk_signer::SwSigner;
 use lwk_wollet::full_scan_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
 use crate::frb_generated::RustOpaque;
-use log::{info, warn};
+// use log::{info, warn};
 use lwk_wollet::elements::{
     pset::{
         serialize::{Deserialize, Serialize},
@@ -58,15 +58,19 @@ impl Wallet {
         let wallet = Wallet { inner: opaque };
         Ok(wallet)
     }
-    pub fn sync(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
+    pub fn sync(
+        &self,
+        electrum_url: String,
+        validate_domain: bool,
+    ) -> anyhow::Result<(), LwkError> {
         let mut electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, true))?;
-        info!("{:?}", electrum_client.capabilities());
+            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, validate_domain))?;
+        // info!("{:?}", electrum_client.capabilities());
         let mut wallet = self.get_wallet()?;
         match full_scan_with_electrum_client(&mut wallet, &mut electrum_client) {
             Ok(_) => Ok(()),
             Err(e) => {
-                warn!("{:?}", e.to_string());
+                // warn!("{:?}", e.to_string());
                 Err(e.into())
             }
         }
@@ -257,7 +261,7 @@ mod tests {
         let network = Network::Mainnet;
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
-        let _ = wallet.sync(electrum_url.clone());
+        let _ = wallet.sync(electrum_url.clone(), true);
         let _txs = wallet.txs();
         for tx in _txs.unwrap() {
             println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)

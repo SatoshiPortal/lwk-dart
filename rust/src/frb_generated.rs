@@ -464,6 +464,7 @@ fn wire__crate__api__wallet__wallet_sync_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<crate::api::wallet::Wallet>,
     electrum_url: impl CstDecode<String>,
+    validate_domain: impl CstDecode<bool>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
@@ -474,9 +475,14 @@ fn wire__crate__api__wallet__wallet_sync_impl(
         move || {
             let api_that = that.cst_decode();
             let api_electrum_url = electrum_url.cst_decode();
+            let api_validate_domain = validate_domain.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
-                    let output_ok = crate::api::wallet::Wallet::sync(&api_that, api_electrum_url)?;
+                    let output_ok = crate::api::wallet::Wallet::sync(
+                        &api_that,
+                        api_electrum_url,
+                        api_validate_domain,
+                    )?;
                     Ok(output_ok)
                 })())
             }

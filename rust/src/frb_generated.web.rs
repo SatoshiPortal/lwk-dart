@@ -547,8 +547,9 @@ pub fn wire__crate__api__wallet__wallet_sync(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     electrum_url: String,
+    validate_domain: bool,
 ) {
-    wire__crate__api__wallet__wallet_sync_impl(port_, that, electrum_url)
+    wire__crate__api__wallet__wallet_sync_impl(port_, that, electrum_url, validate_domain)
 }
 
 #[wasm_bindgen]

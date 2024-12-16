@@ -997,23 +997,25 @@ class LwkCoreWire implements BaseWire {
     int port_,
     ffi.Pointer<wire_cst_wallet> that,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
+    bool validate_domain,
   ) {
     return _wire__crate__api__wallet__wallet_sync(
       port_,
       that,
       electrum_url,
+      validate_domain,
     );
   }
 
   late final _wire__crate__api__wallet__wallet_syncPtr = _lookup<
           ffi.NativeFunction<
               ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>,
-                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>, ffi.Bool)>>(
       'frbgen_lwk_dart_wire__crate__api__wallet__wallet_sync');
   late final _wire__crate__api__wallet__wallet_sync =
       _wire__crate__api__wallet__wallet_syncPtr.asFunction<
           void Function(int, ffi.Pointer<wire_cst_wallet>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+              ffi.Pointer<wire_cst_list_prim_u_8_strict>, bool)>();
 
   void wire__crate__api__wallet__wallet_txs(
     int port_,
@@ -1213,10 +1215,14 @@ class LwkCoreWire implements BaseWire {
       _dummy_method_to_enforce_bundlingPtr.asFunction<int Function()>();
 }
 
-typedef DartPostCObjectFnType = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Bool Function(DartPort port_id, ffi.Pointer<ffi.Void> message)>>;
+typedef DartPostCObjectFnType
+    = ffi.Pointer<ffi.NativeFunction<DartPostCObjectFnTypeFunction>>;
+typedef DartPostCObjectFnTypeFunction = ffi.Bool Function(
+    DartPort port_id, ffi.Pointer<ffi.Void> message);
+typedef DartDartPostCObjectFnTypeFunction = bool Function(
+    DartDartPort port_id, ffi.Pointer<ffi.Void> message);
 typedef DartPort = ffi.Int64;
+typedef DartDartPort = int;
 
 final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
   external ffi.Pointer<ffi.Uint8> ptr;

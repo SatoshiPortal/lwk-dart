@@ -53,7 +53,7 @@ class TestApp extends StatefulWidget {
   }
 
   static Future<bool> sync(Wallet wallet) async {
-    await wallet.sync(electrumUrl: electrumUrl);
+    await wallet.sync(electrumUrl: electrumUrl, validateDomain: true);
     return true;
   }
 

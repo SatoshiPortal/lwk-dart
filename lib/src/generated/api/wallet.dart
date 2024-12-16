@@ -97,8 +97,10 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletSignedPsetWithExtraDetails(
           that: this, network: network, pset: pset, mnemonic: mnemonic);
 
-  Future<void> sync({required String electrumUrl}) => LwkCore.instance.api
-      .crateApiWalletWalletSync(that: this, electrumUrl: electrumUrl);
+  Future<void> sync(
+          {required String electrumUrl, required bool validateDomain}) =>
+      LwkCore.instance.api.crateApiWalletWalletSync(
+          that: this, electrumUrl: electrumUrl, validateDomain: validateDomain);
 
   Future<List<Tx>> txs() => LwkCore.instance.api.crateApiWalletWalletTxs(
         that: this,

@@ -532,8 +532,9 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_sync(
     port_: i64,
     that: *mut wire_cst_wallet,
     electrum_url: *mut wire_cst_list_prim_u_8_strict,
+    validate_domain: bool,
 ) {
-    wire__crate__api__wallet__wallet_sync_impl(port_, that, electrum_url)
+    wire__crate__api__wallet__wallet_sync_impl(port_, that, electrum_url, validate_domain)
 }
 
 #[no_mangle]

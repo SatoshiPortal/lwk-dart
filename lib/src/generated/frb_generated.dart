@@ -132,7 +132,9 @@ abstract class LwkCoreApi extends BaseApi {
       required String mnemonic});
 
   Future<void> crateApiWalletWalletSync(
-      {required Wallet that, required String electrumUrl});
+      {required Wallet that,
+      required String electrumUrl,
+      required bool validateDomain});
 
   Future<List<Tx>> crateApiWalletWalletTxs({required Wallet that});
 
@@ -588,26 +590,30 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
   @override
   Future<void> crateApiWalletWalletSync(
-      {required Wallet that, required String electrumUrl}) {
+      {required Wallet that,
+      required String electrumUrl,
+      required bool validateDomain}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_String(electrumUrl);
-        return wire.wire__crate__api__wallet__wallet_sync(port_, arg0, arg1);
+        var arg2 = cst_encode_bool(validateDomain);
+        return wire.wire__crate__api__wallet__wallet_sync(
+            port_, arg0, arg1, arg2);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_unit,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kCrateApiWalletWalletSyncConstMeta,
-      argValues: [that, electrumUrl],
+      argValues: [that, electrumUrl, validateDomain],
       apiImpl: this,
     ));
   }
 
   TaskConstMeta get kCrateApiWalletWalletSyncConstMeta => const TaskConstMeta(
         debugName: "wallet_sync",
-        argNames: ["that", "electrumUrl"],
+        argNames: ["that", "electrumUrl", "validateDomain"],
       );
 
   @override
