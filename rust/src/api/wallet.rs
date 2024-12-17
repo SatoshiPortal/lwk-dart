@@ -18,6 +18,7 @@ use super::descriptor::Descriptor;
 use super::error::LwkError;
 use super::types::Address;
 use super::types::AssetIdBTreeMapUInt;
+use super::types::Balance;
 use super::types::Balances;
 use super::types::Network;
 use super::types::PsetAmounts;
@@ -81,9 +82,29 @@ impl Wallet {
     }
 
     pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
-        let balance_map: AssetIdBTreeMapUInt = (self.get_wallet()?.balance()?).into();
-        let balance = Balances::from(balance_map);
-        Ok(balance)
+        let wallet = self.get_wallet()?;
+        let mut balance_map = wallet.balance()?;
+        let explicit_utxos = wallet.explicit_utxos()?;
+
+        let ublinded_balances: Balances = explicit_utxos.iter().map(
+            |utxo| {
+                Balance {
+                    asset_id: utxo.unblinded.asset.to_string(),
+                    value: utxo.unblinded.value,
+                    blinded: false,
+                }
+            }
+        ).collect();
+
+        for utxo in explicit_utxos {
+            balance_map.insert(utxo.unblinded.asset, utxo.unblinded.value);
+        }
+
+        let balance_map: AssetIdBTreeMapUInt = balance_map.into();
+
+        let mut balances = Balances::from(balance_map);
+        balances.extend(ublinded_balances);
+        Ok(balances)
     }
 
     pub fn txs(&self) -> anyhow::Result<Vec<Tx>, LwkError> {
@@ -141,6 +162,45 @@ impl Wallet {
             .fee_rate(Some(fee_rate))
             .finish()?;
         Ok(pset.to_string())
+    }
+
+    pub fn build_unblinded_tx(
+        &self,
+        sats: u64,
+        out_address: String,
+        fee_rate: f32,
+        asset: String,
+    ) -> anyhow::Result<String, LwkError> {
+        let wallet = self.get_wallet()?;
+        let tx_builder = wallet.tx_builder();
+        let address = LwkAddress::from_str(&out_address)?;
+        let asset = match LwkAssetId::from_str(&asset) {
+            Ok(result) => result,
+            Err(_) => {
+                return Err(LwkError {
+                    msg: "Invalid asset".to_string(),
+                })
+            }
+        };
+        let external_utxos = wallet.explicit_utxos()?;
+        let matching_utxo = external_utxos
+            .into_iter()
+            .filter(|e_utxo| e_utxo.unblinded.asset == asset)
+            .next();
+
+        match matching_utxo {
+            Some(external_utxo) => {
+                let pset = tx_builder
+                    .add_recipient(&address, sats, asset)?
+                    .fee_rate(Some(fee_rate))
+                    .add_external_utxos(vec![external_utxo])?
+                    .finish()?;
+                Ok(pset.to_string())
+            }
+            None => Err(LwkError {
+                msg: "Asset Id not found".to_owned(),
+            }),
+        }
     }
 
     pub fn decode_tx(&self, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
