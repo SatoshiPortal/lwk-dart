@@ -86,15 +86,19 @@ impl Wallet {
         let mut balance_map = wallet.balance()?;
         let explicit_utxos = wallet.explicit_utxos()?;
 
-        let ublinded_balances: Balances = explicit_utxos.iter().map(
-            |utxo| {
-                Balance {
+        let ublinded_balances: Balances = explicit_utxos.iter()
+            .filter_map(|utxo| match i64::try_from(utxo.unblinded.value) {
+                Ok(converted_value) => Some(Balance {
                     asset_id: utxo.unblinded.asset.to_string(),
-                    value: utxo.unblinded.value,
-                    blinded: false,
+                    value: converted_value,
+                    blinded: true,
+                }),
+                Err(_) => {
+                    eprintln!("Warning: Overflow encountered converting {} to i64", utxo.unblinded.value);
+                    None
                 }
-            }
-        ).collect();
+            })
+            .collect();
 
         for utxo in explicit_utxos {
             balance_map.insert(utxo.unblinded.asset, utxo.unblinded.value);

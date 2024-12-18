@@ -56,7 +56,7 @@ impl From<AssetIdBTreeMapInt> for Balances {
             .into_iter()
             .map(|(key, value)| Balance {
                 asset_id: key.to_string(),
-                value: value as u64,
+                value: value,
                 blinded: true,
             })
             .collect()
@@ -69,7 +69,7 @@ impl From<AssetIdHashMapInt> for Balances {
             .into_iter()
             .map(|(key, value)| Balance {
                 asset_id: key.to_string(),
-                value: value as u64,
+                value: value,
                 blinded: true,
             })
             .collect()
@@ -83,13 +83,18 @@ impl From<AssetIdBTreeMapUInt> for Balances {
         asset_id_map
             .0
             .into_iter()
-            .map(|(key, value)| {
-                Balance {
+            .filter_map(|(key, value)| match i64::try_from(value) {
+                Ok(converted_value) => Some(Balance {
                     asset_id: key.to_string(),
-                    value,
+                    value: converted_value,
                     blinded: true,
+                }),
+                Err(_) => {
+                    eprintln!("Warning: Overflow encountered converting {} to i64", value);
+                    None
                 }
-            }).collect()
+            })
+            .collect()
     }
 }
 
@@ -116,7 +121,7 @@ impl From<WalletTxOut> for TxOut {
 #[frb(dart_metadata=("freezed"))]
 pub struct Balance {
     pub asset_id: String,
-    pub value: u64,
+    pub value: i64,
     pub blinded: bool,
 }
 
