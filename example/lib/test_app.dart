@@ -225,7 +225,7 @@ class _TestAppState extends State<TestApp> {
                                 final res = await TestApp.txs(wallet!);
                                 setState(() {
                                   loading = false;
-                                  txs = res.cast<Map<String, int>>();
+                                  // txs = res.cast<Map<String, int>>();
                                 });
                               },
                               child: const Text(
@@ -247,10 +247,8 @@ class _TestAppState extends State<TestApp> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return ListTile(
-                                          title: Text(
-                                              'Transaction ID: ${txs![index].keys}'),
-                                          subtitle: Text(
-                                              'Amount: ${txs![index].values}'),
+                                          title: Text('Transaction ID: '),
+                                          subtitle: Text('Amount: '),
                                         );
                                       },
                                     ),
