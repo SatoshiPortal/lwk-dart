@@ -187,7 +187,7 @@ impl Wallet {
         tx_bytes: Vec<u8>,
     ) -> anyhow::Result<String, LwkError> {
         let electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
+            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, true))?;
         let tx = Transaction::deserialize(&tx_bytes)?;
         let txid: Txid = electrum_client.broadcast(&tx)?;
         Ok(txid.to_string())
