@@ -12,7 +12,7 @@ use lwk_wollet::elements::{
     Address as LwkAddress, AssetId as LwkAssetId, OutPoint, Transaction, Txid,
 };
 use lwk_wollet::AddressResult;
-use lwk_wollet::BlockchainBackend;
+use lwk_wollet::clients::blocking::BlockchainBackend;
 use lwk_wollet::ElectrumClient;
 use lwk_wollet::Wollet;
 use lwk_wollet::WolletDescriptor;
