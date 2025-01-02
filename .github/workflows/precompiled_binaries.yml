@@ -41,4 +41,4 @@ jobs:
         working-directory: cargokit/build_tool
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-          PRIVATE_KEY: ${{ secrets.RELEASE_PRIVATE_KEY }
+          PRIVATE_KEY: ${{ secrets.RELEASE_PRIVATE_KEY }}
