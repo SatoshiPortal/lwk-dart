@@ -83,7 +83,7 @@ impl Wallet {
 
     pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
         let wallet = self.get_wallet()?;
-        let mut balance_map = wallet.balance()?;
+        let blinded_balance_map: AssetIdBTreeMapUInt = wallet.balance()?.into();
         let explicit_utxos = wallet.explicit_utxos()?;
 
         let ublinded_balances: Balances = explicit_utxos.iter()
@@ -91,7 +91,7 @@ impl Wallet {
                 Ok(converted_value) => Some(Balance {
                     asset_id: utxo.unblinded.asset.to_string(),
                     value: converted_value,
-                    blinded: true,
+                    blinded: false,
                 }),
                 Err(_) => {
                     eprintln!("Warning: Overflow encountered converting {} to i64", utxo.unblinded.value);
@@ -100,13 +100,7 @@ impl Wallet {
             })
             .collect();
 
-        for utxo in explicit_utxos {
-            balance_map.insert(utxo.unblinded.asset, utxo.unblinded.value);
-        }
-
-        let balance_map: AssetIdBTreeMapUInt = balance_map.into();
-
-        let mut balances = Balances::from(balance_map);
+        let mut balances = Balances::from(blinded_balance_map);
         balances.extend(ublinded_balances);
         Ok(balances)
     }
