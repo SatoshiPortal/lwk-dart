@@ -12,10 +12,6 @@ void main() {
       const network = Network.mainnet;
       const electrumUrl = 'les.bullbitcoin.com:995';
       const dbPath = '/tmp/lwk-darti';
-      const outAmount = 10000;
-      // const outAddress =
-      //     "tlq1qqt4hjkl6sug5ld89sdaekt7ew04va8w7c63adw07l33vcx86vpj5th3w7rkdnckmfpraufnnrfcep4thqt6024phuav99djeu";
-      const feeRate = 1000.0;
       final descriptor = await Descriptor.newConfidential(
         network: network,
         mnemonic: mnemonic,
