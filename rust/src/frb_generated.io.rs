@@ -361,7 +361,7 @@ impl Default for wire_cst_wallet {
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__descriptor__descriptor_new_confidential(
+pub extern "C" fn frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential(
     port_: i64,
     network: i32,
     mnemonic: *mut wire_cst_list_prim_u_8_strict,
@@ -370,7 +370,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__descriptor__descriptor_new_c
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__types__address_address_from_script(
+pub extern "C" fn frbgen_lwk_wire__crate__api__types__address_address_from_script(
     port_: i64,
     network: i32,
     script: *mut wire_cst_list_prim_u_8_strict,
@@ -380,7 +380,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__types__address_address_from_
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__types__address_validate(
+pub extern "C" fn frbgen_lwk_wire__crate__api__types__address_validate(
     port_: i64,
     address_string: *mut wire_cst_list_prim_u_8_strict,
 ) {
@@ -388,7 +388,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__types__address_validate(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__types__blockchain_test(
+pub extern "C" fn frbgen_lwk_wire__crate__api__types__blockchain_test(
     port_: i64,
     that: *mut wire_cst_blockchain,
     electrum_url: *mut wire_cst_list_prim_u_8_strict,
@@ -397,7 +397,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__types__blockchain_test(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_address(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_address(
     port_: i64,
     that: *mut wire_cst_wallet,
     index: u32,
@@ -406,7 +406,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_address(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_address_last_unused(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_address_last_unused(
     port_: i64,
     that: *mut wire_cst_wallet,
 ) {
@@ -414,7 +414,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_address_last_
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_balances(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_balances(
     port_: i64,
     that: *mut wire_cst_wallet,
 ) {
@@ -422,7 +422,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_balances(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_blinding_key(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_blinding_key(
     port_: i64,
     that: *mut wire_cst_wallet,
 ) {
@@ -430,7 +430,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_blinding_key(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_broadcast_tx(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_broadcast_tx(
     port_: i64,
     electrum_url: *mut wire_cst_list_prim_u_8_strict,
     tx_bytes: *mut wire_cst_list_prim_u_8_loose,
@@ -439,7 +439,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_broadcast_tx(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_build_asset_tx(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_build_asset_tx(
     port_: i64,
     that: *mut wire_cst_wallet,
     sats: u64,
@@ -458,7 +458,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_build_asset_t
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_build_lbtc_tx(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_build_lbtc_tx(
     port_: i64,
     that: *mut wire_cst_wallet,
     sats: u64,
@@ -477,7 +477,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_build_lbtc_tx
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_decode_tx(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_decode_tx(
     port_: i64,
     that: *mut wire_cst_wallet,
     pset: *mut wire_cst_list_prim_u_8_strict,
@@ -486,7 +486,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_decode_tx(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_descriptor(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_descriptor(
     port_: i64,
     that: *mut wire_cst_wallet,
 ) {
@@ -494,7 +494,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_descriptor(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_init(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_init(
     port_: i64,
     network: i32,
     dbpath: *mut wire_cst_list_prim_u_8_strict,
@@ -504,7 +504,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_init(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_sign_tx(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx(
     port_: i64,
     that: *mut wire_cst_wallet,
     network: i32,
@@ -515,7 +515,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_sign_tx(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
     port_: i64,
     that: *mut wire_cst_wallet,
     network: i32,
@@ -528,7 +528,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_signed_pset_w
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_sync(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_sync(
     port_: i64,
     that: *mut wire_cst_wallet,
     electrum_url: *mut wire_cst_list_prim_u_8_strict,
@@ -538,7 +538,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_sync(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_txs(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_txs(
     port_: i64,
     that: *mut wire_cst_wallet,
 ) {
@@ -546,7 +546,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_txs(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_utxos(
+pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_utxos(
     port_: i64,
     that: *mut wire_cst_wallet,
 ) {
@@ -554,7 +554,7 @@ pub extern "C" fn frbgen_lwk_dart_wire__crate__api__wallet__wallet_utxos(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(
+pub extern "C" fn frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet(
     ptr: *const std::ffi::c_void,
 ) {
     unsafe {
@@ -563,7 +563,7 @@ pub extern "C" fn frbgen_lwk_dart_rust_arc_increment_strong_count_RustOpaque_Mut
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet(
+pub extern "C" fn frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet(
     ptr: *const std::ffi::c_void,
 ) {
     unsafe {
@@ -572,27 +572,27 @@ pub extern "C" fn frbgen_lwk_dart_rust_arc_decrement_strong_count_RustOpaque_Mut
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_blockchain() -> *mut wire_cst_blockchain {
+pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_blockchain() -> *mut wire_cst_blockchain {
     flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_blockchain::new_with_null_ptr())
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_descriptor() -> *mut wire_cst_descriptor {
+pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_descriptor() -> *mut wire_cst_descriptor {
     flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_descriptor::new_with_null_ptr())
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_u_32(value: u32) -> *mut u32 {
+pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_u_32(value: u32) -> *mut u32 {
     flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_box_autoadd_wallet() -> *mut wire_cst_wallet {
+pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_wallet() -> *mut wire_cst_wallet {
     flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_wallet::new_with_null_ptr())
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_list_balance(len: i32) -> *mut wire_cst_list_balance {
+pub extern "C" fn frbgen_lwk_cst_new_list_balance(len: i32) -> *mut wire_cst_list_balance {
     let wrap = wire_cst_list_balance {
         ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
             <wire_cst_balance>::new_with_null_ptr(),
@@ -604,7 +604,7 @@ pub extern "C" fn frbgen_lwk_dart_cst_new_list_balance(len: i32) -> *mut wire_cs
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_list_prim_u_8_loose(
+pub extern "C" fn frbgen_lwk_cst_new_list_prim_u_8_loose(
     len: i32,
 ) -> *mut wire_cst_list_prim_u_8_loose {
     let ans = wire_cst_list_prim_u_8_loose {
@@ -615,7 +615,7 @@ pub extern "C" fn frbgen_lwk_dart_cst_new_list_prim_u_8_loose(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_list_prim_u_8_strict(
+pub extern "C" fn frbgen_lwk_cst_new_list_prim_u_8_strict(
     len: i32,
 ) -> *mut wire_cst_list_prim_u_8_strict {
     let ans = wire_cst_list_prim_u_8_strict {
@@ -626,7 +626,7 @@ pub extern "C" fn frbgen_lwk_dart_cst_new_list_prim_u_8_strict(
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_list_tx(len: i32) -> *mut wire_cst_list_tx {
+pub extern "C" fn frbgen_lwk_cst_new_list_tx(len: i32) -> *mut wire_cst_list_tx {
     let wrap = wire_cst_list_tx {
         ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
             <wire_cst_tx>::new_with_null_ptr(),
@@ -638,7 +638,7 @@ pub extern "C" fn frbgen_lwk_dart_cst_new_list_tx(len: i32) -> *mut wire_cst_lis
 }
 
 #[no_mangle]
-pub extern "C" fn frbgen_lwk_dart_cst_new_list_tx_out(len: i32) -> *mut wire_cst_list_tx_out {
+pub extern "C" fn frbgen_lwk_cst_new_list_tx_out(len: i32) -> *mut wire_cst_list_tx_out {
     let wrap = wire_cst_list_tx_out {
         ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
             <wire_cst_tx_out>::new_with_null_ptr(),

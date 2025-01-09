@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "lwk_dart" "\0"
+            VALUE "FileDescription", "lwk" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "lwk_dart" "\0"
+            VALUE "InternalName", "lwk" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "lwk_dart.exe" "\0"
-            VALUE "ProductName", "lwk_dart" "\0"
+            VALUE "OriginalFilename", "lwk.exe" "\0"
+            VALUE "ProductName", "lwk" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

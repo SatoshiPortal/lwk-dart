@@ -1,6 +1,6 @@
 {
-    "name": "lwk_dart",
-    "short_name": "lwk_dart",
+    "name": "lwk",
+    "short_name": "lwk",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

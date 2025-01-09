@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print
 
-import 'package:lwk_dart/lwk_dart.dart';
+import 'package:lwk/lwk.dart';
 import 'package:test/test.dart';
 
 void main() {

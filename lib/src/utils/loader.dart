@@ -4,22 +4,21 @@ import 'package:archive/archive.dart';
 import 'package:flutter/services.dart' show Uint8List, rootBundle;
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:http/http.dart' as http;
-import 'package:lwk_dart/lwk_dart.dart';
+import 'package:lwk/lwk.dart';
 
 import '../generated/frb_generated.dart';
 
-const iosName = "lwk_dart";
-const name = "liblwk_dart";
+const iosName = "lwk";
+const name = "liblwk";
 
 class Dylib {
   static Map<String, dynamic>? _config;
-  static String get libName =>
-      "unittest.liblwk_dart.${_config!['TAG_VERSION']}";
+  static String get libName => "unittest.liblwk.${_config!['TAG_VERSION']}";
   static String get remoteUrl =>
       "${_config!['REPOSITORY_URL']}${_config!['TAG_VERSION']}/$libName.zip";
   static Future<void> _loadJsonAsset() async {
-    final String content = await rootBundle
-        .loadString("packages/lwk_dart/assets/release.config.txt");
+    final String content =
+        await rootBundle.loadString("packages/lwk/assets/release.config.txt");
     Map<String, dynamic> configMap = {};
     List<String> lines = content.split('\n');
 

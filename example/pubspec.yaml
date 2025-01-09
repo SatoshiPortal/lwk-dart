@@ -1,5 +1,5 @@
-name: lwk_dart_example
-description: "Demonstrates how to use the lwk_dart plugin."
+name: lwk_example
+description: "Demonstrates how to use the lwk plugin."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -9,7 +9,7 @@ environment:
   sdk: '>=3.1.0 <4.0.0'
 
 dependencies:
-  lwk_dart: 
+  lwk: 
     path: ../
     # git:
     #   url: https://github.com/SatoshiPortal/lwk-dart.git

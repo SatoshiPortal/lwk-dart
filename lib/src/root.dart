@@ -1,10 +1,10 @@
 import 'dart:io';
 // import 'dart:typed_data';
 // import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
-import 'package:lwk_dart/lwk_dart.dart';
-// import 'package:lwk_dart/src/generated/api/types.dart';
-// import 'package:lwk_dart/src/generated/api/wallet.dart';
-// import 'package:lwk_dart/src/utils/loader.dart';
+import 'package:lwk/lwk.dart';
+// import 'package:lwk/src/generated/api/types.dart';
+// import 'package:lwk/src/generated/api/wallet.dart';
+// import 'package:lwk/src/utils/loader.dart';
 // import 'generated/frb_generated.dart';
 
 const lBtcAssetId =

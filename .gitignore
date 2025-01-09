@@ -27,4 +27,4 @@ doc/api/
 .flutter-plugins-dependencies
 rust/target
 
-test/liblwk_dart.so
+test/liblwk.so

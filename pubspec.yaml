@@ -1,4 +1,4 @@
-name: lwk_dart
+name: lwk
 description: "Dart/Flutter language bindings for Liquid Wallet Kit"
 
 publish_to: 'none'

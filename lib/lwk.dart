@@ -1,4 +1,4 @@
-library lwk_dart;
+library lwk;
 
 export './src/generated/frb_generated.dart';
 export './src/generated/api/descriptor.dart';

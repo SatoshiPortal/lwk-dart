@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 // ignore: depend_on_referenced_packages
 import 'package:flutter/material.dart';
-import 'package:lwk_dart/lwk_dart.dart';
+import 'package:lwk/lwk.dart';
 import 'package:path_provider/path_provider.dart';
 
 // class DecodedPset {
@@ -212,7 +212,7 @@ class _TestAppState extends State<TestApp> {
                                 'Get Balance',
                               ),
                             ),
-                            Text(balance == null ? "..." : "${balance} sats"),
+                            Text(balance == null ? "..." : "$balance sats"),
                           ],
                         ),
                         Column(
@@ -222,7 +222,7 @@ class _TestAppState extends State<TestApp> {
                                 setState(() {
                                   loading = true;
                                 });
-                                final res = await TestApp.txs(wallet!);
+                                await TestApp.txs(wallet!);
                                 setState(() {
                                   loading = false;
                                   // txs = res.cast<Map<String, int>>();
@@ -246,7 +246,7 @@ class _TestAppState extends State<TestApp> {
                                       itemCount: txs!.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return ListTile(
+                                        return const ListTile(
                                           title: Text('Transaction ID: '),
                                           subtitle: Text('Amount: '),
                                         );

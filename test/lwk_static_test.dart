@@ -1,5 +1,5 @@
-// import 'package:lwk_dart/src/generated/bridge_definitions.dart';
-// import 'package:lwk_dart/src/utils/loader.dart';
+// import 'package:lwk/src/generated/bridge_definitions.dart';
+// import 'package:lwk/src/utils/loader.dart';
 // import 'package:test/test.dart';
 
 // void main() {

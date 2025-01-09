@@ -34,10 +34,10 @@ fi
 
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint lwk_dart.podspec` to validate before publishing.
+# Run `pod lib lint lwk.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'lwk_dart'
+  s.name             = 'lwk'
   s.version          = '0.1.6'
   s.summary          = 'Liquid Wallet Kit.'
   s.description      = <<-DESC
