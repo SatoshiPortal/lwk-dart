@@ -1,12 +1,12 @@
 name: lwk
 description: "Dart/Flutter language bindings for Liquid Wallet Kit"
 repository: https://github.com/SatoshiPortal/lwk-dart
-publish_to: 'none'
 
 version: 0.1.5
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
+  flutter: '>=3.3.0'
 
 dependencies:
   flutter:
