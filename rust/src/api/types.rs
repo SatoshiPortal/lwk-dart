@@ -56,7 +56,8 @@ impl From<AssetIdBTreeMapInt> for Balances {
             .into_iter()
             .map(|(key, value)| Balance {
                 asset_id: key.to_string(),
-                value,
+                value: value,
+                blinded: true,
             })
             .collect()
     }
@@ -68,13 +69,12 @@ impl From<AssetIdHashMapInt> for Balances {
             .into_iter()
             .map(|(key, value)| Balance {
                 asset_id: key.to_string(),
-                value,
+                value: value,
+                blinded: true,
             })
             .collect()
     }
 }
-
-use std::convert::TryFrom;
 
 use super::error::LwkError;
 
@@ -87,6 +87,7 @@ impl From<AssetIdBTreeMapUInt> for Balances {
                 Ok(converted_value) => Some(Balance {
                     asset_id: key.to_string(),
                     value: converted_value,
+                    blinded: true,
                 }),
                 Err(_) => {
                     eprintln!("Warning: Overflow encountered converting {} to i64", value);
@@ -121,6 +122,7 @@ impl From<WalletTxOut> for TxOut {
 pub struct Balance {
     pub asset_id: String,
     pub value: i64,
+    pub blinded: bool,
 }
 
 #[derive(Clone, Debug, PartialEq)]
