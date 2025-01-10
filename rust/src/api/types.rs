@@ -45,7 +45,16 @@ impl From<HashMap<AssetId, i64>> for AssetIdHashMapInt {
         AssetIdHashMapInt(map)
     }
 }
+/// Balance represents a balance of a specific asset
+#[derive(Clone, Debug, PartialEq)]
+#[frb(dart_metadata=("freezed"))]
+pub struct Balance {
+    pub asset_id: String,
+    pub value: i64,
+}
 
+/// Balances is a list of Balance objects 
+/// A multi asset wallet will have more than one item in the list for each asset
 #[frb(dart_metadata=("freezed"))]
 pub type Balances = Vec<Balance>;
 
@@ -116,13 +125,7 @@ impl From<WalletTxOut> for TxOut {
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
-pub struct Balance {
-    pub asset_id: String,
-    pub value: i64,
-}
-
+/// Address class which contains both standard and confidential addresses with the address index in the wallet
 #[derive(Clone, Debug, PartialEq)]
 #[frb(dart_metadata=("freezed"))]
 pub struct Address {
@@ -142,6 +145,7 @@ impl From<AddressResult> for Address {
 }
 
 impl Address {
+    /// Validate the address string and return the network
     pub fn validate(address_string: String) -> anyhow::Result<Network, LwkError> {
         let address = LwkAddress::from_str(&address_string)?;
         if address.params.to_owned() == AddressParams::LIQUID {
@@ -150,7 +154,8 @@ impl Address {
             Ok(Network::Testnet)
         }
     }
-
+    
+    /// Create an address from a scriptpubkey. Always returns 0 as the index is only for wallet generated addresses
     pub fn address_from_script(
         network: Network,
         script: String,
@@ -217,6 +222,7 @@ pub struct TxOutSecrets {
     pub asset_bf: String,
 }
 
+/// Transaction object returned by getTransactions.
 #[derive(Clone, Debug, PartialEq)]
 #[frb(dart_metadata=("freezed"))]
 pub struct Tx {
@@ -294,12 +300,8 @@ impl From<WalletTx> for Tx {
         }
     }
 }
-// impl Tx{
-//     pub fn unblinded_url(&self, explorer_url: String)->String{
-//         let wollet_tx: WalletTx = self.into();
-//         wollet_tx.unblinded_url(&explorer_url);
-//     }
-// }
+
+/// Decoded PSET amounts
 #[derive(Clone, Debug, PartialEq)]
 pub struct PsetAmounts {
     pub absolute_fees: u64,

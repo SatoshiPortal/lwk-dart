@@ -30,11 +30,13 @@ use super::types::PsetAmounts;
 use super::types::Tx;
 use super::types::TxOut;
 
+/// Main wallet object
 pub struct Wallet {
     pub inner: RustOpaque<Mutex<lwk_wollet::Wollet>>,
 }
 
 impl Wallet {
+    /// Used internally to create a lock on the wallet while being used.
     fn get_wallet(&self) -> Result<MutexGuard<lwk_wollet::Wollet>, LwkError> {
         {
             match self.inner.lock() {
@@ -46,6 +48,7 @@ impl Wallet {
         }
     }
 
+    /// Initializes a wallet from a specific db path and descriptor
     pub fn init(
         network: Network,
         dbpath: String,
@@ -58,6 +61,8 @@ impl Wallet {
         let wallet = Wallet { inner: opaque };
         Ok(wallet)
     }
+
+    /// Syncs the wallet db with its latest state fetched from the electrum server
     pub fn sync(
         &self,
         electrum_url: String,
@@ -76,30 +81,36 @@ impl Wallet {
         }
     }
 
+    /// Get the descriptor string for the wallet
     pub fn descriptor(&self) -> anyhow::Result<String, LwkError> {
         Ok(self.get_wallet()?.descriptor().to_string())
     }
 
+    /// Get the blinding key string for the wallet
     pub fn blinding_key(&self) -> anyhow::Result<String, LwkError> {
         Ok(self.get_wallet()?.descriptor().key.to_string())
     }
 
+    /// Get the last unused address from the wallet
     pub fn address_last_unused(&self) -> anyhow::Result<Address, LwkError> {
         let address: AddressResult = self.get_wallet()?.address(None)?.into();
         Ok(address.into())
     }
 
+    /// Get an address from a specific index
     pub fn address(&self, index: u32) -> anyhow::Result<Address, LwkError> {
         let address: AddressResult = self.get_wallet()?.address(Some(index))?.into();
         Ok(address.into())
     }
 
+    /// Get balances for a wallet. 
     pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
         let balance_map: AssetIdBTreeMapUInt = (self.get_wallet()?.balance()?).into();
         let balance = Balances::from(balance_map);
         Ok(balance)
     }
 
+    /// Get the transaction history of the wallet
     pub fn txs(&self) -> anyhow::Result<Vec<Tx>, LwkError> {
         let txs = self
             .get_wallet()?
@@ -110,6 +121,7 @@ impl Wallet {
         Ok(txs)
     }
 
+    /// Build a LBTC transaction
     pub fn build_lbtc_tx(
         &self,
         sats: u64,
@@ -135,7 +147,7 @@ impl Wallet {
             Ok(pset.to_string())
         }
     }
-
+    /// Build a transaction for a specific asset
     pub fn build_asset_tx(
         &self,
         sats: u64,
@@ -161,12 +173,14 @@ impl Wallet {
         Ok(pset.to_string())
     }
 
+    /// Decode a transaction given a PSET
     pub fn decode_tx(&self, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         let pset_details = self.get_wallet()?.get_details(&mut pset)?;
         Ok(PsetAmounts::from(pset_details.balance))
     }
 
+    /// Sign a wallet transaction (pset)
     pub fn sign_tx(
         &self,
         network: Network,
@@ -182,6 +196,7 @@ impl Wallet {
         Ok(tx.serialize())
     }
 
+    /// Broadcast a signed transaction
     pub fn broadcast_tx(
         electrum_url: String,
         tx_bytes: Vec<u8>,
@@ -193,12 +208,14 @@ impl Wallet {
         Ok(txid.to_string())
     }
 
+    /// Get utxos of the wallet
     pub fn utxos(&self) -> anyhow::Result<Vec<TxOut>, LwkError> {
         let wallet_tx_outs = self.get_wallet()?.utxos()?;
         let tx_outs = wallet_tx_outs.into_iter().map(TxOut::from).collect();
         Ok(tx_outs)
     }
 
+    /// Given an outpoint, get the associated txout
     fn get_txout(&self, outpoint: &OutPoint) -> Result<lwk_wollet::elements::TxOut, LwkError> {
         let wallet_transaction = self.get_wallet()?.transaction(&outpoint.txid)?;
         let transaction = wallet_transaction.ok_or(LwkError {
@@ -214,6 +231,7 @@ impl Wallet {
         Ok(txout.clone())
     }
 
+    /// Sign a pset with extra details (used for asset transactions)
     pub fn signed_pset_with_extra_details(
         &self,
         network: Network,
@@ -249,8 +267,6 @@ impl Wallet {
 
 #[cfg(test)]
 mod tests {
-
-    use std::{thread, time::Duration};
 
     use super::*;
     #[test]

@@ -63,7 +63,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
-    stem: 'lwk',
+    stem: 'lwk_dart',
     ioDirectory: 'rust/target/release/',
     webPrefix: 'pkg/',
   );
@@ -709,7 +709,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   Blockchain dco_decode_blockchain(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.isNotEmpty)
+    if (arr.length != 0)
       throw Exception('unexpected arr length: expect 0 but see ${arr.length}');
     return Blockchain();
   }

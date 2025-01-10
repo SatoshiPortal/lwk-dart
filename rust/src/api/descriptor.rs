@@ -5,11 +5,13 @@ use lwk_wollet::ElementsNetwork;
 
 use super::{error::LwkError, types::Network};
 
+/// Wallet descriptor class used to create a new wallet
 #[derive(Debug)]
 pub struct Descriptor {
     pub ct_descriptor: String,
 }
 impl Descriptor {
+    /// Createa new wpkh confidential descriptor based on Slip77 blinding key derivation
     pub fn new_confidential(network: Network, mnemonic: String) -> Result<Descriptor, LwkError> {
         let el_network: ElementsNetwork = network.into();
         let is_mainnet = el_network == ElementsNetwork::Liquid;

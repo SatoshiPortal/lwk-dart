@@ -14,6 +14,7 @@ import 'types.dart';
 // Rust type: RustOpaqueNom<Mutex < lwk_wollet :: Wollet >>
 abstract class MutexWollet implements RustOpaqueInterface {}
 
+/// Main wallet object
 class Wallet {
   final MutexWollet inner;
 
@@ -21,29 +22,35 @@ class Wallet {
     required this.inner,
   });
 
+  /// Get an address from a specific index
   Future<Address> address({required int index}) => LwkCore.instance.api
       .crateApiWalletWalletAddress(that: this, index: index);
 
+  /// Get the last unused address from the wallet
   Future<Address> addressLastUnused() =>
       LwkCore.instance.api.crateApiWalletWalletAddressLastUnused(
         that: this,
       );
 
+  /// Get balances for a wallet.
   Future<List<Balance>> balances() =>
       LwkCore.instance.api.crateApiWalletWalletBalances(
         that: this,
       );
 
+  /// Get the blinding key string for the wallet
   Future<String> blindingKey() =>
       LwkCore.instance.api.crateApiWalletWalletBlindingKey(
         that: this,
       );
 
+  /// Broadcast a signed transaction
   static Future<String> broadcastTx(
           {required String electrumUrl, required List<int> txBytes}) =>
       LwkCore.instance.api.crateApiWalletWalletBroadcastTx(
           electrumUrl: electrumUrl, txBytes: txBytes);
 
+  /// Build a transaction for a specific asset
   Future<String> buildAssetTx(
           {required BigInt sats,
           required String outAddress,
@@ -56,6 +63,7 @@ class Wallet {
           feeRate: feeRate,
           asset: asset);
 
+  /// Build a LBTC transaction
   Future<String> buildLbtcTx(
           {required BigInt sats,
           required String outAddress,
@@ -68,14 +76,17 @@ class Wallet {
           feeRate: feeRate,
           drain: drain);
 
+  /// Decode a transaction given a PSET
   Future<PsetAmounts> decodeTx({required String pset}) =>
       LwkCore.instance.api.crateApiWalletWalletDecodeTx(that: this, pset: pset);
 
+  /// Get the descriptor string for the wallet
   Future<String> descriptor() =>
       LwkCore.instance.api.crateApiWalletWalletDescriptor(
         that: this,
       );
 
+  /// Initializes a wallet from a specific db path and descriptor
   static Future<Wallet> init(
           {required Network network,
           required String dbpath,
@@ -83,6 +94,7 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletInit(
           network: network, dbpath: dbpath, descriptor: descriptor);
 
+  /// Sign a wallet transaction (pset)
   Future<Uint8List> signTx(
           {required Network network,
           required String pset,
@@ -90,6 +102,7 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletSignTx(
           that: this, network: network, pset: pset, mnemonic: mnemonic);
 
+  /// Sign a pset with extra details (used for asset transactions)
   Future<String> signedPsetWithExtraDetails(
           {required Network network,
           required String pset,
@@ -97,15 +110,18 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletSignedPsetWithExtraDetails(
           that: this, network: network, pset: pset, mnemonic: mnemonic);
 
+  /// Syncs the wallet db with its latest state fetched from the electrum server
   Future<void> sync(
           {required String electrumUrl, required bool validateDomain}) =>
       LwkCore.instance.api.crateApiWalletWalletSync(
           that: this, electrumUrl: electrumUrl, validateDomain: validateDomain);
 
+  /// Get the transaction history of the wallet
   Future<List<Tx>> txs() => LwkCore.instance.api.crateApiWalletWalletTxs(
         that: this,
       );
 
+  /// Get utxos of the wallet
   Future<List<TxOut>> utxos() => LwkCore.instance.api.crateApiWalletWalletUtxos(
         that: this,
       );

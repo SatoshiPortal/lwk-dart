@@ -12,6 +12,7 @@ part 'types.freezed.dart';
 // These types are ignored because they are not used by any `pub` functions: `AssetIdBTreeMapInt`, `AssetIdBTreeMapUInt`, `AssetIdHashMapInt`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`
 
+/// Address class which contains both standard and confidential addresses with the address index in the wallet
 @freezed
 class Address with _$Address {
   const Address._();
@@ -20,6 +21,8 @@ class Address with _$Address {
     required String confidential,
     required int index,
   }) = _Address;
+
+  /// Create an address from a scriptpubkey. Always returns 0 as the index is only for wallet generated addresses
   static Future<Address> addressFromScript(
           {required Network network,
           required String script,
@@ -27,11 +30,13 @@ class Address with _$Address {
       LwkCore.instance.api.crateApiTypesAddressAddressFromScript(
           network: network, script: script, blindingKey: blindingKey);
 
+  /// Validate the address string and return the network
   static Future<Network> validate({required String addressString}) =>
       LwkCore.instance.api
           .crateApiTypesAddressValidate(addressString: addressString);
 }
 
+/// Balance represents a balance of a specific asset
 @freezed
 class Balance with _$Balance {
   const factory Balance({
@@ -69,6 +74,7 @@ class OutPoint with _$OutPoint {
   }) = _OutPoint;
 }
 
+/// Decoded PSET amounts
 class PsetAmounts {
   final BigInt absoluteFees;
   final List<Balance> balances;
@@ -90,6 +96,7 @@ class PsetAmounts {
           balances == other.balances;
 }
 
+/// Transaction object returned by getTransactions.
 @freezed
 class Tx with _$Tx {
   const factory Tx({
