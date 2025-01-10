@@ -4,3 +4,4 @@ full_dep: true
 c_output: ios/Classes/frb_generated.h
 duplicated_c_output: [macos/Classes/frb_generated.h]
 dart_entrypoint_class_name: LwkCore
+enable_lifetime: true
