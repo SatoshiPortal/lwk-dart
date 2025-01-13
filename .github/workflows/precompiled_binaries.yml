@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ trunk ]
+    branches: [ main ]
 
 name: Precompile Binaries
 jobs:
