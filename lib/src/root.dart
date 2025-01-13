@@ -21,9 +21,17 @@ Future<void> setCurrentDirectory() async {
   }
 }
 
+/// List of Balance objects represents a balance of a specific asset
 typedef Balances = List<Balance>;
 
+/// Utility class for handling balance-related operations
 class BalanceUtils {
+  /// Returns the balance amount for a specific asset ID from a list of balances
+  ///
+  /// [balances] - List of Balance objects to search through
+  /// [assetId] - The asset ID to look for
+  ///
+  /// Returns the balance value if found, or 0 if no matching asset ID is found
   static int getBalanceByAssetId(List<Balance> balances, String assetId) {
     for (var balance in balances) {
       if (balance.assetId == assetId) {
@@ -33,10 +41,20 @@ class BalanceUtils {
     return 0; // Return 0 if no balance is found for the asset ID
   }
 
+  /// Returns the L-BTC balance from a list of balances
+  ///
+  /// [balances] - List of Balance objects to search through
+  ///
+  /// Returns the L-BTC balance value if found, or 0 if not found
   static int getLBtcBalance(List<Balance> balances) {
     return getBalanceByAssetId(balances, lBtcAssetId);
   }
 
+  /// Returns the TEST balance from a list of balances
+  ///
+  /// [balances] - List of Balance objects to search through
+  ///
+  /// Returns the TEST balance value if found, or 0 if not found
   static int getLTestBalance(List<Balance> balances) {
     return getBalanceByAssetId(balances, lTestAssetId);
   }
