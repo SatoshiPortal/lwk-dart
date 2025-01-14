@@ -63,7 +63,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
-    stem: 'lwk_dart',
+    stem: 'lwk',
     ioDirectory: 'rust/target/release/',
     webPrefix: 'pkg/',
   );
