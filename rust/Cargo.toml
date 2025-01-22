@@ -33,3 +33,9 @@ opt-level = "z"
 lto = true
 codegen-units = 1
 panic = "abort"
+
+[target.'cfg(target_os = "macos")']
+rustflags = [
+    "-C", "link-arg=-undefined",
+    "-C", "link-arg=dynamic_lookup",
+]
