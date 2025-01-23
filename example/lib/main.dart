@@ -1,11 +1,10 @@
-import 'package:lwk/lwk.dart' as lwk;
-import 'dart:typed_data';
 import 'package:lwk/lwk.dart';
+import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-  await lwk.LibLwk.init();
+  await LibLwk.init();
   runApp(const TestApp());
 }
 

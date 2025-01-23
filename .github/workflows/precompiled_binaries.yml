@@ -17,18 +17,33 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       
-      - name: Install GTK
-        if: (matrix.os == 'ubuntu-latest')
-        run: sudo apt-get update && sudo apt-get install libgtk-3-dev
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+    
+      - name: Set RUSTFLAGS for macOS
+        if: (matrix.os == 'macOS-latest')
+        run: |
+          echo "RUSTFLAGS=-C link-arg=-undefined -C link-arg=dynamic_lookup" >> $GITHUB_ENV
+          echo "MACOSX_DEPLOYMENT_TARGET=17.5" >> $GITHUB_ENV
+          echo "IPHONEOS_DEPLOYMENT_TARGET=17.5" >> $GITHUB_ENV
+
+      - name: Install Xcode Tools
+        if: (matrix.os == 'macOS-latest')
+        run: xcode-select --install || echo "Xcode tools already installed"
+
       - name: Set up Android SDK
         if: (matrix.os == 'ubuntu-20.04')
-        uses: android-actions/setup-android@v2 
-        
+        uses: android-actions/setup-android@v2
+
       - name: Install Specific NDK
         if: (matrix.os == 'ubuntu-20.04')
-        run: sdkmanager --install "ndk;24.0.8215888" 
-      - name: Precompile
-        if: (matrix.os == 'macOS-latest') || (matrix.os == 'windows-latest')
+        run: sdkmanager --install "ndk;25.1.8937393"
+      - name: Precompile (with iOS)
+        if: (matrix.os == 'macOS-latest')
         run: dart run build_tool precompile-binaries -v --manifest-dir=../../rust --repository=SatoshiPortal/lwk-dart
         working-directory: cargokit/build_tool
         env:
@@ -36,8 +51,8 @@ jobs:
           PRIVATE_KEY: ${{ secrets.RELEASE_PRIVATE_KEY }}
       
       - name: Precompile (with Android)
-        if: (matrix.os == 'ubuntu-latest')
-        run: dart run build_tool precompile-binaries -v --manifest-dir=../../rust --repository=SatoshiPortal/lwk-dart --android-sdk-location=/usr/local/lib/android/sdk --android-ndk-version=24.0.8215888 --android-min-sdk-version=23
+        if: (matrix.os == 'ubuntu-20.04')
+        run: dart run build_tool precompile-binaries -v --manifest-dir=../../rust --repository=SatoshiPortal/lwk-dart --android-sdk-location=/usr/local/lib/android/sdk --android-ndk-version=25.1.8937393 --android-min-sdk-version=23
         working-directory: cargokit/build_tool
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}

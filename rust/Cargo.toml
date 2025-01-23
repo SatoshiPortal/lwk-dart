@@ -1,12 +1,12 @@
 [package]
-name = "lwk_dart"
+name = "lwk"
 description = "Flutter-Rust Bridge for Liquid Wallet Kit (lwk)"
 authors = ["i5hi <ishi@satoshiportal.com>, mocodesmo <morteza@satoshiportal.com>"]
 version = "0.1.5"
 edition = "2021"
 
 [lib]
-name = "lwk_dart"
+name = "lwk"
 doctest = false
 crate-type = ["staticlib", "cdylib"] 
 
@@ -33,3 +33,9 @@ opt-level = "z"
 lto = true
 codegen-units = 1
 panic = "abort"
+
+[target.'cfg(target_os = "macos")']
+rustflags = [
+    "-C", "link-arg=-undefined",
+    "-C", "link-arg=dynamic_lookup",
+]
