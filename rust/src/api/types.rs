@@ -296,7 +296,7 @@ impl From<WalletTx> for Tx {
             timestamp: wallet_tx.timestamp,
             height: wallet_tx.height,
             unblinded_url: wallet_tx.unblinded_url("").clone(),
-            vsize: wallet_tx.tx.vsize(),
+            vsize: wallet_tx.tx.discount_vsize(),
         }
     }
 }
