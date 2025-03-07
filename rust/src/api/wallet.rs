@@ -4,6 +4,7 @@ use lwk_wollet::full_scan_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
 use crate::frb_generated::RustOpaque;
 // use log::{info, warn};
+use lwk_wollet::clients::blocking::BlockchainBackend;
 use lwk_wollet::elements::{
     pset::{
         serialize::{Deserialize, Serialize},
@@ -12,7 +13,6 @@ use lwk_wollet::elements::{
     Address as LwkAddress, AssetId as LwkAssetId, OutPoint, Transaction, Txid,
 };
 use lwk_wollet::AddressResult;
-use lwk_wollet::clients::blocking::BlockchainBackend;
 use lwk_wollet::ElectrumClient;
 use lwk_wollet::Wollet;
 use lwk_wollet::WolletDescriptor;
@@ -103,7 +103,7 @@ impl Wallet {
         Ok(address.into())
     }
 
-    /// Get balances for a wallet. 
+    /// Get balances for a wallet.
     pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
         let balance_map: AssetIdBTreeMapUInt = (self.get_wallet()?.balance()?).into();
         let balance = Balances::from(balance_map);
@@ -136,12 +136,14 @@ impl Wallet {
             let pset = tx_builder
                 .drain_lbtc_wallet()
                 .drain_lbtc_to(address)
+                .enable_ct_discount()
                 .fee_rate(Some(fee_rate))
                 .finish()?;
             Ok(pset.to_string())
         } else {
             let pset = tx_builder
                 .add_lbtc_recipient(&address, sats)?
+                .enable_ct_discount()
                 .fee_rate(Some(fee_rate))
                 .finish()?;
             Ok(pset.to_string())
@@ -168,6 +170,7 @@ impl Wallet {
         };
         let pset = tx_builder
             .add_recipient(&address, sats, asset)?
+            .enable_ct_discount()
             .fee_rate(Some(fee_rate))
             .finish()?;
         Ok(pset.to_string())
