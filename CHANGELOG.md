@@ -6,3 +6,8 @@
 
 - Score improvments
 - fix liblwk.a not found
+
+## 0.1.7
+
+- Updated to lwk 0.9
+- Discount CT (Confidential Transaction)
