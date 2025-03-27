@@ -1,6 +1,6 @@
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
-use lwk_wollet::{ elements::{Address as LwkAddress,hex::{FromHex, ToHex},secp256k1_zkp, AddressParams, AssetId, Script},AddressResult, ElectrumClient, WalletTx, WalletTxOut};
+use lwk_wollet::{ elements::{hex::{FromHex, ToHex}, secp256k1_zkp, Address as LwkAddress, AddressParams, AssetId, Script}, secp256k1, AddressResult, ElectrumClient, WalletTx, WalletTxOut};
 pub use std::collections::{BTreeMap, HashMap};
 pub use std::vec::Vec;
 use std::str::FromStr;
@@ -121,7 +121,7 @@ impl From<WalletTxOut> for TxOut {
                 txid: wallet_tx_out.outpoint.txid.to_string(),
                 vout: wallet_tx_out.outpoint.vout,
             },
-        }
+            address: Address::from(wallet_tx_out.address.clone()),}
     }
 }
 
@@ -131,7 +131,8 @@ impl From<WalletTxOut> for TxOut {
 pub struct Address {
     pub standard: String,
     pub confidential: String,
-    pub index: u32,
+    pub index: Option<u32>,
+    pub blinding_key: Option<String>,
 }
 
 impl From<AddressResult> for Address {
@@ -139,7 +140,18 @@ impl From<AddressResult> for Address {
         Address {
             standard: address.address().to_unconfidential().to_string(),
             confidential: address.address().to_string(),
-            index: address.index(),
+            index: Some(address.index()),
+            blinding_key: address.address().blinding_pubkey.map(|pk| pk.to_string()),
+        }
+    }
+}
+impl From<LwkAddress> for Address {
+    fn from(address: LwkAddress) -> Self {
+        Address {
+            standard: address.to_unconfidential().to_string(),
+            confidential: address.to_string(),
+            index: None,
+            blinding_key: address.blinding_pubkey.map(|pk| pk.to_string()),
         }
     }
 }
@@ -159,12 +171,12 @@ impl Address {
     pub fn address_from_script(
         network: Network,
         script: String,
-        blinding_key: String,
+        blinding_key: Option<String>,
     ) -> anyhow::Result<Address, LwkError> {
-        let blinding_key = if blinding_key == "".to_string() {
+        let blinding_pubkey = if blinding_key == None {
             None
         } else {
-            let pubkey = match secp256k1_zkp::PublicKey::from_str(&blinding_key) {
+            let pubkey = match secp256k1::PublicKey::from_str(&blinding_key.clone().unwrap()) {
                 Ok(result) => result,
                 Err(e) => return Err(LwkError { msg: e.to_string() }),
             };
@@ -177,7 +189,7 @@ impl Address {
 
         let address = LwkAddress::from_script(
             &script_pubkey,
-            blinding_key,
+            blinding_pubkey,
             match network {
                 Network::Mainnet => &AddressParams::LIQUID,
                 Network::Testnet => &AddressParams::LIQUID_TESTNET,
@@ -191,7 +203,8 @@ impl Address {
             Ok(Address {
                 standard: address.clone().unwrap().to_unconfidential().to_string(),
                 confidential: address.unwrap().to_string(),
-                index: 0,
+                index: None,
+                blinding_key: blinding_key,
             })
         }
     }
@@ -211,6 +224,7 @@ pub struct TxOut {
     pub outpoint: OutPoint,
     pub height: Option<u32>,
     pub unblinded: TxOutSecrets,
+    pub address: Address,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -260,6 +274,7 @@ impl From<WalletTx> for Tx {
                         txid: output.clone().unwrap().outpoint.txid.to_string(),
                         vout: output.clone().unwrap().outpoint.vout,
                     },
+                    address: Address::from(output.clone().unwrap().address.clone()),
                 })
             }
         }
@@ -281,6 +296,7 @@ impl From<WalletTx> for Tx {
                         txid: input.clone().unwrap().outpoint.txid.to_string(),
                         vout: input.clone().unwrap().outpoint.vout,
                     },
+                    address: Address::from(input.clone().unwrap().address.clone()),
                 })
             }
         }
@@ -324,3 +340,30 @@ impl Blockchain {
         Ok(())
     }
 }
+
+
+
+// #[test]
+// fn test_address_from_script() {
+//     // The script provided: 0014ac45b647d82582d4ed416e5b84fd418789025dc5
+//     let script = "0014ac45b647d82582d4ed416e5b84fd418789025dc5".to_string();
+//     // Generate blinding key from SLIP77 seed
+//     let slip77_string = "".to_string();
+    
+//     // Get the script for blinding
+
+//     // Call the address_from_script method
+//     let address_result = Address::address_from_script(
+//         Network::Mainnet,
+//         script,
+//         slip77_string,
+//     ).unwrap();
+//     println!("{:?}", address_result);
+//     // Expected values - verify these are correct for your implementation
+//     // let expected_standard = "ex1q9g4gvcdszt4krclr7tcw50vg5hyuuk2kjfyyxu";
+//     // let expected_confidential = "lq1qqg4gvcdszt4krclr7tcw50vg5hyuuk2krzm3el3kvfpe60vf025x2dfqlxzse3rppkan5kdz8qc9f7qwjcc0shw90x34wlse5s3ydw8pyq4eqehu";
+    
+//     // assert_eq!(address_result.standard, expected_standard);
+//     // assert_eq!(address_result.confidential, expected_confidential);
+//     // assert_eq!(address_result.index, 0);
+// }
