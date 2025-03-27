@@ -74,9 +74,7 @@ abstract class LwkCoreApi extends BaseApi {
       {required Network network, required String mnemonic});
 
   Future<Address> crateApiTypesAddressAddressFromScript(
-      {required Network network,
-      required String script,
-      required String blindingKey});
+      {required Network network, required String script, String? blindingKey});
 
   Future<Network> crateApiTypesAddressValidate({required String addressString});
 
@@ -185,14 +183,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
   @override
   Future<Address> crateApiTypesAddressAddressFromScript(
-      {required Network network,
-      required String script,
-      required String blindingKey}) {
+      {required Network network, required String script, String? blindingKey}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_network(network);
         var arg1 = cst_encode_String(script);
-        var arg2 = cst_encode_String(blindingKey);
+        var arg2 = cst_encode_opt_String(blindingKey);
         return wire.wire__crate__api__types__address_address_from_script(
             port_, arg0, arg1, arg2);
       },
@@ -684,12 +680,13 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   Address dco_decode_address(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return Address(
       standard: dco_decode_String(arr[0]),
       confidential: dco_decode_String(arr[1]),
-      index: dco_decode_u_32(arr[2]),
+      index: dco_decode_opt_box_autoadd_u_32(arr[2]),
+      blindingKey: dco_decode_opt_String(arr[3]),
     );
   }
 
@@ -821,6 +818,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  String? dco_decode_opt_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_String(raw);
+  }
+
+  @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_u_32(raw);
@@ -874,13 +877,15 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   TxOut dco_decode_tx_out(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return TxOut(
       scriptPubkey: dco_decode_String(arr[0]),
       outpoint: dco_decode_out_point(arr[1]),
       height: dco_decode_opt_box_autoadd_u_32(arr[2]),
       unblinded: dco_decode_tx_out_secrets(arr[3]),
+      isSpent: dco_decode_bool(arr[4]),
+      address: dco_decode_address(arr[5]),
     );
   }
 
@@ -959,11 +964,13 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_standard = sse_decode_String(deserializer);
     var var_confidential = sse_decode_String(deserializer);
-    var var_index = sse_decode_u_32(deserializer);
+    var var_index = sse_decode_opt_box_autoadd_u_32(deserializer);
+    var var_blindingKey = sse_decode_opt_String(deserializer);
     return Address(
         standard: var_standard,
         confidential: var_confidential,
-        index: var_index);
+        index: var_index,
+        blindingKey: var_blindingKey);
   }
 
   @protected
@@ -1100,6 +1107,17 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_String(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -1159,11 +1177,15 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     var var_outpoint = sse_decode_out_point(deserializer);
     var var_height = sse_decode_opt_box_autoadd_u_32(deserializer);
     var var_unblinded = sse_decode_tx_out_secrets(deserializer);
+    var var_isSpent = sse_decode_bool(deserializer);
+    var var_address = sse_decode_address(deserializer);
     return TxOut(
         scriptPubkey: var_scriptPubkey,
         outpoint: var_outpoint,
         height: var_height,
-        unblinded: var_unblinded);
+        unblinded: var_unblinded,
+        isSpent: var_isSpent,
+        address: var_address);
   }
 
   @protected
@@ -1284,7 +1306,8 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.standard, serializer);
     sse_encode_String(self.confidential, serializer);
-    sse_encode_u_32(self.index, serializer);
+    sse_encode_opt_box_autoadd_u_32(self.index, serializer);
+    sse_encode_opt_String(self.blindingKey, serializer);
   }
 
   @protected
@@ -1412,6 +1435,16 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_String(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -1457,6 +1490,8 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     sse_encode_out_point(self.outpoint, serializer);
     sse_encode_opt_box_autoadd_u_32(self.height, serializer);
     sse_encode_tx_out_secrets(self.unblinded, serializer);
+    sse_encode_bool(self.isSpent, serializer);
+    sse_encode_address(self.address, serializer);
   }
 
   @protected

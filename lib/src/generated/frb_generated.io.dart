@@ -89,6 +89,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Network dco_decode_network(dynamic raw);
 
   @protected
+  String? dco_decode_opt_String(dynamic raw);
+
+  @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
 
   @protected
@@ -187,6 +190,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   Network sse_decode_network(SseDeserializer deserializer);
+
+  @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
@@ -318,6 +324,13 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_opt_String(
+      String? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_String(raw);
+  }
+
+  @protected
   ffi.Pointer<ffi.Uint32> cst_encode_opt_box_autoadd_u_32(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_u_32(raw);
@@ -339,7 +352,8 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void cst_api_fill_to_wire_address(Address apiObj, wire_cst_address wireObj) {
     wireObj.standard = cst_encode_String(apiObj.standard);
     wireObj.confidential = cst_encode_String(apiObj.confidential);
-    wireObj.index = cst_encode_u_32(apiObj.index);
+    wireObj.index = cst_encode_opt_box_autoadd_u_32(apiObj.index);
+    wireObj.blinding_key = cst_encode_opt_String(apiObj.blindingKey);
   }
 
   @protected
@@ -410,6 +424,8 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     cst_api_fill_to_wire_out_point(apiObj.outpoint, wireObj.outpoint);
     wireObj.height = cst_encode_opt_box_autoadd_u_32(apiObj.height);
     cst_api_fill_to_wire_tx_out_secrets(apiObj.unblinded, wireObj.unblinded);
+    wireObj.is_spent = cst_encode_bool(apiObj.isSpent);
+    cst_api_fill_to_wire_address(apiObj.address, wireObj.address);
   }
 
   @protected
@@ -516,6 +532,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_network(Network self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
@@ -1283,6 +1302,16 @@ final class wire_cst_tx_out_secrets extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> asset_bf;
 }
 
+final class wire_cst_address extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> standard;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> confidential;
+
+  external ffi.Pointer<ffi.Uint32> index;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> blinding_key;
+}
+
 final class wire_cst_tx_out extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> script_pubkey;
 
@@ -1291,6 +1320,11 @@ final class wire_cst_tx_out extends ffi.Struct {
   external ffi.Pointer<ffi.Uint32> height;
 
   external wire_cst_tx_out_secrets unblinded;
+
+  @ffi.Bool()
+  external bool is_spent;
+
+  external wire_cst_address address;
 }
 
 final class wire_cst_list_tx_out extends ffi.Struct {
@@ -1329,15 +1363,6 @@ final class wire_cst_list_tx extends ffi.Struct {
 
   @ffi.Int32()
   external int len;
-}
-
-final class wire_cst_address extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> standard;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> confidential;
-
-  @ffi.Uint32()
-  external int index;
 }
 
 final class wire_cst_lwk_error extends ffi.Struct {

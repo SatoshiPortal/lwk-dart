@@ -58,11 +58,20 @@ typedef struct wire_cst_tx_out_secrets {
   struct wire_cst_list_prim_u_8_strict *asset_bf;
 } wire_cst_tx_out_secrets;
 
+typedef struct wire_cst_address {
+  struct wire_cst_list_prim_u_8_strict *standard;
+  struct wire_cst_list_prim_u_8_strict *confidential;
+  uint32_t *index;
+  struct wire_cst_list_prim_u_8_strict *blinding_key;
+} wire_cst_address;
+
 typedef struct wire_cst_tx_out {
   struct wire_cst_list_prim_u_8_strict *script_pubkey;
   struct wire_cst_out_point outpoint;
   uint32_t *height;
   struct wire_cst_tx_out_secrets unblinded;
+  bool is_spent;
+  struct wire_cst_address address;
 } wire_cst_tx_out;
 
 typedef struct wire_cst_list_tx_out {
@@ -87,12 +96,6 @@ typedef struct wire_cst_list_tx {
   struct wire_cst_tx *ptr;
   int32_t len;
 } wire_cst_list_tx;
-
-typedef struct wire_cst_address {
-  struct wire_cst_list_prim_u_8_strict *standard;
-  struct wire_cst_list_prim_u_8_strict *confidential;
-  uint32_t index;
-} wire_cst_address;
 
 typedef struct wire_cst_lwk_error {
   struct wire_cst_list_prim_u_8_strict *msg;

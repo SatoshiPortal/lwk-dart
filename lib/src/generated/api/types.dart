@@ -10,7 +10,7 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'types.freezed.dart';
 
 // These types are ignored because they are not used by any `pub` functions: `AssetIdBTreeMapInt`, `AssetIdBTreeMapUInt`, `AssetIdHashMapInt`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`
 
 /// Address class which contains both standard and confidential addresses with the address index in the wallet
 @freezed
@@ -19,14 +19,15 @@ class Address with _$Address {
   const factory Address({
     required String standard,
     required String confidential,
-    required int index,
+    int? index,
+    String? blindingKey,
   }) = _Address;
 
   /// Create an address from a scriptpubkey. Always returns 0 as the index is only for wallet generated addresses
   static Future<Address> addressFromScript(
           {required Network network,
           required String script,
-          required String blindingKey}) =>
+          String? blindingKey}) =>
       LwkCore.instance.api.crateApiTypesAddressAddressFromScript(
           network: network, script: script, blindingKey: blindingKey);
 
@@ -120,6 +121,8 @@ class TxOut with _$TxOut {
     required OutPoint outpoint,
     int? height,
     required TxOutSecrets unblinded,
+    required bool isSpent,
+    required Address address,
   }) = _TxOut;
 }
 

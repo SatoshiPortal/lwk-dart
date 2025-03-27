@@ -76,7 +76,7 @@ fn wire__crate__api__types__address_address_from_script_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     network: impl CstDecode<crate::api::types::Network>,
     script: impl CstDecode<String>,
-    blinding_key: impl CstDecode<String>,
+    blinding_key: impl CstDecode<Option<String>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
@@ -613,11 +613,13 @@ impl SseDecode for crate::api::types::Address {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_standard = <String>::sse_decode(deserializer);
         let mut var_confidential = <String>::sse_decode(deserializer);
-        let mut var_index = <u32>::sse_decode(deserializer);
+        let mut var_index = <Option<u32>>::sse_decode(deserializer);
+        let mut var_blindingKey = <Option<String>>::sse_decode(deserializer);
         return crate::api::types::Address {
             standard: var_standard,
             confidential: var_confidential,
             index: var_index,
+            blinding_key: var_blindingKey,
         };
     }
 }
@@ -747,6 +749,17 @@ impl SseDecode for crate::api::types::Network {
     }
 }
 
+impl SseDecode for Option<String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<String>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<u32> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -817,11 +830,15 @@ impl SseDecode for crate::api::types::TxOut {
         let mut var_outpoint = <crate::api::types::OutPoint>::sse_decode(deserializer);
         let mut var_height = <Option<u32>>::sse_decode(deserializer);
         let mut var_unblinded = <crate::api::types::TxOutSecrets>::sse_decode(deserializer);
+        let mut var_isSpent = <bool>::sse_decode(deserializer);
+        let mut var_address = <crate::api::types::Address>::sse_decode(deserializer);
         return crate::api::types::TxOut {
             script_pubkey: var_scriptPubkey,
             outpoint: var_outpoint,
             height: var_height,
             unblinded: var_unblinded,
+            is_spent: var_isSpent,
+            address: var_address,
         };
     }
 }
@@ -917,6 +934,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::Address {
             self.standard.into_into_dart().into_dart(),
             self.confidential.into_into_dart().into_dart(),
             self.index.into_into_dart().into_dart(),
+            self.blinding_key.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -1075,6 +1093,8 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::TxOut {
             self.outpoint.into_into_dart().into_dart(),
             self.height.into_into_dart().into_dart(),
             self.unblinded.into_into_dart().into_dart(),
+            self.is_spent.into_into_dart().into_dart(),
+            self.address.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -1142,7 +1162,8 @@ impl SseEncode for crate::api::types::Address {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.standard, serializer);
         <String>::sse_encode(self.confidential, serializer);
-        <u32>::sse_encode(self.index, serializer);
+        <Option<u32>>::sse_encode(self.index, serializer);
+        <Option<String>>::sse_encode(self.blinding_key, serializer);
     }
 }
 
@@ -1257,6 +1278,16 @@ impl SseEncode for crate::api::types::Network {
     }
 }
 
+impl SseEncode for Option<String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <String>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<u32> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1306,6 +1337,8 @@ impl SseEncode for crate::api::types::TxOut {
         <crate::api::types::OutPoint>::sse_encode(self.outpoint, serializer);
         <Option<u32>>::sse_encode(self.height, serializer);
         <crate::api::types::TxOutSecrets>::sse_encode(self.unblinded, serializer);
+        <bool>::sse_encode(self.is_spent, serializer);
+        <crate::api::types::Address>::sse_encode(self.address, serializer);
     }
 }
 

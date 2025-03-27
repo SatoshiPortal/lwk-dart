@@ -33,14 +33,15 @@ impl CstDecode<crate::api::types::Address>
             .unwrap();
         assert_eq!(
             self_.length(),
-            3,
-            "Expected 3 elements, got {}",
+            4,
+            "Expected 4 elements, got {}",
             self_.length()
         );
         crate::api::types::Address {
             standard: self_.get(0).cst_decode(),
             confidential: self_.get(1).cst_decode(),
             index: self_.get(2).cst_decode(),
+            blinding_key: self_.get(3).cst_decode(),
         }
     }
 }
@@ -161,6 +162,12 @@ impl CstDecode<crate::api::error::LwkError>
         }
     }
 }
+impl CstDecode<Option<String>> for Option<String> {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> Option<String> {
+        self.map(CstDecode::cst_decode)
+    }
+}
 impl CstDecode<crate::api::types::OutPoint>
     for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
 {
@@ -239,8 +246,8 @@ impl CstDecode<crate::api::types::TxOut>
             .unwrap();
         assert_eq!(
             self_.length(),
-            4,
-            "Expected 4 elements, got {}",
+            6,
+            "Expected 6 elements, got {}",
             self_.length()
         );
         crate::api::types::TxOut {
@@ -248,6 +255,8 @@ impl CstDecode<crate::api::types::TxOut>
             outpoint: self_.get(1).cst_decode(),
             height: self_.get(2).cst_decode(),
             unblinded: self_.get(3).cst_decode(),
+            is_spent: self_.get(4).cst_decode(),
+            address: self_.get(5).cst_decode(),
         }
     }
 }
@@ -389,7 +398,7 @@ pub fn wire__crate__api__types__address_address_from_script(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     network: i32,
     script: String,
-    blinding_key: String,
+    blinding_key: Option<String>,
 ) {
     wire__crate__api__types__address_address_from_script_impl(port_, network, script, blinding_key)
 }

@@ -35,6 +35,7 @@ impl CstDecode<crate::api::types::Address> for wire_cst_address {
             standard: self.standard.cst_decode(),
             confidential: self.confidential.cst_decode(),
             index: self.index.cst_decode(),
+            blinding_key: self.blinding_key.cst_decode(),
         }
     }
 }
@@ -187,6 +188,8 @@ impl CstDecode<crate::api::types::TxOut> for wire_cst_tx_out {
             outpoint: self.outpoint.cst_decode(),
             height: self.height.cst_decode(),
             unblinded: self.unblinded.cst_decode(),
+            is_spent: self.is_spent.cst_decode(),
+            address: self.address.cst_decode(),
         }
     }
 }
@@ -214,7 +217,8 @@ impl NewWithNullPtr for wire_cst_address {
         Self {
             standard: core::ptr::null_mut(),
             confidential: core::ptr::null_mut(),
-            index: Default::default(),
+            index: core::ptr::null_mut(),
+            blinding_key: core::ptr::null_mut(),
         }
     }
 }
@@ -324,6 +328,8 @@ impl NewWithNullPtr for wire_cst_tx_out {
             outpoint: Default::default(),
             height: core::ptr::null_mut(),
             unblinded: Default::default(),
+            is_spent: Default::default(),
+            address: Default::default(),
         }
     }
 }
@@ -654,7 +660,8 @@ pub extern "C" fn frbgen_lwk_cst_new_list_tx_out(len: i32) -> *mut wire_cst_list
 pub struct wire_cst_address {
     standard: *mut wire_cst_list_prim_u_8_strict,
     confidential: *mut wire_cst_list_prim_u_8_strict,
-    index: u32,
+    index: *mut u32,
+    blinding_key: *mut wire_cst_list_prim_u_8_strict,
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -738,6 +745,8 @@ pub struct wire_cst_tx_out {
     outpoint: wire_cst_out_point,
     height: *mut u32,
     unblinded: wire_cst_tx_out_secrets,
+    is_spent: bool,
+    address: wire_cst_address,
 }
 #[repr(C)]
 #[derive(Clone, Copy)]

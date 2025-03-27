@@ -91,6 +91,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Network dco_decode_network(dynamic raw);
 
   @protected
+  String? dco_decode_opt_String(dynamic raw);
+
+  @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
 
   @protected
@@ -191,6 +194,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Network sse_decode_network(SseDeserializer deserializer);
 
   @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer);
+
+  @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
 
   @protected
@@ -238,7 +244,8 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     return [
       cst_encode_String(raw.standard),
       cst_encode_String(raw.confidential),
-      cst_encode_u_32(raw.index)
+      cst_encode_opt_box_autoadd_u_32(raw.index),
+      cst_encode_opt_String(raw.blindingKey)
     ].jsify()!;
   }
 
@@ -328,6 +335,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  String? cst_encode_opt_String(String? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? null : cst_encode_String(raw);
+  }
+
+  @protected
   int? cst_encode_opt_box_autoadd_u_32(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? null : cst_encode_box_autoadd_u_32(raw);
@@ -372,7 +385,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       cst_encode_String(raw.scriptPubkey),
       cst_encode_out_point(raw.outpoint),
       cst_encode_opt_box_autoadd_u_32(raw.height),
-      cst_encode_tx_out_secrets(raw.unblinded)
+      cst_encode_tx_out_secrets(raw.unblinded),
+      cst_encode_bool(raw.isSpent),
+      cst_encode_address(raw.address)
     ].jsify()!;
   }
 
@@ -497,6 +512,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_network(Network self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
 
   @protected
@@ -547,7 +565,7 @@ class LwkCoreWire implements BaseWire {
           NativePortType port_,
           int network,
           String script,
-          String blinding_key) =>
+          String? blinding_key) =>
       wasmModule.wire__crate__api__types__address_address_from_script(
           port_, network, script, blinding_key);
 
@@ -666,7 +684,7 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       NativePortType port_, int network, String mnemonic);
 
   external void wire__crate__api__types__address_address_from_script(
-      NativePortType port_, int network, String script, String blinding_key);
+      NativePortType port_, int network, String script, String? blinding_key);
 
   external void wire__crate__api__types__address_validate(
       NativePortType port_, String address_string);

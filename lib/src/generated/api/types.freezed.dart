@@ -18,7 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Address {
   String get standard => throw _privateConstructorUsedError;
   String get confidential => throw _privateConstructorUsedError;
-  int get index => throw _privateConstructorUsedError;
+  int? get index => throw _privateConstructorUsedError;
+  String? get blindingKey => throw _privateConstructorUsedError;
 
   /// Create a copy of Address
   /// with the given fields replaced by the non-null parameter values.
@@ -31,7 +32,8 @@ abstract class $AddressCopyWith<$Res> {
   factory $AddressCopyWith(Address value, $Res Function(Address) then) =
       _$AddressCopyWithImpl<$Res, Address>;
   @useResult
-  $Res call({String standard, String confidential, int index});
+  $Res call(
+      {String standard, String confidential, int? index, String? blindingKey});
 }
 
 /// @nodoc
@@ -51,7 +53,8 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
   $Res call({
     Object? standard = null,
     Object? confidential = null,
-    Object? index = null,
+    Object? index = freezed,
+    Object? blindingKey = freezed,
   }) {
     return _then(_value.copyWith(
       standard: null == standard
@@ -62,10 +65,14 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
           ? _value.confidential
           : confidential // ignore: cast_nullable_to_non_nullable
               as String,
-      index: null == index
+      index: freezed == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
+      blindingKey: freezed == blindingKey
+          ? _value.blindingKey
+          : blindingKey // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -77,7 +84,8 @@ abstract class _$$AddressImplCopyWith<$Res> implements $AddressCopyWith<$Res> {
       __$$AddressImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String standard, String confidential, int index});
+  $Res call(
+      {String standard, String confidential, int? index, String? blindingKey});
 }
 
 /// @nodoc
@@ -95,7 +103,8 @@ class __$$AddressImplCopyWithImpl<$Res>
   $Res call({
     Object? standard = null,
     Object? confidential = null,
-    Object? index = null,
+    Object? index = freezed,
+    Object? blindingKey = freezed,
   }) {
     return _then(_$AddressImpl(
       standard: null == standard
@@ -106,10 +115,14 @@ class __$$AddressImplCopyWithImpl<$Res>
           ? _value.confidential
           : confidential // ignore: cast_nullable_to_non_nullable
               as String,
-      index: null == index
+      index: freezed == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
+      blindingKey: freezed == blindingKey
+          ? _value.blindingKey
+          : blindingKey // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -118,7 +131,10 @@ class __$$AddressImplCopyWithImpl<$Res>
 
 class _$AddressImpl extends _Address {
   const _$AddressImpl(
-      {required this.standard, required this.confidential, required this.index})
+      {required this.standard,
+      required this.confidential,
+      this.index,
+      this.blindingKey})
       : super._();
 
   @override
@@ -126,11 +142,13 @@ class _$AddressImpl extends _Address {
   @override
   final String confidential;
   @override
-  final int index;
+  final int? index;
+  @override
+  final String? blindingKey;
 
   @override
   String toString() {
-    return 'Address(standard: $standard, confidential: $confidential, index: $index)';
+    return 'Address(standard: $standard, confidential: $confidential, index: $index, blindingKey: $blindingKey)';
   }
 
   @override
@@ -142,11 +160,14 @@ class _$AddressImpl extends _Address {
                 other.standard == standard) &&
             (identical(other.confidential, confidential) ||
                 other.confidential == confidential) &&
-            (identical(other.index, index) || other.index == index));
+            (identical(other.index, index) || other.index == index) &&
+            (identical(other.blindingKey, blindingKey) ||
+                other.blindingKey == blindingKey));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, standard, confidential, index);
+  int get hashCode =>
+      Object.hash(runtimeType, standard, confidential, index, blindingKey);
 
   /// Create a copy of Address
   /// with the given fields replaced by the non-null parameter values.
@@ -161,7 +182,8 @@ abstract class _Address extends Address {
   const factory _Address(
       {required final String standard,
       required final String confidential,
-      required final int index}) = _$AddressImpl;
+      final int? index,
+      final String? blindingKey}) = _$AddressImpl;
   const _Address._() : super._();
 
   @override
@@ -169,7 +191,9 @@ abstract class _Address extends Address {
   @override
   String get confidential;
   @override
-  int get index;
+  int? get index;
+  @override
+  String? get blindingKey;
 
   /// Create a copy of Address
   /// with the given fields replaced by the non-null parameter values.
@@ -811,6 +835,8 @@ mixin _$TxOut {
   OutPoint get outpoint => throw _privateConstructorUsedError;
   int? get height => throw _privateConstructorUsedError;
   TxOutSecrets get unblinded => throw _privateConstructorUsedError;
+  bool get isSpent => throw _privateConstructorUsedError;
+  Address get address => throw _privateConstructorUsedError;
 
   /// Create a copy of TxOut
   /// with the given fields replaced by the non-null parameter values.
@@ -827,10 +853,13 @@ abstract class $TxOutCopyWith<$Res> {
       {String scriptPubkey,
       OutPoint outpoint,
       int? height,
-      TxOutSecrets unblinded});
+      TxOutSecrets unblinded,
+      bool isSpent,
+      Address address});
 
   $OutPointCopyWith<$Res> get outpoint;
   $TxOutSecretsCopyWith<$Res> get unblinded;
+  $AddressCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -852,6 +881,8 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
     Object? outpoint = null,
     Object? height = freezed,
     Object? unblinded = null,
+    Object? isSpent = null,
+    Object? address = null,
   }) {
     return _then(_value.copyWith(
       scriptPubkey: null == scriptPubkey
@@ -870,6 +901,14 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
           ? _value.unblinded
           : unblinded // ignore: cast_nullable_to_non_nullable
               as TxOutSecrets,
+      isSpent: null == isSpent
+          ? _value.isSpent
+          : isSpent // ignore: cast_nullable_to_non_nullable
+              as bool,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
     ) as $Val);
   }
 
@@ -892,6 +931,16 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
       return _then(_value.copyWith(unblinded: value) as $Val);
     });
   }
+
+  /// Create a copy of TxOut
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get address {
+    return $AddressCopyWith<$Res>(_value.address, (value) {
+      return _then(_value.copyWith(address: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -905,12 +954,16 @@ abstract class _$$TxOutImplCopyWith<$Res> implements $TxOutCopyWith<$Res> {
       {String scriptPubkey,
       OutPoint outpoint,
       int? height,
-      TxOutSecrets unblinded});
+      TxOutSecrets unblinded,
+      bool isSpent,
+      Address address});
 
   @override
   $OutPointCopyWith<$Res> get outpoint;
   @override
   $TxOutSecretsCopyWith<$Res> get unblinded;
+  @override
+  $AddressCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -930,6 +983,8 @@ class __$$TxOutImplCopyWithImpl<$Res>
     Object? outpoint = null,
     Object? height = freezed,
     Object? unblinded = null,
+    Object? isSpent = null,
+    Object? address = null,
   }) {
     return _then(_$TxOutImpl(
       scriptPubkey: null == scriptPubkey
@@ -948,6 +1003,14 @@ class __$$TxOutImplCopyWithImpl<$Res>
           ? _value.unblinded
           : unblinded // ignore: cast_nullable_to_non_nullable
               as TxOutSecrets,
+      isSpent: null == isSpent
+          ? _value.isSpent
+          : isSpent // ignore: cast_nullable_to_non_nullable
+              as bool,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
     ));
   }
 }
@@ -959,7 +1022,9 @@ class _$TxOutImpl implements _TxOut {
       {required this.scriptPubkey,
       required this.outpoint,
       this.height,
-      required this.unblinded});
+      required this.unblinded,
+      required this.isSpent,
+      required this.address});
 
   @override
   final String scriptPubkey;
@@ -969,10 +1034,14 @@ class _$TxOutImpl implements _TxOut {
   final int? height;
   @override
   final TxOutSecrets unblinded;
+  @override
+  final bool isSpent;
+  @override
+  final Address address;
 
   @override
   String toString() {
-    return 'TxOut(scriptPubkey: $scriptPubkey, outpoint: $outpoint, height: $height, unblinded: $unblinded)';
+    return 'TxOut(scriptPubkey: $scriptPubkey, outpoint: $outpoint, height: $height, unblinded: $unblinded, isSpent: $isSpent, address: $address)';
   }
 
   @override
@@ -986,12 +1055,14 @@ class _$TxOutImpl implements _TxOut {
                 other.outpoint == outpoint) &&
             (identical(other.height, height) || other.height == height) &&
             (identical(other.unblinded, unblinded) ||
-                other.unblinded == unblinded));
+                other.unblinded == unblinded) &&
+            (identical(other.isSpent, isSpent) || other.isSpent == isSpent) &&
+            (identical(other.address, address) || other.address == address));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, scriptPubkey, outpoint, height, unblinded);
+  int get hashCode => Object.hash(
+      runtimeType, scriptPubkey, outpoint, height, unblinded, isSpent, address);
 
   /// Create a copy of TxOut
   /// with the given fields replaced by the non-null parameter values.
@@ -1007,7 +1078,9 @@ abstract class _TxOut implements TxOut {
       {required final String scriptPubkey,
       required final OutPoint outpoint,
       final int? height,
-      required final TxOutSecrets unblinded}) = _$TxOutImpl;
+      required final TxOutSecrets unblinded,
+      required final bool isSpent,
+      required final Address address}) = _$TxOutImpl;
 
   @override
   String get scriptPubkey;
@@ -1017,6 +1090,10 @@ abstract class _TxOut implements TxOut {
   int? get height;
   @override
   TxOutSecrets get unblinded;
+  @override
+  bool get isSpent;
+  @override
+  Address get address;
 
   /// Create a copy of TxOut
   /// with the given fields replaced by the non-null parameter values.

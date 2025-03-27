@@ -121,7 +121,9 @@ impl From<WalletTxOut> for TxOut {
                 txid: wallet_tx_out.outpoint.txid.to_string(),
                 vout: wallet_tx_out.outpoint.vout,
             },
-            address: Address::from(wallet_tx_out.address.clone()),}
+            address: Address::from(wallet_tx_out.address.clone()),
+            is_spent: wallet_tx_out.is_spent,   
+        }
     }
 }
 
@@ -224,6 +226,7 @@ pub struct TxOut {
     pub outpoint: OutPoint,
     pub height: Option<u32>,
     pub unblinded: TxOutSecrets,
+    pub is_spent: bool,
     pub address: Address,
 }
 
@@ -275,6 +278,7 @@ impl From<WalletTx> for Tx {
                         vout: output.clone().unwrap().outpoint.vout,
                     },
                     address: Address::from(output.clone().unwrap().address.clone()),
+                    is_spent: output.clone().unwrap().is_spent,
                 })
             }
         }
@@ -297,6 +301,7 @@ impl From<WalletTx> for Tx {
                         vout: input.clone().unwrap().outpoint.vout,
                     },
                     address: Address::from(input.clone().unwrap().address.clone()),
+                    is_spent: input.clone().unwrap().is_spent,
                 })
             }
         }
