@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,92 +10,62 @@ part of 'types.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Address {
-  String get standard => throw _privateConstructorUsedError;
-  String get confidential => throw _privateConstructorUsedError;
-  int? get index => throw _privateConstructorUsedError;
-  String? get blindingKey => throw _privateConstructorUsedError;
+  String get standard;
+  String get confidential;
+  int? get index;
+  String? get blindingKey;
 
   /// Create a copy of Address
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $AddressCopyWith<Address> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $AddressCopyWith<$Res> {
-  factory $AddressCopyWith(Address value, $Res Function(Address) then) =
-      _$AddressCopyWithImpl<$Res, Address>;
-  @useResult
-  $Res call(
-      {String standard, String confidential, int? index, String? blindingKey});
-}
-
-/// @nodoc
-class _$AddressCopyWithImpl<$Res, $Val extends Address>
-    implements $AddressCopyWith<$Res> {
-  _$AddressCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Address
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $AddressCopyWith<Address> get copyWith =>
+      _$AddressCopyWithImpl<Address>(this as Address, _$identity);
+
   @override
-  $Res call({
-    Object? standard = null,
-    Object? confidential = null,
-    Object? index = freezed,
-    Object? blindingKey = freezed,
-  }) {
-    return _then(_value.copyWith(
-      standard: null == standard
-          ? _value.standard
-          : standard // ignore: cast_nullable_to_non_nullable
-              as String,
-      confidential: null == confidential
-          ? _value.confidential
-          : confidential // ignore: cast_nullable_to_non_nullable
-              as String,
-      index: freezed == index
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int?,
-      blindingKey: freezed == blindingKey
-          ? _value.blindingKey
-          : blindingKey // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Address &&
+            (identical(other.standard, standard) ||
+                other.standard == standard) &&
+            (identical(other.confidential, confidential) ||
+                other.confidential == confidential) &&
+            (identical(other.index, index) || other.index == index) &&
+            (identical(other.blindingKey, blindingKey) ||
+                other.blindingKey == blindingKey));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, standard, confidential, index, blindingKey);
+
+  @override
+  String toString() {
+    return 'Address(standard: $standard, confidential: $confidential, index: $index, blindingKey: $blindingKey)';
   }
 }
 
 /// @nodoc
-abstract class _$$AddressImplCopyWith<$Res> implements $AddressCopyWith<$Res> {
-  factory _$$AddressImplCopyWith(
-          _$AddressImpl value, $Res Function(_$AddressImpl) then) =
-      __$$AddressImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $AddressCopyWith<$Res> {
+  factory $AddressCopyWith(Address value, $Res Function(Address) _then) =
+      _$AddressCopyWithImpl;
   @useResult
   $Res call(
       {String standard, String confidential, int? index, String? blindingKey});
 }
 
 /// @nodoc
-class __$$AddressImplCopyWithImpl<$Res>
-    extends _$AddressCopyWithImpl<$Res, _$AddressImpl>
-    implements _$$AddressImplCopyWith<$Res> {
-  __$$AddressImplCopyWithImpl(
-      _$AddressImpl _value, $Res Function(_$AddressImpl) _then)
-      : super(_value, _then);
+class _$AddressCopyWithImpl<$Res> implements $AddressCopyWith<$Res> {
+  _$AddressCopyWithImpl(this._self, this._then);
+
+  final Address _self;
+  final $Res Function(Address) _then;
 
   /// Create a copy of Address
   /// with the given fields replaced by the non-null parameter values.
@@ -106,21 +77,21 @@ class __$$AddressImplCopyWithImpl<$Res>
     Object? index = freezed,
     Object? blindingKey = freezed,
   }) {
-    return _then(_$AddressImpl(
+    return _then(_self.copyWith(
       standard: null == standard
-          ? _value.standard
+          ? _self.standard
           : standard // ignore: cast_nullable_to_non_nullable
               as String,
       confidential: null == confidential
-          ? _value.confidential
+          ? _self.confidential
           : confidential // ignore: cast_nullable_to_non_nullable
               as String,
       index: freezed == index
-          ? _value.index
+          ? _self.index
           : index // ignore: cast_nullable_to_non_nullable
               as int?,
       blindingKey: freezed == blindingKey
-          ? _value.blindingKey
+          ? _self.blindingKey
           : blindingKey // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
@@ -129,8 +100,8 @@ class __$$AddressImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddressImpl extends _Address {
-  const _$AddressImpl(
+class _Address extends Address {
+  const _Address(
       {required this.standard,
       required this.confidential,
       this.index,
@@ -146,16 +117,19 @@ class _$AddressImpl extends _Address {
   @override
   final String? blindingKey;
 
+  /// Create a copy of Address
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Address(standard: $standard, confidential: $confidential, index: $index, blindingKey: $blindingKey)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$AddressCopyWith<_Address> get copyWith =>
+      __$AddressCopyWithImpl<_Address>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddressImpl &&
+            other is _Address &&
             (identical(other.standard, standard) ||
                 other.standard == standard) &&
             (identical(other.confidential, confidential) ||
@@ -169,149 +143,77 @@ class _$AddressImpl extends _Address {
   int get hashCode =>
       Object.hash(runtimeType, standard, confidential, index, blindingKey);
 
-  /// Create a copy of Address
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$AddressImplCopyWith<_$AddressImpl> get copyWith =>
-      __$$AddressImplCopyWithImpl<_$AddressImpl>(this, _$identity);
-}
-
-abstract class _Address extends Address {
-  const factory _Address(
-      {required final String standard,
-      required final String confidential,
-      final int? index,
-      final String? blindingKey}) = _$AddressImpl;
-  const _Address._() : super._();
-
-  @override
-  String get standard;
-  @override
-  String get confidential;
-  @override
-  int? get index;
-  @override
-  String? get blindingKey;
-
-  /// Create a copy of Address
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AddressImplCopyWith<_$AddressImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$Balance {
-  String get assetId => throw _privateConstructorUsedError;
-  int get value => throw _privateConstructorUsedError;
-
-  /// Create a copy of Balance
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $BalanceCopyWith<Balance> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $BalanceCopyWith<$Res> {
-  factory $BalanceCopyWith(Balance value, $Res Function(Balance) then) =
-      _$BalanceCopyWithImpl<$Res, Balance>;
-  @useResult
-  $Res call({String assetId, int value});
-}
-
-/// @nodoc
-class _$BalanceCopyWithImpl<$Res, $Val extends Balance>
-    implements $BalanceCopyWith<$Res> {
-  _$BalanceCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Balance
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? assetId = null,
-    Object? value = null,
-  }) {
-    return _then(_value.copyWith(
-      assetId: null == assetId
-          ? _value.assetId
-          : assetId // ignore: cast_nullable_to_non_nullable
-              as String,
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  String toString() {
+    return 'Address(standard: $standard, confidential: $confidential, index: $index, blindingKey: $blindingKey)';
   }
 }
 
 /// @nodoc
-abstract class _$$BalanceImplCopyWith<$Res> implements $BalanceCopyWith<$Res> {
-  factory _$$BalanceImplCopyWith(
-          _$BalanceImpl value, $Res Function(_$BalanceImpl) then) =
-      __$$BalanceImplCopyWithImpl<$Res>;
+abstract mixin class _$AddressCopyWith<$Res> implements $AddressCopyWith<$Res> {
+  factory _$AddressCopyWith(_Address value, $Res Function(_Address) _then) =
+      __$AddressCopyWithImpl;
   @override
   @useResult
-  $Res call({String assetId, int value});
+  $Res call(
+      {String standard, String confidential, int? index, String? blindingKey});
 }
 
 /// @nodoc
-class __$$BalanceImplCopyWithImpl<$Res>
-    extends _$BalanceCopyWithImpl<$Res, _$BalanceImpl>
-    implements _$$BalanceImplCopyWith<$Res> {
-  __$$BalanceImplCopyWithImpl(
-      _$BalanceImpl _value, $Res Function(_$BalanceImpl) _then)
-      : super(_value, _then);
+class __$AddressCopyWithImpl<$Res> implements _$AddressCopyWith<$Res> {
+  __$AddressCopyWithImpl(this._self, this._then);
 
-  /// Create a copy of Balance
+  final _Address _self;
+  final $Res Function(_Address) _then;
+
+  /// Create a copy of Address
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
-    Object? assetId = null,
-    Object? value = null,
+    Object? standard = null,
+    Object? confidential = null,
+    Object? index = freezed,
+    Object? blindingKey = freezed,
   }) {
-    return _then(_$BalanceImpl(
-      assetId: null == assetId
-          ? _value.assetId
-          : assetId // ignore: cast_nullable_to_non_nullable
+    return _then(_Address(
+      standard: null == standard
+          ? _self.standard
+          : standard // ignore: cast_nullable_to_non_nullable
               as String,
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as int,
+      confidential: null == confidential
+          ? _self.confidential
+          : confidential // ignore: cast_nullable_to_non_nullable
+              as String,
+      index: freezed == index
+          ? _self.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int?,
+      blindingKey: freezed == blindingKey
+          ? _self.blindingKey
+          : blindingKey // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
+mixin _$Balance {
+  String get assetId;
+  PlatformInt64 get value;
 
-class _$BalanceImpl implements _Balance {
-  const _$BalanceImpl({required this.assetId, required this.value});
-
-  @override
-  final String assetId;
-  @override
-  final int value;
-
-  @override
-  String toString() {
-    return 'Balance(assetId: $assetId, value: $value)';
-  }
+  /// Create a copy of Balance
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $BalanceCopyWith<Balance> get copyWith =>
+      _$BalanceCopyWithImpl<Balance>(this as Balance, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BalanceImpl &&
+            other is Balance &&
             (identical(other.assetId, assetId) || other.assetId == assetId) &&
             (identical(other.value, value) || other.value == value));
   }
@@ -319,144 +221,138 @@ class _$BalanceImpl implements _Balance {
   @override
   int get hashCode => Object.hash(runtimeType, assetId, value);
 
-  /// Create a copy of Balance
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$BalanceImplCopyWith<_$BalanceImpl> get copyWith =>
-      __$$BalanceImplCopyWithImpl<_$BalanceImpl>(this, _$identity);
-}
-
-abstract class _Balance implements Balance {
-  const factory _Balance(
-      {required final String assetId,
-      required final int value}) = _$BalanceImpl;
-
-  @override
-  String get assetId;
-  @override
-  int get value;
-
-  /// Create a copy of Balance
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$BalanceImplCopyWith<_$BalanceImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$OutPoint {
-  String get txid => throw _privateConstructorUsedError;
-  int get vout => throw _privateConstructorUsedError;
-
-  /// Create a copy of OutPoint
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $OutPointCopyWith<OutPoint> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $OutPointCopyWith<$Res> {
-  factory $OutPointCopyWith(OutPoint value, $Res Function(OutPoint) then) =
-      _$OutPointCopyWithImpl<$Res, OutPoint>;
-  @useResult
-  $Res call({String txid, int vout});
-}
-
-/// @nodoc
-class _$OutPointCopyWithImpl<$Res, $Val extends OutPoint>
-    implements $OutPointCopyWith<$Res> {
-  _$OutPointCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of OutPoint
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? txid = null,
-    Object? vout = null,
-  }) {
-    return _then(_value.copyWith(
-      txid: null == txid
-          ? _value.txid
-          : txid // ignore: cast_nullable_to_non_nullable
-              as String,
-      vout: null == vout
-          ? _value.vout
-          : vout // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  String toString() {
+    return 'Balance(assetId: $assetId, value: $value)';
   }
 }
 
 /// @nodoc
-abstract class _$$OutPointImplCopyWith<$Res>
-    implements $OutPointCopyWith<$Res> {
-  factory _$$OutPointImplCopyWith(
-          _$OutPointImpl value, $Res Function(_$OutPointImpl) then) =
-      __$$OutPointImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $BalanceCopyWith<$Res> {
+  factory $BalanceCopyWith(Balance value, $Res Function(Balance) _then) =
+      _$BalanceCopyWithImpl;
   @useResult
-  $Res call({String txid, int vout});
+  $Res call({String assetId, PlatformInt64 value});
 }
 
 /// @nodoc
-class __$$OutPointImplCopyWithImpl<$Res>
-    extends _$OutPointCopyWithImpl<$Res, _$OutPointImpl>
-    implements _$$OutPointImplCopyWith<$Res> {
-  __$$OutPointImplCopyWithImpl(
-      _$OutPointImpl _value, $Res Function(_$OutPointImpl) _then)
-      : super(_value, _then);
+class _$BalanceCopyWithImpl<$Res> implements $BalanceCopyWith<$Res> {
+  _$BalanceCopyWithImpl(this._self, this._then);
 
-  /// Create a copy of OutPoint
+  final Balance _self;
+  final $Res Function(Balance) _then;
+
+  /// Create a copy of Balance
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? txid = null,
-    Object? vout = null,
+    Object? assetId = null,
+    Object? value = null,
   }) {
-    return _then(_$OutPointImpl(
-      txid: null == txid
-          ? _value.txid
-          : txid // ignore: cast_nullable_to_non_nullable
+    return _then(_self.copyWith(
+      assetId: null == assetId
+          ? _self.assetId
+          : assetId // ignore: cast_nullable_to_non_nullable
               as String,
-      vout: null == vout
-          ? _value.vout
-          : vout // ignore: cast_nullable_to_non_nullable
-              as int,
+      value: null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as PlatformInt64,
     ));
   }
 }
 
 /// @nodoc
 
-class _$OutPointImpl implements _OutPoint {
-  const _$OutPointImpl({required this.txid, required this.vout});
+class _Balance implements Balance {
+  const _Balance({required this.assetId, required this.value});
 
   @override
-  final String txid;
+  final String assetId;
   @override
-  final int vout;
+  final PlatformInt64 value;
 
+  /// Create a copy of Balance
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'OutPoint(txid: $txid, vout: $vout)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$BalanceCopyWith<_Balance> get copyWith =>
+      __$BalanceCopyWithImpl<_Balance>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OutPointImpl &&
+            other is _Balance &&
+            (identical(other.assetId, assetId) || other.assetId == assetId) &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, assetId, value);
+
+  @override
+  String toString() {
+    return 'Balance(assetId: $assetId, value: $value)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$BalanceCopyWith<$Res> implements $BalanceCopyWith<$Res> {
+  factory _$BalanceCopyWith(_Balance value, $Res Function(_Balance) _then) =
+      __$BalanceCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String assetId, PlatformInt64 value});
+}
+
+/// @nodoc
+class __$BalanceCopyWithImpl<$Res> implements _$BalanceCopyWith<$Res> {
+  __$BalanceCopyWithImpl(this._self, this._then);
+
+  final _Balance _self;
+  final $Res Function(_Balance) _then;
+
+  /// Create a copy of Balance
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? assetId = null,
+    Object? value = null,
+  }) {
+    return _then(_Balance(
+      assetId: null == assetId
+          ? _self.assetId
+          : assetId // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as PlatformInt64,
+    ));
+  }
+}
+
+/// @nodoc
+mixin _$OutPoint {
+  String get txid;
+  int get vout;
+
+  /// Create a copy of OutPoint
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $OutPointCopyWith<OutPoint> get copyWith =>
+      _$OutPointCopyWithImpl<OutPoint>(this as OutPoint, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is OutPoint &&
             (identical(other.txid, txid) || other.txid == txid) &&
             (identical(other.vout, vout) || other.vout == vout));
   }
@@ -464,144 +360,183 @@ class _$OutPointImpl implements _OutPoint {
   @override
   int get hashCode => Object.hash(runtimeType, txid, vout);
 
-  /// Create a copy of OutPoint
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$OutPointImplCopyWith<_$OutPointImpl> get copyWith =>
-      __$$OutPointImplCopyWithImpl<_$OutPointImpl>(this, _$identity);
-}
-
-abstract class _OutPoint implements OutPoint {
-  const factory _OutPoint(
-      {required final String txid, required final int vout}) = _$OutPointImpl;
-
-  @override
-  String get txid;
-  @override
-  int get vout;
-
-  /// Create a copy of OutPoint
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$OutPointImplCopyWith<_$OutPointImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$Tx {
-  int? get timestamp => throw _privateConstructorUsedError;
-  String get kind => throw _privateConstructorUsedError;
-  List<Balance> get balances => throw _privateConstructorUsedError;
-  String get txid => throw _privateConstructorUsedError;
-  List<TxOut> get outputs => throw _privateConstructorUsedError;
-  List<TxOut> get inputs => throw _privateConstructorUsedError;
-  BigInt get fee => throw _privateConstructorUsedError;
-  int? get height => throw _privateConstructorUsedError;
-  String get unblindedUrl => throw _privateConstructorUsedError;
-  BigInt get vsize => throw _privateConstructorUsedError;
-
-  /// Create a copy of Tx
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $TxCopyWith<Tx> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $TxCopyWith<$Res> {
-  factory $TxCopyWith(Tx value, $Res Function(Tx) then) =
-      _$TxCopyWithImpl<$Res, Tx>;
-  @useResult
-  $Res call(
-      {int? timestamp,
-      String kind,
-      List<Balance> balances,
-      String txid,
-      List<TxOut> outputs,
-      List<TxOut> inputs,
-      BigInt fee,
-      int? height,
-      String unblindedUrl,
-      BigInt vsize});
-}
-
-/// @nodoc
-class _$TxCopyWithImpl<$Res, $Val extends Tx> implements $TxCopyWith<$Res> {
-  _$TxCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Tx
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? timestamp = freezed,
-    Object? kind = null,
-    Object? balances = null,
-    Object? txid = null,
-    Object? outputs = null,
-    Object? inputs = null,
-    Object? fee = null,
-    Object? height = freezed,
-    Object? unblindedUrl = null,
-    Object? vsize = null,
-  }) {
-    return _then(_value.copyWith(
-      timestamp: freezed == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as int?,
-      kind: null == kind
-          ? _value.kind
-          : kind // ignore: cast_nullable_to_non_nullable
-              as String,
-      balances: null == balances
-          ? _value.balances
-          : balances // ignore: cast_nullable_to_non_nullable
-              as List<Balance>,
-      txid: null == txid
-          ? _value.txid
-          : txid // ignore: cast_nullable_to_non_nullable
-              as String,
-      outputs: null == outputs
-          ? _value.outputs
-          : outputs // ignore: cast_nullable_to_non_nullable
-              as List<TxOut>,
-      inputs: null == inputs
-          ? _value.inputs
-          : inputs // ignore: cast_nullable_to_non_nullable
-              as List<TxOut>,
-      fee: null == fee
-          ? _value.fee
-          : fee // ignore: cast_nullable_to_non_nullable
-              as BigInt,
-      height: freezed == height
-          ? _value.height
-          : height // ignore: cast_nullable_to_non_nullable
-              as int?,
-      unblindedUrl: null == unblindedUrl
-          ? _value.unblindedUrl
-          : unblindedUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      vsize: null == vsize
-          ? _value.vsize
-          : vsize // ignore: cast_nullable_to_non_nullable
-              as BigInt,
-    ) as $Val);
+  String toString() {
+    return 'OutPoint(txid: $txid, vout: $vout)';
   }
 }
 
 /// @nodoc
-abstract class _$$TxImplCopyWith<$Res> implements $TxCopyWith<$Res> {
-  factory _$$TxImplCopyWith(_$TxImpl value, $Res Function(_$TxImpl) then) =
-      __$$TxImplCopyWithImpl<$Res>;
+abstract mixin class $OutPointCopyWith<$Res> {
+  factory $OutPointCopyWith(OutPoint value, $Res Function(OutPoint) _then) =
+      _$OutPointCopyWithImpl;
+  @useResult
+  $Res call({String txid, int vout});
+}
+
+/// @nodoc
+class _$OutPointCopyWithImpl<$Res> implements $OutPointCopyWith<$Res> {
+  _$OutPointCopyWithImpl(this._self, this._then);
+
+  final OutPoint _self;
+  final $Res Function(OutPoint) _then;
+
+  /// Create a copy of OutPoint
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
   @override
+  $Res call({
+    Object? txid = null,
+    Object? vout = null,
+  }) {
+    return _then(_self.copyWith(
+      txid: null == txid
+          ? _self.txid
+          : txid // ignore: cast_nullable_to_non_nullable
+              as String,
+      vout: null == vout
+          ? _self.vout
+          : vout // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _OutPoint implements OutPoint {
+  const _OutPoint({required this.txid, required this.vout});
+
+  @override
+  final String txid;
+  @override
+  final int vout;
+
+  /// Create a copy of OutPoint
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$OutPointCopyWith<_OutPoint> get copyWith =>
+      __$OutPointCopyWithImpl<_OutPoint>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _OutPoint &&
+            (identical(other.txid, txid) || other.txid == txid) &&
+            (identical(other.vout, vout) || other.vout == vout));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, txid, vout);
+
+  @override
+  String toString() {
+    return 'OutPoint(txid: $txid, vout: $vout)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$OutPointCopyWith<$Res>
+    implements $OutPointCopyWith<$Res> {
+  factory _$OutPointCopyWith(_OutPoint value, $Res Function(_OutPoint) _then) =
+      __$OutPointCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String txid, int vout});
+}
+
+/// @nodoc
+class __$OutPointCopyWithImpl<$Res> implements _$OutPointCopyWith<$Res> {
+  __$OutPointCopyWithImpl(this._self, this._then);
+
+  final _OutPoint _self;
+  final $Res Function(_OutPoint) _then;
+
+  /// Create a copy of OutPoint
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? txid = null,
+    Object? vout = null,
+  }) {
+    return _then(_OutPoint(
+      txid: null == txid
+          ? _self.txid
+          : txid // ignore: cast_nullable_to_non_nullable
+              as String,
+      vout: null == vout
+          ? _self.vout
+          : vout // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+mixin _$Tx {
+  int? get timestamp;
+  String get kind;
+  List<Balance> get balances;
+  String get txid;
+  List<TxOut> get outputs;
+  List<TxOut> get inputs;
+  BigInt get fee;
+  int? get height;
+  String get unblindedUrl;
+  BigInt get vsize;
+
+  /// Create a copy of Tx
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $TxCopyWith<Tx> get copyWith => _$TxCopyWithImpl<Tx>(this as Tx, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Tx &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp) &&
+            (identical(other.kind, kind) || other.kind == kind) &&
+            const DeepCollectionEquality().equals(other.balances, balances) &&
+            (identical(other.txid, txid) || other.txid == txid) &&
+            const DeepCollectionEquality().equals(other.outputs, outputs) &&
+            const DeepCollectionEquality().equals(other.inputs, inputs) &&
+            (identical(other.fee, fee) || other.fee == fee) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.unblindedUrl, unblindedUrl) ||
+                other.unblindedUrl == unblindedUrl) &&
+            (identical(other.vsize, vsize) || other.vsize == vsize));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      timestamp,
+      kind,
+      const DeepCollectionEquality().hash(balances),
+      txid,
+      const DeepCollectionEquality().hash(outputs),
+      const DeepCollectionEquality().hash(inputs),
+      fee,
+      height,
+      unblindedUrl,
+      vsize);
+
+  @override
+  String toString() {
+    return 'Tx(timestamp: $timestamp, kind: $kind, balances: $balances, txid: $txid, outputs: $outputs, inputs: $inputs, fee: $fee, height: $height, unblindedUrl: $unblindedUrl, vsize: $vsize)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $TxCopyWith<$Res> {
+  factory $TxCopyWith(Tx value, $Res Function(Tx) _then) = _$TxCopyWithImpl;
   @useResult
   $Res call(
       {int? timestamp,
@@ -617,10 +552,11 @@ abstract class _$$TxImplCopyWith<$Res> implements $TxCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
-    implements _$$TxImplCopyWith<$Res> {
-  __$$TxImplCopyWithImpl(_$TxImpl _value, $Res Function(_$TxImpl) _then)
-      : super(_value, _then);
+class _$TxCopyWithImpl<$Res> implements $TxCopyWith<$Res> {
+  _$TxCopyWithImpl(this._self, this._then);
+
+  final Tx _self;
+  final $Res Function(Tx) _then;
 
   /// Create a copy of Tx
   /// with the given fields replaced by the non-null parameter values.
@@ -638,45 +574,45 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
     Object? unblindedUrl = null,
     Object? vsize = null,
   }) {
-    return _then(_$TxImpl(
+    return _then(_self.copyWith(
       timestamp: freezed == timestamp
-          ? _value.timestamp
+          ? _self.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int?,
       kind: null == kind
-          ? _value.kind
+          ? _self.kind
           : kind // ignore: cast_nullable_to_non_nullable
               as String,
       balances: null == balances
-          ? _value._balances
+          ? _self.balances
           : balances // ignore: cast_nullable_to_non_nullable
               as List<Balance>,
       txid: null == txid
-          ? _value.txid
+          ? _self.txid
           : txid // ignore: cast_nullable_to_non_nullable
               as String,
       outputs: null == outputs
-          ? _value._outputs
+          ? _self.outputs
           : outputs // ignore: cast_nullable_to_non_nullable
               as List<TxOut>,
       inputs: null == inputs
-          ? _value._inputs
+          ? _self.inputs
           : inputs // ignore: cast_nullable_to_non_nullable
               as List<TxOut>,
       fee: null == fee
-          ? _value.fee
+          ? _self.fee
           : fee // ignore: cast_nullable_to_non_nullable
               as BigInt,
       height: freezed == height
-          ? _value.height
+          ? _self.height
           : height // ignore: cast_nullable_to_non_nullable
               as int?,
       unblindedUrl: null == unblindedUrl
-          ? _value.unblindedUrl
+          ? _self.unblindedUrl
           : unblindedUrl // ignore: cast_nullable_to_non_nullable
               as String,
       vsize: null == vsize
-          ? _value.vsize
+          ? _self.vsize
           : vsize // ignore: cast_nullable_to_non_nullable
               as BigInt,
     ));
@@ -685,8 +621,8 @@ class __$$TxImplCopyWithImpl<$Res> extends _$TxCopyWithImpl<$Res, _$TxImpl>
 
 /// @nodoc
 
-class _$TxImpl implements _Tx {
-  const _$TxImpl(
+class _Tx implements Tx {
+  const _Tx(
       {this.timestamp,
       required this.kind,
       required final List<Balance> balances,
@@ -740,16 +676,18 @@ class _$TxImpl implements _Tx {
   @override
   final BigInt vsize;
 
+  /// Create a copy of Tx
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Tx(timestamp: $timestamp, kind: $kind, balances: $balances, txid: $txid, outputs: $outputs, inputs: $inputs, fee: $fee, height: $height, unblindedUrl: $unblindedUrl, vsize: $vsize)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$TxCopyWith<_Tx> get copyWith => __$TxCopyWithImpl<_Tx>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TxImpl &&
+            other is _Tx &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
             (identical(other.kind, kind) || other.kind == kind) &&
@@ -778,76 +716,144 @@ class _$TxImpl implements _Tx {
       unblindedUrl,
       vsize);
 
-  /// Create a copy of Tx
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$TxImplCopyWith<_$TxImpl> get copyWith =>
-      __$$TxImplCopyWithImpl<_$TxImpl>(this, _$identity);
+  String toString() {
+    return 'Tx(timestamp: $timestamp, kind: $kind, balances: $balances, txid: $txid, outputs: $outputs, inputs: $inputs, fee: $fee, height: $height, unblindedUrl: $unblindedUrl, vsize: $vsize)';
+  }
 }
 
-abstract class _Tx implements Tx {
-  const factory _Tx(
-      {final int? timestamp,
-      required final String kind,
-      required final List<Balance> balances,
-      required final String txid,
-      required final List<TxOut> outputs,
-      required final List<TxOut> inputs,
-      required final BigInt fee,
-      final int? height,
-      required final String unblindedUrl,
-      required final BigInt vsize}) = _$TxImpl;
+/// @nodoc
+abstract mixin class _$TxCopyWith<$Res> implements $TxCopyWith<$Res> {
+  factory _$TxCopyWith(_Tx value, $Res Function(_Tx) _then) = __$TxCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int? timestamp,
+      String kind,
+      List<Balance> balances,
+      String txid,
+      List<TxOut> outputs,
+      List<TxOut> inputs,
+      BigInt fee,
+      int? height,
+      String unblindedUrl,
+      BigInt vsize});
+}
 
-  @override
-  int? get timestamp;
-  @override
-  String get kind;
-  @override
-  List<Balance> get balances;
-  @override
-  String get txid;
-  @override
-  List<TxOut> get outputs;
-  @override
-  List<TxOut> get inputs;
-  @override
-  BigInt get fee;
-  @override
-  int? get height;
-  @override
-  String get unblindedUrl;
-  @override
-  BigInt get vsize;
+/// @nodoc
+class __$TxCopyWithImpl<$Res> implements _$TxCopyWith<$Res> {
+  __$TxCopyWithImpl(this._self, this._then);
+
+  final _Tx _self;
+  final $Res Function(_Tx) _then;
 
   /// Create a copy of Tx
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TxImplCopyWith<_$TxImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? timestamp = freezed,
+    Object? kind = null,
+    Object? balances = null,
+    Object? txid = null,
+    Object? outputs = null,
+    Object? inputs = null,
+    Object? fee = null,
+    Object? height = freezed,
+    Object? unblindedUrl = null,
+    Object? vsize = null,
+  }) {
+    return _then(_Tx(
+      timestamp: freezed == timestamp
+          ? _self.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as int?,
+      kind: null == kind
+          ? _self.kind
+          : kind // ignore: cast_nullable_to_non_nullable
+              as String,
+      balances: null == balances
+          ? _self._balances
+          : balances // ignore: cast_nullable_to_non_nullable
+              as List<Balance>,
+      txid: null == txid
+          ? _self.txid
+          : txid // ignore: cast_nullable_to_non_nullable
+              as String,
+      outputs: null == outputs
+          ? _self._outputs
+          : outputs // ignore: cast_nullable_to_non_nullable
+              as List<TxOut>,
+      inputs: null == inputs
+          ? _self._inputs
+          : inputs // ignore: cast_nullable_to_non_nullable
+              as List<TxOut>,
+      fee: null == fee
+          ? _self.fee
+          : fee // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      height: freezed == height
+          ? _self.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as int?,
+      unblindedUrl: null == unblindedUrl
+          ? _self.unblindedUrl
+          : unblindedUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      vsize: null == vsize
+          ? _self.vsize
+          : vsize // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$TxOut {
-  String get scriptPubkey => throw _privateConstructorUsedError;
-  OutPoint get outpoint => throw _privateConstructorUsedError;
-  int? get height => throw _privateConstructorUsedError;
-  TxOutSecrets get unblinded => throw _privateConstructorUsedError;
-  bool get isSpent => throw _privateConstructorUsedError;
-  Address get address => throw _privateConstructorUsedError;
+  String get scriptPubkey;
+  OutPoint get outpoint;
+  int? get height;
+  TxOutSecrets get unblinded;
+  bool get isSpent;
+  Address get address;
 
   /// Create a copy of TxOut
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $TxOutCopyWith<TxOut> get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $TxOutCopyWith<TxOut> get copyWith =>
+      _$TxOutCopyWithImpl<TxOut>(this as TxOut, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is TxOut &&
+            (identical(other.scriptPubkey, scriptPubkey) ||
+                other.scriptPubkey == scriptPubkey) &&
+            (identical(other.outpoint, outpoint) ||
+                other.outpoint == outpoint) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.unblinded, unblinded) ||
+                other.unblinded == unblinded) &&
+            (identical(other.isSpent, isSpent) || other.isSpent == isSpent) &&
+            (identical(other.address, address) || other.address == address));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, scriptPubkey, outpoint, height, unblinded, isSpent, address);
+
+  @override
+  String toString() {
+    return 'TxOut(scriptPubkey: $scriptPubkey, outpoint: $outpoint, height: $height, unblinded: $unblinded, isSpent: $isSpent, address: $address)';
+  }
 }
 
 /// @nodoc
-abstract class $TxOutCopyWith<$Res> {
-  factory $TxOutCopyWith(TxOut value, $Res Function(TxOut) then) =
-      _$TxOutCopyWithImpl<$Res, TxOut>;
+abstract mixin class $TxOutCopyWith<$Res> {
+  factory $TxOutCopyWith(TxOut value, $Res Function(TxOut) _then) =
+      _$TxOutCopyWithImpl;
   @useResult
   $Res call(
       {String scriptPubkey,
@@ -863,14 +869,11 @@ abstract class $TxOutCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
-    implements $TxOutCopyWith<$Res> {
-  _$TxOutCopyWithImpl(this._value, this._then);
+class _$TxOutCopyWithImpl<$Res> implements $TxOutCopyWith<$Res> {
+  _$TxOutCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final TxOut _self;
+  final $Res Function(TxOut) _then;
 
   /// Create a copy of TxOut
   /// with the given fields replaced by the non-null parameter values.
@@ -884,32 +887,32 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
     Object? isSpent = null,
     Object? address = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       scriptPubkey: null == scriptPubkey
-          ? _value.scriptPubkey
+          ? _self.scriptPubkey
           : scriptPubkey // ignore: cast_nullable_to_non_nullable
               as String,
       outpoint: null == outpoint
-          ? _value.outpoint
+          ? _self.outpoint
           : outpoint // ignore: cast_nullable_to_non_nullable
               as OutPoint,
       height: freezed == height
-          ? _value.height
+          ? _self.height
           : height // ignore: cast_nullable_to_non_nullable
               as int?,
       unblinded: null == unblinded
-          ? _value.unblinded
+          ? _self.unblinded
           : unblinded // ignore: cast_nullable_to_non_nullable
               as TxOutSecrets,
       isSpent: null == isSpent
-          ? _value.isSpent
+          ? _self.isSpent
           : isSpent // ignore: cast_nullable_to_non_nullable
               as bool,
       address: null == address
-          ? _value.address
+          ? _self.address
           : address // ignore: cast_nullable_to_non_nullable
               as Address,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of TxOut
@@ -917,8 +920,8 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
   @override
   @pragma('vm:prefer-inline')
   $OutPointCopyWith<$Res> get outpoint {
-    return $OutPointCopyWith<$Res>(_value.outpoint, (value) {
-      return _then(_value.copyWith(outpoint: value) as $Val);
+    return $OutPointCopyWith<$Res>(_self.outpoint, (value) {
+      return _then(_self.copyWith(outpoint: value));
     });
   }
 
@@ -927,8 +930,8 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
   @override
   @pragma('vm:prefer-inline')
   $TxOutSecretsCopyWith<$Res> get unblinded {
-    return $TxOutSecretsCopyWith<$Res>(_value.unblinded, (value) {
-      return _then(_value.copyWith(unblinded: value) as $Val);
+    return $TxOutSecretsCopyWith<$Res>(_self.unblinded, (value) {
+      return _then(_self.copyWith(unblinded: value));
     });
   }
 
@@ -937,88 +940,16 @@ class _$TxOutCopyWithImpl<$Res, $Val extends TxOut>
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get address {
-    return $AddressCopyWith<$Res>(_value.address, (value) {
-      return _then(_value.copyWith(address: value) as $Val);
+    return $AddressCopyWith<$Res>(_self.address, (value) {
+      return _then(_self.copyWith(address: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$TxOutImplCopyWith<$Res> implements $TxOutCopyWith<$Res> {
-  factory _$$TxOutImplCopyWith(
-          _$TxOutImpl value, $Res Function(_$TxOutImpl) then) =
-      __$$TxOutImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String scriptPubkey,
-      OutPoint outpoint,
-      int? height,
-      TxOutSecrets unblinded,
-      bool isSpent,
-      Address address});
 
-  @override
-  $OutPointCopyWith<$Res> get outpoint;
-  @override
-  $TxOutSecretsCopyWith<$Res> get unblinded;
-  @override
-  $AddressCopyWith<$Res> get address;
-}
-
-/// @nodoc
-class __$$TxOutImplCopyWithImpl<$Res>
-    extends _$TxOutCopyWithImpl<$Res, _$TxOutImpl>
-    implements _$$TxOutImplCopyWith<$Res> {
-  __$$TxOutImplCopyWithImpl(
-      _$TxOutImpl _value, $Res Function(_$TxOutImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? scriptPubkey = null,
-    Object? outpoint = null,
-    Object? height = freezed,
-    Object? unblinded = null,
-    Object? isSpent = null,
-    Object? address = null,
-  }) {
-    return _then(_$TxOutImpl(
-      scriptPubkey: null == scriptPubkey
-          ? _value.scriptPubkey
-          : scriptPubkey // ignore: cast_nullable_to_non_nullable
-              as String,
-      outpoint: null == outpoint
-          ? _value.outpoint
-          : outpoint // ignore: cast_nullable_to_non_nullable
-              as OutPoint,
-      height: freezed == height
-          ? _value.height
-          : height // ignore: cast_nullable_to_non_nullable
-              as int?,
-      unblinded: null == unblinded
-          ? _value.unblinded
-          : unblinded // ignore: cast_nullable_to_non_nullable
-              as TxOutSecrets,
-      isSpent: null == isSpent
-          ? _value.isSpent
-          : isSpent // ignore: cast_nullable_to_non_nullable
-              as bool,
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as Address,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$TxOutImpl implements _TxOut {
-  const _$TxOutImpl(
+class _TxOut implements TxOut {
+  const _TxOut(
       {required this.scriptPubkey,
       required this.outpoint,
       this.height,
@@ -1039,16 +970,19 @@ class _$TxOutImpl implements _TxOut {
   @override
   final Address address;
 
+  /// Create a copy of TxOut
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'TxOut(scriptPubkey: $scriptPubkey, outpoint: $outpoint, height: $height, unblinded: $unblinded, isSpent: $isSpent, address: $address)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$TxOutCopyWith<_TxOut> get copyWith =>
+      __$TxOutCopyWithImpl<_TxOut>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TxOutImpl &&
+            other is _TxOut &&
             (identical(other.scriptPubkey, scriptPubkey) ||
                 other.scriptPubkey == scriptPubkey) &&
             (identical(other.outpoint, outpoint) ||
@@ -1064,127 +998,162 @@ class _$TxOutImpl implements _TxOut {
   int get hashCode => Object.hash(
       runtimeType, scriptPubkey, outpoint, height, unblinded, isSpent, address);
 
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$TxOutImplCopyWith<_$TxOutImpl> get copyWith =>
-      __$$TxOutImplCopyWithImpl<_$TxOutImpl>(this, _$identity);
-}
-
-abstract class _TxOut implements TxOut {
-  const factory _TxOut(
-      {required final String scriptPubkey,
-      required final OutPoint outpoint,
-      final int? height,
-      required final TxOutSecrets unblinded,
-      required final bool isSpent,
-      required final Address address}) = _$TxOutImpl;
-
-  @override
-  String get scriptPubkey;
-  @override
-  OutPoint get outpoint;
-  @override
-  int? get height;
-  @override
-  TxOutSecrets get unblinded;
-  @override
-  bool get isSpent;
-  @override
-  Address get address;
-
-  /// Create a copy of TxOut
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TxOutImplCopyWith<_$TxOutImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$TxOutSecrets {
-  BigInt get value => throw _privateConstructorUsedError;
-  String get valueBf => throw _privateConstructorUsedError;
-  String get asset => throw _privateConstructorUsedError;
-  String get assetBf => throw _privateConstructorUsedError;
-
-  /// Create a copy of TxOutSecrets
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $TxOutSecretsCopyWith<TxOutSecrets> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $TxOutSecretsCopyWith<$Res> {
-  factory $TxOutSecretsCopyWith(
-          TxOutSecrets value, $Res Function(TxOutSecrets) then) =
-      _$TxOutSecretsCopyWithImpl<$Res, TxOutSecrets>;
-  @useResult
-  $Res call({BigInt value, String valueBf, String asset, String assetBf});
-}
-
-/// @nodoc
-class _$TxOutSecretsCopyWithImpl<$Res, $Val extends TxOutSecrets>
-    implements $TxOutSecretsCopyWith<$Res> {
-  _$TxOutSecretsCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of TxOutSecrets
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = null,
-    Object? valueBf = null,
-    Object? asset = null,
-    Object? assetBf = null,
-  }) {
-    return _then(_value.copyWith(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as BigInt,
-      valueBf: null == valueBf
-          ? _value.valueBf
-          : valueBf // ignore: cast_nullable_to_non_nullable
-              as String,
-      asset: null == asset
-          ? _value.asset
-          : asset // ignore: cast_nullable_to_non_nullable
-              as String,
-      assetBf: null == assetBf
-          ? _value.assetBf
-          : assetBf // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  String toString() {
+    return 'TxOut(scriptPubkey: $scriptPubkey, outpoint: $outpoint, height: $height, unblinded: $unblinded, isSpent: $isSpent, address: $address)';
   }
 }
 
 /// @nodoc
-abstract class _$$TxOutSecretsImplCopyWith<$Res>
-    implements $TxOutSecretsCopyWith<$Res> {
-  factory _$$TxOutSecretsImplCopyWith(
-          _$TxOutSecretsImpl value, $Res Function(_$TxOutSecretsImpl) then) =
-      __$$TxOutSecretsImplCopyWithImpl<$Res>;
+abstract mixin class _$TxOutCopyWith<$Res> implements $TxOutCopyWith<$Res> {
+  factory _$TxOutCopyWith(_TxOut value, $Res Function(_TxOut) _then) =
+      __$TxOutCopyWithImpl;
   @override
+  @useResult
+  $Res call(
+      {String scriptPubkey,
+      OutPoint outpoint,
+      int? height,
+      TxOutSecrets unblinded,
+      bool isSpent,
+      Address address});
+
+  @override
+  $OutPointCopyWith<$Res> get outpoint;
+  @override
+  $TxOutSecretsCopyWith<$Res> get unblinded;
+  @override
+  $AddressCopyWith<$Res> get address;
+}
+
+/// @nodoc
+class __$TxOutCopyWithImpl<$Res> implements _$TxOutCopyWith<$Res> {
+  __$TxOutCopyWithImpl(this._self, this._then);
+
+  final _TxOut _self;
+  final $Res Function(_TxOut) _then;
+
+  /// Create a copy of TxOut
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? scriptPubkey = null,
+    Object? outpoint = null,
+    Object? height = freezed,
+    Object? unblinded = null,
+    Object? isSpent = null,
+    Object? address = null,
+  }) {
+    return _then(_TxOut(
+      scriptPubkey: null == scriptPubkey
+          ? _self.scriptPubkey
+          : scriptPubkey // ignore: cast_nullable_to_non_nullable
+              as String,
+      outpoint: null == outpoint
+          ? _self.outpoint
+          : outpoint // ignore: cast_nullable_to_non_nullable
+              as OutPoint,
+      height: freezed == height
+          ? _self.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as int?,
+      unblinded: null == unblinded
+          ? _self.unblinded
+          : unblinded // ignore: cast_nullable_to_non_nullable
+              as TxOutSecrets,
+      isSpent: null == isSpent
+          ? _self.isSpent
+          : isSpent // ignore: cast_nullable_to_non_nullable
+              as bool,
+      address: null == address
+          ? _self.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
+    ));
+  }
+
+  /// Create a copy of TxOut
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $OutPointCopyWith<$Res> get outpoint {
+    return $OutPointCopyWith<$Res>(_self.outpoint, (value) {
+      return _then(_self.copyWith(outpoint: value));
+    });
+  }
+
+  /// Create a copy of TxOut
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TxOutSecretsCopyWith<$Res> get unblinded {
+    return $TxOutSecretsCopyWith<$Res>(_self.unblinded, (value) {
+      return _then(_self.copyWith(unblinded: value));
+    });
+  }
+
+  /// Create a copy of TxOut
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get address {
+    return $AddressCopyWith<$Res>(_self.address, (value) {
+      return _then(_self.copyWith(address: value));
+    });
+  }
+}
+
+/// @nodoc
+mixin _$TxOutSecrets {
+  BigInt get value;
+  String get valueBf;
+  String get asset;
+  String get assetBf;
+
+  /// Create a copy of TxOutSecrets
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $TxOutSecretsCopyWith<TxOutSecrets> get copyWith =>
+      _$TxOutSecretsCopyWithImpl<TxOutSecrets>(
+          this as TxOutSecrets, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is TxOutSecrets &&
+            (identical(other.value, value) || other.value == value) &&
+            (identical(other.valueBf, valueBf) || other.valueBf == valueBf) &&
+            (identical(other.asset, asset) || other.asset == asset) &&
+            (identical(other.assetBf, assetBf) || other.assetBf == assetBf));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value, valueBf, asset, assetBf);
+
+  @override
+  String toString() {
+    return 'TxOutSecrets(value: $value, valueBf: $valueBf, asset: $asset, assetBf: $assetBf)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $TxOutSecretsCopyWith<$Res> {
+  factory $TxOutSecretsCopyWith(
+          TxOutSecrets value, $Res Function(TxOutSecrets) _then) =
+      _$TxOutSecretsCopyWithImpl;
   @useResult
   $Res call({BigInt value, String valueBf, String asset, String assetBf});
 }
 
 /// @nodoc
-class __$$TxOutSecretsImplCopyWithImpl<$Res>
-    extends _$TxOutSecretsCopyWithImpl<$Res, _$TxOutSecretsImpl>
-    implements _$$TxOutSecretsImplCopyWith<$Res> {
-  __$$TxOutSecretsImplCopyWithImpl(
-      _$TxOutSecretsImpl _value, $Res Function(_$TxOutSecretsImpl) _then)
-      : super(_value, _then);
+class _$TxOutSecretsCopyWithImpl<$Res> implements $TxOutSecretsCopyWith<$Res> {
+  _$TxOutSecretsCopyWithImpl(this._self, this._then);
+
+  final TxOutSecrets _self;
+  final $Res Function(TxOutSecrets) _then;
 
   /// Create a copy of TxOutSecrets
   /// with the given fields replaced by the non-null parameter values.
@@ -1196,21 +1165,21 @@ class __$$TxOutSecretsImplCopyWithImpl<$Res>
     Object? asset = null,
     Object? assetBf = null,
   }) {
-    return _then(_$TxOutSecretsImpl(
+    return _then(_self.copyWith(
       value: null == value
-          ? _value.value
+          ? _self.value
           : value // ignore: cast_nullable_to_non_nullable
               as BigInt,
       valueBf: null == valueBf
-          ? _value.valueBf
+          ? _self.valueBf
           : valueBf // ignore: cast_nullable_to_non_nullable
               as String,
       asset: null == asset
-          ? _value.asset
+          ? _self.asset
           : asset // ignore: cast_nullable_to_non_nullable
               as String,
       assetBf: null == assetBf
-          ? _value.assetBf
+          ? _self.assetBf
           : assetBf // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -1219,8 +1188,8 @@ class __$$TxOutSecretsImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TxOutSecretsImpl implements _TxOutSecrets {
-  const _$TxOutSecretsImpl(
+class _TxOutSecrets implements TxOutSecrets {
+  const _TxOutSecrets(
       {required this.value,
       required this.valueBf,
       required this.asset,
@@ -1235,16 +1204,19 @@ class _$TxOutSecretsImpl implements _TxOutSecrets {
   @override
   final String assetBf;
 
+  /// Create a copy of TxOutSecrets
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'TxOutSecrets(value: $value, valueBf: $valueBf, asset: $asset, assetBf: $assetBf)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$TxOutSecretsCopyWith<_TxOutSecrets> get copyWith =>
+      __$TxOutSecretsCopyWithImpl<_TxOutSecrets>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TxOutSecretsImpl &&
+            other is _TxOutSecrets &&
             (identical(other.value, value) || other.value == value) &&
             (identical(other.valueBf, valueBf) || other.valueBf == valueBf) &&
             (identical(other.asset, asset) || other.asset == asset) &&
@@ -1254,35 +1226,60 @@ class _$TxOutSecretsImpl implements _TxOutSecrets {
   @override
   int get hashCode => Object.hash(runtimeType, value, valueBf, asset, assetBf);
 
+  @override
+  String toString() {
+    return 'TxOutSecrets(value: $value, valueBf: $valueBf, asset: $asset, assetBf: $assetBf)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$TxOutSecretsCopyWith<$Res>
+    implements $TxOutSecretsCopyWith<$Res> {
+  factory _$TxOutSecretsCopyWith(
+          _TxOutSecrets value, $Res Function(_TxOutSecrets) _then) =
+      __$TxOutSecretsCopyWithImpl;
+  @override
+  @useResult
+  $Res call({BigInt value, String valueBf, String asset, String assetBf});
+}
+
+/// @nodoc
+class __$TxOutSecretsCopyWithImpl<$Res>
+    implements _$TxOutSecretsCopyWith<$Res> {
+  __$TxOutSecretsCopyWithImpl(this._self, this._then);
+
+  final _TxOutSecrets _self;
+  final $Res Function(_TxOutSecrets) _then;
+
   /// Create a copy of TxOutSecrets
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$TxOutSecretsImplCopyWith<_$TxOutSecretsImpl> get copyWith =>
-      __$$TxOutSecretsImplCopyWithImpl<_$TxOutSecretsImpl>(this, _$identity);
+  $Res call({
+    Object? value = null,
+    Object? valueBf = null,
+    Object? asset = null,
+    Object? assetBf = null,
+  }) {
+    return _then(_TxOutSecrets(
+      value: null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      valueBf: null == valueBf
+          ? _self.valueBf
+          : valueBf // ignore: cast_nullable_to_non_nullable
+              as String,
+      asset: null == asset
+          ? _self.asset
+          : asset // ignore: cast_nullable_to_non_nullable
+              as String,
+      assetBf: null == assetBf
+          ? _self.assetBf
+          : assetBf // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
-abstract class _TxOutSecrets implements TxOutSecrets {
-  const factory _TxOutSecrets(
-      {required final BigInt value,
-      required final String valueBf,
-      required final String asset,
-      required final String assetBf}) = _$TxOutSecretsImpl;
-
-  @override
-  BigInt get value;
-  @override
-  String get valueBf;
-  @override
-  String get asset;
-  @override
-  String get assetBf;
-
-  /// Create a copy of TxOutSecrets
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TxOutSecretsImplCopyWith<_$TxOutSecretsImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

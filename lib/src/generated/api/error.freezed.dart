@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,74 +10,51 @@ part of 'error.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$LwkError {
-  String get msg => throw _privateConstructorUsedError;
+  String get msg;
 
   /// Create a copy of LwkError
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LwkErrorCopyWith<LwkError> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $LwkErrorCopyWith<$Res> {
-  factory $LwkErrorCopyWith(LwkError value, $Res Function(LwkError) then) =
-      _$LwkErrorCopyWithImpl<$Res, LwkError>;
-  @useResult
-  $Res call({String msg});
-}
-
-/// @nodoc
-class _$LwkErrorCopyWithImpl<$Res, $Val extends LwkError>
-    implements $LwkErrorCopyWith<$Res> {
-  _$LwkErrorCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of LwkError
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $LwkErrorCopyWith<LwkError> get copyWith =>
+      _$LwkErrorCopyWithImpl<LwkError>(this as LwkError, _$identity);
+
   @override
-  $Res call({
-    Object? msg = null,
-  }) {
-    return _then(_value.copyWith(
-      msg: null == msg
-          ? _value.msg
-          : msg // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is LwkError &&
+            (identical(other.msg, msg) || other.msg == msg));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, msg);
+
+  @override
+  String toString() {
+    return 'LwkError(msg: $msg)';
   }
 }
 
 /// @nodoc
-abstract class _$$LwkErrorImplCopyWith<$Res>
-    implements $LwkErrorCopyWith<$Res> {
-  factory _$$LwkErrorImplCopyWith(
-          _$LwkErrorImpl value, $Res Function(_$LwkErrorImpl) then) =
-      __$$LwkErrorImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $LwkErrorCopyWith<$Res> {
+  factory $LwkErrorCopyWith(LwkError value, $Res Function(LwkError) _then) =
+      _$LwkErrorCopyWithImpl;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$LwkErrorImplCopyWithImpl<$Res>
-    extends _$LwkErrorCopyWithImpl<$Res, _$LwkErrorImpl>
-    implements _$$LwkErrorImplCopyWith<$Res> {
-  __$$LwkErrorImplCopyWithImpl(
-      _$LwkErrorImpl _value, $Res Function(_$LwkErrorImpl) _then)
-      : super(_value, _then);
+class _$LwkErrorCopyWithImpl<$Res> implements $LwkErrorCopyWith<$Res> {
+  _$LwkErrorCopyWithImpl(this._self, this._then);
+
+  final LwkError _self;
+  final $Res Function(LwkError) _then;
 
   /// Create a copy of LwkError
   /// with the given fields replaced by the non-null parameter values.
@@ -85,9 +63,9 @@ class __$$LwkErrorImplCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$LwkErrorImpl(
+    return _then(_self.copyWith(
       msg: null == msg
-          ? _value.msg
+          ? _self.msg
           : msg // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -96,47 +74,68 @@ class __$$LwkErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LwkErrorImpl implements _LwkError {
-  const _$LwkErrorImpl({required this.msg});
+class _LwkError implements LwkError {
+  const _LwkError({required this.msg});
 
   @override
   final String msg;
 
+  /// Create a copy of LwkError
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'LwkError(msg: $msg)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LwkErrorCopyWith<_LwkError> get copyWith =>
+      __$LwkErrorCopyWithImpl<_LwkError>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LwkErrorImpl &&
+            other is _LwkError &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
+  @override
+  String toString() {
+    return 'LwkError(msg: $msg)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$LwkErrorCopyWith<$Res>
+    implements $LwkErrorCopyWith<$Res> {
+  factory _$LwkErrorCopyWith(_LwkError value, $Res Function(_LwkError) _then) =
+      __$LwkErrorCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String msg});
+}
+
+/// @nodoc
+class __$LwkErrorCopyWithImpl<$Res> implements _$LwkErrorCopyWith<$Res> {
+  __$LwkErrorCopyWithImpl(this._self, this._then);
+
+  final _LwkError _self;
+  final $Res Function(_LwkError) _then;
+
   /// Create a copy of LwkError
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$LwkErrorImplCopyWith<_$LwkErrorImpl> get copyWith =>
-      __$$LwkErrorImplCopyWithImpl<_$LwkErrorImpl>(this, _$identity);
+  $Res call({
+    Object? msg = null,
+  }) {
+    return _then(_LwkError(
+      msg: null == msg
+          ? _self.msg
+          : msg // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
-abstract class _LwkError implements LwkError {
-  const factory _LwkError({required final String msg}) = _$LwkErrorImpl;
-
-  @override
-  String get msg;
-
-  /// Create a copy of LwkError
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LwkErrorImplCopyWith<_$LwkErrorImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on
