@@ -1,9 +1,15 @@
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
-use lwk_wollet::{ elements::{hex::{FromHex, ToHex}, secp256k1_zkp, Address as LwkAddress, AddressParams, AssetId, Script}, secp256k1, AddressResult, ElectrumClient, WalletTx, WalletTxOut};
+use lwk_wollet::{
+    elements::{
+        hex::{FromHex, ToHex},
+        secp256k1_zkp, Address as LwkAddress, AddressParams, AssetId, Script,
+    },
+    secp256k1, AddressResult, ElectrumClient, WalletTx, WalletTxOut,
+};
 pub use std::collections::{BTreeMap, HashMap};
-pub use std::vec::Vec;
 use std::str::FromStr;
+pub use std::vec::Vec;
 
 use lwk_wollet::ElementsNetwork;
 
@@ -346,7 +352,15 @@ impl Blockchain {
     }
 }
 
-
+#[derive(Clone, Debug, PartialEq)]
+pub struct PayjoinTx {
+    /// Partially signed transaction
+    pub pset: String,
+    /// Network fee
+    pub network_fee: u64,
+    /// Asset fee amount paid to the server
+    pub asset_fee: u64,
+}
 
 // #[test]
 // fn test_address_from_script() {

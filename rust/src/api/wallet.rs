@@ -176,6 +176,99 @@ impl Wallet {
         Ok(pset.to_string())
     }
 
+    /// Build a PayJoin transaction for a specific asset, even if the wallet does not contain L-BTC UTXOs.
+    /// The asset must be one of the assets supported by SideSwap, such as USDt or DePix.
+    /// This creates a coin-join PSET. The PSET includes the asset wallet inputs and change,
+    /// and the asset output to `out_address`, the L-BTC server's input and change and the asset fee output to the server.
+    /// The server fee is included in the return value for the user to review.
+    ///
+    /// To make a PayJoin transaction:
+    /// - call build_payjoin_tx
+    /// - review server fee
+    /// - call signed_pset_with_extra_details, extract_tx and broadcast_tx.
+    /// See the `test_payjoin` test for an example of how to use it:
+    pub fn build_payjoin_tx(
+        &self,
+        sats: u64,
+        out_address: String,
+        asset: String,
+        network: Network,
+    ) -> anyhow::Result<super::types::PayjoinTx, LwkError> {
+        let wallet = self.get_wallet()?;
+
+        struct Wallet<'a> {
+            wallet: &'a lwk_wollet::Wollet,
+            next_index: Option<u32>,
+        }
+        impl<'a> sideswap_payjoin::Wallet for Wallet<'a> {
+            fn change_address(&mut self) -> Result<lwk_wollet::elements::Address, anyhow::Error> {
+                let address = self.wallet.change(self.next_index)?;
+                self.next_index = Some(address.index() + 1);
+                Ok(address.address().clone())
+            }
+        }
+        let mut payjoin_wallet = Wallet {
+            wallet: &wallet,
+            next_index: None,
+        };
+
+        let (network, base_url) = match network {
+            Network::Mainnet => (
+                sideswap_common::network::Network::Liquid,
+                sideswap_payjoin::BASE_URL_PROD,
+            ),
+            Network::Testnet => (
+                sideswap_common::network::Network::LiquidTestnet,
+                sideswap_payjoin::BASE_URL_TESTNET,
+            ),
+        };
+
+        let asset = lwk_wollet::elements::AssetId::from_str(&asset)?;
+        let out_address = lwk_wollet::elements::Address::from_str(&out_address)?;
+
+        let utxos = wallet
+            .utxos()?
+            .into_iter()
+            .map(|utxo| sideswap_payjoin::Utxo {
+                txid: utxo.outpoint.txid,
+                vout: utxo.outpoint.vout,
+                asset_id: utxo.unblinded.asset,
+                value: utxo.unblinded.value,
+                asset_bf: utxo.unblinded.asset_bf,
+                value_bf: utxo.unblinded.value_bf,
+                script_pub_key: utxo.script_pubkey,
+            })
+            .collect::<Vec<_>>();
+
+        let payjoin = sideswap_payjoin::create_payjoin(
+            &mut payjoin_wallet,
+            sideswap_payjoin::CreatePayjoin {
+                network,
+                base_url: base_url.to_owned(),
+                user_agent: "lwk-dart".to_owned(),
+                utxos,
+                multisig_wallet: false,
+                use_all_utxos: false,
+                recipients: vec![sideswap_common::recipient::Recipient {
+                    address: out_address,
+                    asset_id: asset,
+                    amount: sats,
+                }],
+                deduct_fee: None,
+                fee_asset: asset,
+            },
+        )
+        .map_err(|err| LwkError {
+            msg: err.to_string(),
+        })?;
+
+        Ok(super::types::PayjoinTx {
+            pset: payjoin.pset.to_string(),
+            network_fee: payjoin.network_fee,
+            asset_fee: payjoin.asset_fee,
+        })
+    }
+
     /// Decode a transaction given a PSET
     pub fn decode_tx(&self, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
@@ -265,6 +358,14 @@ impl Wallet {
         }
 
         Ok(pset.to_string())
+    }
+
+    /// Extract the Transaction from a PartiallySignedTransaction
+    pub fn extract_tx(pset: String) -> anyhow::Result<Vec<u8>, LwkError> {
+        let pset = PartiallySignedTransaction::from_str(&pset)?;
+        let tx = pset.extract_tx()?;
+        let tx_bytes = lwk_wollet::elements::encode::serialize(&tx);
+        Ok(tx_bytes)
     }
 }
 
@@ -477,4 +578,48 @@ mod tests {
 
     //     // TODO: more cases
     // }
+
+    #[ignore = "disabled becasue it depends on external servers"]
+    #[test]
+    fn test_payjoin() {
+        let mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+        let electrum_url = "elements-testnet.blockstream.info:50002";
+        let network = Network::Testnet;
+        let asset = "b612eb46313a2cd6ebabd8b7a8eed5696e29898b87a43bff41c94f51acef9d73";
+
+        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
+        wallet.sync(electrum_url.to_owned(), true).unwrap();
+
+        let out_address = wallet.address_last_unused().unwrap().confidential;
+        println!("out_address: {out_address}");
+
+        let balances = wallet.balances().unwrap();
+        println!("balances: {balances:?}");
+
+        let asset_balance = balances
+            .iter()
+            .find_map(|bal| (bal.asset_id == asset).then_some(bal.value))
+            .unwrap_or_default();
+        // The payjoin fee is about 0.085 USDT.
+        // Make sure your wallet has at least 1 USDT.
+        assert!(
+            asset_balance >= 100000000,
+            "wallet asset balance is low: {asset_balance}"
+        );
+
+        let payjoin = wallet
+            .build_payjoin_tx(10000, out_address, asset.to_owned(), network)
+            .unwrap();
+        println!("asset_fee: {}", payjoin.asset_fee);
+
+        let pset = wallet
+            .signed_pset_with_extra_details(network, payjoin.pset, mnemonic.to_owned())
+            .unwrap();
+
+        let tx_bytes = Wallet::extract_tx(pset).unwrap();
+
+        let txid = Wallet::broadcast_tx(electrum_url.to_owned(), tx_bytes).unwrap();
+        println!("txid: {txid}");
+    }
 }

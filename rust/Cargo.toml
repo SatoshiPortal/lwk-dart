@@ -20,6 +20,8 @@ anyhow = "1.0.68"
 lazy_static = "1.4.0"
 hex = "0.4"
 log = "0.4.22"
+sideswap_common = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "f81c508eb3a2a7d6f64a9cd72063a6a55753cce3" }
+sideswap_payjoin = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "f81c508eb3a2a7d6f64a9cd72063a6a55753cce3" }
 
 [build-dependencies]
 flutter_rust_bridge_codegen = { version = "=2.0.0" }
