@@ -1,10 +1,7 @@
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
 use lwk_wollet::{
-    elements::{
-        hex::{FromHex, ToHex},
-        secp256k1_zkp, Address as LwkAddress, AddressParams, AssetId, Script,
-    },
+    elements::{encode::Decodable, hex::{FromHex, ToHex}, pset::PartiallySignedTransaction, secp256k1_zkp, Address as LwkAddress, AddressParams, AssetId, Script},
     secp256k1, AddressResult, ElectrumClient, WalletTx, WalletTxOut,
 };
 pub use std::collections::{BTreeMap, HashMap};
@@ -12,6 +9,9 @@ use std::str::FromStr;
 pub use std::vec::Vec;
 
 use lwk_wollet::ElementsNetwork;
+use std::convert::TryFrom;
+
+use super::error::LwkError;
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 #[frb(dart_metadata=("freezed"))]
@@ -32,6 +32,8 @@ impl Into<ElementsNetwork> for Network {
 pub struct AssetIdBTreeMapUInt(BTreeMap<AssetId, u64>);
 pub struct AssetIdBTreeMapInt(BTreeMap<AssetId, i64>);
 pub struct AssetIdHashMapInt(HashMap<AssetId, i64>);
+pub struct AssetIdHashMapUInt(HashMap<AssetId, u64>);
+
 
 // Implement From for BTreeMap and HashMap
 impl From<BTreeMap<AssetId, i64>> for AssetIdBTreeMapInt {
@@ -49,6 +51,11 @@ impl From<BTreeMap<AssetId, u64>> for AssetIdBTreeMapUInt {
 impl From<HashMap<AssetId, i64>> for AssetIdHashMapInt {
     fn from(map: HashMap<AssetId, i64>) -> Self {
         AssetIdHashMapInt(map)
+    }
+}
+impl From<HashMap<AssetId, u64>> for AssetIdHashMapUInt {
+    fn from(map: HashMap<AssetId, u64>) -> Self {
+        AssetIdHashMapUInt(map)
     }
 }
 /// Balance represents a balance of a specific asset
@@ -89,10 +96,6 @@ impl From<AssetIdHashMapInt> for Balances {
     }
 }
 
-use std::convert::TryFrom;
-
-use super::error::LwkError;
-
 impl From<AssetIdBTreeMapUInt> for Balances {
     fn from(asset_id_map: AssetIdBTreeMapUInt) -> Self {
         asset_id_map
@@ -102,6 +105,25 @@ impl From<AssetIdBTreeMapUInt> for Balances {
                 Ok(converted_value) => Some(Balance {
                     asset_id: key.to_string(),
                     value: converted_value,
+                }),
+                Err(_) => {
+                    eprintln!("Warning: Overflow encountered converting {} to i64", value);
+                    None
+                }
+            })
+            .collect()
+    }
+}
+
+impl From<AssetIdHashMapUInt> for Balances {
+    fn from(asset_id_map: AssetIdHashMapUInt) -> Self {
+        asset_id_map
+            .0
+            .into_iter()
+            .filter_map(|(key, value)| match u64::try_from(value) {
+                Ok(converted_value) => Some(Balance {
+                    asset_id: key.to_string(),
+                    value: converted_value as i64,
                 }),
                 Err(_) => {
                     eprintln!("Warning: Overflow encountered converting {} to i64", value);
@@ -343,12 +365,23 @@ impl From<PsetBalance> for PsetAmounts {
     }
 }
 
-pub struct Blockchain {}
+#[derive(Clone, Debug, PartialEq)]
+pub struct DecodedPset {
+    pub discounted_vsize: usize,
+    pub discounted_weight: usize,
+    pub absolute_fees: Balances,
+}
+impl From<String> for DecodedPset {
+    fn from(pset_string: String) -> Self {
+        let pset = PartiallySignedTransaction::from_str(&pset_string).unwrap();
+        let tx = pset.extract_tx().unwrap();
+        let all_fees: AssetIdHashMapUInt = tx.all_fees().into();
 
-impl Blockchain {
-    pub fn test(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
-        ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
-        Ok(())
+        DecodedPset {
+            discounted_vsize: tx.discount_vsize(),
+            discounted_weight: tx.discount_weight(),
+            absolute_fees: all_fees.into(),
+        }
     }
 }
 

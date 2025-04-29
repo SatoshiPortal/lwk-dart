@@ -6,8 +6,10 @@
 // Static analysis wrongly picks the IO variant, thus ignore this
 // ignore_for_file: argument_type_not_assignable
 
+import 'api/blockchain.dart';
 import 'api/descriptor.dart';
 import 'api/error.dart';
+import 'api/transaction.dart';
 import 'api/types.dart';
 import 'api/wallet.dart';
 import 'dart:async';
@@ -588,15 +590,29 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire__crate__api__types__address_validate(
           port_, address_string);
 
-  void wire__crate__api__types__blockchain_test(
+  void wire__crate__api__blockchain__blockchain_test(
           NativePortType port_, JSAny that, String electrum_url) =>
-      wasmModule.wire__crate__api__types__blockchain_test(
+      wasmModule.wire__crate__api__blockchain__blockchain_test(
           port_, that, electrum_url);
+
+  void wire__crate__api__blockchain__broadcast_signed_pset(
+          NativePortType port_, String electrum_url, String signed_pset) =>
+      wasmModule.wire__crate__api__blockchain__broadcast_signed_pset(
+          port_, electrum_url, signed_pset);
+
+  void wire__crate__api__blockchain__broadcast_tx_bytes(
+          NativePortType port_, String electrum_url, JSAny tx_bytes) =>
+      wasmModule.wire__crate__api__blockchain__broadcast_tx_bytes(
+          port_, electrum_url, tx_bytes);
 
   void wire__crate__api__descriptor__descriptor_new_confidential(
           NativePortType port_, int network, String mnemonic) =>
       wasmModule.wire__crate__api__descriptor__descriptor_new_confidential(
           port_, network, mnemonic);
+
+  void wire__crate__api__transaction__extract_tx_bytes(
+          NativePortType port_, String pset) =>
+      wasmModule.wire__crate__api__transaction__extract_tx_bytes(port_, pset);
 
   void wire__crate__api__wallet__wallet_address(
           NativePortType port_, JSAny that, int index) =>
@@ -614,11 +630,6 @@ class LwkCoreWire implements BaseWire {
   void wire__crate__api__wallet__wallet_blinding_key(
           NativePortType port_, JSAny that) =>
       wasmModule.wire__crate__api__wallet__wallet_blinding_key(port_, that);
-
-  void wire__crate__api__wallet__wallet_broadcast_tx(
-          NativePortType port_, String electrum_url, JSAny tx_bytes) =>
-      wasmModule.wire__crate__api__wallet__wallet_broadcast_tx(
-          port_, electrum_url, tx_bytes);
 
   void wire__crate__api__wallet__wallet_build_asset_tx(
           NativePortType port_,
@@ -657,10 +668,6 @@ class LwkCoreWire implements BaseWire {
   void wire__crate__api__wallet__wallet_descriptor(
           NativePortType port_, JSAny that) =>
       wasmModule.wire__crate__api__wallet__wallet_descriptor(port_, that);
-
-  void wire__crate__api__wallet__wallet_extract_tx(
-          NativePortType port_, String pset) =>
-      wasmModule.wire__crate__api__wallet__wallet_extract_tx(port_, pset);
 
   void wire__crate__api__wallet__wallet_init(
           NativePortType port_, int network, String dbpath, JSAny descriptor) =>
@@ -719,11 +726,20 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
   external void wire__crate__api__types__address_validate(
       NativePortType port_, String address_string);
 
-  external void wire__crate__api__types__blockchain_test(
+  external void wire__crate__api__blockchain__blockchain_test(
       NativePortType port_, JSAny that, String electrum_url);
+
+  external void wire__crate__api__blockchain__broadcast_signed_pset(
+      NativePortType port_, String electrum_url, String signed_pset);
+
+  external void wire__crate__api__blockchain__broadcast_tx_bytes(
+      NativePortType port_, String electrum_url, JSAny tx_bytes);
 
   external void wire__crate__api__descriptor__descriptor_new_confidential(
       NativePortType port_, int network, String mnemonic);
+
+  external void wire__crate__api__transaction__extract_tx_bytes(
+      NativePortType port_, String pset);
 
   external void wire__crate__api__wallet__wallet_address(
       NativePortType port_, JSAny that, int index);
@@ -736,9 +752,6 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
 
   external void wire__crate__api__wallet__wallet_blinding_key(
       NativePortType port_, JSAny that);
-
-  external void wire__crate__api__wallet__wallet_broadcast_tx(
-      NativePortType port_, String electrum_url, JSAny tx_bytes);
 
   external void wire__crate__api__wallet__wallet_build_asset_tx(
       NativePortType port_,
@@ -769,9 +782,6 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
 
   external void wire__crate__api__wallet__wallet_descriptor(
       NativePortType port_, JSAny that);
-
-  external void wire__crate__api__wallet__wallet_extract_tx(
-      NativePortType port_, String pset);
 
   external void wire__crate__api__wallet__wallet_init(
       NativePortType port_, int network, String dbpath, JSAny descriptor);

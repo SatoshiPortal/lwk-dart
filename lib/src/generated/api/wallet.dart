@@ -44,12 +44,6 @@ class Wallet {
         that: this,
       );
 
-  /// Broadcast a signed transaction
-  static Future<String> broadcastTx(
-          {required String electrumUrl, required List<int> txBytes}) =>
-      LwkCore.instance.api.crateApiWalletWalletBroadcastTx(
-          electrumUrl: electrumUrl, txBytes: txBytes);
-
   /// Build a transaction for a specific asset
   Future<String> buildAssetTx(
           {required BigInt sats,
@@ -109,10 +103,6 @@ class Wallet {
         that: this,
       );
 
-  /// Extract the Transaction from a PartiallySignedTransaction
-  static Future<Uint8List> extractTx({required String pset}) =>
-      LwkCore.instance.api.crateApiWalletWalletExtractTx(pset: pset);
-
   /// Initializes a wallet from a specific db path and descriptor
   static Future<Wallet> init(
           {required Network network,
@@ -121,8 +111,8 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletInit(
           network: network, dbpath: dbpath, descriptor: descriptor);
 
-  /// Sign a wallet transaction (pset)
-  Future<Uint8List> signTx(
+  /// Sign a wallet transaction, returns (pset, signed_bytes)
+  Future<String> signTx(
           {required Network network,
           required String pset,
           required String mnemonic}) =>
