@@ -1,4 +1,9 @@
-use lwk_wollet::ElectrumClient;
+use std::str::FromStr;
+
+use lwk_wollet::{blocking::BlockchainBackend, elements::{pset::{serialize::Deserialize, PartiallySignedTransaction}, Transaction, Txid}, ElectrumClient};
+
+use super::error::LwkError;
+
 
 pub struct Blockchain {}
 

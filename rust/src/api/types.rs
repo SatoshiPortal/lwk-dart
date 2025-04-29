@@ -1,8 +1,8 @@
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
 use lwk_wollet::{
-    elements::{encode::Decodable, hex::{FromHex, ToHex}, pset::PartiallySignedTransaction, secp256k1_zkp, Address as LwkAddress, AddressParams, AssetId, Script},
-    secp256k1, AddressResult, ElectrumClient, WalletTx, WalletTxOut,
+    elements::{pset::PartiallySignedTransaction, Address as LwkAddress, AddressParams, AssetId, Script},
+    secp256k1, AddressResult, WalletTx, WalletTxOut,
 };
 pub use std::collections::{BTreeMap, HashMap};
 use std::str::FromStr;

@@ -4,13 +4,9 @@ use lwk_wollet::full_scan_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
 use crate::frb_generated::RustOpaque;
 // use log::{info, warn};
-use lwk_wollet::clients::blocking::BlockchainBackend;
 use lwk_wollet::elements::{
-    pset::{
-        serialize::{Deserialize, Serialize},
-        PartiallySignedTransaction,
-    },
-    Address as LwkAddress, AssetId as LwkAssetId, OutPoint, Transaction, Txid,
+    pset::PartiallySignedTransaction,
+    Address as LwkAddress, AssetId as LwkAssetId, OutPoint,
 };
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
@@ -371,7 +367,7 @@ mod tests {
             println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
         }
         let balances = wallet.balances();
-        let address = wallet.address_last_unused();
+        // let _address = wallet.address_last_unused();
         // println!("{:#?}", address);
         println!("{:#?}", balances);
         // let out_address = "lq1qqdvmhsrn8fehfurv0yzgve2xfhrfxj9yax7t6wymzuvfj2w2y49v4jf3730067gp3xhkhw73083tvx3xryasvf32pe06sajwu".to_string();
@@ -603,7 +599,7 @@ mod tests {
 
         let tx_bytes = extract_tx_bytes(pset).unwrap();
 
-        let txid = Wallet::broadcast_tx_bytes(electrum_url.to_owned(), tx_bytes).unwrap();
+        let txid = broadcast_tx_bytes(electrum_url.to_owned(), tx_bytes).unwrap();
         println!("txid: {txid}");
     }
 }
