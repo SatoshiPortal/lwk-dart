@@ -1,7 +1,7 @@
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
 use lwk_wollet::{
-    elements::{pset::PartiallySignedTransaction, Address as LwkAddress, AddressParams, AssetId, Script},
+    elements::{hex::{FromHex, ToHex}, pset::PartiallySignedTransaction, Address as LwkAddress, AddressParams, AssetId, Script},
     secp256k1, AddressResult, WalletTx, WalletTxOut,
 };
 pub use std::collections::{BTreeMap, HashMap};
