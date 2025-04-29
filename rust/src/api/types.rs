@@ -14,7 +14,6 @@ use std::convert::TryFrom;
 use super::error::LwkError;
 
 #[derive(Clone, Copy, PartialEq, Debug)]
-#[frb(dart_metadata=("freezed"))]
 pub enum Network {
     Mainnet,
     Testnet,
@@ -60,7 +59,6 @@ impl From<HashMap<AssetId, u64>> for AssetIdHashMapUInt {
 }
 /// Balance represents a balance of a specific asset
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct Balance {
     pub asset_id: String,
     pub value: i64,
@@ -68,7 +66,6 @@ pub struct Balance {
 
 /// Balances is a list of Balance objects 
 /// A multi asset wallet will have more than one item in the list for each asset
-#[frb(dart_metadata=("freezed"))]
 pub type Balances = Vec<Balance>;
 
 impl From<AssetIdBTreeMapInt> for Balances {
@@ -157,7 +154,6 @@ impl From<WalletTxOut> for TxOut {
 
 /// Address class which contains both standard and confidential addresses with the address index in the wallet
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct Address {
     pub standard: String,
     pub confidential: String,
@@ -241,14 +237,12 @@ impl Address {
 }
 
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct OutPoint {
     pub txid: String,
     pub vout: u32,
 }
 
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct TxOut {
     pub script_pubkey: String,
     pub outpoint: OutPoint,
@@ -259,7 +253,6 @@ pub struct TxOut {
 }
 
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct TxOutSecrets {
     pub value: u64,
     pub value_bf: String,
@@ -269,7 +262,6 @@ pub struct TxOutSecrets {
 
 /// Transaction object returned by getTransactions.
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct Tx {
     pub timestamp: Option<u32>,
     pub kind: String,

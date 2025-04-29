@@ -9,7 +9,6 @@ use lwk_wollet::elements::encode::Error as EncodeError;
 use flutter_rust_bridge::frb;
 
 /// Possible errors emitted
-#[frb(dart_metadata=("freezed"))]
 #[derive(Debug)]
 pub struct LwkError {
     pub msg: String,

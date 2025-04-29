@@ -6,22 +6,23 @@
 import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
-import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
-part 'types.freezed.dart';
 
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AssetIdBTreeMapInt`, `AssetIdBTreeMapUInt`, `AssetIdHashMapInt`, `AssetIdHashMapUInt`, `DecodedPset`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`
 
 /// Address class which contains both standard and confidential addresses with the address index in the wallet
-@freezed
-class Address with _$Address {
-  const Address._();
-  const factory Address({
-    required String standard,
-    required String confidential,
-    int? index,
-    String? blindingKey,
-  }) = _Address;
+class Address {
+  final String standard;
+  final String confidential;
+  final int? index;
+  final String? blindingKey;
+
+  const Address({
+    required this.standard,
+    required this.confidential,
+    this.index,
+    this.blindingKey,
+  });
 
   /// Create an address from a scriptpubkey. Always returns 0 as the index is only for wallet generated addresses
   static Future<Address> addressFromScript(
@@ -35,15 +36,45 @@ class Address with _$Address {
   static Future<Network> validate({required String addressString}) =>
       LwkCore.instance.api
           .crateApiTypesAddressValidate(addressString: addressString);
+
+  @override
+  int get hashCode =>
+      standard.hashCode ^
+      confidential.hashCode ^
+      index.hashCode ^
+      blindingKey.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Address &&
+          runtimeType == other.runtimeType &&
+          standard == other.standard &&
+          confidential == other.confidential &&
+          index == other.index &&
+          blindingKey == other.blindingKey;
 }
 
 /// Balance represents a balance of a specific asset
-@freezed
-class Balance with _$Balance {
-  const factory Balance({
-    required String assetId,
-    required PlatformInt64 value,
-  }) = _Balance;
+class Balance {
+  final String assetId;
+  final PlatformInt64 value;
+
+  const Balance({
+    required this.assetId,
+    required this.value,
+  });
+
+  @override
+  int get hashCode => assetId.hashCode ^ value.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Balance &&
+          runtimeType == other.runtimeType &&
+          assetId == other.assetId &&
+          value == other.value;
 }
 
 enum Network {
@@ -52,12 +83,25 @@ enum Network {
   ;
 }
 
-@freezed
-class OutPoint with _$OutPoint {
-  const factory OutPoint({
-    required String txid,
-    required int vout,
-  }) = _OutPoint;
+class OutPoint {
+  final String txid;
+  final int vout;
+
+  const OutPoint({
+    required this.txid,
+    required this.vout,
+  });
+
+  @override
+  int get hashCode => txid.hashCode ^ vout.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OutPoint &&
+          runtimeType == other.runtimeType &&
+          txid == other.txid &&
+          vout == other.vout;
 }
 
 class PayjoinTx {
@@ -112,40 +156,124 @@ class PsetAmounts {
 }
 
 /// Transaction object returned by getTransactions.
-@freezed
-class Tx with _$Tx {
-  const factory Tx({
-    int? timestamp,
-    required String kind,
-    required List<Balance> balances,
-    required String txid,
-    required List<TxOut> outputs,
-    required List<TxOut> inputs,
-    required BigInt fee,
-    int? height,
-    required String unblindedUrl,
-    required BigInt vsize,
-  }) = _Tx;
+class Tx {
+  final int? timestamp;
+  final String kind;
+  final List<Balance> balances;
+  final String txid;
+  final List<TxOut> outputs;
+  final List<TxOut> inputs;
+  final BigInt fee;
+  final int? height;
+  final String unblindedUrl;
+  final BigInt vsize;
+
+  const Tx({
+    this.timestamp,
+    required this.kind,
+    required this.balances,
+    required this.txid,
+    required this.outputs,
+    required this.inputs,
+    required this.fee,
+    this.height,
+    required this.unblindedUrl,
+    required this.vsize,
+  });
+
+  @override
+  int get hashCode =>
+      timestamp.hashCode ^
+      kind.hashCode ^
+      balances.hashCode ^
+      txid.hashCode ^
+      outputs.hashCode ^
+      inputs.hashCode ^
+      fee.hashCode ^
+      height.hashCode ^
+      unblindedUrl.hashCode ^
+      vsize.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Tx &&
+          runtimeType == other.runtimeType &&
+          timestamp == other.timestamp &&
+          kind == other.kind &&
+          balances == other.balances &&
+          txid == other.txid &&
+          outputs == other.outputs &&
+          inputs == other.inputs &&
+          fee == other.fee &&
+          height == other.height &&
+          unblindedUrl == other.unblindedUrl &&
+          vsize == other.vsize;
 }
 
-@freezed
-class TxOut with _$TxOut {
-  const factory TxOut({
-    required String scriptPubkey,
-    required OutPoint outpoint,
-    int? height,
-    required TxOutSecrets unblinded,
-    required bool isSpent,
-    required Address address,
-  }) = _TxOut;
+class TxOut {
+  final String scriptPubkey;
+  final OutPoint outpoint;
+  final int? height;
+  final TxOutSecrets unblinded;
+  final bool isSpent;
+  final Address address;
+
+  const TxOut({
+    required this.scriptPubkey,
+    required this.outpoint,
+    this.height,
+    required this.unblinded,
+    required this.isSpent,
+    required this.address,
+  });
+
+  @override
+  int get hashCode =>
+      scriptPubkey.hashCode ^
+      outpoint.hashCode ^
+      height.hashCode ^
+      unblinded.hashCode ^
+      isSpent.hashCode ^
+      address.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TxOut &&
+          runtimeType == other.runtimeType &&
+          scriptPubkey == other.scriptPubkey &&
+          outpoint == other.outpoint &&
+          height == other.height &&
+          unblinded == other.unblinded &&
+          isSpent == other.isSpent &&
+          address == other.address;
 }
 
-@freezed
-class TxOutSecrets with _$TxOutSecrets {
-  const factory TxOutSecrets({
-    required BigInt value,
-    required String valueBf,
-    required String asset,
-    required String assetBf,
-  }) = _TxOutSecrets;
+class TxOutSecrets {
+  final BigInt value;
+  final String valueBf;
+  final String asset;
+  final String assetBf;
+
+  const TxOutSecrets({
+    required this.value,
+    required this.valueBf,
+    required this.asset,
+    required this.assetBf,
+  });
+
+  @override
+  int get hashCode =>
+      value.hashCode ^ valueBf.hashCode ^ asset.hashCode ^ assetBf.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TxOutSecrets &&
+          runtimeType == other.runtimeType &&
+          value == other.value &&
+          valueBf == other.valueBf &&
+          asset == other.asset &&
+          assetBf == other.assetBf;
 }
