@@ -679,6 +679,58 @@ class LwkCoreWire implements BaseWire {
       _wire__crate__api__types__address_validatePtr.asFunction<
           void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
+  void wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
+    int port_,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> signed_pset,
+  ) {
+    return _wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
+      port_,
+      electrum_url,
+      signed_pset,
+    );
+  }
+
+  late final _wire__crate__api__blockchain__blockchain_broadcast_signed_psetPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Void Function(
+                      ffi.Int64,
+                      ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                      ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+          'frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_signed_pset');
+  late final _wire__crate__api__blockchain__blockchain_broadcast_signed_pset =
+      _wire__crate__api__blockchain__blockchain_broadcast_signed_psetPtr
+          .asFunction<
+              void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+
+  void wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
+    int port_,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
+    ffi.Pointer<wire_cst_list_prim_u_8_loose> tx_bytes,
+  ) {
+    return _wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
+      port_,
+      electrum_url,
+      tx_bytes,
+    );
+  }
+
+  late final _wire__crate__api__blockchain__blockchain_broadcast_tx_bytesPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Void Function(
+                      ffi.Int64,
+                      ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                      ffi.Pointer<wire_cst_list_prim_u_8_loose>)>>(
+          'frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_tx_bytes');
+  late final _wire__crate__api__blockchain__blockchain_broadcast_tx_bytes =
+      _wire__crate__api__blockchain__blockchain_broadcast_tx_bytesPtr
+          .asFunction<
+              void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                  ffi.Pointer<wire_cst_list_prim_u_8_loose>)>();
+
   void wire__crate__api__blockchain__blockchain_test(
     int port_,
     ffi.Pointer<wire_cst_blockchain> that,
@@ -700,54 +752,6 @@ class LwkCoreWire implements BaseWire {
       _wire__crate__api__blockchain__blockchain_testPtr.asFunction<
           void Function(int, ffi.Pointer<wire_cst_blockchain>,
               ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
-
-  void wire__crate__api__blockchain__broadcast_signed_pset(
-    int port_,
-    ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
-    ffi.Pointer<wire_cst_list_prim_u_8_strict> signed_pset,
-  ) {
-    return _wire__crate__api__blockchain__broadcast_signed_pset(
-      port_,
-      electrum_url,
-      signed_pset,
-    );
-  }
-
-  late final _wire__crate__api__blockchain__broadcast_signed_psetPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Int64,
-                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
-      'frbgen_lwk_wire__crate__api__blockchain__broadcast_signed_pset');
-  late final _wire__crate__api__blockchain__broadcast_signed_pset =
-      _wire__crate__api__blockchain__broadcast_signed_psetPtr.asFunction<
-          void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
-
-  void wire__crate__api__blockchain__broadcast_tx_bytes(
-    int port_,
-    ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
-    ffi.Pointer<wire_cst_list_prim_u_8_loose> tx_bytes,
-  ) {
-    return _wire__crate__api__blockchain__broadcast_tx_bytes(
-      port_,
-      electrum_url,
-      tx_bytes,
-    );
-  }
-
-  late final _wire__crate__api__blockchain__broadcast_tx_bytesPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Int64,
-                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                  ffi.Pointer<wire_cst_list_prim_u_8_loose>)>>(
-      'frbgen_lwk_wire__crate__api__blockchain__broadcast_tx_bytes');
-  late final _wire__crate__api__blockchain__broadcast_tx_bytes =
-      _wire__crate__api__blockchain__broadcast_tx_bytesPtr.asFunction<
-          void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_prim_u_8_loose>)>();
 
   void wire__crate__api__descriptor__descriptor_new_confidential(
     int port_,
@@ -1352,14 +1356,14 @@ final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
   external int len;
 }
 
-final class wire_cst_blockchain extends ffi.Opaque {}
-
 final class wire_cst_list_prim_u_8_loose extends ffi.Struct {
   external ffi.Pointer<ffi.Uint8> ptr;
 
   @ffi.Int32()
   external int len;
 }
+
+final class wire_cst_blockchain extends ffi.Opaque {}
 
 final class wire_cst_wallet extends ffi.Struct {
   @ffi.UintPtr()

@@ -590,20 +590,20 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire__crate__api__types__address_validate(
           port_, address_string);
 
+  void wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
+          NativePortType port_, String electrum_url, String signed_pset) =>
+      wasmModule.wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
+          port_, electrum_url, signed_pset);
+
+  void wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
+          NativePortType port_, String electrum_url, JSAny tx_bytes) =>
+      wasmModule.wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
+          port_, electrum_url, tx_bytes);
+
   void wire__crate__api__blockchain__blockchain_test(
           NativePortType port_, JSAny that, String electrum_url) =>
       wasmModule.wire__crate__api__blockchain__blockchain_test(
           port_, that, electrum_url);
-
-  void wire__crate__api__blockchain__broadcast_signed_pset(
-          NativePortType port_, String electrum_url, String signed_pset) =>
-      wasmModule.wire__crate__api__blockchain__broadcast_signed_pset(
-          port_, electrum_url, signed_pset);
-
-  void wire__crate__api__blockchain__broadcast_tx_bytes(
-          NativePortType port_, String electrum_url, JSAny tx_bytes) =>
-      wasmModule.wire__crate__api__blockchain__broadcast_tx_bytes(
-          port_, electrum_url, tx_bytes);
 
   void wire__crate__api__descriptor__descriptor_new_confidential(
           NativePortType port_, int network, String mnemonic) =>
@@ -726,14 +726,14 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
   external void wire__crate__api__types__address_validate(
       NativePortType port_, String address_string);
 
-  external void wire__crate__api__blockchain__blockchain_test(
-      NativePortType port_, JSAny that, String electrum_url);
-
-  external void wire__crate__api__blockchain__broadcast_signed_pset(
+  external void wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
       NativePortType port_, String electrum_url, String signed_pset);
 
-  external void wire__crate__api__blockchain__broadcast_tx_bytes(
+  external void wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
       NativePortType port_, String electrum_url, JSAny tx_bytes);
+
+  external void wire__crate__api__blockchain__blockchain_test(
+      NativePortType port_, JSAny that, String electrum_url);
 
   external void wire__crate__api__descriptor__descriptor_new_confidential(
       NativePortType port_, int network, String mnemonic);

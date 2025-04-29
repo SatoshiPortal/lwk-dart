@@ -7,20 +7,20 @@ import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-/// Broadcast transaction bytes
-Future<String> broadcastTxBytes(
-        {required String electrumUrl, required List<int> txBytes}) =>
-    LwkCore.instance.api.crateApiBlockchainBroadcastTxBytes(
-        electrumUrl: electrumUrl, txBytes: txBytes);
-
-/// Broadcast a signed pset
-Future<String> broadcastSignedPset(
-        {required String electrumUrl, required String signedPset}) =>
-    LwkCore.instance.api.crateApiBlockchainBroadcastSignedPset(
-        electrumUrl: electrumUrl, signedPset: signedPset);
-
 class Blockchain {
   const Blockchain();
+
+  /// Broadcast a signed pset
+  static Future<String> broadcastSignedPset(
+          {required String electrumUrl, required String signedPset}) =>
+      LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastSignedPset(
+          electrumUrl: electrumUrl, signedPset: signedPset);
+
+  /// Broadcast transaction bytes
+  static Future<String> broadcastTxBytes(
+          {required String electrumUrl, required List<int> txBytes}) =>
+      LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastTxBytes(
+          electrumUrl: electrumUrl, txBytes: txBytes);
 
   Future<void> test({required String electrumUrl}) => LwkCore.instance.api
       .crateApiBlockchainBlockchainTest(that: this, electrumUrl: electrumUrl);
