@@ -11,3 +11,8 @@
 
 - Updated to lwk 0.9
 - Discount CT (Confidential Transaction)
+
+## 0.2.0
+
+- upgrade: frb 2.9.0
+- Add PayJoin API
