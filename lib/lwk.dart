@@ -5,5 +5,7 @@ library lwk;
 export './src/generated/api/descriptor.dart';
 export './src/generated/api/wallet.dart' show Wallet;
 export './src/generated/api/types.dart';
+export './src/generated/api/blockchain.dart';
+export './src/generated/api/transaction.dart';
 export './src/utils/loader.dart';
 export './src/root.dart';

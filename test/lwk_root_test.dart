@@ -21,7 +21,7 @@ void main() {
         dbpath: dbPath,
         descriptor: descriptor,
       );
-      await wallet.sync(electrumUrl: electrumUrl, validateDomain: true);
+      await wallet.sync_(electrumUrl: electrumUrl, validateDomain: true);
       final address = await wallet.addressLastUnused();
       print(address);
       // print(wallet.descriptor());

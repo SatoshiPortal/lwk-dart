@@ -1,14 +1,19 @@
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
-use lwk_wollet::{ elements::{Address as LwkAddress,hex::{FromHex, ToHex},secp256k1_zkp, AddressParams, AssetId, Script},AddressResult, ElectrumClient, WalletTx, WalletTxOut};
+use lwk_wollet::{
+    elements::{hex::{FromHex, ToHex}, pset::PartiallySignedTransaction, Address as LwkAddress, AddressParams, AssetId, Script},
+    secp256k1, AddressResult, WalletTx, WalletTxOut,
+};
 pub use std::collections::{BTreeMap, HashMap};
-pub use std::vec::Vec;
 use std::str::FromStr;
+pub use std::vec::Vec;
 
 use lwk_wollet::ElementsNetwork;
+use std::convert::TryFrom;
+
+use super::error::LwkError;
 
 #[derive(Clone, Copy, PartialEq, Debug)]
-#[frb(dart_metadata=("freezed"))]
 pub enum Network {
     Mainnet,
     Testnet,
@@ -26,6 +31,8 @@ impl Into<ElementsNetwork> for Network {
 pub struct AssetIdBTreeMapUInt(BTreeMap<AssetId, u64>);
 pub struct AssetIdBTreeMapInt(BTreeMap<AssetId, i64>);
 pub struct AssetIdHashMapInt(HashMap<AssetId, i64>);
+pub struct AssetIdHashMapUInt(HashMap<AssetId, u64>);
+
 
 // Implement From for BTreeMap and HashMap
 impl From<BTreeMap<AssetId, i64>> for AssetIdBTreeMapInt {
@@ -45,9 +52,13 @@ impl From<HashMap<AssetId, i64>> for AssetIdHashMapInt {
         AssetIdHashMapInt(map)
     }
 }
+impl From<HashMap<AssetId, u64>> for AssetIdHashMapUInt {
+    fn from(map: HashMap<AssetId, u64>) -> Self {
+        AssetIdHashMapUInt(map)
+    }
+}
 /// Balance represents a balance of a specific asset
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct Balance {
     pub asset_id: String,
     pub value: i64,
@@ -55,7 +66,6 @@ pub struct Balance {
 
 /// Balances is a list of Balance objects 
 /// A multi asset wallet will have more than one item in the list for each asset
-#[frb(dart_metadata=("freezed"))]
 pub type Balances = Vec<Balance>;
 
 impl From<AssetIdBTreeMapInt> for Balances {
@@ -83,10 +93,6 @@ impl From<AssetIdHashMapInt> for Balances {
     }
 }
 
-use std::convert::TryFrom;
-
-use super::error::LwkError;
-
 impl From<AssetIdBTreeMapUInt> for Balances {
     fn from(asset_id_map: AssetIdBTreeMapUInt) -> Self {
         asset_id_map
@@ -96,6 +102,25 @@ impl From<AssetIdBTreeMapUInt> for Balances {
                 Ok(converted_value) => Some(Balance {
                     asset_id: key.to_string(),
                     value: converted_value,
+                }),
+                Err(_) => {
+                    eprintln!("Warning: Overflow encountered converting {} to i64", value);
+                    None
+                }
+            })
+            .collect()
+    }
+}
+
+impl From<AssetIdHashMapUInt> for Balances {
+    fn from(asset_id_map: AssetIdHashMapUInt) -> Self {
+        asset_id_map
+            .0
+            .into_iter()
+            .filter_map(|(key, value)| match u64::try_from(value) {
+                Ok(converted_value) => Some(Balance {
+                    asset_id: key.to_string(),
+                    value: converted_value as i64,
                 }),
                 Err(_) => {
                     eprintln!("Warning: Overflow encountered converting {} to i64", value);
@@ -121,17 +146,19 @@ impl From<WalletTxOut> for TxOut {
                 txid: wallet_tx_out.outpoint.txid.to_string(),
                 vout: wallet_tx_out.outpoint.vout,
             },
+            address: Address::from(wallet_tx_out.address.clone()),
+            is_spent: wallet_tx_out.is_spent,   
         }
     }
 }
 
 /// Address class which contains both standard and confidential addresses with the address index in the wallet
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct Address {
     pub standard: String,
     pub confidential: String,
-    pub index: u32,
+    pub index: Option<u32>,
+    pub blinding_key: Option<String>,
 }
 
 impl From<AddressResult> for Address {
@@ -139,7 +166,18 @@ impl From<AddressResult> for Address {
         Address {
             standard: address.address().to_unconfidential().to_string(),
             confidential: address.address().to_string(),
-            index: address.index(),
+            index: Some(address.index()),
+            blinding_key: address.address().blinding_pubkey.map(|pk| pk.to_string()),
+        }
+    }
+}
+impl From<LwkAddress> for Address {
+    fn from(address: LwkAddress) -> Self {
+        Address {
+            standard: address.to_unconfidential().to_string(),
+            confidential: address.to_string(),
+            index: None,
+            blinding_key: address.blinding_pubkey.map(|pk| pk.to_string()),
         }
     }
 }
@@ -159,12 +197,12 @@ impl Address {
     pub fn address_from_script(
         network: Network,
         script: String,
-        blinding_key: String,
+        blinding_key: Option<String>,
     ) -> anyhow::Result<Address, LwkError> {
-        let blinding_key = if blinding_key == "".to_string() {
+        let blinding_pubkey = if blinding_key == None {
             None
         } else {
-            let pubkey = match secp256k1_zkp::PublicKey::from_str(&blinding_key) {
+            let pubkey = match secp256k1::PublicKey::from_str(&blinding_key.clone().unwrap()) {
                 Ok(result) => result,
                 Err(e) => return Err(LwkError { msg: e.to_string() }),
             };
@@ -177,7 +215,7 @@ impl Address {
 
         let address = LwkAddress::from_script(
             &script_pubkey,
-            blinding_key,
+            blinding_pubkey,
             match network {
                 Network::Mainnet => &AddressParams::LIQUID,
                 Network::Testnet => &AddressParams::LIQUID_TESTNET,
@@ -191,30 +229,30 @@ impl Address {
             Ok(Address {
                 standard: address.clone().unwrap().to_unconfidential().to_string(),
                 confidential: address.unwrap().to_string(),
-                index: 0,
+                index: None,
+                blinding_key: blinding_key,
             })
         }
     }
 }
 
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct OutPoint {
     pub txid: String,
     pub vout: u32,
 }
 
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct TxOut {
     pub script_pubkey: String,
     pub outpoint: OutPoint,
     pub height: Option<u32>,
     pub unblinded: TxOutSecrets,
+    pub is_spent: bool,
+    pub address: Address,
 }
 
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct TxOutSecrets {
     pub value: u64,
     pub value_bf: String,
@@ -224,7 +262,6 @@ pub struct TxOutSecrets {
 
 /// Transaction object returned by getTransactions.
 #[derive(Clone, Debug, PartialEq)]
-#[frb(dart_metadata=("freezed"))]
 pub struct Tx {
     pub timestamp: Option<u32>,
     pub kind: String,
@@ -260,6 +297,8 @@ impl From<WalletTx> for Tx {
                         txid: output.clone().unwrap().outpoint.txid.to_string(),
                         vout: output.clone().unwrap().outpoint.vout,
                     },
+                    address: Address::from(output.clone().unwrap().address.clone()),
+                    is_spent: output.clone().unwrap().is_spent,
                 })
             }
         }
@@ -281,6 +320,8 @@ impl From<WalletTx> for Tx {
                         txid: input.clone().unwrap().outpoint.txid.to_string(),
                         vout: input.clone().unwrap().outpoint.vout,
                     },
+                    address: Address::from(input.clone().unwrap().address.clone()),
+                    is_spent: input.clone().unwrap().is_spent,
                 })
             }
         }
@@ -316,11 +357,57 @@ impl From<PsetBalance> for PsetAmounts {
     }
 }
 
-pub struct Blockchain {}
+#[derive(Clone, Debug, PartialEq)]
+pub struct DecodedPset {
+    pub discounted_vsize: usize,
+    pub discounted_weight: usize,
+    pub absolute_fees: Balances,
+}
+impl From<String> for DecodedPset {
+    fn from(pset_string: String) -> Self {
+        let pset = PartiallySignedTransaction::from_str(&pset_string).unwrap();
+        let tx = pset.extract_tx().unwrap();
+        let all_fees: AssetIdHashMapUInt = tx.all_fees().into();
 
-impl Blockchain {
-    pub fn test(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
-        ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
-        Ok(())
+        DecodedPset {
+            discounted_vsize: tx.discount_vsize(),
+            discounted_weight: tx.discount_weight(),
+            absolute_fees: all_fees.into(),
+        }
     }
 }
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct PayjoinTx {
+    /// Partially signed transaction
+    pub pset: String,
+    /// Network fee
+    pub network_fee: u64,
+    /// Asset fee amount paid to the server
+    pub asset_fee: u64,
+}
+
+// #[test]
+// fn test_address_from_script() {
+//     // The script provided: 0014ac45b647d82582d4ed416e5b84fd418789025dc5
+//     let script = "0014ac45b647d82582d4ed416e5b84fd418789025dc5".to_string();
+//     // Generate blinding key from SLIP77 seed
+//     let slip77_string = "".to_string();
+    
+//     // Get the script for blinding
+
+//     // Call the address_from_script method
+//     let address_result = Address::address_from_script(
+//         Network::Mainnet,
+//         script,
+//         slip77_string,
+//     ).unwrap();
+//     println!("{:?}", address_result);
+//     // Expected values - verify these are correct for your implementation
+//     // let expected_standard = "ex1q9g4gvcdszt4krclr7tcw50vg5hyuuk2kjfyyxu";
+//     // let expected_confidential = "lq1qqg4gvcdszt4krclr7tcw50vg5hyuuk2krzm3el3kvfpe60vf025x2dfqlxzse3rppkan5kdz8qc9f7qwjcc0shw90x34wlse5s3ydw8pyq4eqehu";
+    
+//     // assert_eq!(address_result.standard, expected_standard);
+//     // assert_eq!(address_result.confidential, expected_confidential);
+//     // assert_eq!(address_result.index, 0);
+// }
