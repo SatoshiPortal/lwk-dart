@@ -362,22 +362,26 @@ impl From<PsetBalance> for PsetAmounts {
 
 #[frb(unignore)]
 #[derive(Clone, Debug, PartialEq)]
-pub struct DecodedPset {
+pub struct SizeAndFees {
     pub discounted_vsize: usize,
     pub discounted_weight: usize,
     pub absolute_fees: Balances,
 }
-impl From<String> for DecodedPset {
-    fn from(pset_string: String) -> Self {
-        let pset = PartiallySignedTransaction::from_str(&pset_string).unwrap();
-        let tx = pset.extract_tx().unwrap();
+impl TryFrom<String> for SizeAndFees {
+    type Error = LwkError;
+    fn try_from(pset_string: String) -> Result<Self, Self::Error> {
+        let pset = PartiallySignedTransaction::from_str(&pset_string)
+            .map_err(|e| LwkError { msg: e.to_string() })?;
+        let tx = pset
+            .extract_tx()
+            .map_err(|e| LwkError { msg: e.to_string() })?;
         let all_fees: AssetIdHashMapUInt = tx.all_fees().into();
 
-        DecodedPset {
+        Ok(SizeAndFees {
             discounted_vsize: tx.discount_vsize(),
             discounted_weight: tx.discount_weight(),
             absolute_fees: all_fees.into(),
-        }
+        })
     }
 }
 

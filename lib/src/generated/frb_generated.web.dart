@@ -633,6 +633,10 @@ class LwkCoreWire implements BaseWire {
           NativePortType port_, String pset) =>
       wasmModule.wire__crate__api__transaction__extract_tx_bytes(port_, pset);
 
+  void wire__crate__api__transaction__get_absolute_fees(
+          NativePortType port_, String pset) =>
+      wasmModule.wire__crate__api__transaction__get_absolute_fees(port_, pset);
+
   void wire__crate__api__wallet__wallet_address(
           NativePortType port_, JSAny that, int index) =>
       wasmModule.wire__crate__api__wallet__wallet_address(port_, that, index);
@@ -758,6 +762,9 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       NativePortType port_, int network, String mnemonic);
 
   external void wire__crate__api__transaction__extract_tx_bytes(
+      NativePortType port_, String pset);
+
+  external void wire__crate__api__transaction__get_absolute_fees(
       NativePortType port_, String pset);
 
   external void wire__crate__api__wallet__wallet_address(

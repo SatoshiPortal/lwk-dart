@@ -71,7 +71,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.9.0';
 
   @override
-  int get rustContentHash => -1946550097;
+  int get rustContentHash => 529155595;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -100,6 +100,9 @@ abstract class LwkCoreApi extends BaseApi {
       {required Network network, required String mnemonic});
 
   Future<Uint8List> crateApiTransactionExtractTxBytes({required String pset});
+
+  Future<DecodedPset> crateApiTransactionGetAbsoluteFees(
+      {required String pset});
 
   Future<Address> crateApiWalletWalletAddress(
       {required Wallet that, required int index});
@@ -356,6 +359,31 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   TaskConstMeta get kCrateApiTransactionExtractTxBytesConstMeta =>
       const TaskConstMeta(
         debugName: "extract_tx_bytes",
+        argNames: ["pset"],
+      );
+
+  @override
+  Future<DecodedPset> crateApiTransactionGetAbsoluteFees(
+      {required String pset}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_String(pset);
+        return wire.wire__crate__api__transaction__get_absolute_fees(
+            port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_decoded_pset,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta: kCrateApiTransactionGetAbsoluteFeesConstMeta,
+      argValues: [pset],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiTransactionGetAbsoluteFeesConstMeta =>
+      const TaskConstMeta(
+        debugName: "get_absolute_fees",
         argNames: ["pset"],
       );
 

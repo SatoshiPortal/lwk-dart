@@ -812,6 +812,25 @@ class LwkCoreWire implements BaseWire {
       _wire__crate__api__transaction__extract_tx_bytesPtr.asFunction<
           void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
+  void wire__crate__api__transaction__get_absolute_fees(
+    int port_,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> pset,
+  ) {
+    return _wire__crate__api__transaction__get_absolute_fees(
+      port_,
+      pset,
+    );
+  }
+
+  late final _wire__crate__api__transaction__get_absolute_feesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Int64, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+      'frbgen_lwk_wire__crate__api__transaction__get_absolute_fees');
+  late final _wire__crate__api__transaction__get_absolute_fees =
+      _wire__crate__api__transaction__get_absolute_feesPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+
   void wire__crate__api__wallet__wallet_address(
     int port_,
     ffi.Pointer<wire_cst_wallet> that,
