@@ -734,6 +734,20 @@ impl SseDecode for bool {
     }
 }
 
+impl SseDecode for crate::api::types::DecodedPset {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_discountedVsize = <usize>::sse_decode(deserializer);
+        let mut var_discountedWeight = <usize>::sse_decode(deserializer);
+        let mut var_absoluteFees = <Vec<crate::api::types::Balance>>::sse_decode(deserializer);
+        return crate::api::types::DecodedPset {
+            discounted_vsize: var_discountedVsize,
+            discounted_weight: var_discountedWeight,
+            absolute_fees: var_absoluteFees,
+        };
+    }
+}
+
 impl SseDecode for crate::api::descriptor::Descriptor {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1077,6 +1091,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::blockchain::Blockchain>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::types::DecodedPset {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.discounted_vsize.into_into_dart().into_dart(),
+            self.discounted_weight.into_into_dart().into_dart(),
+            self.absolute_fees.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::types::DecodedPset
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::DecodedPset>
+    for crate::api::types::DecodedPset
+{
+    fn into_into_dart(self) -> crate::api::types::DecodedPset {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::descriptor::Descriptor {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [self.ct_descriptor.into_into_dart().into_dart()].into_dart()
@@ -1304,6 +1340,15 @@ impl SseEncode for bool {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_u8(self as _).unwrap();
+    }
+}
+
+impl SseEncode for crate::api::types::DecodedPset {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <usize>::sse_encode(self.discounted_vsize, serializer);
+        <usize>::sse_encode(self.discounted_weight, serializer);
+        <Vec<crate::api::types::Balance>>::sse_encode(self.absolute_fees, serializer);
     }
 }
 
@@ -1611,6 +1656,16 @@ mod io {
             CstDecode::<crate::api::wallet::Wallet>::cst_decode(*wrap).into()
         }
     }
+    impl CstDecode<crate::api::types::DecodedPset> for wire_cst_decoded_pset {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::types::DecodedPset {
+            crate::api::types::DecodedPset {
+                discounted_vsize: self.discounted_vsize.cst_decode(),
+                discounted_weight: self.discounted_weight.cst_decode(),
+                absolute_fees: self.absolute_fees.cst_decode(),
+            }
+        }
+    }
     impl CstDecode<crate::api::descriptor::Descriptor> for wire_cst_descriptor {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> crate::api::descriptor::Descriptor {
@@ -1786,6 +1841,20 @@ mod io {
         }
     }
     impl Default for wire_cst_blockchain {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_decoded_pset {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                discounted_vsize: Default::default(),
+                discounted_weight: Default::default(),
+                absolute_fees: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_decoded_pset {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -2281,6 +2350,13 @@ mod io {
     pub struct wire_cst_blockchain {}
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_decoded_pset {
+        discounted_vsize: usize,
+        discounted_weight: usize,
+        absolute_fees: *mut wire_cst_list_balance,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_descriptor {
         ct_descriptor: *mut wire_cst_list_prim_u_8_strict,
     }
@@ -2466,6 +2542,27 @@ mod web {
                 self_.length()
             );
             crate::api::blockchain::Blockchain {}
+        }
+    }
+    impl CstDecode<crate::api::types::DecodedPset>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::types::DecodedPset {
+            let self_ = self
+                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap();
+            assert_eq!(
+                self_.length(),
+                3,
+                "Expected 3 elements, got {}",
+                self_.length()
+            );
+            crate::api::types::DecodedPset {
+                discounted_vsize: self_.get(0).cst_decode(),
+                discounted_weight: self_.get(1).cst_decode(),
+                absolute_fees: self_.get(2).cst_decode(),
+            }
         }
     }
     impl CstDecode<crate::api::descriptor::Descriptor>

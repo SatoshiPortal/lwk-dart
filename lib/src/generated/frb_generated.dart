@@ -851,6 +851,19 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  DecodedPset dco_decode_decoded_pset(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return DecodedPset(
+      discountedVsize: dco_decode_usize(arr[0]),
+      discountedWeight: dco_decode_usize(arr[1]),
+      absoluteFees: dco_decode_list_balance(arr[2]),
+    );
+  }
+
+  @protected
   Descriptor dco_decode_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -1137,6 +1150,18 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_wallet(deserializer));
+  }
+
+  @protected
+  DecodedPset sse_decode_decoded_pset(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_discountedVsize = sse_decode_usize(deserializer);
+    var var_discountedWeight = sse_decode_usize(deserializer);
+    var var_absoluteFees = sse_decode_list_balance(deserializer);
+    return DecodedPset(
+        discountedVsize: var_discountedVsize,
+        discountedWeight: var_discountedWeight,
+        absoluteFees: var_absoluteFees);
   }
 
   @protected
@@ -1484,6 +1509,14 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_wallet(self, serializer);
+  }
+
+  @protected
+  void sse_encode_decoded_pset(DecodedPset self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(self.discountedVsize, serializer);
+    sse_encode_usize(self.discountedWeight, serializer);
+    sse_encode_list_balance(self.absoluteFees, serializer);
   }
 
   @protected

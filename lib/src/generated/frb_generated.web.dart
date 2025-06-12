@@ -60,6 +60,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet dco_decode_box_autoadd_wallet(dynamic raw);
 
   @protected
+  DecodedPset dco_decode_decoded_pset(dynamic raw);
+
+  @protected
   Descriptor dco_decode_descriptor(dynamic raw);
 
   @protected
@@ -164,6 +167,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer);
+
+  @protected
+  DecodedPset sse_decode_decoded_pset(SseDeserializer deserializer);
 
   @protected
   Descriptor sse_decode_descriptor(SseDeserializer deserializer);
@@ -292,6 +298,16 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   JSAny cst_encode_box_autoadd_wallet(Wallet raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_wallet(raw);
+  }
+
+  @protected
+  JSAny cst_encode_decoded_pset(DecodedPset raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_usize(raw.discountedVsize),
+      cst_encode_usize(raw.discountedWeight),
+      cst_encode_list_balance(raw.absoluteFees)
+    ].jsify()!;
   }
 
   @protected
@@ -494,6 +510,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_decoded_pset(DecodedPset self, SseSerializer serializer);
 
   @protected
   void sse_encode_descriptor(Descriptor self, SseSerializer serializer);

@@ -58,6 +58,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet dco_decode_box_autoadd_wallet(dynamic raw);
 
   @protected
+  DecodedPset dco_decode_decoded_pset(dynamic raw);
+
+  @protected
   Descriptor dco_decode_descriptor(dynamic raw);
 
   @protected
@@ -162,6 +165,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer);
+
+  @protected
+  DecodedPset sse_decode_decoded_pset(SseDeserializer deserializer);
 
   @protected
   Descriptor sse_decode_descriptor(SseDeserializer deserializer);
@@ -387,6 +393,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_decoded_pset(
+      DecodedPset apiObj, wire_cst_decoded_pset wireObj) {
+    wireObj.discounted_vsize = cst_encode_usize(apiObj.discountedVsize);
+    wireObj.discounted_weight = cst_encode_usize(apiObj.discountedWeight);
+    wireObj.absolute_fees = cst_encode_list_balance(apiObj.absoluteFees);
+  }
+
+  @protected
   void cst_api_fill_to_wire_descriptor(
       Descriptor apiObj, wire_cst_descriptor wireObj) {
     wireObj.ct_descriptor = cst_encode_String(apiObj.ctDescriptor);
@@ -514,6 +528,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_decoded_pset(DecodedPset self, SseSerializer serializer);
 
   @protected
   void sse_encode_descriptor(Descriptor self, SseSerializer serializer);
@@ -1467,6 +1484,16 @@ final class wire_cst_list_tx extends ffi.Struct {
 
   @ffi.Int32()
   external int len;
+}
+
+final class wire_cst_decoded_pset extends ffi.Struct {
+  @ffi.UintPtr()
+  external int discounted_vsize;
+
+  @ffi.UintPtr()
+  external int discounted_weight;
+
+  external ffi.Pointer<wire_cst_list_balance> absolute_fees;
 }
 
 final class wire_cst_lwk_error extends ffi.Struct {

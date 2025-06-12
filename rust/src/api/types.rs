@@ -1,7 +1,11 @@
 use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
 use lwk_wollet::{
-    elements::{hex::{FromHex, ToHex}, pset::PartiallySignedTransaction, Address as LwkAddress, AddressParams, AssetId, Script},
+    elements::{
+        hex::{FromHex, ToHex},
+        pset::PartiallySignedTransaction,
+        Address as LwkAddress, AddressParams, AssetId, Script,
+    },
     secp256k1, AddressResult, WalletTx, WalletTxOut,
 };
 pub use std::collections::{BTreeMap, HashMap};
@@ -33,7 +37,6 @@ pub struct AssetIdBTreeMapInt(BTreeMap<AssetId, i64>);
 pub struct AssetIdHashMapInt(HashMap<AssetId, i64>);
 pub struct AssetIdHashMapUInt(HashMap<AssetId, u64>);
 
-
 // Implement From for BTreeMap and HashMap
 impl From<BTreeMap<AssetId, i64>> for AssetIdBTreeMapInt {
     fn from(map: BTreeMap<AssetId, i64>) -> Self {
@@ -64,7 +67,7 @@ pub struct Balance {
     pub value: i64,
 }
 
-/// Balances is a list of Balance objects 
+/// Balances is a list of Balance objects
 /// A multi asset wallet will have more than one item in the list for each asset
 pub type Balances = Vec<Balance>;
 
@@ -147,7 +150,7 @@ impl From<WalletTxOut> for TxOut {
                 vout: wallet_tx_out.outpoint.vout,
             },
             address: Address::from(wallet_tx_out.address.clone()),
-            is_spent: wallet_tx_out.is_spent,   
+            is_spent: wallet_tx_out.is_spent,
         }
     }
 }
@@ -192,7 +195,7 @@ impl Address {
             Ok(Network::Testnet)
         }
     }
-    
+
     /// Create an address from a scriptpubkey. Always returns 0 as the index is only for wallet generated addresses
     pub fn address_from_script(
         network: Network,
@@ -357,6 +360,7 @@ impl From<PsetBalance> for PsetAmounts {
     }
 }
 
+#[frb(unignore)]
 #[derive(Clone, Debug, PartialEq)]
 pub struct DecodedPset {
     pub discounted_vsize: usize,
@@ -393,7 +397,7 @@ pub struct PayjoinTx {
 //     let script = "0014ac45b647d82582d4ed416e5b84fd418789025dc5".to_string();
 //     // Generate blinding key from SLIP77 seed
 //     let slip77_string = "".to_string();
-    
+
 //     // Get the script for blinding
 
 //     // Call the address_from_script method
@@ -406,7 +410,7 @@ pub struct PayjoinTx {
 //     // Expected values - verify these are correct for your implementation
 //     // let expected_standard = "ex1q9g4gvcdszt4krclr7tcw50vg5hyuuk2kjfyyxu";
 //     // let expected_confidential = "lq1qqg4gvcdszt4krclr7tcw50vg5hyuuk2krzm3el3kvfpe60vf025x2dfqlxzse3rppkan5kdz8qc9f7qwjcc0shw90x34wlse5s3ydw8pyq4eqehu";
-    
+
 //     // assert_eq!(address_result.standard, expected_standard);
 //     // assert_eq!(address_result.confidential, expected_confidential);
 //     // assert_eq!(address_result.index, 0);

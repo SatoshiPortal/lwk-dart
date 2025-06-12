@@ -97,6 +97,12 @@ typedef struct wire_cst_list_tx {
   int32_t len;
 } wire_cst_list_tx;
 
+typedef struct wire_cst_decoded_pset {
+  uintptr_t discounted_vsize;
+  uintptr_t discounted_weight;
+  struct wire_cst_list_balance *absolute_fees;
+} wire_cst_decoded_pset;
+
 typedef struct wire_cst_lwk_error {
   struct wire_cst_list_prim_u_8_strict *msg;
 } wire_cst_lwk_error;
