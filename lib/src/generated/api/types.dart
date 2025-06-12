@@ -77,33 +77,6 @@ class Balance {
           value == other.value;
 }
 
-class DecodedPset {
-  final BigInt discountedVsize;
-  final BigInt discountedWeight;
-  final List<Balance> absoluteFees;
-
-  const DecodedPset({
-    required this.discountedVsize,
-    required this.discountedWeight,
-    required this.absoluteFees,
-  });
-
-  @override
-  int get hashCode =>
-      discountedVsize.hashCode ^
-      discountedWeight.hashCode ^
-      absoluteFees.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DecodedPset &&
-          runtimeType == other.runtimeType &&
-          discountedVsize == other.discountedVsize &&
-          discountedWeight == other.discountedWeight &&
-          absoluteFees == other.absoluteFees;
-}
-
 enum Network {
   mainnet,
   testnet,
@@ -180,6 +153,33 @@ class PsetAmounts {
           runtimeType == other.runtimeType &&
           absoluteFees == other.absoluteFees &&
           balances == other.balances;
+}
+
+class SizeAndFees {
+  final BigInt discountedVsize;
+  final BigInt discountedWeight;
+  final List<Balance> absoluteFees;
+
+  const SizeAndFees({
+    required this.discountedVsize,
+    required this.discountedWeight,
+    required this.absoluteFees,
+  });
+
+  @override
+  int get hashCode =>
+      discountedVsize.hashCode ^
+      discountedWeight.hashCode ^
+      absoluteFees.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SizeAndFees &&
+          runtimeType == other.runtimeType &&
+          discountedVsize == other.discountedVsize &&
+          discountedWeight == other.discountedWeight &&
+          absoluteFees == other.absoluteFees;
 }
 
 /// Transaction object returned by getTransactions.

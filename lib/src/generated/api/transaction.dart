@@ -12,5 +12,5 @@ import 'types.dart';
 Future<Uint8List> extractTxBytes({required String pset}) =>
     LwkCore.instance.api.crateApiTransactionExtractTxBytes(pset: pset);
 
-Future<DecodedPset> getAbsoluteFees({required String pset}) =>
-    LwkCore.instance.api.crateApiTransactionGetAbsoluteFees(pset: pset);
+Future<SizeAndFees> getSizeAndAbsoluteFees({required String pset}) =>
+    LwkCore.instance.api.crateApiTransactionGetSizeAndAbsoluteFees(pset: pset);
