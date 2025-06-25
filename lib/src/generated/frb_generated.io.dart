@@ -106,6 +106,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PsetAmounts dco_decode_pset_amounts(dynamic raw);
 
   @protected
+  SizeAndFees dco_decode_size_and_fees(dynamic raw);
+
+  @protected
   Tx dco_decode_tx(dynamic raw);
 
   @protected
@@ -210,6 +213,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer);
+
+  @protected
+  SizeAndFees sse_decode_size_and_fees(SseDeserializer deserializer);
 
   @protected
   Tx sse_decode_tx(SseDeserializer deserializer);
@@ -421,6 +427,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_size_and_fees(
+      SizeAndFees apiObj, wire_cst_size_and_fees wireObj) {
+    wireObj.discounted_vsize = cst_encode_usize(apiObj.discountedVsize);
+    wireObj.discounted_weight = cst_encode_usize(apiObj.discountedWeight);
+    wireObj.absolute_fees = cst_encode_list_balance(apiObj.absoluteFees);
+  }
+
+  @protected
   void cst_api_fill_to_wire_tx(Tx apiObj, wire_cst_tx wireObj) {
     wireObj.timestamp = cst_encode_opt_box_autoadd_u_32(apiObj.timestamp);
     wireObj.kind = cst_encode_String(apiObj.kind);
@@ -563,6 +577,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_size_and_fees(SizeAndFees self, SseSerializer serializer);
 
   @protected
   void sse_encode_tx(Tx self, SseSerializer serializer);
@@ -793,6 +810,26 @@ class LwkCoreWire implements BaseWire {
       'frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes');
   late final _wire__crate__api__transaction__extract_tx_bytes =
       _wire__crate__api__transaction__extract_tx_bytesPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+
+  void wire__crate__api__transaction__get_size_and_absolute_fees(
+    int port_,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> pset,
+  ) {
+    return _wire__crate__api__transaction__get_size_and_absolute_fees(
+      port_,
+      pset,
+    );
+  }
+
+  late final _wire__crate__api__transaction__get_size_and_absolute_feesPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Void Function(
+                      ffi.Int64, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+          'frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees');
+  late final _wire__crate__api__transaction__get_size_and_absolute_fees =
+      _wire__crate__api__transaction__get_size_and_absolute_feesPtr.asFunction<
           void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   void wire__crate__api__wallet__wallet_address(
@@ -1488,4 +1525,14 @@ final class wire_cst_pset_amounts extends ffi.Struct {
   external int absolute_fees;
 
   external ffi.Pointer<wire_cst_list_balance> balances;
+}
+
+final class wire_cst_size_and_fees extends ffi.Struct {
+  @ffi.UintPtr()
+  external int discounted_vsize;
+
+  @ffi.UintPtr()
+  external int discounted_weight;
+
+  external ffi.Pointer<wire_cst_list_balance> absolute_fees;
 }

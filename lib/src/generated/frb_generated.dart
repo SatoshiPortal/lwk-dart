@@ -71,7 +71,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.9.0';
 
   @override
-  int get rustContentHash => -1946550097;
+  int get rustContentHash => 119919397;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -100,6 +100,9 @@ abstract class LwkCoreApi extends BaseApi {
       {required Network network, required String mnemonic});
 
   Future<Uint8List> crateApiTransactionExtractTxBytes({required String pset});
+
+  Future<SizeAndFees> crateApiTransactionGetSizeAndAbsoluteFees(
+      {required String pset});
 
   Future<Address> crateApiWalletWalletAddress(
       {required Wallet that, required int index});
@@ -356,6 +359,31 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   TaskConstMeta get kCrateApiTransactionExtractTxBytesConstMeta =>
       const TaskConstMeta(
         debugName: "extract_tx_bytes",
+        argNames: ["pset"],
+      );
+
+  @override
+  Future<SizeAndFees> crateApiTransactionGetSizeAndAbsoluteFees(
+      {required String pset}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_String(pset);
+        return wire.wire__crate__api__transaction__get_size_and_absolute_fees(
+            port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_size_and_fees,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta: kCrateApiTransactionGetSizeAndAbsoluteFeesConstMeta,
+      argValues: [pset],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiTransactionGetSizeAndAbsoluteFeesConstMeta =>
+      const TaskConstMeta(
+        debugName: "get_size_and_absolute_fees",
         argNames: ["pset"],
       );
 
@@ -976,6 +1004,19 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  SizeAndFees dco_decode_size_and_fees(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return SizeAndFees(
+      discountedVsize: dco_decode_usize(arr[0]),
+      discountedWeight: dco_decode_usize(arr[1]),
+      absoluteFees: dco_decode_list_balance(arr[2]),
+    );
+  }
+
+  @protected
   Tx dco_decode_tx(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -1274,6 +1315,18 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     var var_absoluteFees = sse_decode_u_64(deserializer);
     var var_balances = sse_decode_list_balance(deserializer);
     return PsetAmounts(absoluteFees: var_absoluteFees, balances: var_balances);
+  }
+
+  @protected
+  SizeAndFees sse_decode_size_and_fees(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_discountedVsize = sse_decode_usize(deserializer);
+    var var_discountedWeight = sse_decode_usize(deserializer);
+    var var_absoluteFees = sse_decode_list_balance(deserializer);
+    return SizeAndFees(
+        discountedVsize: var_discountedVsize,
+        discountedWeight: var_discountedWeight,
+        absoluteFees: var_absoluteFees);
   }
 
   @protected
@@ -1606,6 +1659,14 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_64(self.absoluteFees, serializer);
     sse_encode_list_balance(self.balances, serializer);
+  }
+
+  @protected
+  void sse_encode_size_and_fees(SizeAndFees self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(self.discountedVsize, serializer);
+    sse_encode_usize(self.discountedWeight, serializer);
+    sse_encode_list_balance(self.absoluteFees, serializer);
   }
 
   @protected

@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.9.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1946550097;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 119919397;
 
 // Section: executor
 
@@ -213,6 +213,27 @@ fn wire__crate__api__transaction__extract_tx_bytes_impl(
             move |context| {
                 transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
                     let output_ok = crate::api::transaction::extract_tx_bytes(api_pset)?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__crate__api__transaction__get_size_and_absolute_fees_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    pset: impl CstDecode<String>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_size_and_absolute_fees",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_pset = pset.cst_decode();
+            move |context| {
+                transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                    let output_ok = crate::api::transaction::get_size_and_absolute_fees(api_pset)?;
                     Ok(output_ok)
                 })())
             }
@@ -893,6 +914,20 @@ impl SseDecode for crate::api::types::PsetAmounts {
     }
 }
 
+impl SseDecode for crate::api::types::SizeAndFees {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_discountedVsize = <usize>::sse_decode(deserializer);
+        let mut var_discountedWeight = <usize>::sse_decode(deserializer);
+        let mut var_absoluteFees = <Vec<crate::api::types::Balance>>::sse_decode(deserializer);
+        return crate::api::types::SizeAndFees {
+            discounted_vsize: var_discountedVsize,
+            discounted_weight: var_discountedWeight,
+            absolute_fees: var_absoluteFees,
+        };
+    }
+}
+
 impl SseDecode for crate::api::types::Tx {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1182,6 +1217,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::PsetAmounts>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::types::SizeAndFees {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.discounted_vsize.into_into_dart().into_dart(),
+            self.discounted_weight.into_into_dart().into_dart(),
+            self.absolute_fees.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::types::SizeAndFees
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::SizeAndFees>
+    for crate::api::types::SizeAndFees
+{
+    fn into_into_dart(self) -> crate::api::types::SizeAndFees {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::types::Tx {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -1440,6 +1497,15 @@ impl SseEncode for crate::api::types::PsetAmounts {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <u64>::sse_encode(self.absolute_fees, serializer);
         <Vec<crate::api::types::Balance>>::sse_encode(self.balances, serializer);
+    }
+}
+
+impl SseEncode for crate::api::types::SizeAndFees {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <usize>::sse_encode(self.discounted_vsize, serializer);
+        <usize>::sse_encode(self.discounted_weight, serializer);
+        <Vec<crate::api::types::Balance>>::sse_encode(self.absolute_fees, serializer);
     }
 }
 
@@ -1703,6 +1769,16 @@ mod io {
             }
         }
     }
+    impl CstDecode<crate::api::types::SizeAndFees> for wire_cst_size_and_fees {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::types::SizeAndFees {
+            crate::api::types::SizeAndFees {
+                discounted_vsize: self.discounted_vsize.cst_decode(),
+                discounted_weight: self.discounted_weight.cst_decode(),
+                absolute_fees: self.absolute_fees.cst_decode(),
+            }
+        }
+    }
     impl CstDecode<crate::api::types::Tx> for wire_cst_tx {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> crate::api::types::Tx {
@@ -1854,6 +1930,20 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_size_and_fees {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                discounted_vsize: Default::default(),
+                discounted_weight: Default::default(),
+                absolute_fees: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_size_and_fees {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_tx {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -1993,6 +2083,14 @@ mod io {
         pset: *mut wire_cst_list_prim_u_8_strict,
     ) {
         wire__crate__api__transaction__extract_tx_bytes_impl(port_, pset)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees(
+        port_: i64,
+        pset: *mut wire_cst_list_prim_u_8_strict,
+    ) {
+        wire__crate__api__transaction__get_size_and_absolute_fees_impl(port_, pset)
     }
 
     #[unsafe(no_mangle)]
@@ -2340,6 +2438,13 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_size_and_fees {
+        discounted_vsize: usize,
+        discounted_weight: usize,
+        absolute_fees: *mut wire_cst_list_balance,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_tx {
         timestamp: *mut u32,
         kind: *mut wire_cst_list_prim_u_8_strict,
@@ -2615,6 +2720,27 @@ mod web {
             }
         }
     }
+    impl CstDecode<crate::api::types::SizeAndFees>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::types::SizeAndFees {
+            let self_ = self
+                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap();
+            assert_eq!(
+                self_.length(),
+                3,
+                "Expected 3 elements, got {}",
+                self_.length()
+            );
+            crate::api::types::SizeAndFees {
+                discounted_vsize: self_.get(0).cst_decode(),
+                discounted_weight: self_.get(1).cst_decode(),
+                absolute_fees: self_.get(2).cst_decode(),
+            }
+        }
+    }
     impl CstDecode<crate::api::types::Tx>
         for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
     {
@@ -2864,6 +2990,14 @@ mod web {
         pset: String,
     ) {
         wire__crate__api__transaction__extract_tx_bytes_impl(port_, pset)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__get_size_and_absolute_fees(
+        port_: flutter_rust_bridge::for_generated::MessagePort,
+        pset: String,
+    ) {
+        wire__crate__api__transaction__get_size_and_absolute_fees_impl(port_, pset)
     }
 
     #[wasm_bindgen]

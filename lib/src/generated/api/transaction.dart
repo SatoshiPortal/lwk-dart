@@ -6,7 +6,11 @@
 import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'types.dart';
 
 /// Extract the Transaction Bytes from a PartiallySignedTransaction
 Future<Uint8List> extractTxBytes({required String pset}) =>
     LwkCore.instance.api.crateApiTransactionExtractTxBytes(pset: pset);
+
+Future<SizeAndFees> getSizeAndAbsoluteFees({required String pset}) =>
+    LwkCore.instance.api.crateApiTransactionGetSizeAndAbsoluteFees(pset: pset);
