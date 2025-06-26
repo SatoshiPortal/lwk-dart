@@ -1,3 +1,10 @@
+## 0.2.1
+
+- fix: export error type
+- added: DecodedPset for absolute fees from pset
+- added: method to return SizeAndFees (renamed DecodedPset)
+- updated generated code
+
 ## 0.2.0
 
 - upgrade: frb 2.9.0
