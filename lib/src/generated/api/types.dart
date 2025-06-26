@@ -7,8 +7,8 @@ import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AssetIdBTreeMapInt`, `AssetIdBTreeMapUInt`, `AssetIdHashMapInt`, `AssetIdHashMapUInt`, `DecodedPset`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AssetIdBTreeMapInt`, `AssetIdBTreeMapUInt`, `AssetIdHashMapInt`, `AssetIdHashMapUInt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `try_from`
 
 /// Address class which contains both standard and confidential addresses with the address index in the wallet
 class Address {
@@ -153,6 +153,33 @@ class PsetAmounts {
           runtimeType == other.runtimeType &&
           absoluteFees == other.absoluteFees &&
           balances == other.balances;
+}
+
+class SizeAndFees {
+  final BigInt discountedVsize;
+  final BigInt discountedWeight;
+  final List<Balance> absoluteFees;
+
+  const SizeAndFees({
+    required this.discountedVsize,
+    required this.discountedWeight,
+    required this.absoluteFees,
+  });
+
+  @override
+  int get hashCode =>
+      discountedVsize.hashCode ^
+      discountedWeight.hashCode ^
+      absoluteFees.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SizeAndFees &&
+          runtimeType == other.runtimeType &&
+          discountedVsize == other.discountedVsize &&
+          discountedWeight == other.discountedWeight &&
+          absoluteFees == other.absoluteFees;
 }
 
 /// Transaction object returned by getTransactions.

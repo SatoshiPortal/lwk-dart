@@ -108,6 +108,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PsetAmounts dco_decode_pset_amounts(dynamic raw);
 
   @protected
+  SizeAndFees dco_decode_size_and_fees(dynamic raw);
+
+  @protected
   Tx dco_decode_tx(dynamic raw);
 
   @protected
@@ -212,6 +215,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer);
+
+  @protected
+  SizeAndFees sse_decode_size_and_fees(SseDeserializer deserializer);
 
   @protected
   Tx sse_decode_tx(SseDeserializer deserializer);
@@ -376,6 +382,16 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     return [
       cst_encode_u_64(raw.absoluteFees),
       cst_encode_list_balance(raw.balances)
+    ].jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_size_and_fees(SizeAndFees raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_usize(raw.discountedVsize),
+      cst_encode_usize(raw.discountedWeight),
+      cst_encode_list_balance(raw.absoluteFees)
     ].jsify()!;
   }
 
@@ -545,6 +561,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer);
 
   @protected
+  void sse_encode_size_and_fees(SizeAndFees self, SseSerializer serializer);
+
+  @protected
   void sse_encode_tx(Tx self, SseSerializer serializer);
 
   @protected
@@ -613,6 +632,11 @@ class LwkCoreWire implements BaseWire {
   void wire__crate__api__transaction__extract_tx_bytes(
           NativePortType port_, String pset) =>
       wasmModule.wire__crate__api__transaction__extract_tx_bytes(port_, pset);
+
+  void wire__crate__api__transaction__get_size_and_absolute_fees(
+          NativePortType port_, String pset) =>
+      wasmModule.wire__crate__api__transaction__get_size_and_absolute_fees(
+          port_, pset);
 
   void wire__crate__api__wallet__wallet_address(
           NativePortType port_, JSAny that, int index) =>
@@ -739,6 +763,9 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       NativePortType port_, int network, String mnemonic);
 
   external void wire__crate__api__transaction__extract_tx_bytes(
+      NativePortType port_, String pset);
+
+  external void wire__crate__api__transaction__get_size_and_absolute_fees(
       NativePortType port_, String pset);
 
   external void wire__crate__api__wallet__wallet_address(

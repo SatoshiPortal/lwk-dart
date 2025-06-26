@@ -2,7 +2,7 @@ name: lwk
 description: "A dart/flutter library with language bindings for rust library [lwk](https://github.com/Blockstream/lwk) - Liquid Wallet Kit."
 repository: https://github.com/SatoshiPortal/lwk-dart
 
-version: 0.2.0
+version: 0.2.1
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
