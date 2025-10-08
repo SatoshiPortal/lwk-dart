@@ -5,8 +5,7 @@ use lwk_wollet::full_scan_with_electrum_client;
 use crate::frb_generated::RustOpaque;
 // use log::{info, warn};
 use lwk_wollet::elements::{
-    pset::PartiallySignedTransaction,
-    Address as LwkAddress, AssetId as LwkAssetId, OutPoint,
+    pset::PartiallySignedTransaction, Address as LwkAddress, AssetId as LwkAssetId,
 };
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
@@ -172,6 +171,26 @@ impl Wallet {
         Ok(pset.to_string())
     }
 
+    fn move_payjoin_signatures(pset: &mut PartiallySignedTransaction) -> Result<(), anyhow::Error> {
+        // The SideSwap server returns the signatures in the final_script_witness field.
+        // We need to move them to the partial_sigs field.
+        for (index, input) in pset.inputs_mut().iter_mut().enumerate() {
+            if let Some(final_script) = input.final_script_witness.take() {
+                match final_script.as_slice() {
+                    [signature, public_key] => {
+                        let public_key =
+                            lwk_wollet::elements::bitcoin::PublicKey::from_slice(&public_key)?;
+                        input.partial_sigs.insert(public_key, signature.clone());
+                    }
+                    _ => {
+                        anyhow::bail!("unexpected final_script_witness for input {index}");
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
+
     /// Build a PayJoin transaction for a specific asset, even if the wallet does not contain L-BTC UTXOs.
     /// The asset must be one of the assets supported by SideSwap, such as USDt or DePix.
     /// This creates a coin-join PSET. The PSET includes the asset wallet inputs and change,
@@ -236,7 +255,7 @@ impl Wallet {
             })
             .collect::<Vec<_>>();
 
-        let payjoin = sideswap_payjoin::create_payjoin(
+        let mut payjoin = sideswap_payjoin::create_payjoin(
             &mut payjoin_wallet,
             sideswap_payjoin::CreatePayjoin {
                 network,
@@ -258,6 +277,8 @@ impl Wallet {
             msg: err.to_string(),
         })?;
 
+        Self::move_payjoin_signatures(&mut payjoin.pset)?;
+
         Ok(super::types::PayjoinTx {
             pset: payjoin.pset.to_string(),
             network_fee: payjoin.network_fee,
@@ -272,6 +293,25 @@ impl Wallet {
         Ok(PsetAmounts::from(pset_details.balance))
     }
 
+    fn sign_tx_common(
+        &self,
+        network: Network,
+        pset: String,
+        mnemonic: String,
+        add_details: bool,
+    ) -> anyhow::Result<String, LwkError> {
+        let is_mainnet = network == Network::Testnet;
+        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
+        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
+        if add_details {
+            self.get_wallet()?.add_details(&mut pset)?;
+        }
+        let _ = signer.sign(&mut pset);
+        let tx = self.get_wallet()?.finalize(&mut pset)?;
+        let finalized_pset = PartiallySignedTransaction::from_tx(tx.clone());
+        Ok(finalized_pset.to_string())
+    }
+
     /// Sign a wallet transaction, returns (pset, signed_bytes)
     pub fn sign_tx(
         &self,
@@ -279,13 +319,7 @@ impl Wallet {
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<String, LwkError> {
-        let is_mainnet = network == Network::Testnet;
-        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
-        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-        let _ = signer.sign(&mut pset);
-        let tx = self.get_wallet()?.finalize(&mut pset)?;
-        let finalized_pset = PartiallySignedTransaction::from_tx(tx.clone());
-        Ok(finalized_pset.to_string())
+        self.sign_tx_common(network, pset, mnemonic, false)
     }
 
     /// Get utxos of the wallet
@@ -295,22 +329,6 @@ impl Wallet {
         Ok(tx_outs)
     }
 
-    /// Given an outpoint, get the associated txout
-    fn get_txout(&self, outpoint: &OutPoint) -> Result<lwk_wollet::elements::TxOut, LwkError> {
-        let wallet_transaction = self.get_wallet()?.transaction(&outpoint.txid)?;
-        let transaction = wallet_transaction.ok_or(LwkError {
-            msg: "Wallet transaction not found".to_string(),
-        })?;
-        let txout = transaction
-            .tx
-            .output
-            .get(outpoint.vout as usize)
-            .ok_or(LwkError {
-                msg: "Could not find txout".to_string(),
-            })?;
-        Ok(txout.clone())
-    }
-
     /// Sign a pset with extra details (used for asset transactions)
     pub fn signed_pset_with_extra_details(
         &self,
@@ -318,32 +336,8 @@ impl Wallet {
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<String, LwkError> {
-        let is_mainnet = network == Network::Testnet;
-        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
-        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-
-        for input in pset.inputs_mut().iter_mut() {
-            let res = self.get_txout(&lwk_wollet::elements::OutPoint {
-                txid: input.previous_txid,
-                vout: input.previous_output_index,
-            });
-            if let Ok(mut txout) = res {
-                input.in_utxo_rangeproof = txout.witness.rangeproof.take();
-                input.witness_utxo = Some(txout);
-            }
-        }
-        self.get_wallet()?.add_details(&mut pset)?;
-        let _ = signer.sign(&mut pset);
-
-        for input in pset.inputs_mut() {
-            if let Some((public_key, input_sign)) = input.partial_sigs.iter().next() {
-                input.final_script_witness = Some(vec![input_sign.clone(), public_key.to_bytes()]);
-            }
-        }
-
-        Ok(pset.to_string())
+        self.sign_tx_common(network, pset, mnemonic, true)
     }
-
 }
 
 #[cfg(test)]
