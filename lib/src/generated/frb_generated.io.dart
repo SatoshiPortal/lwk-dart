@@ -985,6 +985,7 @@ class LwkCoreWire implements BaseWire {
     ffi.Pointer<wire_cst_list_prim_u_8_strict> out_address,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> asset,
     int network,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> base_url,
   ) {
     return _wire__crate__api__wallet__wallet_build_payjoin_tx(
       port_,
@@ -993,6 +994,7 @@ class LwkCoreWire implements BaseWire {
       out_address,
       asset,
       network,
+      base_url,
     );
   }
 
@@ -1004,7 +1006,8 @@ class LwkCoreWire implements BaseWire {
                   ffi.Uint64,
                   ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                   ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                  ffi.Int32)>>(
+                  ffi.Int32,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
       'frbgen_lwk_wire__crate__api__wallet__wallet_build_payjoin_tx');
   late final _wire__crate__api__wallet__wallet_build_payjoin_tx =
       _wire__crate__api__wallet__wallet_build_payjoin_txPtr.asFunction<
@@ -1014,7 +1017,8 @@ class LwkCoreWire implements BaseWire {
               int,
               ffi.Pointer<wire_cst_list_prim_u_8_strict>,
               ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              int)>();
+              int,
+              ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   void wire__crate__api__wallet__wallet_decode_tx(
     int port_,

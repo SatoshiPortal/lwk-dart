@@ -85,13 +85,15 @@ class Wallet {
           {required BigInt sats,
           required String outAddress,
           required String asset,
-          required Network network}) =>
+          required Network network,
+          String? baseUrl}) =>
       LwkCore.instance.api.crateApiWalletWalletBuildPayjoinTx(
           that: this,
           sats: sats,
           outAddress: outAddress,
           asset: asset,
-          network: network);
+          network: network,
+          baseUrl: baseUrl);
 
   /// Decode a transaction given a PSET
   Future<PsetAmounts> decodeTx({required String pset}) =>

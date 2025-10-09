@@ -189,6 +189,7 @@ impl Wallet {
         out_address: String,
         asset: String,
         network: Network,
+        base_url: Option<String>,
     ) -> anyhow::Result<super::types::PayjoinTx, LwkError> {
         let wallet = self.get_wallet()?;
 
@@ -208,7 +209,7 @@ impl Wallet {
             next_index: None,
         };
 
-        let (network, base_url) = match network {
+        let (network, default_base_url) = match network {
             Network::Mainnet => (
                 sideswap_common::network::Network::Liquid,
                 sideswap_payjoin::BASE_URL_PROD,
@@ -218,6 +219,9 @@ impl Wallet {
                 sideswap_payjoin::BASE_URL_TESTNET,
             ),
         };
+
+        // Use provided base_url or fall back to default
+        let base_url = base_url.unwrap_or_else(|| default_base_url.to_owned());
 
         let asset = lwk_wollet::elements::AssetId::from_str(&asset)?;
         let out_address = lwk_wollet::elements::Address::from_str(&out_address)?;
@@ -240,7 +244,7 @@ impl Wallet {
             &mut payjoin_wallet,
             sideswap_payjoin::CreatePayjoin {
                 network,
-                base_url: base_url.to_owned(),
+                base_url,
                 user_agent: "lwk-dart".to_owned(),
                 utxos,
                 multisig_wallet: false,
@@ -589,7 +593,7 @@ mod tests {
         );
 
         let payjoin = wallet
-            .build_payjoin_tx(10000, out_address, asset.to_owned(), network)
+            .build_payjoin_tx(10000, out_address, asset.to_owned(), network, None)
             .unwrap();
         println!("asset_fee: {}", payjoin.asset_fee);
 
