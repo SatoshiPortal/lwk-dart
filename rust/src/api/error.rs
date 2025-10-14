@@ -14,6 +14,14 @@ pub struct LwkError {
     pub msg: String,
 }
 
+impl From<anyhow::Error> for LwkError {
+    fn from(value: anyhow::Error) -> Self {
+        LwkError {
+            msg: value.to_string(),
+        }
+    }
+}
+
 impl From<lwk_wollet::Error> for LwkError {
     fn from(value: lwk_wollet::Error) -> Self {
         LwkError {
