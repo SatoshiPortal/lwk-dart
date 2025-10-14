@@ -132,7 +132,8 @@ abstract class LwkCoreApi extends BaseApi {
       required BigInt sats,
       required String outAddress,
       required String asset,
-      required Network network});
+      required Network network,
+      String? baseUrl});
 
   Future<PsetAmounts> crateApiWalletWalletDecodeTx(
       {required Wallet that, required String pset});
@@ -555,7 +556,8 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       required BigInt sats,
       required String outAddress,
       required String asset,
-      required Network network}) {
+      required Network network,
+      String? baseUrl}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_wallet(that);
@@ -563,15 +565,16 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         var arg2 = cst_encode_String(outAddress);
         var arg3 = cst_encode_String(asset);
         var arg4 = cst_encode_network(network);
+        var arg5 = cst_encode_opt_String(baseUrl);
         return wire.wire__crate__api__wallet__wallet_build_payjoin_tx(
-            port_, arg0, arg1, arg2, arg3, arg4);
+            port_, arg0, arg1, arg2, arg3, arg4, arg5);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_payjoin_tx,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kCrateApiWalletWalletBuildPayjoinTxConstMeta,
-      argValues: [that, sats, outAddress, asset, network],
+      argValues: [that, sats, outAddress, asset, network, baseUrl],
       apiImpl: this,
     ));
   }
@@ -579,7 +582,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   TaskConstMeta get kCrateApiWalletWalletBuildPayjoinTxConstMeta =>
       const TaskConstMeta(
         debugName: "wallet_build_payjoin_tx",
-        argNames: ["that", "sats", "outAddress", "asset", "network"],
+        argNames: ["that", "sats", "outAddress", "asset", "network", "baseUrl"],
       );
 
   @override
