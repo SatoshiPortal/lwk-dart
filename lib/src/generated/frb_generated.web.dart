@@ -57,6 +57,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int dco_decode_box_autoadd_u_32(dynamic raw);
 
   @protected
+  int dco_decode_box_autoadd_u_8(dynamic raw);
+
+  @protected
   Wallet dco_decode_box_autoadd_wallet(dynamic raw);
 
   @protected
@@ -97,6 +100,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_u_8(dynamic raw);
 
   @protected
   OutPoint dco_decode_out_point(dynamic raw);
@@ -166,6 +172,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
 
   @protected
+  int sse_decode_box_autoadd_u_8(SseDeserializer deserializer);
+
+  @protected
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer);
 
   @protected
@@ -206,6 +215,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  int? sse_decode_opt_box_autoadd_u_8(SseDeserializer deserializer);
 
   @protected
   OutPoint sse_decode_out_point(SseDeserializer deserializer);
@@ -295,6 +307,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  int cst_encode_box_autoadd_u_8(int raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_u_8(raw);
+  }
+
+  @protected
   JSAny cst_encode_box_autoadd_wallet(Wallet raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_wallet(raw);
@@ -358,6 +376,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int? cst_encode_opt_box_autoadd_u_32(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? null : cst_encode_box_autoadd_u_32(raw);
+  }
+
+  @protected
+  int? cst_encode_opt_box_autoadd_u_8(int? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? null : cst_encode_box_autoadd_u_8(raw);
   }
 
   @protected
@@ -509,6 +533,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_u_8(int self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer);
 
   @protected
@@ -550,6 +577,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_8(int? self, SseSerializer serializer);
 
   @protected
   void sse_encode_out_point(OutPoint self, SseSerializer serializer);
@@ -681,9 +711,10 @@ class LwkCoreWire implements BaseWire {
           JSAny sats,
           String out_address,
           String asset,
-          int network) =>
+          int network,
+          String? base_url) =>
       wasmModule.wire__crate__api__wallet__wallet_build_payjoin_tx(
-          port_, that, sats, out_address, asset, network);
+          port_, that, sats, out_address, asset, network, base_url);
 
   void wire__crate__api__wallet__wallet_decode_tx(
           NativePortType port_, JSAny that, String pset) =>
@@ -713,10 +744,15 @@ class LwkCoreWire implements BaseWire {
           .wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
               port_, that, network, pset, mnemonic);
 
-  void wire__crate__api__wallet__wallet_sync(NativePortType port_, JSAny that,
-          String electrum_url, bool validate_domain) =>
+  void wire__crate__api__wallet__wallet_sync(
+          NativePortType port_,
+          JSAny that,
+          String electrum_url,
+          bool validate_domain,
+          int? stop_at_index,
+          int? timeout) =>
       wasmModule.wire__crate__api__wallet__wallet_sync(
-          port_, that, electrum_url, validate_domain);
+          port_, that, electrum_url, validate_domain, stop_at_index, timeout);
 
   void wire__crate__api__wallet__wallet_txs(NativePortType port_, JSAny that) =>
       wasmModule.wire__crate__api__wallet__wallet_txs(port_, that);
@@ -802,7 +838,8 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       JSAny sats,
       String out_address,
       String asset,
-      int network);
+      int network,
+      String? base_url);
 
   external void wire__crate__api__wallet__wallet_decode_tx(
       NativePortType port_, JSAny that, String pset);
@@ -823,8 +860,13 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       String pset,
       String mnemonic);
 
-  external void wire__crate__api__wallet__wallet_sync(NativePortType port_,
-      JSAny that, String electrum_url, bool validate_domain);
+  external void wire__crate__api__wallet__wallet_sync(
+      NativePortType port_,
+      JSAny that,
+      String electrum_url,
+      bool validate_domain,
+      int? stop_at_index,
+      int? timeout);
 
   external void wire__crate__api__wallet__wallet_txs(
       NativePortType port_, JSAny that);

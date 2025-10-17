@@ -403,6 +403,7 @@ fn wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
     out_address: impl CstDecode<String>,
     asset: impl CstDecode<String>,
     network: impl CstDecode<crate::api::types::Network>,
+    base_url: impl CstDecode<Option<String>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
@@ -416,6 +417,7 @@ fn wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
             let api_out_address = out_address.cst_decode();
             let api_asset = asset.cst_decode();
             let api_network = network.cst_decode();
+            let api_base_url = base_url.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
                     let output_ok = crate::api::wallet::Wallet::build_payjoin_tx(
@@ -424,6 +426,7 @@ fn wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
                         api_out_address,
                         api_asset,
                         api_network,
+                        api_base_url,
                     )?;
                     Ok(output_ok)
                 })())
@@ -570,6 +573,8 @@ fn wire__crate__api__wallet__wallet_sync_impl(
     that: impl CstDecode<crate::api::wallet::Wallet>,
     electrum_url: impl CstDecode<String>,
     validate_domain: impl CstDecode<bool>,
+    stop_at_index: impl CstDecode<Option<u32>>,
+    timeout: impl CstDecode<Option<u8>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
@@ -581,12 +586,16 @@ fn wire__crate__api__wallet__wallet_sync_impl(
             let api_that = that.cst_decode();
             let api_electrum_url = electrum_url.cst_decode();
             let api_validate_domain = validate_domain.cst_decode();
+            let api_stop_at_index = stop_at_index.cst_decode();
+            let api_timeout = timeout.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
                     let output_ok = crate::api::wallet::Wallet::sync(
                         &api_that,
                         api_electrum_url,
                         api_validate_domain,
+                        api_stop_at_index,
+                        api_timeout,
                     )?;
                     Ok(output_ok)
                 })())
@@ -870,6 +879,17 @@ impl SseDecode for Option<u32> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<u32>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<u8> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<u8>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -1475,6 +1495,16 @@ impl SseEncode for Option<u32> {
     }
 }
 
+impl SseEncode for Option<u8> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <u8>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for crate::api::types::OutPoint {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1667,6 +1697,12 @@ mod io {
     impl CstDecode<u32> for *mut u32 {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> u32 {
+            unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
+        }
+    }
+    impl CstDecode<u8> for *mut u8 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> u8 {
             unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
         }
     }
@@ -2172,6 +2208,7 @@ mod io {
         out_address: *mut wire_cst_list_prim_u_8_strict,
         asset: *mut wire_cst_list_prim_u_8_strict,
         network: i32,
+        base_url: *mut wire_cst_list_prim_u_8_strict,
     ) {
         wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
             port_,
@@ -2180,6 +2217,7 @@ mod io {
             out_address,
             asset,
             network,
+            base_url,
         )
     }
 
@@ -2240,8 +2278,17 @@ mod io {
         that: *mut wire_cst_wallet,
         electrum_url: *mut wire_cst_list_prim_u_8_strict,
         validate_domain: bool,
+        stop_at_index: *mut u32,
+        timeout: *mut u8,
     ) {
-        wire__crate__api__wallet__wallet_sync_impl(port_, that, electrum_url, validate_domain)
+        wire__crate__api__wallet__wallet_sync_impl(
+            port_,
+            that,
+            electrum_url,
+            validate_domain,
+            stop_at_index,
+            timeout,
+        )
     }
 
     #[unsafe(no_mangle)]
@@ -2294,6 +2341,11 @@ mod io {
 
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_u_32(value: u32) -> *mut u32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_u_8(value: u8) -> *mut u8 {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
     }
 
@@ -3079,6 +3131,7 @@ mod web {
         out_address: String,
         asset: String,
         network: i32,
+        base_url: Option<String>,
     ) {
         wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
             port_,
@@ -3087,6 +3140,7 @@ mod web {
             out_address,
             asset,
             network,
+            base_url,
         )
     }
 
@@ -3147,8 +3201,17 @@ mod web {
         that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
         electrum_url: String,
         validate_domain: bool,
+        stop_at_index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        timeout: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     ) {
-        wire__crate__api__wallet__wallet_sync_impl(port_, that, electrum_url, validate_domain)
+        wire__crate__api__wallet__wallet_sync_impl(
+            port_,
+            that,
+            electrum_url,
+            validate_domain,
+            stop_at_index,
+            timeout,
+        )
     }
 
     #[wasm_bindgen]

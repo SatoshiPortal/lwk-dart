@@ -1,12 +1,11 @@
 use lwk_common::Signer;
 use lwk_signer::SwSigner;
-use lwk_wollet::full_scan_with_electrum_client;
+use lwk_wollet::{full_scan_to_index_with_electrum_client, ElectrumOptions};
 // use lwk_wollet::elements_miniscript::descriptor;
 use crate::frb_generated::RustOpaque;
 // use log::{info, warn};
 use lwk_wollet::elements::{
-    pset::PartiallySignedTransaction,
-    Address as LwkAddress, AssetId as LwkAssetId, OutPoint,
+    pset::PartiallySignedTransaction, Address as LwkAddress, AssetId as LwkAssetId,
 };
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
@@ -59,21 +58,26 @@ impl Wallet {
     }
 
     /// Syncs the wallet db with its latest state fetched from the electrum server
+    /// Using None for stop_at_index will sync normally with a stop gap of 20
     pub fn sync(
         &self,
         electrum_url: String,
         validate_domain: bool,
+        stop_at_index: Option<u32>,
+        timeout: Option<u8>,
     ) -> anyhow::Result<(), LwkError> {
-        let mut electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, validate_domain))?;
-        // info!("{:?}", electrum_client.capabilities());
+        let mut electrum_client: ElectrumClient = ElectrumClient::with_options(
+            &lwk_wollet::ElectrumUrl::Tls(electrum_url, validate_domain),
+            ElectrumOptions { timeout: timeout },
+        )?;
         let mut wallet = self.get_wallet()?;
-        match full_scan_with_electrum_client(&mut wallet, &mut electrum_client) {
+        match full_scan_to_index_with_electrum_client(
+            &mut wallet,
+            stop_at_index.unwrap_or(0),
+            &mut electrum_client,
+        ) {
             Ok(_) => Ok(()),
-            Err(e) => {
-                // warn!("{:?}", e.to_string());
-                Err(e.into())
-            }
+            Err(e) => Err(e.into()),
         }
     }
 
@@ -172,6 +176,26 @@ impl Wallet {
         Ok(pset.to_string())
     }
 
+    fn move_payjoin_signatures(pset: &mut PartiallySignedTransaction) -> Result<(), anyhow::Error> {
+        // The SideSwap server returns the signatures in the final_script_witness field.
+        // We need to move them to the partial_sigs field.
+        for (index, input) in pset.inputs_mut().iter_mut().enumerate() {
+            if let Some(final_script) = input.final_script_witness.take() {
+                match final_script.as_slice() {
+                    [signature, public_key] => {
+                        let public_key =
+                            lwk_wollet::elements::bitcoin::PublicKey::from_slice(&public_key)?;
+                        input.partial_sigs.insert(public_key, signature.clone());
+                    }
+                    _ => {
+                        anyhow::bail!("unexpected final_script_witness for input {index}");
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
+
     /// Build a PayJoin transaction for a specific asset, even if the wallet does not contain L-BTC UTXOs.
     /// The asset must be one of the assets supported by SideSwap, such as USDt or DePix.
     /// This creates a coin-join PSET. The PSET includes the asset wallet inputs and change,
@@ -189,6 +213,7 @@ impl Wallet {
         out_address: String,
         asset: String,
         network: Network,
+        base_url: Option<String>,
     ) -> anyhow::Result<super::types::PayjoinTx, LwkError> {
         let wallet = self.get_wallet()?;
 
@@ -208,7 +233,7 @@ impl Wallet {
             next_index: None,
         };
 
-        let (network, base_url) = match network {
+        let (network, default_base_url) = match network {
             Network::Mainnet => (
                 sideswap_common::network::Network::Liquid,
                 sideswap_payjoin::BASE_URL_PROD,
@@ -218,6 +243,9 @@ impl Wallet {
                 sideswap_payjoin::BASE_URL_TESTNET,
             ),
         };
+
+        // Use provided base_url or fall back to default
+        let base_url = base_url.unwrap_or_else(|| default_base_url.to_owned());
 
         let asset = lwk_wollet::elements::AssetId::from_str(&asset)?;
         let out_address = lwk_wollet::elements::Address::from_str(&out_address)?;
@@ -236,11 +264,11 @@ impl Wallet {
             })
             .collect::<Vec<_>>();
 
-        let payjoin = sideswap_payjoin::create_payjoin(
+        let mut payjoin = sideswap_payjoin::create_payjoin(
             &mut payjoin_wallet,
             sideswap_payjoin::CreatePayjoin {
                 network,
-                base_url: base_url.to_owned(),
+                base_url,
                 user_agent: "lwk-dart".to_owned(),
                 utxos,
                 multisig_wallet: false,
@@ -258,6 +286,8 @@ impl Wallet {
             msg: err.to_string(),
         })?;
 
+        Self::move_payjoin_signatures(&mut payjoin.pset)?;
+
         Ok(super::types::PayjoinTx {
             pset: payjoin.pset.to_string(),
             network_fee: payjoin.network_fee,
@@ -272,6 +302,25 @@ impl Wallet {
         Ok(PsetAmounts::from(pset_details.balance))
     }
 
+    fn sign_tx_common(
+        &self,
+        network: Network,
+        pset: String,
+        mnemonic: String,
+        add_details: bool,
+    ) -> anyhow::Result<String, LwkError> {
+        let is_mainnet = network == Network::Testnet;
+        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
+        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
+        if add_details {
+            self.get_wallet()?.add_details(&mut pset)?;
+        }
+        let _ = signer.sign(&mut pset);
+        let tx = self.get_wallet()?.finalize(&mut pset)?;
+        let finalized_pset = PartiallySignedTransaction::from_tx(tx.clone());
+        Ok(finalized_pset.to_string())
+    }
+
     /// Sign a wallet transaction, returns (pset, signed_bytes)
     pub fn sign_tx(
         &self,
@@ -279,13 +328,7 @@ impl Wallet {
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<String, LwkError> {
-        let is_mainnet = network == Network::Testnet;
-        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
-        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-        let _ = signer.sign(&mut pset);
-        let tx = self.get_wallet()?.finalize(&mut pset)?;
-        let finalized_pset = PartiallySignedTransaction::from_tx(tx.clone());
-        Ok(finalized_pset.to_string())
+        self.sign_tx_common(network, pset, mnemonic, false)
     }
 
     /// Get utxos of the wallet
@@ -295,22 +338,6 @@ impl Wallet {
         Ok(tx_outs)
     }
 
-    /// Given an outpoint, get the associated txout
-    fn get_txout(&self, outpoint: &OutPoint) -> Result<lwk_wollet::elements::TxOut, LwkError> {
-        let wallet_transaction = self.get_wallet()?.transaction(&outpoint.txid)?;
-        let transaction = wallet_transaction.ok_or(LwkError {
-            msg: "Wallet transaction not found".to_string(),
-        })?;
-        let txout = transaction
-            .tx
-            .output
-            .get(outpoint.vout as usize)
-            .ok_or(LwkError {
-                msg: "Could not find txout".to_string(),
-            })?;
-        Ok(txout.clone())
-    }
-
     /// Sign a pset with extra details (used for asset transactions)
     pub fn signed_pset_with_extra_details(
         &self,
@@ -318,32 +345,8 @@ impl Wallet {
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<String, LwkError> {
-        let is_mainnet = network == Network::Testnet;
-        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
-        let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-
-        for input in pset.inputs_mut().iter_mut() {
-            let res = self.get_txout(&lwk_wollet::elements::OutPoint {
-                txid: input.previous_txid,
-                vout: input.previous_output_index,
-            });
-            if let Ok(mut txout) = res {
-                input.in_utxo_rangeproof = txout.witness.rangeproof.take();
-                input.witness_utxo = Some(txout);
-            }
-        }
-        self.get_wallet()?.add_details(&mut pset)?;
-        let _ = signer.sign(&mut pset);
-
-        for input in pset.inputs_mut() {
-            if let Some((public_key, input_sign)) = input.partial_sigs.iter().next() {
-                input.final_script_witness = Some(vec![input_sign.clone(), public_key.to_bytes()]);
-            }
-        }
-
-        Ok(pset.to_string())
+        self.sign_tx_common(network, pset, mnemonic, true)
     }
-
 }
 
 #[cfg(test)]
@@ -361,7 +364,7 @@ mod tests {
         let network = Network::Mainnet;
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
-        let _ = wallet.sync(electrum_url.clone(), true);
+        let _ = wallet.sync(electrum_url.clone(), true, None, None);
         let _txs = wallet.txs();
         for tx in _txs.unwrap() {
             println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
@@ -530,7 +533,6 @@ mod tests {
     //         .unwrap_err();
     //     assert_eq!(err.to_string(), "FIXME");
     //      * */
-
     //     // Create tx sending the unblinded utxo
     //     let node_address = server.node_getnewaddress();
 
@@ -569,7 +571,9 @@ mod tests {
 
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
-        wallet.sync(electrum_url.to_owned(), true).unwrap();
+        wallet
+            .sync(electrum_url.to_owned(), true, None, None)
+            .unwrap();
 
         let out_address = wallet.address_last_unused().unwrap().confidential;
         println!("out_address: {out_address}");
@@ -589,7 +593,7 @@ mod tests {
         );
 
         let payjoin = wallet
-            .build_payjoin_tx(10000, out_address, asset.to_owned(), network)
+            .build_payjoin_tx(10000, out_address, asset.to_owned(), network, None)
             .unwrap();
         println!("asset_fee: {}", payjoin.asset_fee);
 
