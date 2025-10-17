@@ -55,6 +55,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int dco_decode_box_autoadd_u_32(dynamic raw);
 
   @protected
+  int dco_decode_box_autoadd_u_8(dynamic raw);
+
+  @protected
   Wallet dco_decode_box_autoadd_wallet(dynamic raw);
 
   @protected
@@ -95,6 +98,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_u_8(dynamic raw);
 
   @protected
   OutPoint dco_decode_out_point(dynamic raw);
@@ -164,6 +170,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
 
   @protected
+  int sse_decode_box_autoadd_u_8(SseDeserializer deserializer);
+
+  @protected
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer);
 
   @protected
@@ -204,6 +213,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  int? sse_decode_opt_box_autoadd_u_8(SseDeserializer deserializer);
 
   @protected
   OutPoint sse_decode_out_point(SseDeserializer deserializer);
@@ -272,6 +284,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   ffi.Pointer<ffi.Uint32> cst_encode_box_autoadd_u_32(int raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return wire.cst_new_box_autoadd_u_32(cst_encode_u_32(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Uint8> cst_encode_box_autoadd_u_8(int raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_u_8(cst_encode_u_8(raw));
   }
 
   @protected
@@ -348,6 +366,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   ffi.Pointer<ffi.Uint32> cst_encode_opt_box_autoadd_u_32(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_u_32(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Uint8> cst_encode_opt_box_autoadd_u_8(int? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_u_8(raw);
   }
 
   @protected
@@ -527,6 +551,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_u_8(int self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer);
 
   @protected
@@ -568,6 +595,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_8(int? self, SseSerializer serializer);
 
   @protected
   void sse_encode_out_point(OutPoint self, SseSerializer serializer);
@@ -1162,26 +1192,38 @@ class LwkCoreWire implements BaseWire {
     ffi.Pointer<wire_cst_wallet> that,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
     bool validate_domain,
+    ffi.Pointer<ffi.Uint32> stop_at_index,
+    ffi.Pointer<ffi.Uint8> timeout,
   ) {
     return _wire__crate__api__wallet__wallet_sync(
       port_,
       that,
       electrum_url,
       validate_domain,
+      stop_at_index,
+      timeout,
     );
   }
 
   late final _wire__crate__api__wallet__wallet_syncPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Int64,
-              ffi.Pointer<wire_cst_wallet>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Bool)>>('frbgen_lwk_wire__crate__api__wallet__wallet_sync');
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Int64,
+                  ffi.Pointer<wire_cst_wallet>,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                  ffi.Bool,
+                  ffi.Pointer<ffi.Uint32>,
+                  ffi.Pointer<ffi.Uint8>)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_sync');
   late final _wire__crate__api__wallet__wallet_sync =
       _wire__crate__api__wallet__wallet_syncPtr.asFunction<
-          void Function(int, ffi.Pointer<wire_cst_wallet>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>, bool)>();
+          void Function(
+              int,
+              ffi.Pointer<wire_cst_wallet>,
+              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              bool,
+              ffi.Pointer<ffi.Uint32>,
+              ffi.Pointer<ffi.Uint8>)>();
 
   void wire__crate__api__wallet__wallet_txs(
     int port_,
@@ -1284,6 +1326,20 @@ class LwkCoreWire implements BaseWire {
           'frbgen_lwk_cst_new_box_autoadd_u_32');
   late final _cst_new_box_autoadd_u_32 = _cst_new_box_autoadd_u_32Ptr
       .asFunction<ffi.Pointer<ffi.Uint32> Function(int)>();
+
+  ffi.Pointer<ffi.Uint8> cst_new_box_autoadd_u_8(
+    int value,
+  ) {
+    return _cst_new_box_autoadd_u_8(
+      value,
+    );
+  }
+
+  late final _cst_new_box_autoadd_u_8Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Uint8)>>(
+          'frbgen_lwk_cst_new_box_autoadd_u_8');
+  late final _cst_new_box_autoadd_u_8 = _cst_new_box_autoadd_u_8Ptr
+      .asFunction<ffi.Pointer<ffi.Uint8> Function(int)>();
 
   ffi.Pointer<wire_cst_wallet> cst_new_box_autoadd_wallet() {
     return _cst_new_box_autoadd_wallet();
