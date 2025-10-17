@@ -1,3 +1,9 @@
+## 0.2.2
+
+- Fix payjoins for nested segwit wallets. 
+- Allow config of base_url to fetch usdt utxos for payjoin
+- Add stop-at-index and timeout options to sync
+
 ## 0.2.1
 
 - fix: export error type
