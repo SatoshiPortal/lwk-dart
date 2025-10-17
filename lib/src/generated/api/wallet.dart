@@ -9,7 +9,7 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
-// These functions are ignored because they are not marked as `pub`: `get_txout`, `get_wallet`
+// These functions are ignored because they are not marked as `pub`: `get_wallet`, `move_payjoin_signatures`, `sign_tx_common`
 
 // Rust type: RustOpaqueNom<Mutex < lwk_wollet :: Wollet >>
 abstract class MutexWollet implements RustOpaqueInterface {}
@@ -130,10 +130,18 @@ class Wallet {
           that: this, network: network, pset: pset, mnemonic: mnemonic);
 
   /// Syncs the wallet db with its latest state fetched from the electrum server
+  /// Using None for stop_at_index will sync normally with a stop gap of 20
   Future<void> sync_(
-          {required String electrumUrl, required bool validateDomain}) =>
+          {required String electrumUrl,
+          required bool validateDomain,
+          int? stopAtIndex,
+          int? timeout}) =>
       LwkCore.instance.api.crateApiWalletWalletSync(
-          that: this, electrumUrl: electrumUrl, validateDomain: validateDomain);
+          that: this,
+          electrumUrl: electrumUrl,
+          validateDomain: validateDomain,
+          stopAtIndex: stopAtIndex,
+          timeout: timeout);
 
   /// Get the transaction history of the wallet
   Future<List<Tx>> txs() => LwkCore.instance.api.crateApiWalletWalletTxs(

@@ -1,12 +1,9 @@
-use std::sync::{MutexGuard, PoisonError};
-
-use lwk_wollet::elements::pset::ParseError;
 use lwk_wollet::elements::encode::Error as EncodeError;
-
+use lwk_wollet::elements::pset::ParseError;
+use std::sync::{MutexGuard, PoisonError};
 // use lwk_wollet::elements::pset::ParseError;
 
 // use std::string::ParseError;
-use flutter_rust_bridge::frb;
 
 /// Possible errors emitted
 #[derive(Debug)]
@@ -61,7 +58,6 @@ impl From<lwk_wollet::elements::pset::Error> for LwkError {
         }
     }
 }
-
 
 impl From<lwk_wollet::elements::bitcoin::transaction::ParseOutPointError> for LwkError {
     fn from(value: lwk_wollet::elements::bitcoin::transaction::ParseOutPointError) -> Self {
@@ -124,7 +120,6 @@ impl From<String> for LwkError {
         LwkError { msg }
     }
 }
-
 
 impl<T> From<PoisonError<MutexGuard<'_, T>>> for LwkError {
     fn from(e: PoisonError<MutexGuard<'_, T>>) -> Self {

@@ -1,6 +1,6 @@
 use lwk_common::Signer;
 use lwk_signer::SwSigner;
-use lwk_wollet::full_scan_with_electrum_client;
+use lwk_wollet::{full_scan_to_index_with_electrum_client, ElectrumOptions};
 // use lwk_wollet::elements_miniscript::descriptor;
 use crate::frb_generated::RustOpaque;
 // use log::{info, warn};
@@ -58,21 +58,26 @@ impl Wallet {
     }
 
     /// Syncs the wallet db with its latest state fetched from the electrum server
+    /// Using None for stop_at_index will sync normally with a stop gap of 20
     pub fn sync(
         &self,
         electrum_url: String,
         validate_domain: bool,
+        stop_at_index: Option<u32>,
+        timeout: Option<u8>,
     ) -> anyhow::Result<(), LwkError> {
-        let mut electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, validate_domain))?;
-        // info!("{:?}", electrum_client.capabilities());
+        let mut electrum_client: ElectrumClient = ElectrumClient::with_options(
+            &lwk_wollet::ElectrumUrl::Tls(electrum_url, validate_domain),
+            ElectrumOptions { timeout: timeout },
+        )?;
         let mut wallet = self.get_wallet()?;
-        match full_scan_with_electrum_client(&mut wallet, &mut electrum_client) {
+        match full_scan_to_index_with_electrum_client(
+            &mut wallet,
+            stop_at_index.unwrap_or(0),
+            &mut electrum_client,
+        ) {
             Ok(_) => Ok(()),
-            Err(e) => {
-                // warn!("{:?}", e.to_string());
-                Err(e.into())
-            }
+            Err(e) => Err(e.into()),
         }
     }
 
@@ -359,7 +364,7 @@ mod tests {
         let network = Network::Mainnet;
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
-        let _ = wallet.sync(electrum_url.clone(), true);
+        let _ = wallet.sync(electrum_url.clone(), true, None, None);
         let _txs = wallet.txs();
         for tx in _txs.unwrap() {
             println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
@@ -528,7 +533,6 @@ mod tests {
     //         .unwrap_err();
     //     assert_eq!(err.to_string(), "FIXME");
     //      * */
-
     //     // Create tx sending the unblinded utxo
     //     let node_address = server.node_getnewaddress();
 
@@ -567,7 +571,9 @@ mod tests {
 
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
-        wallet.sync(electrum_url.to_owned(), true).unwrap();
+        wallet
+            .sync(electrum_url.to_owned(), true, None, None)
+            .unwrap();
 
         let out_address = wallet.address_last_unused().unwrap().confidential;
         println!("out_address: {out_address}");

@@ -210,7 +210,9 @@ void frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
 void frbgen_lwk_wire__crate__api__wallet__wallet_sync(int64_t port_,
                                                       struct wire_cst_wallet *that,
                                                       struct wire_cst_list_prim_u_8_strict *electrum_url,
-                                                      bool validate_domain);
+                                                      bool validate_domain,
+                                                      uint32_t *stop_at_index,
+                                                      uint8_t *timeout);
 
 void frbgen_lwk_wire__crate__api__wallet__wallet_txs(int64_t port_, struct wire_cst_wallet *that);
 
@@ -225,6 +227,8 @@ struct wire_cst_blockchain *frbgen_lwk_cst_new_box_autoadd_blockchain(void);
 struct wire_cst_descriptor *frbgen_lwk_cst_new_box_autoadd_descriptor(void);
 
 uint32_t *frbgen_lwk_cst_new_box_autoadd_u_32(uint32_t value);
+
+uint8_t *frbgen_lwk_cst_new_box_autoadd_u_8(uint8_t value);
 
 struct wire_cst_wallet *frbgen_lwk_cst_new_box_autoadd_wallet(void);
 
@@ -242,6 +246,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_blockchain);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_descriptor);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_u_32);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_u_8);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_wallet);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_balance);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_prim_u_8_loose);

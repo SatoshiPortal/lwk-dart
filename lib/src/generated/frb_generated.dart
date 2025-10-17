@@ -160,7 +160,9 @@ abstract class LwkCoreApi extends BaseApi {
   Future<void> crateApiWalletWalletSync(
       {required Wallet that,
       required String electrumUrl,
-      required bool validateDomain});
+      required bool validateDomain,
+      int? stopAtIndex,
+      int? timeout});
 
   Future<List<Tx>> crateApiWalletWalletTxs({required Wallet that});
 
@@ -728,28 +730,38 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   Future<void> crateApiWalletWalletSync(
       {required Wallet that,
       required String electrumUrl,
-      required bool validateDomain}) {
+      required bool validateDomain,
+      int? stopAtIndex,
+      int? timeout}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_wallet(that);
         var arg1 = cst_encode_String(electrumUrl);
         var arg2 = cst_encode_bool(validateDomain);
+        var arg3 = cst_encode_opt_box_autoadd_u_32(stopAtIndex);
+        var arg4 = cst_encode_opt_box_autoadd_u_8(timeout);
         return wire.wire__crate__api__wallet__wallet_sync(
-            port_, arg0, arg1, arg2);
+            port_, arg0, arg1, arg2, arg3, arg4);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_unit,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kCrateApiWalletWalletSyncConstMeta,
-      argValues: [that, electrumUrl, validateDomain],
+      argValues: [that, electrumUrl, validateDomain, stopAtIndex, timeout],
       apiImpl: this,
     ));
   }
 
   TaskConstMeta get kCrateApiWalletWalletSyncConstMeta => const TaskConstMeta(
         debugName: "wallet_sync",
-        argNames: ["that", "electrumUrl", "validateDomain"],
+        argNames: [
+          "that",
+          "electrumUrl",
+          "validateDomain",
+          "stopAtIndex",
+          "timeout"
+        ],
       );
 
   @override
@@ -876,6 +888,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  int dco_decode_box_autoadd_u_8(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
   Wallet dco_decode_box_autoadd_wallet(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_wallet(raw);
@@ -967,6 +985,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_u_32(raw);
+  }
+
+  @protected
+  int? dco_decode_opt_box_autoadd_u_8(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_u_8(raw);
   }
 
   @protected
@@ -1178,6 +1202,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  int sse_decode_box_autoadd_u_8(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_u_8(deserializer));
+  }
+
+  @protected
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_wallet(deserializer));
@@ -1289,6 +1319,17 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_u_32(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  int? sse_decode_opt_box_autoadd_u_8(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_u_8(deserializer));
     } else {
       return null;
     }
@@ -1537,6 +1578,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_u_8(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_u_8(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_wallet(self, serializer);
@@ -1639,6 +1686,16 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_u_32(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_8(int? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_u_8(self, serializer);
     }
   }
 
