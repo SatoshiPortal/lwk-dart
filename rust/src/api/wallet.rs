@@ -66,8 +66,13 @@ impl Wallet {
         stop_at_index: Option<u32>,
         timeout: Option<u8>,
     ) -> anyhow::Result<(), LwkError> {
+        let url = electrum_url
+            .strip_prefix("ssl://")
+            .or_else(|| electrum_url.strip_prefix("tcp://"))
+            .unwrap_or(&electrum_url)
+            .to_string();
         let mut electrum_client: ElectrumClient = ElectrumClient::with_options(
-            &lwk_wollet::ElectrumUrl::Tls(electrum_url, validate_domain),
+            &lwk_wollet::ElectrumUrl::Tls(url, validate_domain),
             ElectrumOptions { timeout: timeout },
         )?;
         let mut wallet = self.get_wallet()?;

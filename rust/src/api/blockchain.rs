@@ -1,9 +1,15 @@
 use std::str::FromStr;
 
-use lwk_wollet::{blocking::BlockchainBackend, elements::{pset::{serialize::Deserialize, PartiallySignedTransaction}, Transaction, Txid}, ElectrumClient};
+use lwk_wollet::{
+    blocking::BlockchainBackend,
+    elements::{
+        pset::{serialize::Deserialize, PartiallySignedTransaction},
+        Transaction, Txid,
+    },
+    ElectrumClient,
+};
 
 use super::error::LwkError;
-
 
 pub struct Blockchain {}
 
@@ -37,4 +43,3 @@ impl Blockchain {
         Ok(txid.to_string())
     }
 }
-
