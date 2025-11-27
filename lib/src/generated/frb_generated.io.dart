@@ -112,6 +112,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PsetAmounts dco_decode_pset_amounts(dynamic raw);
 
   @protected
+  ScriptVariant dco_decode_script_variant(dynamic raw);
+
+  @protected
   SizeAndFees dco_decode_size_and_fees(dynamic raw);
 
   @protected
@@ -225,6 +228,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer);
+
+  @protected
+  ScriptVariant sse_decode_script_variant(SseDeserializer deserializer);
 
   @protected
   SizeAndFees sse_decode_size_and_fees(SseDeserializer deserializer);
@@ -512,6 +518,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int cst_encode_network(Network raw);
 
   @protected
+  int cst_encode_script_variant(ScriptVariant raw);
+
+  @protected
   int cst_encode_u_32(int raw);
 
   @protected
@@ -607,6 +616,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_script_variant(ScriptVariant self, SseSerializer serializer);
 
   @protected
   void sse_encode_size_and_fees(SizeAndFees self, SseSerializer serializer);
@@ -822,6 +834,32 @@ class LwkCoreWire implements BaseWire {
       _wire__crate__api__descriptor__descriptor_new_confidentialPtr.asFunction<
           void Function(
               int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+
+  void wire__crate__api__descriptor__descriptor_new_confidential_with_script(
+    int port_,
+    int network,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> mnemonic,
+    int script_variant,
+  ) {
+    return _wire__crate__api__descriptor__descriptor_new_confidential_with_script(
+      port_,
+      network,
+      mnemonic,
+      script_variant,
+    );
+  }
+
+  late final _wire__crate__api__descriptor__descriptor_new_confidential_with_scriptPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Void Function(ffi.Int64, ffi.Int32,
+                      ffi.Pointer<wire_cst_list_prim_u_8_strict>, ffi.Int32)>>(
+          'frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential_with_script');
+  late final _wire__crate__api__descriptor__descriptor_new_confidential_with_script =
+      _wire__crate__api__descriptor__descriptor_new_confidential_with_scriptPtr
+          .asFunction<
+              void Function(
+                  int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>, int)>();
 
   void wire__crate__api__transaction__extract_tx_bytes(
     int port_,

@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.9.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 119919397;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1870223091;
 
 // Section: executor
 
@@ -192,6 +192,36 @@ fn wire__crate__api__descriptor__descriptor_new_confidential_impl(
                         api_network,
                         api_mnemonic,
                     )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__crate__api__descriptor__descriptor_new_confidential_with_script_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    network: impl CstDecode<crate::api::types::Network>,
+    mnemonic: impl CstDecode<String>,
+    script_variant: impl CstDecode<crate::api::descriptor::ScriptVariant>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "descriptor_new_confidential_with_script",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_network = network.cst_decode();
+            let api_mnemonic = mnemonic.cst_decode();
+            let api_script_variant = script_variant.cst_decode();
+            move |context| {
+                transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                    let output_ok =
+                        crate::api::descriptor::Descriptor::new_confidential_with_script(
+                            api_network,
+                            api_mnemonic,
+                            api_script_variant,
+                        )?;
                     Ok(output_ok)
                 })())
             }
@@ -682,6 +712,16 @@ impl CstDecode<crate::api::types::Network> for i32 {
         }
     }
 }
+impl CstDecode<crate::api::descriptor::ScriptVariant> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> crate::api::descriptor::ScriptVariant {
+        match self {
+            0 => crate::api::descriptor::ScriptVariant::Wpkh,
+            1 => crate::api::descriptor::ScriptVariant::ShWpkh,
+            _ => unreachable!("Invalid variant for ScriptVariant: {}", self),
+        }
+    }
+}
 impl CstDecode<u32> for u32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> u32 {
@@ -930,6 +970,18 @@ impl SseDecode for crate::api::types::PsetAmounts {
         return crate::api::types::PsetAmounts {
             absolute_fees: var_absoluteFees,
             balances: var_balances,
+        };
+    }
+}
+
+impl SseDecode for crate::api::descriptor::ScriptVariant {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::descriptor::ScriptVariant::Wpkh,
+            1 => crate::api::descriptor::ScriptVariant::ShWpkh,
+            _ => unreachable!("Invalid variant for ScriptVariant: {}", inner),
         };
     }
 }
@@ -1237,6 +1289,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::PsetAmounts>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::descriptor::ScriptVariant {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Wpkh => 0.into_dart(),
+            Self::ShWpkh => 1.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::descriptor::ScriptVariant
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::descriptor::ScriptVariant>
+    for crate::api::descriptor::ScriptVariant
+{
+    fn into_into_dart(self) -> crate::api::descriptor::ScriptVariant {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::types::SizeAndFees {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -1527,6 +1600,22 @@ impl SseEncode for crate::api::types::PsetAmounts {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <u64>::sse_encode(self.absolute_fees, serializer);
         <Vec<crate::api::types::Balance>>::sse_encode(self.balances, serializer);
+    }
+}
+
+impl SseEncode for crate::api::descriptor::ScriptVariant {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::descriptor::ScriptVariant::Wpkh => 0,
+                crate::api::descriptor::ScriptVariant::ShWpkh => 1,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
     }
 }
 
@@ -2111,6 +2200,21 @@ mod io {
         mnemonic: *mut wire_cst_list_prim_u_8_strict,
     ) {
         wire__crate__api__descriptor__descriptor_new_confidential_impl(port_, network, mnemonic)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential_with_script(
+        port_: i64,
+        network: i32,
+        mnemonic: *mut wire_cst_list_prim_u_8_strict,
+        script_variant: i32,
+    ) {
+        wire__crate__api__descriptor__descriptor_new_confidential_with_script_impl(
+            port_,
+            network,
+            mnemonic,
+            script_variant,
+        )
     }
 
     #[unsafe(no_mangle)]
@@ -2944,6 +3048,14 @@ mod web {
             (self.unchecked_into_f64() as i32).cst_decode()
         }
     }
+    impl CstDecode<crate::api::descriptor::ScriptVariant>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::descriptor::ScriptVariant {
+            (self.unchecked_into_f64() as i32).cst_decode()
+        }
+    }
     impl CstDecode<u32> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> u32 {
@@ -3034,6 +3146,21 @@ mod web {
         mnemonic: String,
     ) {
         wire__crate__api__descriptor__descriptor_new_confidential_impl(port_, network, mnemonic)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__descriptor__descriptor_new_confidential_with_script(
+        port_: flutter_rust_bridge::for_generated::MessagePort,
+        network: i32,
+        mnemonic: String,
+        script_variant: i32,
+    ) {
+        wire__crate__api__descriptor__descriptor_new_confidential_with_script_impl(
+            port_,
+            network,
+            mnemonic,
+            script_variant,
+        )
     }
 
     #[wasm_bindgen]

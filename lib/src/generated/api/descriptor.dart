@@ -8,7 +8,7 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`, `fmt`, `from`
 
 /// Wallet descriptor class used to create a new wallet
 class Descriptor {
@@ -24,6 +24,17 @@ class Descriptor {
       LwkCore.instance.api.crateApiDescriptorDescriptorNewConfidential(
           network: network, mnemonic: mnemonic);
 
+  /// Create a new confidential descriptor with specified script variant and Slip77 blinding
+  static Future<Descriptor> newConfidentialWithScript(
+          {required Network network,
+          required String mnemonic,
+          required ScriptVariant scriptVariant}) =>
+      LwkCore.instance.api
+          .crateApiDescriptorDescriptorNewConfidentialWithScript(
+              network: network,
+              mnemonic: mnemonic,
+              scriptVariant: scriptVariant);
+
   @override
   int get hashCode => ctDescriptor.hashCode;
 
@@ -33,4 +44,14 @@ class Descriptor {
       other is Descriptor &&
           runtimeType == other.runtimeType &&
           ctDescriptor == other.ctDescriptor;
+}
+
+/// Script type for singlesig wallets
+enum ScriptVariant {
+  /// BIP84: Native SegWit (Witness Public Key Hash)
+  wpkh,
+
+  /// BIP49: Nested SegWit (Script Hash wrapping Witness Public Key Hash)
+  shWpkh,
+  ;
 }

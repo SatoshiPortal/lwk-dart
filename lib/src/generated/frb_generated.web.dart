@@ -114,6 +114,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PsetAmounts dco_decode_pset_amounts(dynamic raw);
 
   @protected
+  ScriptVariant dco_decode_script_variant(dynamic raw);
+
+  @protected
   SizeAndFees dco_decode_size_and_fees(dynamic raw);
 
   @protected
@@ -227,6 +230,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer);
+
+  @protected
+  ScriptVariant sse_decode_script_variant(SseDeserializer deserializer);
 
   @protected
   SizeAndFees sse_decode_size_and_fees(SseDeserializer deserializer);
@@ -494,6 +500,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int cst_encode_network(Network raw);
 
   @protected
+  int cst_encode_script_variant(ScriptVariant raw);
+
+  @protected
   int cst_encode_u_32(int raw);
 
   @protected
@@ -591,6 +600,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer);
 
   @protected
+  void sse_encode_script_variant(ScriptVariant self, SseSerializer serializer);
+
+  @protected
   void sse_encode_size_and_fees(SizeAndFees self, SseSerializer serializer);
 
   @protected
@@ -658,6 +670,15 @@ class LwkCoreWire implements BaseWire {
           NativePortType port_, int network, String mnemonic) =>
       wasmModule.wire__crate__api__descriptor__descriptor_new_confidential(
           port_, network, mnemonic);
+
+  void wire__crate__api__descriptor__descriptor_new_confidential_with_script(
+          NativePortType port_,
+          int network,
+          String mnemonic,
+          int script_variant) =>
+      wasmModule
+          .wire__crate__api__descriptor__descriptor_new_confidential_with_script(
+              port_, network, mnemonic, script_variant);
 
   void wire__crate__api__transaction__extract_tx_bytes(
           NativePortType port_, String pset) =>
@@ -797,6 +818,13 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
 
   external void wire__crate__api__descriptor__descriptor_new_confidential(
       NativePortType port_, int network, String mnemonic);
+
+  external void
+      wire__crate__api__descriptor__descriptor_new_confidential_with_script(
+          NativePortType port_,
+          int network,
+          String mnemonic,
+          int script_variant);
 
   external void wire__crate__api__transaction__extract_tx_bytes(
       NativePortType port_, String pset);

@@ -71,7 +71,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.9.0';
 
   @override
-  int get rustContentHash => 119919397;
+  int get rustContentHash => -1870223091;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -98,6 +98,11 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<Descriptor> crateApiDescriptorDescriptorNewConfidential(
       {required Network network, required String mnemonic});
+
+  Future<Descriptor> crateApiDescriptorDescriptorNewConfidentialWithScript(
+      {required Network network,
+      required String mnemonic,
+      required ScriptVariant scriptVariant});
 
   Future<Uint8List> crateApiTransactionExtractTxBytes({required String pset});
 
@@ -340,6 +345,38 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         debugName: "descriptor_new_confidential",
         argNames: ["network", "mnemonic"],
       );
+
+  @override
+  Future<Descriptor> crateApiDescriptorDescriptorNewConfidentialWithScript(
+      {required Network network,
+      required String mnemonic,
+      required ScriptVariant scriptVariant}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_network(network);
+        var arg1 = cst_encode_String(mnemonic);
+        var arg2 = cst_encode_script_variant(scriptVariant);
+        return wire
+            .wire__crate__api__descriptor__descriptor_new_confidential_with_script(
+                port_, arg0, arg1, arg2);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_descriptor,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta:
+          kCrateApiDescriptorDescriptorNewConfidentialWithScriptConstMeta,
+      argValues: [network, mnemonic, scriptVariant],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiDescriptorDescriptorNewConfidentialWithScriptConstMeta =>
+          const TaskConstMeta(
+            debugName: "descriptor_new_confidential_with_script",
+            argNames: ["network", "mnemonic", "scriptVariant"],
+          );
 
   @override
   Future<Uint8List> crateApiTransactionExtractTxBytes({required String pset}) {
@@ -1031,6 +1068,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  ScriptVariant dco_decode_script_variant(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ScriptVariant.values[raw as int];
+  }
+
+  @protected
   SizeAndFees dco_decode_size_and_fees(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -1362,6 +1405,13 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  ScriptVariant sse_decode_script_variant(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ScriptVariant.values[inner];
+  }
+
+  @protected
   SizeAndFees sse_decode_size_and_fees(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_discountedVsize = sse_decode_usize(deserializer);
@@ -1494,6 +1544,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
   @protected
   int cst_encode_network(Network raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_script_variant(ScriptVariant raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_i_32(raw.index);
   }
@@ -1719,6 +1775,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_64(self.absoluteFees, serializer);
     sse_encode_list_balance(self.balances, serializer);
+  }
+
+  @protected
+  void sse_encode_script_variant(ScriptVariant self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected

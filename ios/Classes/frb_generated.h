@@ -142,6 +142,11 @@ void frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential(int64_
                                                                           int32_t network,
                                                                           struct wire_cst_list_prim_u_8_strict *mnemonic);
 
+void frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential_with_script(int64_t port_,
+                                                                                      int32_t network,
+                                                                                      struct wire_cst_list_prim_u_8_strict *mnemonic,
+                                                                                      int32_t script_variant);
+
 void frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes(int64_t port_,
                                                                 struct wire_cst_list_prim_u_8_strict *pset);
 
@@ -259,6 +264,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_tx_bytes);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__blockchain__blockchain_test);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential_with_script);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__address_address_from_script);
