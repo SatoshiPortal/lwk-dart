@@ -15,4 +15,7 @@ cd rust
 cargo update
 cd - || exit 1
 
+# Add fvm flutter to PATH
+export PATH="/Users/eric/fvm/versions/3.29.3/bin:$PATH"
+
 flutter_rust_bridge_codegen generate 
