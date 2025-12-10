@@ -28,3 +28,6 @@ doc/api/
 rust/target
 
 test/liblwk.so
+
+# FVM Version Cache
+.fvm/
