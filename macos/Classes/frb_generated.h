@@ -14,15 +14,15 @@ void store_dart_post_cobject(DartPostCObjectFnType ptr);
 // EXTRA END
 typedef struct _Dart_Handle* Dart_Handle;
 
-typedef struct wire_cst_list_prim_u_8_strict {
-  uint8_t *ptr;
-  int32_t len;
-} wire_cst_list_prim_u_8_strict;
-
 typedef struct wire_cst_list_prim_u_8_loose {
   uint8_t *ptr;
   int32_t len;
 } wire_cst_list_prim_u_8_loose;
+
+typedef struct wire_cst_list_prim_u_8_strict {
+  uint8_t *ptr;
+  int32_t len;
+} wire_cst_list_prim_u_8_strict;
 
 typedef struct wire_cst_blockchain {
 
@@ -36,6 +36,40 @@ typedef struct wire_cst_descriptor {
   struct wire_cst_list_prim_u_8_strict *ct_descriptor;
 } wire_cst_descriptor;
 
+typedef struct wire_cst_pset_input {
+  struct wire_cst_list_prim_u_8_strict *witness_utxo_script;
+  uint64_t *witness_utxo_amount;
+  struct wire_cst_list_prim_u_8_strict *witness_utxo_asset;
+} wire_cst_pset_input;
+
+typedef struct wire_cst_pset_output {
+  struct wire_cst_list_prim_u_8_strict *script_pubkey;
+  uint64_t *amount;
+  struct wire_cst_list_prim_u_8_strict *asset;
+  struct wire_cst_list_prim_u_8_strict *blinding_key;
+} wire_cst_pset_output;
+
+typedef struct wire_cst_list_String {
+  struct wire_cst_list_prim_u_8_strict **ptr;
+  int32_t len;
+} wire_cst_list_String;
+
+typedef struct wire_cst_tx_input {
+  struct wire_cst_list_prim_u_8_strict *txid;
+  uint32_t vout;
+  struct wire_cst_list_prim_u_8_strict *script_sig;
+  uint32_t sequence;
+  struct wire_cst_list_String *witness;
+  bool is_pegin;
+} wire_cst_tx_input;
+
+typedef struct wire_cst_tx_output {
+  struct wire_cst_list_prim_u_8_strict *script_pubkey;
+  struct wire_cst_list_prim_u_8_strict *asset;
+  uint64_t *value;
+  struct wire_cst_list_prim_u_8_strict *nonce;
+} wire_cst_tx_output;
+
 typedef struct wire_cst_balance {
   struct wire_cst_list_prim_u_8_strict *asset_id;
   int64_t value;
@@ -45,6 +79,16 @@ typedef struct wire_cst_list_balance {
   struct wire_cst_balance *ptr;
   int32_t len;
 } wire_cst_list_balance;
+
+typedef struct wire_cst_list_pset_input {
+  struct wire_cst_pset_input *ptr;
+  int32_t len;
+} wire_cst_list_pset_input;
+
+typedef struct wire_cst_list_pset_output {
+  struct wire_cst_pset_output *ptr;
+  int32_t len;
+} wire_cst_list_pset_output;
 
 typedef struct wire_cst_out_point {
   struct wire_cst_list_prim_u_8_strict *txid;
@@ -97,6 +141,16 @@ typedef struct wire_cst_list_tx {
   int32_t len;
 } wire_cst_list_tx;
 
+typedef struct wire_cst_list_tx_input {
+  struct wire_cst_tx_input *ptr;
+  int32_t len;
+} wire_cst_list_tx_input;
+
+typedef struct wire_cst_list_tx_output {
+  struct wire_cst_tx_output *ptr;
+  int32_t len;
+} wire_cst_list_tx_output;
+
 typedef struct wire_cst_lwk_error {
   struct wire_cst_list_prim_u_8_strict *msg;
 } wire_cst_lwk_error;
@@ -117,6 +171,95 @@ typedef struct wire_cst_size_and_fees {
   uintptr_t discounted_weight;
   struct wire_cst_list_balance *absolute_fees;
 } wire_cst_size_and_fees;
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_fee(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_bytes(struct wire_cst_list_prim_u_8_loose *tx_bytes);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_pset(struct wire_cst_list_prim_u_8_strict *pset_string);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_input(uintptr_t that,
+                                                                                           uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_inputs(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output(uintptr_t that,
+                                                                                            uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_asset(uintptr_t that,
+                                                                                                  uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_nonce(uintptr_t that,
+                                                                                                  uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(uintptr_t that,
+                                                                                                          uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_value(uintptr_t that,
+                                                                                                  uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_outputs(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_input_count(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_is_coinbase(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_lock_time(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_output_count(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_to_bytes(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_txid(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_version(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_vsize(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_weight(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(struct wire_cst_list_prim_u_8_strict *pset_string);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(uintptr_t that,
+                                                                                                            uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(uintptr_t that,
+                                                                                                                        uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(uintptr_t that,
+                                                                                                                       uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(uintptr_t that,
+                                                                                                                        uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(uintptr_t that,
+                                                                                                             uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(uintptr_t that,
+                                                                                                                    uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(uintptr_t that,
+                                                                                                                   uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(uintptr_t that,
+                                                                                                                          uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(uintptr_t that,
+                                                                                                                    uintptr_t index);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(uintptr_t that);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(uintptr_t that);
 
 void frbgen_lwk_wire__crate__api__types__address_address_from_script(int64_t port_,
                                                                      int32_t network,
@@ -222,15 +365,35 @@ void frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet
 
 void frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet(const void *ptr);
 
+void frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(const void *ptr);
+
+void frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(const void *ptr);
+
+void frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(const void *ptr);
+
+void frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(const void *ptr);
+
 struct wire_cst_blockchain *frbgen_lwk_cst_new_box_autoadd_blockchain(void);
 
 struct wire_cst_descriptor *frbgen_lwk_cst_new_box_autoadd_descriptor(void);
 
+struct wire_cst_pset_input *frbgen_lwk_cst_new_box_autoadd_pset_input(void);
+
+struct wire_cst_pset_output *frbgen_lwk_cst_new_box_autoadd_pset_output(void);
+
+struct wire_cst_tx_input *frbgen_lwk_cst_new_box_autoadd_tx_input(void);
+
+struct wire_cst_tx_output *frbgen_lwk_cst_new_box_autoadd_tx_output(void);
+
 uint32_t *frbgen_lwk_cst_new_box_autoadd_u_32(uint32_t value);
+
+uint64_t *frbgen_lwk_cst_new_box_autoadd_u_64(uint64_t value);
 
 uint8_t *frbgen_lwk_cst_new_box_autoadd_u_8(uint8_t value);
 
 struct wire_cst_wallet *frbgen_lwk_cst_new_box_autoadd_wallet(void);
+
+struct wire_cst_list_String *frbgen_lwk_cst_new_list_String(int32_t len);
 
 struct wire_cst_list_balance *frbgen_lwk_cst_new_list_balance(int32_t len);
 
@@ -238,27 +401,86 @@ struct wire_cst_list_prim_u_8_loose *frbgen_lwk_cst_new_list_prim_u_8_loose(int3
 
 struct wire_cst_list_prim_u_8_strict *frbgen_lwk_cst_new_list_prim_u_8_strict(int32_t len);
 
+struct wire_cst_list_pset_input *frbgen_lwk_cst_new_list_pset_input(int32_t len);
+
+struct wire_cst_list_pset_output *frbgen_lwk_cst_new_list_pset_output(int32_t len);
+
 struct wire_cst_list_tx *frbgen_lwk_cst_new_list_tx(int32_t len);
 
+struct wire_cst_list_tx_input *frbgen_lwk_cst_new_list_tx_input(int32_t len);
+
 struct wire_cst_list_tx_out *frbgen_lwk_cst_new_list_tx_out(int32_t len);
+
+struct wire_cst_list_tx_output *frbgen_lwk_cst_new_list_tx_output(int32_t len);
 static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_blockchain);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_descriptor);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_pset_input);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_pset_output);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_tx_input);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_tx_output);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_u_32);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_u_64);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_u_8);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_wallet);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_String);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_balance);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_prim_u_8_loose);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_prim_u_8_strict);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_pset_input);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_pset_output);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_input);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_out);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_output);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_signed_pset);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_tx_bytes);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__blockchain__blockchain_test);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_fee);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_bytes);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_pset);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_input);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_inputs);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_asset);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_nonce);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_value);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_outputs);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_input_count);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_is_coinbase);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_lock_time);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_output_count);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_to_bytes);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_txid);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_version);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_vsize);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_weight);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__address_address_from_script);

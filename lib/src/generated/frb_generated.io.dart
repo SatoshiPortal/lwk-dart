@@ -27,8 +27,46 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       get rust_arc_decrement_strong_count_MutexWolletPtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr;
 
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_LiquidTransactionPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_PartiallySignedElementsTransactionPtr =>
+          wire._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr;
+
+  @protected
+  LiquidTransaction
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          dynamic raw);
+
+  @protected
+  PartiallySignedElementsTransaction
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          dynamic raw);
+
+  @protected
+  LiquidTransaction
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          dynamic raw);
+
+  @protected
+  PartiallySignedElementsTransaction
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          dynamic raw);
+
   @protected
   MutexWollet dco_decode_RustOpaque_Mutexlwk_wolletWollet(dynamic raw);
+
+  @protected
+  LiquidTransaction
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          dynamic raw);
+
+  @protected
+  PartiallySignedElementsTransaction
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          dynamic raw);
 
   @protected
   String dco_decode_String(dynamic raw);
@@ -52,7 +90,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Descriptor dco_decode_box_autoadd_descriptor(dynamic raw);
 
   @protected
+  PsetInput dco_decode_box_autoadd_pset_input(dynamic raw);
+
+  @protected
+  PsetOutput dco_decode_box_autoadd_pset_output(dynamic raw);
+
+  @protected
+  TxInput dco_decode_box_autoadd_tx_input(dynamic raw);
+
+  @protected
+  TxOutput dco_decode_box_autoadd_tx_output(dynamic raw);
+
+  @protected
   int dco_decode_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  BigInt dco_decode_box_autoadd_u_64(dynamic raw);
 
   @protected
   int dco_decode_box_autoadd_u_8(dynamic raw);
@@ -73,6 +126,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PlatformInt64 dco_decode_i_64(dynamic raw);
 
   @protected
+  List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
   List<Balance> dco_decode_list_balance(dynamic raw);
 
   @protected
@@ -82,10 +138,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  List<PsetInput> dco_decode_list_pset_input(dynamic raw);
+
+  @protected
+  List<PsetOutput> dco_decode_list_pset_output(dynamic raw);
+
+  @protected
   List<Tx> dco_decode_list_tx(dynamic raw);
 
   @protected
+  List<TxInput> dco_decode_list_tx_input(dynamic raw);
+
+  @protected
   List<TxOut> dco_decode_list_tx_out(dynamic raw);
+
+  @protected
+  List<TxOutput> dco_decode_list_tx_output(dynamic raw);
 
   @protected
   LwkError dco_decode_lwk_error(dynamic raw);
@@ -97,7 +165,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   String? dco_decode_opt_String(dynamic raw);
 
   @protected
+  PsetInput? dco_decode_opt_box_autoadd_pset_input(dynamic raw);
+
+  @protected
+  PsetOutput? dco_decode_opt_box_autoadd_pset_output(dynamic raw);
+
+  @protected
+  TxInput? dco_decode_opt_box_autoadd_tx_input(dynamic raw);
+
+  @protected
+  TxOutput? dco_decode_opt_box_autoadd_tx_output(dynamic raw);
+
+  @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw);
 
   @protected
   int? dco_decode_opt_box_autoadd_u_8(dynamic raw);
@@ -112,16 +195,28 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PsetAmounts dco_decode_pset_amounts(dynamic raw);
 
   @protected
+  PsetInput dco_decode_pset_input(dynamic raw);
+
+  @protected
+  PsetOutput dco_decode_pset_output(dynamic raw);
+
+  @protected
   SizeAndFees dco_decode_size_and_fees(dynamic raw);
 
   @protected
   Tx dco_decode_tx(dynamic raw);
 
   @protected
+  TxInput dco_decode_tx_input(dynamic raw);
+
+  @protected
   TxOut dco_decode_tx_out(dynamic raw);
 
   @protected
   TxOutSecrets dco_decode_tx_out_secrets(dynamic raw);
+
+  @protected
+  TxOutput dco_decode_tx_output(dynamic raw);
 
   @protected
   int dco_decode_u_32(dynamic raw);
@@ -142,8 +237,38 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet dco_decode_wallet(dynamic raw);
 
   @protected
+  LiquidTransaction
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          SseDeserializer deserializer);
+
+  @protected
+  PartiallySignedElementsTransaction
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          SseDeserializer deserializer);
+
+  @protected
+  LiquidTransaction
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          SseDeserializer deserializer);
+
+  @protected
+  PartiallySignedElementsTransaction
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          SseDeserializer deserializer);
+
+  @protected
   MutexWollet sse_decode_RustOpaque_Mutexlwk_wolletWollet(
       SseDeserializer deserializer);
+
+  @protected
+  LiquidTransaction
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          SseDeserializer deserializer);
+
+  @protected
+  PartiallySignedElementsTransaction
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          SseDeserializer deserializer);
 
   @protected
   String sse_decode_String(SseDeserializer deserializer);
@@ -167,7 +292,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Descriptor sse_decode_box_autoadd_descriptor(SseDeserializer deserializer);
 
   @protected
+  PsetInput sse_decode_box_autoadd_pset_input(SseDeserializer deserializer);
+
+  @protected
+  PsetOutput sse_decode_box_autoadd_pset_output(SseDeserializer deserializer);
+
+  @protected
+  TxInput sse_decode_box_autoadd_tx_input(SseDeserializer deserializer);
+
+  @protected
+  TxOutput sse_decode_box_autoadd_tx_output(SseDeserializer deserializer);
+
+  @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_u_8(SseDeserializer deserializer);
@@ -188,6 +328,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
+  List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
   List<Balance> sse_decode_list_balance(SseDeserializer deserializer);
 
   @protected
@@ -197,10 +340,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  List<PsetInput> sse_decode_list_pset_input(SseDeserializer deserializer);
+
+  @protected
+  List<PsetOutput> sse_decode_list_pset_output(SseDeserializer deserializer);
+
+  @protected
   List<Tx> sse_decode_list_tx(SseDeserializer deserializer);
 
   @protected
+  List<TxInput> sse_decode_list_tx_input(SseDeserializer deserializer);
+
+  @protected
   List<TxOut> sse_decode_list_tx_out(SseDeserializer deserializer);
+
+  @protected
+  List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer);
 
   @protected
   LwkError sse_decode_lwk_error(SseDeserializer deserializer);
@@ -212,7 +367,24 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
+  PsetInput? sse_decode_opt_box_autoadd_pset_input(
+      SseDeserializer deserializer);
+
+  @protected
+  PsetOutput? sse_decode_opt_box_autoadd_pset_output(
+      SseDeserializer deserializer);
+
+  @protected
+  TxInput? sse_decode_opt_box_autoadd_tx_input(SseDeserializer deserializer);
+
+  @protected
+  TxOutput? sse_decode_opt_box_autoadd_tx_output(SseDeserializer deserializer);
+
+  @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer);
 
   @protected
   int? sse_decode_opt_box_autoadd_u_8(SseDeserializer deserializer);
@@ -227,16 +399,28 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer);
 
   @protected
+  PsetInput sse_decode_pset_input(SseDeserializer deserializer);
+
+  @protected
+  PsetOutput sse_decode_pset_output(SseDeserializer deserializer);
+
+  @protected
   SizeAndFees sse_decode_size_and_fees(SseDeserializer deserializer);
 
   @protected
   Tx sse_decode_tx(SseDeserializer deserializer);
 
   @protected
+  TxInput sse_decode_tx_input(SseDeserializer deserializer);
+
+  @protected
   TxOut sse_decode_tx_out(SseDeserializer deserializer);
 
   @protected
   TxOutSecrets sse_decode_tx_out_secrets(SseDeserializer deserializer);
+
+  @protected
+  TxOutput sse_decode_tx_output(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_32(SseDeserializer deserializer);
@@ -281,9 +465,50 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_pset_input> cst_encode_box_autoadd_pset_input(
+      PsetInput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_pset_input();
+    cst_api_fill_to_wire_pset_input(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_pset_output> cst_encode_box_autoadd_pset_output(
+      PsetOutput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_pset_output();
+    cst_api_fill_to_wire_pset_output(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_tx_input> cst_encode_box_autoadd_tx_input(TxInput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_tx_input();
+    cst_api_fill_to_wire_tx_input(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_tx_output> cst_encode_box_autoadd_tx_output(
+      TxOutput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_tx_output();
+    cst_api_fill_to_wire_tx_output(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
   ffi.Pointer<ffi.Uint32> cst_encode_box_autoadd_u_32(int raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return wire.cst_new_box_autoadd_u_32(cst_encode_u_32(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Uint64> cst_encode_box_autoadd_u_64(BigInt raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_u_64(cst_encode_u_64(raw));
   }
 
   @protected
@@ -304,6 +529,16 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int cst_encode_i_64(PlatformInt64 raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.toInt();
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_String> cst_encode_list_String(List<String> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_String(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      ans.ref.ptr[i] = cst_encode_String(raw[i]);
+    }
+    return ans;
   }
 
   @protected
@@ -336,11 +571,44 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_pset_input> cst_encode_list_pset_input(
+      List<PsetInput> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_pset_input(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_pset_input(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_pset_output> cst_encode_list_pset_output(
+      List<PsetOutput> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_pset_output(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_pset_output(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_tx> cst_encode_list_tx(List<Tx> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_tx(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_tx(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_tx_input> cst_encode_list_tx_input(
+      List<TxInput> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_tx_input(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_tx_input(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -356,6 +624,17 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_tx_output> cst_encode_list_tx_output(
+      List<TxOutput> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_tx_output(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_tx_output(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_opt_String(
       String? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -363,9 +642,43 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_pset_input> cst_encode_opt_box_autoadd_pset_input(
+      PsetInput? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_pset_input(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_pset_output> cst_encode_opt_box_autoadd_pset_output(
+      PsetOutput? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_pset_output(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_tx_input> cst_encode_opt_box_autoadd_tx_input(
+      TxInput? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_tx_input(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_tx_output> cst_encode_opt_box_autoadd_tx_output(
+      TxOutput? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_tx_output(raw);
+  }
+
+  @protected
   ffi.Pointer<ffi.Uint32> cst_encode_opt_box_autoadd_u_32(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_u_32(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Uint64> cst_encode_opt_box_autoadd_u_64(BigInt? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_u_64(raw);
   }
 
   @protected
@@ -411,6 +724,30 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_box_autoadd_pset_input(
+      PsetInput apiObj, ffi.Pointer<wire_cst_pset_input> wireObj) {
+    cst_api_fill_to_wire_pset_input(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_pset_output(
+      PsetOutput apiObj, ffi.Pointer<wire_cst_pset_output> wireObj) {
+    cst_api_fill_to_wire_pset_output(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_tx_input(
+      TxInput apiObj, ffi.Pointer<wire_cst_tx_input> wireObj) {
+    cst_api_fill_to_wire_tx_input(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_tx_output(
+      TxOutput apiObj, ffi.Pointer<wire_cst_tx_output> wireObj) {
+    cst_api_fill_to_wire_tx_output(apiObj, wireObj.ref);
+  }
+
+  @protected
   void cst_api_fill_to_wire_box_autoadd_wallet(
       Wallet apiObj, ffi.Pointer<wire_cst_wallet> wireObj) {
     cst_api_fill_to_wire_wallet(apiObj, wireObj.ref);
@@ -451,6 +788,25 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_pset_input(
+      PsetInput apiObj, wire_cst_pset_input wireObj) {
+    wireObj.witness_utxo_script =
+        cst_encode_opt_String(apiObj.witnessUtxoScript);
+    wireObj.witness_utxo_amount =
+        cst_encode_opt_box_autoadd_u_64(apiObj.witnessUtxoAmount);
+    wireObj.witness_utxo_asset = cst_encode_opt_String(apiObj.witnessUtxoAsset);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_pset_output(
+      PsetOutput apiObj, wire_cst_pset_output wireObj) {
+    wireObj.script_pubkey = cst_encode_String(apiObj.scriptPubkey);
+    wireObj.amount = cst_encode_opt_box_autoadd_u_64(apiObj.amount);
+    wireObj.asset = cst_encode_opt_String(apiObj.asset);
+    wireObj.blinding_key = cst_encode_opt_String(apiObj.blindingKey);
+  }
+
+  @protected
   void cst_api_fill_to_wire_size_and_fees(
       SizeAndFees apiObj, wire_cst_size_and_fees wireObj) {
     wireObj.discounted_vsize = cst_encode_usize(apiObj.discountedVsize);
@@ -473,6 +829,17 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_tx_input(
+      TxInput apiObj, wire_cst_tx_input wireObj) {
+    wireObj.txid = cst_encode_String(apiObj.txid);
+    wireObj.vout = cst_encode_u_32(apiObj.vout);
+    wireObj.script_sig = cst_encode_String(apiObj.scriptSig);
+    wireObj.sequence = cst_encode_u_32(apiObj.sequence);
+    wireObj.witness = cst_encode_list_String(apiObj.witness);
+    wireObj.is_pegin = cst_encode_bool(apiObj.isPegin);
+  }
+
+  @protected
   void cst_api_fill_to_wire_tx_out(TxOut apiObj, wire_cst_tx_out wireObj) {
     wireObj.script_pubkey = cst_encode_String(apiObj.scriptPubkey);
     cst_api_fill_to_wire_out_point(apiObj.outpoint, wireObj.outpoint);
@@ -492,12 +859,45 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_tx_output(
+      TxOutput apiObj, wire_cst_tx_output wireObj) {
+    wireObj.script_pubkey = cst_encode_String(apiObj.scriptPubkey);
+    wireObj.asset = cst_encode_opt_String(apiObj.asset);
+    wireObj.value = cst_encode_opt_box_autoadd_u_64(apiObj.value);
+    wireObj.nonce = cst_encode_opt_String(apiObj.nonce);
+  }
+
+  @protected
   void cst_api_fill_to_wire_wallet(Wallet apiObj, wire_cst_wallet wireObj) {
     wireObj.inner = cst_encode_RustOpaque_Mutexlwk_wolletWollet(apiObj.inner);
   }
 
   @protected
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      LiquidTransaction raw);
+
+  @protected
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      PartiallySignedElementsTransaction raw);
+
+  @protected
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      LiquidTransaction raw);
+
+  @protected
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      PartiallySignedElementsTransaction raw);
+
+  @protected
   int cst_encode_RustOpaque_Mutexlwk_wolletWollet(MutexWollet raw);
+
+  @protected
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      LiquidTransaction raw);
+
+  @protected
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      PartiallySignedElementsTransaction raw);
 
   @protected
   bool cst_encode_bool(bool raw);
@@ -521,8 +921,38 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void cst_encode_unit(void raw);
 
   @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          LiquidTransaction self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          PartiallySignedElementsTransaction self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          LiquidTransaction self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          PartiallySignedElementsTransaction self, SseSerializer serializer);
+
+  @protected
   void sse_encode_RustOpaque_Mutexlwk_wolletWollet(
       MutexWollet self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          LiquidTransaction self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          PartiallySignedElementsTransaction self, SseSerializer serializer);
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
@@ -548,7 +978,25 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       Descriptor self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_pset_input(
+      PsetInput self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_pset_output(
+      PsetOutput self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_tx_input(TxInput self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_tx_output(
+      TxOutput self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_u_8(int self, SseSerializer serializer);
@@ -569,6 +1017,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_balance(List<Balance> self, SseSerializer serializer);
 
   @protected
@@ -579,10 +1030,24 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       Uint8List self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_pset_input(
+      List<PsetInput> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_pset_output(
+      List<PsetOutput> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_tx(List<Tx> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_tx_input(List<TxInput> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_tx_out(List<TxOut> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_tx_output(List<TxOutput> self, SseSerializer serializer);
 
   @protected
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer);
@@ -594,7 +1059,26 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_pset_input(
+      PsetInput? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_pset_output(
+      PsetOutput? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_tx_input(
+      TxInput? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_tx_output(
+      TxOutput? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_u_8(int? self, SseSerializer serializer);
@@ -609,16 +1093,28 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer);
 
   @protected
+  void sse_encode_pset_input(PsetInput self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_pset_output(PsetOutput self, SseSerializer serializer);
+
+  @protected
   void sse_encode_size_and_fees(SizeAndFees self, SseSerializer serializer);
 
   @protected
   void sse_encode_tx(Tx self, SseSerializer serializer);
 
   @protected
+  void sse_encode_tx_input(TxInput self, SseSerializer serializer);
+
+  @protected
   void sse_encode_tx_out(TxOut self, SseSerializer serializer);
 
   @protected
   void sse_encode_tx_out_secrets(TxOutSecrets self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_tx_output(TxOutput self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_32(int self, SseSerializer serializer);
@@ -675,6 +1171,672 @@ class LwkCoreWire implements BaseWire {
   );
   late final _store_dart_post_cobject = _store_dart_post_cobjectPtr
       .asFunction<void Function(DartPostCObjectFnType)>();
+
+  WireSyncRust2DartDco wire__crate__api__transaction__LiquidTransaction_fee(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_fee(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_feePtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_fee',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_fee =
+      _wire__crate__api__transaction__LiquidTransaction_feePtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_from_bytes(
+    ffi.Pointer<wire_cst_list_prim_u_8_loose> tx_bytes,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_from_bytes(
+      tx_bytes,
+    );
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_from_bytesPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_bytes',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_from_bytes =
+      _wire__crate__api__transaction__LiquidTransaction_from_bytesPtr
+          .asFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_from_pset(
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> pset_string,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_from_pset(
+      pset_string,
+    );
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_from_psetPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_pset',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_from_pset =
+      _wire__crate__api__transaction__LiquidTransaction_from_psetPtr.asFunction<
+          WireSyncRust2DartDco Function(
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_get_input(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_get_input(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_get_inputPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_input',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_get_input =
+      _wire__crate__api__transaction__LiquidTransaction_get_inputPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_get_inputs(int that) {
+    return _wire__crate__api__transaction__LiquidTransaction_get_inputs(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_get_inputsPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_inputs',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_get_inputs =
+      _wire__crate__api__transaction__LiquidTransaction_get_inputsPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_get_output(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_get_output(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_get_outputPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_get_output =
+      _wire__crate__api__transaction__LiquidTransaction_get_outputPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_get_output_asset(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_get_output_asset(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_get_output_assetPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_asset',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_get_output_asset =
+      _wire__crate__api__transaction__LiquidTransaction_get_output_assetPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_get_output_nonce(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_get_output_nonce(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_get_output_noncePtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_nonce',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_get_output_nonce =
+      _wire__crate__api__transaction__LiquidTransaction_get_output_noncePtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkeyPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey =
+      _wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkeyPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_get_output_value(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_get_output_value(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_get_output_valuePtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_value',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_get_output_value =
+      _wire__crate__api__transaction__LiquidTransaction_get_output_valuePtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_get_outputs(int that) {
+    return _wire__crate__api__transaction__LiquidTransaction_get_outputs(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_get_outputsPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_outputs',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_get_outputs =
+      _wire__crate__api__transaction__LiquidTransaction_get_outputsPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_input_count(int that) {
+    return _wire__crate__api__transaction__LiquidTransaction_input_count(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_input_countPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_input_count',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_input_count =
+      _wire__crate__api__transaction__LiquidTransaction_input_countPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_is_coinbase(int that) {
+    return _wire__crate__api__transaction__LiquidTransaction_is_coinbase(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_is_coinbasePtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_is_coinbase',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_is_coinbase =
+      _wire__crate__api__transaction__LiquidTransaction_is_coinbasePtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_lock_time(int that) {
+    return _wire__crate__api__transaction__LiquidTransaction_lock_time(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_lock_timePtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_lock_time',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_lock_time =
+      _wire__crate__api__transaction__LiquidTransaction_lock_timePtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_output_count(int that) {
+    return _wire__crate__api__transaction__LiquidTransaction_output_count(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_output_countPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_output_count',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_output_count =
+      _wire__crate__api__transaction__LiquidTransaction_output_countPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__LiquidTransaction_to_bytes(int that) {
+    return _wire__crate__api__transaction__LiquidTransaction_to_bytes(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_to_bytesPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_to_bytes',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_to_bytes =
+      _wire__crate__api__transaction__LiquidTransaction_to_bytesPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco wire__crate__api__transaction__LiquidTransaction_txid(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_txid(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_txidPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_txid',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_txid =
+      _wire__crate__api__transaction__LiquidTransaction_txidPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco wire__crate__api__transaction__LiquidTransaction_version(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_version(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_versionPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_version',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_version =
+      _wire__crate__api__transaction__LiquidTransaction_versionPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco wire__crate__api__transaction__LiquidTransaction_vsize(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_vsize(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_vsizePtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_vsize',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_vsize =
+      _wire__crate__api__transaction__LiquidTransaction_vsizePtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco wire__crate__api__transaction__LiquidTransaction_weight(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__LiquidTransaction_weight(that);
+  }
+
+  late final _wire__crate__api__transaction__LiquidTransaction_weightPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_weight',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_weight =
+      _wire__crate__api__transaction__LiquidTransaction_weightPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
+      that,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_txPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_txPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> pset_string,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
+      pset_string,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_from_stringPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_from_stringPtr
+          .asFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amountPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amountPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_assetPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_assetPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_scriptPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_scriptPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
+      that,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputsPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputsPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amountPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amountPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_assetPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_assetPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_keyPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_keyPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(
+    int that,
+    int index,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(
+      that,
+      index,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_scriptPtr =
+      _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_scriptPtr
+          .asFunction<WireSyncRust2DartDco Function(int, int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
+      that,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputsPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputsPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
+      that,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_input_countPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_input_countPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
+      that,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_timePtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_timePtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
+      that,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_output_countPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_output_countPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
+
+  WireSyncRust2DartDco
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
+    int that,
+  ) {
+    return _wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
+      that,
+    );
+  }
+
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_to_stringPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string',
+  );
+  late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string =
+      _wire__crate__api__transaction__PartiallySignedElementsTransaction_to_stringPtr
+          .asFunction<WireSyncRust2DartDco Function(int)>();
 
   void wire__crate__api__types__address_address_from_script(
     int port_,
@@ -1306,6 +2468,74 @@ class LwkCoreWire implements BaseWire {
       _rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+    'frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction',
+  );
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+    'frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction',
+  );
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+    'frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction',
+  );
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+    'frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction',
+  );
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
   ffi.Pointer<wire_cst_blockchain> cst_new_box_autoadd_blockchain() {
     return _cst_new_box_autoadd_blockchain();
   }
@@ -1330,6 +2560,52 @@ class LwkCoreWire implements BaseWire {
       _cst_new_box_autoadd_descriptorPtr
           .asFunction<ffi.Pointer<wire_cst_descriptor> Function()>();
 
+  ffi.Pointer<wire_cst_pset_input> cst_new_box_autoadd_pset_input() {
+    return _cst_new_box_autoadd_pset_input();
+  }
+
+  late final _cst_new_box_autoadd_pset_inputPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_pset_input> Function()>>(
+    'frbgen_lwk_cst_new_box_autoadd_pset_input',
+  );
+  late final _cst_new_box_autoadd_pset_input =
+      _cst_new_box_autoadd_pset_inputPtr
+          .asFunction<ffi.Pointer<wire_cst_pset_input> Function()>();
+
+  ffi.Pointer<wire_cst_pset_output> cst_new_box_autoadd_pset_output() {
+    return _cst_new_box_autoadd_pset_output();
+  }
+
+  late final _cst_new_box_autoadd_pset_outputPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_pset_output> Function()>>(
+    'frbgen_lwk_cst_new_box_autoadd_pset_output',
+  );
+  late final _cst_new_box_autoadd_pset_output =
+      _cst_new_box_autoadd_pset_outputPtr
+          .asFunction<ffi.Pointer<wire_cst_pset_output> Function()>();
+
+  ffi.Pointer<wire_cst_tx_input> cst_new_box_autoadd_tx_input() {
+    return _cst_new_box_autoadd_tx_input();
+  }
+
+  late final _cst_new_box_autoadd_tx_inputPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_tx_input> Function()>>(
+    'frbgen_lwk_cst_new_box_autoadd_tx_input',
+  );
+  late final _cst_new_box_autoadd_tx_input = _cst_new_box_autoadd_tx_inputPtr
+      .asFunction<ffi.Pointer<wire_cst_tx_input> Function()>();
+
+  ffi.Pointer<wire_cst_tx_output> cst_new_box_autoadd_tx_output() {
+    return _cst_new_box_autoadd_tx_output();
+  }
+
+  late final _cst_new_box_autoadd_tx_outputPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_tx_output> Function()>>(
+    'frbgen_lwk_cst_new_box_autoadd_tx_output',
+  );
+  late final _cst_new_box_autoadd_tx_output = _cst_new_box_autoadd_tx_outputPtr
+      .asFunction<ffi.Pointer<wire_cst_tx_output> Function()>();
+
   ffi.Pointer<ffi.Uint32> cst_new_box_autoadd_u_32(int value) {
     return _cst_new_box_autoadd_u_32(value);
   }
@@ -1340,6 +2616,17 @@ class LwkCoreWire implements BaseWire {
   );
   late final _cst_new_box_autoadd_u_32 = _cst_new_box_autoadd_u_32Ptr
       .asFunction<ffi.Pointer<ffi.Uint32> Function(int)>();
+
+  ffi.Pointer<ffi.Uint64> cst_new_box_autoadd_u_64(int value) {
+    return _cst_new_box_autoadd_u_64(value);
+  }
+
+  late final _cst_new_box_autoadd_u_64Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint64> Function(ffi.Uint64)>>(
+    'frbgen_lwk_cst_new_box_autoadd_u_64',
+  );
+  late final _cst_new_box_autoadd_u_64 = _cst_new_box_autoadd_u_64Ptr
+      .asFunction<ffi.Pointer<ffi.Uint64> Function(int)>();
 
   ffi.Pointer<ffi.Uint8> cst_new_box_autoadd_u_8(int value) {
     return _cst_new_box_autoadd_u_8(value);
@@ -1362,6 +2649,17 @@ class LwkCoreWire implements BaseWire {
   );
   late final _cst_new_box_autoadd_wallet = _cst_new_box_autoadd_walletPtr
       .asFunction<ffi.Pointer<wire_cst_wallet> Function()>();
+
+  ffi.Pointer<wire_cst_list_String> cst_new_list_String(int len) {
+    return _cst_new_list_String(len);
+  }
+
+  late final _cst_new_list_StringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_String> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_String');
+  late final _cst_new_list_String = _cst_new_list_StringPtr
+      .asFunction<ffi.Pointer<wire_cst_list_String> Function(int)>();
 
   ffi.Pointer<wire_cst_list_balance> cst_new_list_balance(int len) {
     return _cst_new_list_balance(len);
@@ -1400,6 +2698,28 @@ class LwkCoreWire implements BaseWire {
   late final _cst_new_list_prim_u_8_strict = _cst_new_list_prim_u_8_strictPtr
       .asFunction<ffi.Pointer<wire_cst_list_prim_u_8_strict> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_pset_input> cst_new_list_pset_input(int len) {
+    return _cst_new_list_pset_input(len);
+  }
+
+  late final _cst_new_list_pset_inputPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_pset_input> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_pset_input');
+  late final _cst_new_list_pset_input = _cst_new_list_pset_inputPtr
+      .asFunction<ffi.Pointer<wire_cst_list_pset_input> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_pset_output> cst_new_list_pset_output(int len) {
+    return _cst_new_list_pset_output(len);
+  }
+
+  late final _cst_new_list_pset_outputPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_pset_output> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_pset_output');
+  late final _cst_new_list_pset_output = _cst_new_list_pset_outputPtr
+      .asFunction<ffi.Pointer<wire_cst_list_pset_output> Function(int)>();
+
   ffi.Pointer<wire_cst_list_tx> cst_new_list_tx(int len) {
     return _cst_new_list_tx(len);
   }
@@ -1411,6 +2731,17 @@ class LwkCoreWire implements BaseWire {
   late final _cst_new_list_tx = _cst_new_list_txPtr
       .asFunction<ffi.Pointer<wire_cst_list_tx> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_tx_input> cst_new_list_tx_input(int len) {
+    return _cst_new_list_tx_input(len);
+  }
+
+  late final _cst_new_list_tx_inputPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_tx_input> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_tx_input');
+  late final _cst_new_list_tx_input = _cst_new_list_tx_inputPtr
+      .asFunction<ffi.Pointer<wire_cst_list_tx_input> Function(int)>();
+
   ffi.Pointer<wire_cst_list_tx_out> cst_new_list_tx_out(int len) {
     return _cst_new_list_tx_out(len);
   }
@@ -1421,6 +2752,17 @@ class LwkCoreWire implements BaseWire {
               ffi.Int32)>>('frbgen_lwk_cst_new_list_tx_out');
   late final _cst_new_list_tx_out = _cst_new_list_tx_outPtr
       .asFunction<ffi.Pointer<wire_cst_list_tx_out> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_tx_output> cst_new_list_tx_output(int len) {
+    return _cst_new_list_tx_output(len);
+  }
+
+  late final _cst_new_list_tx_outputPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_tx_output> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_tx_output');
+  late final _cst_new_list_tx_output = _cst_new_list_tx_outputPtr
+      .asFunction<ffi.Pointer<wire_cst_list_tx_output> Function(int)>();
 
   int dummy_method_to_enforce_bundling() {
     return _dummy_method_to_enforce_bundling();
@@ -1443,14 +2785,14 @@ typedef DartDartPostCObjectFnTypeFunction = bool Function(
 typedef DartPostCObjectFnType
     = ffi.Pointer<ffi.NativeFunction<DartPostCObjectFnTypeFunction>>;
 
-final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
+final class wire_cst_list_prim_u_8_loose extends ffi.Struct {
   external ffi.Pointer<ffi.Uint8> ptr;
 
   @ffi.Int32()
   external int len;
 }
 
-final class wire_cst_list_prim_u_8_loose extends ffi.Struct {
+final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
   external ffi.Pointer<ffi.Uint8> ptr;
 
   @ffi.Int32()
@@ -1468,6 +2810,58 @@ final class wire_cst_descriptor extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> ct_descriptor;
 }
 
+final class wire_cst_pset_input extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> witness_utxo_script;
+
+  external ffi.Pointer<ffi.Uint64> witness_utxo_amount;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> witness_utxo_asset;
+}
+
+final class wire_cst_pset_output extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> script_pubkey;
+
+  external ffi.Pointer<ffi.Uint64> amount;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> asset;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> blinding_key;
+}
+
+final class wire_cst_list_String extends ffi.Struct {
+  external ffi.Pointer<ffi.Pointer<wire_cst_list_prim_u_8_strict>> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_tx_input extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> txid;
+
+  @ffi.Uint32()
+  external int vout;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> script_sig;
+
+  @ffi.Uint32()
+  external int sequence;
+
+  external ffi.Pointer<wire_cst_list_String> witness;
+
+  @ffi.Bool()
+  external bool is_pegin;
+}
+
+final class wire_cst_tx_output extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> script_pubkey;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> asset;
+
+  external ffi.Pointer<ffi.Uint64> value;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> nonce;
+}
+
 final class wire_cst_balance extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> asset_id;
 
@@ -1477,6 +2871,20 @@ final class wire_cst_balance extends ffi.Struct {
 
 final class wire_cst_list_balance extends ffi.Struct {
   external ffi.Pointer<wire_cst_balance> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_list_pset_input extends ffi.Struct {
+  external ffi.Pointer<wire_cst_pset_input> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_list_pset_output extends ffi.Struct {
+  external ffi.Pointer<wire_cst_pset_output> ptr;
 
   @ffi.Int32()
   external int len;
@@ -1558,6 +2966,20 @@ final class wire_cst_tx extends ffi.Struct {
 
 final class wire_cst_list_tx extends ffi.Struct {
   external ffi.Pointer<wire_cst_tx> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_list_tx_input extends ffi.Struct {
+  external ffi.Pointer<wire_cst_tx_input> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_list_tx_output extends ffi.Struct {
+  external ffi.Pointer<wire_cst_tx_output> ptr;
 
   @ffi.Int32()
   external int len;

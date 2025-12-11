@@ -29,8 +29,46 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       get rust_arc_decrement_strong_count_MutexWolletPtr =>
           wire.rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet;
 
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_LiquidTransactionPtr => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_PartiallySignedElementsTransactionPtr =>
+          wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction;
+
+  @protected
+  LiquidTransaction
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          dynamic raw);
+
+  @protected
+  PartiallySignedElementsTransaction
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          dynamic raw);
+
+  @protected
+  LiquidTransaction
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          dynamic raw);
+
+  @protected
+  PartiallySignedElementsTransaction
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          dynamic raw);
+
   @protected
   MutexWollet dco_decode_RustOpaque_Mutexlwk_wolletWollet(dynamic raw);
+
+  @protected
+  LiquidTransaction
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          dynamic raw);
+
+  @protected
+  PartiallySignedElementsTransaction
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          dynamic raw);
 
   @protected
   String dco_decode_String(dynamic raw);
@@ -54,7 +92,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Descriptor dco_decode_box_autoadd_descriptor(dynamic raw);
 
   @protected
+  PsetInput dco_decode_box_autoadd_pset_input(dynamic raw);
+
+  @protected
+  PsetOutput dco_decode_box_autoadd_pset_output(dynamic raw);
+
+  @protected
+  TxInput dco_decode_box_autoadd_tx_input(dynamic raw);
+
+  @protected
+  TxOutput dco_decode_box_autoadd_tx_output(dynamic raw);
+
+  @protected
   int dco_decode_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  BigInt dco_decode_box_autoadd_u_64(dynamic raw);
 
   @protected
   int dco_decode_box_autoadd_u_8(dynamic raw);
@@ -75,6 +128,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PlatformInt64 dco_decode_i_64(dynamic raw);
 
   @protected
+  List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
   List<Balance> dco_decode_list_balance(dynamic raw);
 
   @protected
@@ -84,10 +140,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  List<PsetInput> dco_decode_list_pset_input(dynamic raw);
+
+  @protected
+  List<PsetOutput> dco_decode_list_pset_output(dynamic raw);
+
+  @protected
   List<Tx> dco_decode_list_tx(dynamic raw);
 
   @protected
+  List<TxInput> dco_decode_list_tx_input(dynamic raw);
+
+  @protected
   List<TxOut> dco_decode_list_tx_out(dynamic raw);
+
+  @protected
+  List<TxOutput> dco_decode_list_tx_output(dynamic raw);
 
   @protected
   LwkError dco_decode_lwk_error(dynamic raw);
@@ -99,7 +167,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   String? dco_decode_opt_String(dynamic raw);
 
   @protected
+  PsetInput? dco_decode_opt_box_autoadd_pset_input(dynamic raw);
+
+  @protected
+  PsetOutput? dco_decode_opt_box_autoadd_pset_output(dynamic raw);
+
+  @protected
+  TxInput? dco_decode_opt_box_autoadd_tx_input(dynamic raw);
+
+  @protected
+  TxOutput? dco_decode_opt_box_autoadd_tx_output(dynamic raw);
+
+  @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw);
 
   @protected
   int? dco_decode_opt_box_autoadd_u_8(dynamic raw);
@@ -114,16 +197,28 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PsetAmounts dco_decode_pset_amounts(dynamic raw);
 
   @protected
+  PsetInput dco_decode_pset_input(dynamic raw);
+
+  @protected
+  PsetOutput dco_decode_pset_output(dynamic raw);
+
+  @protected
   SizeAndFees dco_decode_size_and_fees(dynamic raw);
 
   @protected
   Tx dco_decode_tx(dynamic raw);
 
   @protected
+  TxInput dco_decode_tx_input(dynamic raw);
+
+  @protected
   TxOut dco_decode_tx_out(dynamic raw);
 
   @protected
   TxOutSecrets dco_decode_tx_out_secrets(dynamic raw);
+
+  @protected
+  TxOutput dco_decode_tx_output(dynamic raw);
 
   @protected
   int dco_decode_u_32(dynamic raw);
@@ -144,8 +239,38 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet dco_decode_wallet(dynamic raw);
 
   @protected
+  LiquidTransaction
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          SseDeserializer deserializer);
+
+  @protected
+  PartiallySignedElementsTransaction
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          SseDeserializer deserializer);
+
+  @protected
+  LiquidTransaction
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          SseDeserializer deserializer);
+
+  @protected
+  PartiallySignedElementsTransaction
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          SseDeserializer deserializer);
+
+  @protected
   MutexWollet sse_decode_RustOpaque_Mutexlwk_wolletWollet(
       SseDeserializer deserializer);
+
+  @protected
+  LiquidTransaction
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          SseDeserializer deserializer);
+
+  @protected
+  PartiallySignedElementsTransaction
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          SseDeserializer deserializer);
 
   @protected
   String sse_decode_String(SseDeserializer deserializer);
@@ -169,7 +294,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Descriptor sse_decode_box_autoadd_descriptor(SseDeserializer deserializer);
 
   @protected
+  PsetInput sse_decode_box_autoadd_pset_input(SseDeserializer deserializer);
+
+  @protected
+  PsetOutput sse_decode_box_autoadd_pset_output(SseDeserializer deserializer);
+
+  @protected
+  TxInput sse_decode_box_autoadd_tx_input(SseDeserializer deserializer);
+
+  @protected
+  TxOutput sse_decode_box_autoadd_tx_output(SseDeserializer deserializer);
+
+  @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_u_8(SseDeserializer deserializer);
@@ -190,6 +330,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
+  List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
   List<Balance> sse_decode_list_balance(SseDeserializer deserializer);
 
   @protected
@@ -199,10 +342,22 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  List<PsetInput> sse_decode_list_pset_input(SseDeserializer deserializer);
+
+  @protected
+  List<PsetOutput> sse_decode_list_pset_output(SseDeserializer deserializer);
+
+  @protected
   List<Tx> sse_decode_list_tx(SseDeserializer deserializer);
 
   @protected
+  List<TxInput> sse_decode_list_tx_input(SseDeserializer deserializer);
+
+  @protected
   List<TxOut> sse_decode_list_tx_out(SseDeserializer deserializer);
+
+  @protected
+  List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer);
 
   @protected
   LwkError sse_decode_lwk_error(SseDeserializer deserializer);
@@ -214,7 +369,24 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
+  PsetInput? sse_decode_opt_box_autoadd_pset_input(
+      SseDeserializer deserializer);
+
+  @protected
+  PsetOutput? sse_decode_opt_box_autoadd_pset_output(
+      SseDeserializer deserializer);
+
+  @protected
+  TxInput? sse_decode_opt_box_autoadd_tx_input(SseDeserializer deserializer);
+
+  @protected
+  TxOutput? sse_decode_opt_box_autoadd_tx_output(SseDeserializer deserializer);
+
+  @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer);
 
   @protected
   int? sse_decode_opt_box_autoadd_u_8(SseDeserializer deserializer);
@@ -229,16 +401,28 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer);
 
   @protected
+  PsetInput sse_decode_pset_input(SseDeserializer deserializer);
+
+  @protected
+  PsetOutput sse_decode_pset_output(SseDeserializer deserializer);
+
+  @protected
   SizeAndFees sse_decode_size_and_fees(SseDeserializer deserializer);
 
   @protected
   Tx sse_decode_tx(SseDeserializer deserializer);
 
   @protected
+  TxInput sse_decode_tx_input(SseDeserializer deserializer);
+
+  @protected
   TxOut sse_decode_tx_out(SseDeserializer deserializer);
 
   @protected
   TxOutSecrets sse_decode_tx_out_secrets(SseDeserializer deserializer);
+
+  @protected
+  TxOutput sse_decode_tx_output(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_32(SseDeserializer deserializer);
@@ -301,9 +485,39 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_box_autoadd_pset_input(PsetInput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_pset_input(raw);
+  }
+
+  @protected
+  JSAny cst_encode_box_autoadd_pset_output(PsetOutput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_pset_output(raw);
+  }
+
+  @protected
+  JSAny cst_encode_box_autoadd_tx_input(TxInput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_tx_input(raw);
+  }
+
+  @protected
+  JSAny cst_encode_box_autoadd_tx_output(TxOutput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_tx_output(raw);
+  }
+
+  @protected
   int cst_encode_box_autoadd_u_32(int raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_u_32(raw);
+  }
+
+  @protected
+  JSAny cst_encode_box_autoadd_u_64(BigInt raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_u_64(raw);
   }
 
   @protected
@@ -331,6 +545,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_list_String(List<String> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_String).toList().jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_list_balance(List<Balance> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.map(cst_encode_balance).toList().jsify()!;
@@ -349,15 +569,39 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_list_pset_input(List<PsetInput> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_pset_input).toList().jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_list_pset_output(List<PsetOutput> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_pset_output).toList().jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_list_tx(List<Tx> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.map(cst_encode_tx).toList().jsify()!;
   }
 
   @protected
+  JSAny cst_encode_list_tx_input(List<TxInput> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_tx_input).toList().jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_list_tx_out(List<TxOut> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.map(cst_encode_tx_out).toList().jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_list_tx_output(List<TxOutput> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_tx_output).toList().jsify()!;
   }
 
   @protected
@@ -373,9 +617,39 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny? cst_encode_opt_box_autoadd_pset_input(PsetInput? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? null : cst_encode_box_autoadd_pset_input(raw);
+  }
+
+  @protected
+  JSAny? cst_encode_opt_box_autoadd_pset_output(PsetOutput? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? null : cst_encode_box_autoadd_pset_output(raw);
+  }
+
+  @protected
+  JSAny? cst_encode_opt_box_autoadd_tx_input(TxInput? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? null : cst_encode_box_autoadd_tx_input(raw);
+  }
+
+  @protected
+  JSAny? cst_encode_opt_box_autoadd_tx_output(TxOutput? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? null : cst_encode_box_autoadd_tx_output(raw);
+  }
+
+  @protected
   int? cst_encode_opt_box_autoadd_u_32(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? null : cst_encode_box_autoadd_u_32(raw);
+  }
+
+  @protected
+  JSAny? cst_encode_opt_box_autoadd_u_64(BigInt? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? null : cst_encode_box_autoadd_u_64(raw);
   }
 
   @protected
@@ -410,6 +684,27 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_pset_input(PsetInput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_opt_String(raw.witnessUtxoScript),
+      cst_encode_opt_box_autoadd_u_64(raw.witnessUtxoAmount),
+      cst_encode_opt_String(raw.witnessUtxoAsset)
+    ].jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_pset_output(PsetOutput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_String(raw.scriptPubkey),
+      cst_encode_opt_box_autoadd_u_64(raw.amount),
+      cst_encode_opt_String(raw.asset),
+      cst_encode_opt_String(raw.blindingKey)
+    ].jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_size_and_fees(SizeAndFees raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [
@@ -433,6 +728,19 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       cst_encode_opt_box_autoadd_u_32(raw.height),
       cst_encode_String(raw.unblindedUrl),
       cst_encode_usize(raw.vsize)
+    ].jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_tx_input(TxInput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_String(raw.txid),
+      cst_encode_u_32(raw.vout),
+      cst_encode_String(raw.scriptSig),
+      cst_encode_u_32(raw.sequence),
+      cst_encode_list_String(raw.witness),
+      cst_encode_bool(raw.isPegin)
     ].jsify()!;
   }
 
@@ -461,6 +769,17 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_tx_output(TxOutput raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_String(raw.scriptPubkey),
+      cst_encode_opt_String(raw.asset),
+      cst_encode_opt_box_autoadd_u_64(raw.value),
+      cst_encode_opt_String(raw.nonce)
+    ].jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_u_64(BigInt raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return castNativeBigInt(raw);
@@ -479,7 +798,31 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      LiquidTransaction raw);
+
+  @protected
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      PartiallySignedElementsTransaction raw);
+
+  @protected
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      LiquidTransaction raw);
+
+  @protected
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      PartiallySignedElementsTransaction raw);
+
+  @protected
   int cst_encode_RustOpaque_Mutexlwk_wolletWollet(MutexWollet raw);
+
+  @protected
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      LiquidTransaction raw);
+
+  @protected
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      PartiallySignedElementsTransaction raw);
 
   @protected
   bool cst_encode_bool(bool raw);
@@ -503,8 +846,38 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void cst_encode_unit(void raw);
 
   @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          LiquidTransaction self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          PartiallySignedElementsTransaction self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          LiquidTransaction self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          PartiallySignedElementsTransaction self, SseSerializer serializer);
+
+  @protected
   void sse_encode_RustOpaque_Mutexlwk_wolletWollet(
       MutexWollet self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          LiquidTransaction self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          PartiallySignedElementsTransaction self, SseSerializer serializer);
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
@@ -530,7 +903,25 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       Descriptor self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_pset_input(
+      PsetInput self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_pset_output(
+      PsetOutput self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_tx_input(TxInput self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_tx_output(
+      TxOutput self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_u_8(int self, SseSerializer serializer);
@@ -551,6 +942,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_balance(List<Balance> self, SseSerializer serializer);
 
   @protected
@@ -561,10 +955,24 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       Uint8List self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_pset_input(
+      List<PsetInput> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_pset_output(
+      List<PsetOutput> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_tx(List<Tx> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_tx_input(List<TxInput> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_tx_out(List<TxOut> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_tx_output(List<TxOutput> self, SseSerializer serializer);
 
   @protected
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer);
@@ -576,7 +984,26 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_pset_input(
+      PsetInput? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_pset_output(
+      PsetOutput? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_tx_input(
+      TxInput? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_tx_output(
+      TxOutput? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_u_8(int? self, SseSerializer serializer);
@@ -591,16 +1018,28 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer);
 
   @protected
+  void sse_encode_pset_input(PsetInput self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_pset_output(PsetOutput self, SseSerializer serializer);
+
+  @protected
   void sse_encode_size_and_fees(SizeAndFees self, SseSerializer serializer);
 
   @protected
   void sse_encode_tx(Tx self, SseSerializer serializer);
 
   @protected
+  void sse_encode_tx_input(TxInput self, SseSerializer serializer);
+
+  @protected
   void sse_encode_tx_out(TxOut self, SseSerializer serializer);
 
   @protected
   void sse_encode_tx_out_secrets(TxOutSecrets self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_tx_output(TxOutput self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_32(int self, SseSerializer serializer);
@@ -625,6 +1064,243 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
 class LwkCoreWire implements BaseWire {
   LwkCoreWire.fromExternalLibrary(ExternalLibrary lib);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_fee(int that) =>
+          wasmModule.wire__crate__api__transaction__LiquidTransaction_fee(that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_from_bytes(
+              JSAny tx_bytes) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_from_bytes(
+                  tx_bytes);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_from_pset(
+              String pset_string) =>
+          wasmModule.wire__crate__api__transaction__LiquidTransaction_from_pset(
+              pset_string);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_input(
+              int that, JSAny index) =>
+          wasmModule.wire__crate__api__transaction__LiquidTransaction_get_input(
+              that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_inputs(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_get_inputs(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_get_output(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output_asset(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_get_output_asset(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output_nonce(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_get_output_nonce(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output_value(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_get_output_value(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_outputs(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_get_outputs(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_input_count(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_input_count(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_is_coinbase(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_is_coinbase(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_lock_time(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_lock_time(that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_output_count(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_output_count(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_to_bytes(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_to_bytes(that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_txid(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_txid(that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_version(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_version(that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_vsize(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_vsize(that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_weight(int that) =>
+          wasmModule
+              .wire__crate__api__transaction__LiquidTransaction_weight(that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
+              int that) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
+              String pset_string) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
+                  pset_string);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
+              int that) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(
+              int that, JSAny index) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(
+                  that, index);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
+              int that) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
+              int that) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
+              int that) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
+              int that) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
+                  that);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
+              int that) =>
+          wasmModule
+              .wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
+                  that);
 
   void wire__crate__api__types__address_address_from_script(
           NativePortType port_,
@@ -772,6 +1448,30 @@ class LwkCoreWire implements BaseWire {
       wasmModule
           .rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet(
               ptr);
+
+  void rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          int ptr) =>
+      wasmModule
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+              ptr);
+
+  void rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          int ptr) =>
+      wasmModule
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+              ptr);
+
+  void rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          int ptr) =>
+      wasmModule
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+              ptr);
+
+  void rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          int ptr) =>
+      wasmModule
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+              ptr);
 }
 
 @JS('wasm_bindgen')
@@ -780,6 +1480,142 @@ external LwkCoreWasmModule get wasmModule;
 @JS()
 @anonymous
 extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_fee(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_from_bytes(
+          JSAny tx_bytes);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_from_pset(
+          String pset_string);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_input(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_inputs(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output_asset(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output_nonce(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_output_value(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_get_outputs(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_input_count(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_is_coinbase(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_lock_time(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_output_count(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_to_bytes(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_txid(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_version(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_vsize(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__LiquidTransaction_weight(int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
+          int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
+          String pset_string);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
+          int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(
+          int that, JSAny index);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
+          int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
+          int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
+          int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
+          int that);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
+          int that);
+
   external void wire__crate__api__types__address_address_from_script(
       NativePortType port_, int network, String script, String? blinding_key);
 
@@ -879,4 +1715,20 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
 
   external void
       rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet(int ptr);
+
+  external void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          int ptr);
+
+  external void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          int ptr);
+
+  external void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          int ptr);
+
+  external void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          int ptr);
 }

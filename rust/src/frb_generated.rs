@@ -25,6 +25,7 @@
 
 // Section: imports
 
+use crate::api::transaction::*;
 use crate::api::wallet::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
 use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
@@ -38,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 119919397;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -130629793;
 
 // Section: executor
 
@@ -46,6 +47,1355 @@ flutter_rust_bridge::frb_generated_default_handler!();
 
 // Section: wire_funcs
 
+fn wire__crate__api__transaction__LiquidTransaction_fee_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_fee",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::fee(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_from_bytes_impl(
+    tx_bytes: impl CstDecode<Vec<u8>>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_from_bytes",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_tx_bytes = tx_bytes.cst_decode();
+            transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                let output_ok =
+                    crate::api::transaction::LiquidTransaction::from_bytes(api_tx_bytes)?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_from_pset_impl(
+    pset_string: impl CstDecode<String>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_from_pset",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_pset_string = pset_string.cst_decode();
+            transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                let output_ok =
+                    crate::api::transaction::LiquidTransaction::from_pset(api_pset_string)?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_get_input_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_get_input",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok =
+                    Result::<_, ()>::Ok(crate::api::transaction::LiquidTransaction::get_input(
+                        &*api_that_guard,
+                        api_index,
+                    ))?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_get_inputs_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_get_inputs",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::get_inputs(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_get_output_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_get_output",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok =
+                    Result::<_, ()>::Ok(crate::api::transaction::LiquidTransaction::get_output(
+                        &*api_that_guard,
+                        api_index,
+                    ))?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_get_output_asset_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_get_output_asset",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::get_output_asset(
+                        &*api_that_guard,
+                        api_index,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_get_output_nonce_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_get_output_nonce",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::get_output_nonce(
+                        &*api_that_guard,
+                        api_index,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_get_output_script_pubkey",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::get_output_script_pubkey(
+                        &*api_that_guard,
+                        api_index,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_get_output_value_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_get_output_value",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::get_output_value(
+                        &*api_that_guard,
+                        api_index,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_get_outputs_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_get_outputs",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::get_outputs(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_input_count_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_input_count",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::input_count(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_is_coinbase_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_is_coinbase",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::is_coinbase(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_lock_time_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_lock_time",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::lock_time(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_output_count_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_output_count",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::output_count(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_to_bytes_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_to_bytes",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::to_bytes(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_txid_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_txid",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::txid(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_version_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_version",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::version(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_vsize_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_vsize",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::vsize(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__LiquidTransaction_weight_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "LiquidTransaction_weight",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::LiquidTransaction::weight(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_extract_tx",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok =
+                    crate::api::transaction::PartiallySignedElementsTransaction::extract_tx(
+                        &*api_that_guard,
+                    )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string_impl(
+    pset_string: impl CstDecode<String>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_from_string",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_pset_string = pset_string.cst_decode();
+            transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                let output_ok =
+                    crate::api::transaction::PartiallySignedElementsTransaction::from_string(
+                        api_pset_string,
+                    )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_get_input",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::get_input(
+                        &*api_that_guard,
+                        api_index,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "PartiallySignedElementsTransaction_get_input_utxo_amount", port: None, mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync }, move || { let api_that = that.cst_decode();let api_index = index.cst_decode();
+                transform_result_dco::<_, _, ()>((move || {
+                    let mut api_that_guard = None;
+let decode_indices_ = flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false)]);
+        for i in decode_indices_ {
+            match i {
+                0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                _ => unreachable!(),
+            }
+        }
+        let api_that_guard = api_that_guard.unwrap();
+ let output_ok = Result::<_,()>::Ok(crate::api::transaction::PartiallySignedElementsTransaction::get_input_utxo_amount(&*api_that_guard, api_index))?;   Ok(output_ok)
+                })()) })
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "PartiallySignedElementsTransaction_get_input_utxo_asset", port: None, mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync }, move || { let api_that = that.cst_decode();let api_index = index.cst_decode();
+                transform_result_dco::<_, _, ()>((move || {
+                    let mut api_that_guard = None;
+let decode_indices_ = flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false)]);
+        for i in decode_indices_ {
+            match i {
+                0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                _ => unreachable!(),
+            }
+        }
+        let api_that_guard = api_that_guard.unwrap();
+ let output_ok = Result::<_,()>::Ok(crate::api::transaction::PartiallySignedElementsTransaction::get_input_utxo_asset(&*api_that_guard, api_index))?;   Ok(output_ok)
+                })()) })
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "PartiallySignedElementsTransaction_get_input_utxo_script", port: None, mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync }, move || { let api_that = that.cst_decode();let api_index = index.cst_decode();
+                transform_result_dco::<_, _, ()>((move || {
+                    let mut api_that_guard = None;
+let decode_indices_ = flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false)]);
+        for i in decode_indices_ {
+            match i {
+                0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                _ => unreachable!(),
+            }
+        }
+        let api_that_guard = api_that_guard.unwrap();
+ let output_ok = Result::<_,()>::Ok(crate::api::transaction::PartiallySignedElementsTransaction::get_input_utxo_script(&*api_that_guard, api_index))?;   Ok(output_ok)
+                })()) })
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_get_inputs",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::get_inputs(
+                        &*api_that_guard,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_get_output",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::get_output(
+                        &*api_that_guard,
+                        api_index,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_get_output_amount",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::get_output_amount(
+                        &*api_that_guard,
+                        api_index,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_get_output_asset",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::get_output_asset(
+                        &*api_that_guard,
+                        api_index,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "PartiallySignedElementsTransaction_get_output_blinding_key", port: None, mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync }, move || { let api_that = that.cst_decode();let api_index = index.cst_decode();
+                transform_result_dco::<_, _, ()>((move || {
+                    let mut api_that_guard = None;
+let decode_indices_ = flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false)]);
+        for i in decode_indices_ {
+            match i {
+                0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                _ => unreachable!(),
+            }
+        }
+        let api_that_guard = api_that_guard.unwrap();
+ let output_ok = Result::<_,()>::Ok(crate::api::transaction::PartiallySignedElementsTransaction::get_output_blinding_key(&*api_that_guard, api_index))?;   Ok(output_ok)
+                })()) })
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+    index: impl CstDecode<usize>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_get_output_script",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_index = index.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::get_output_script(
+                        &*api_that_guard,
+                        api_index,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_get_outputs",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::get_outputs(
+                        &*api_that_guard,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_input_count",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::input_count(
+                        &*api_that_guard,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_lock_time",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::lock_time(
+                        &*api_that_guard,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_output_count",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::output_count(
+                        &*api_that_guard,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string_impl(
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >,
+    >,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "PartiallySignedElementsTransaction_to_string",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::transaction::PartiallySignedElementsTransaction::to_string(
+                        &*api_that_guard,
+                    ),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
 fn wire__crate__api__types__address_address_from_script_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     network: impl CstDecode<crate::api::types::Network>,
@@ -706,7 +2056,51 @@ impl CstDecode<usize> for usize {
         self
     }
 }
+impl SseDecode for LiquidTransaction {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
+impl SseDecode for PartiallySignedElementsTransaction {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
 impl SseDecode for RustOpaqueNom<Mutex<lwk_wollet::Wollet>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return unsafe { decode_rust_opaque_nom(inner) };
+    }
+}
+
+impl SseDecode
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return unsafe { decode_rust_opaque_nom(inner) };
+    }
+}
+
+impl SseDecode
+    for RustOpaqueNom<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PartiallySignedElementsTransaction>,
+    >
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <usize>::sse_decode(deserializer);
@@ -795,6 +2189,18 @@ impl SseDecode for i64 {
     }
 }
 
+impl SseDecode for Vec<String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<String>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<crate::api::types::Balance> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -819,6 +2225,34 @@ impl SseDecode for Vec<u8> {
     }
 }
 
+impl SseDecode for Vec<crate::api::transaction::PsetInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::transaction::PsetInput>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::transaction::PsetOutput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::transaction::PsetOutput>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<crate::api::types::Tx> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -831,6 +2265,18 @@ impl SseDecode for Vec<crate::api::types::Tx> {
     }
 }
 
+impl SseDecode for Vec<crate::api::transaction::TxInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::transaction::TxInput>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<crate::api::types::TxOut> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -838,6 +2284,20 @@ impl SseDecode for Vec<crate::api::types::TxOut> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<crate::api::types::TxOut>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::transaction::TxOutput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::transaction::TxOutput>::sse_decode(
+                deserializer,
+            ));
         }
         return ans_;
     }
@@ -874,11 +2334,72 @@ impl SseDecode for Option<String> {
     }
 }
 
+impl SseDecode for Option<crate::api::transaction::PsetInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::transaction::PsetInput>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::transaction::PsetOutput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::transaction::PsetOutput>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::transaction::TxInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::transaction::TxInput>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::transaction::TxOutput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::transaction::TxOutput>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<u32> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<u32>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<u64>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -934,6 +2455,36 @@ impl SseDecode for crate::api::types::PsetAmounts {
     }
 }
 
+impl SseDecode for crate::api::transaction::PsetInput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_witnessUtxoScript = <Option<String>>::sse_decode(deserializer);
+        let mut var_witnessUtxoAmount = <Option<u64>>::sse_decode(deserializer);
+        let mut var_witnessUtxoAsset = <Option<String>>::sse_decode(deserializer);
+        return crate::api::transaction::PsetInput {
+            witness_utxo_script: var_witnessUtxoScript,
+            witness_utxo_amount: var_witnessUtxoAmount,
+            witness_utxo_asset: var_witnessUtxoAsset,
+        };
+    }
+}
+
+impl SseDecode for crate::api::transaction::PsetOutput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_scriptPubkey = <String>::sse_decode(deserializer);
+        let mut var_amount = <Option<u64>>::sse_decode(deserializer);
+        let mut var_asset = <Option<String>>::sse_decode(deserializer);
+        let mut var_blindingKey = <Option<String>>::sse_decode(deserializer);
+        return crate::api::transaction::PsetOutput {
+            script_pubkey: var_scriptPubkey,
+            amount: var_amount,
+            asset: var_asset,
+            blinding_key: var_blindingKey,
+        };
+    }
+}
+
 impl SseDecode for crate::api::types::SizeAndFees {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -976,6 +2527,26 @@ impl SseDecode for crate::api::types::Tx {
     }
 }
 
+impl SseDecode for crate::api::transaction::TxInput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_txid = <String>::sse_decode(deserializer);
+        let mut var_vout = <u32>::sse_decode(deserializer);
+        let mut var_scriptSig = <String>::sse_decode(deserializer);
+        let mut var_sequence = <u32>::sse_decode(deserializer);
+        let mut var_witness = <Vec<String>>::sse_decode(deserializer);
+        let mut var_isPegin = <bool>::sse_decode(deserializer);
+        return crate::api::transaction::TxInput {
+            txid: var_txid,
+            vout: var_vout,
+            script_sig: var_scriptSig,
+            sequence: var_sequence,
+            witness: var_witness,
+            is_pegin: var_isPegin,
+        };
+    }
+}
+
 impl SseDecode for crate::api::types::TxOut {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1008,6 +2579,22 @@ impl SseDecode for crate::api::types::TxOutSecrets {
             value_bf: var_valueBf,
             asset: var_asset,
             asset_bf: var_assetBf,
+        };
+    }
+}
+
+impl SseDecode for crate::api::transaction::TxOutput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_scriptPubkey = <String>::sse_decode(deserializer);
+        let mut var_asset = <Option<String>>::sse_decode(deserializer);
+        let mut var_value = <Option<u64>>::sse_decode(deserializer);
+        let mut var_nonce = <Option<String>>::sse_decode(deserializer);
+        return crate::api::transaction::TxOutput {
+            script_pubkey: var_scriptPubkey,
+            asset: var_asset,
+            value: var_value,
+            nonce: var_nonce,
         };
     }
 }
@@ -1079,6 +2666,41 @@ fn pde_ffi_dispatcher_sync_impl(
 }
 
 // Section: rust2dart
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<LiquidTransaction> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<LiquidTransaction> {}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<LiquidTransaction>> for LiquidTransaction {
+    fn into_into_dart(self) -> FrbWrapper<LiquidTransaction> {
+        self.into()
+    }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<PartiallySignedElementsTransaction> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<PartiallySignedElementsTransaction>
+{
+}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<PartiallySignedElementsTransaction>>
+    for PartiallySignedElementsTransaction
+{
+    fn into_into_dart(self) -> FrbWrapper<PartiallySignedElementsTransaction> {
+        self.into()
+    }
+}
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::types::Address {
@@ -1237,6 +2859,51 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::PsetAmounts>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::transaction::PsetInput {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.witness_utxo_script.into_into_dart().into_dart(),
+            self.witness_utxo_amount.into_into_dart().into_dart(),
+            self.witness_utxo_asset.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::transaction::PsetInput
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::transaction::PsetInput>
+    for crate::api::transaction::PsetInput
+{
+    fn into_into_dart(self) -> crate::api::transaction::PsetInput {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::transaction::PsetOutput {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.script_pubkey.into_into_dart().into_dart(),
+            self.amount.into_into_dart().into_dart(),
+            self.asset.into_into_dart().into_dart(),
+            self.blinding_key.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::transaction::PsetOutput
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::transaction::PsetOutput>
+    for crate::api::transaction::PsetOutput
+{
+    fn into_into_dart(self) -> crate::api::transaction::PsetOutput {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::types::SizeAndFees {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -1279,6 +2946,31 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::Tx {
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::types::Tx {}
 impl flutter_rust_bridge::IntoIntoDart<crate::api::types::Tx> for crate::api::types::Tx {
     fn into_into_dart(self) -> crate::api::types::Tx {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::transaction::TxInput {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.txid.into_into_dart().into_dart(),
+            self.vout.into_into_dart().into_dart(),
+            self.script_sig.into_into_dart().into_dart(),
+            self.sequence.into_into_dart().into_dart(),
+            self.witness.into_into_dart().into_dart(),
+            self.is_pegin.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::transaction::TxInput
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::transaction::TxInput>
+    for crate::api::transaction::TxInput
+{
+    fn into_into_dart(self) -> crate::api::transaction::TxInput {
         self
     }
 }
@@ -1326,6 +3018,29 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::TxOutSecrets>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::transaction::TxOutput {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.script_pubkey.into_into_dart().into_dart(),
+            self.asset.into_into_dart().into_dart(),
+            self.value.into_into_dart().into_dart(),
+            self.nonce.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::transaction::TxOutput
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::transaction::TxOutput>
+    for crate::api::transaction::TxOutput
+{
+    fn into_into_dart(self) -> crate::api::transaction::TxOutput {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::wallet::Wallet {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [self.inner.into_into_dart().into_dart()].into_dart()
@@ -1338,7 +3053,52 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::wallet::Wallet> for crate::ap
     }
 }
 
+impl SseEncode for LiquidTransaction {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self), serializer);
+    }
+}
+
+impl SseEncode for PartiallySignedElementsTransaction {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        >>::sse_encode(
+            flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self),
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for RustOpaqueNom<Mutex<lwk_wollet::Wollet>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
+    }
+}
+
+impl SseEncode
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
+    }
+}
+
+impl SseEncode
+    for RustOpaqueNom<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PartiallySignedElementsTransaction>,
+    >
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         let (ptr, size) = self.sse_encode_raw();
@@ -1412,6 +3172,16 @@ impl SseEncode for i64 {
     }
 }
 
+impl SseEncode for Vec<String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <String>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<crate::api::types::Balance> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1432,6 +3202,26 @@ impl SseEncode for Vec<u8> {
     }
 }
 
+impl SseEncode for Vec<crate::api::transaction::PsetInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::transaction::PsetInput>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::transaction::PsetOutput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::transaction::PsetOutput>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<crate::api::types::Tx> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1442,12 +3232,32 @@ impl SseEncode for Vec<crate::api::types::Tx> {
     }
 }
 
+impl SseEncode for Vec<crate::api::transaction::TxInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::transaction::TxInput>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<crate::api::types::TxOut> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <crate::api::types::TxOut>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::transaction::TxOutput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::transaction::TxOutput>::sse_encode(item, serializer);
         }
     }
 }
@@ -1485,12 +3295,62 @@ impl SseEncode for Option<String> {
     }
 }
 
+impl SseEncode for Option<crate::api::transaction::PsetInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::transaction::PsetInput>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::transaction::PsetOutput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::transaction::PsetOutput>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::transaction::TxInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::transaction::TxInput>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::transaction::TxOutput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::transaction::TxOutput>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<u32> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <u32>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <u64>::sse_encode(value, serializer);
         }
     }
 }
@@ -1530,6 +3390,25 @@ impl SseEncode for crate::api::types::PsetAmounts {
     }
 }
 
+impl SseEncode for crate::api::transaction::PsetInput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<String>>::sse_encode(self.witness_utxo_script, serializer);
+        <Option<u64>>::sse_encode(self.witness_utxo_amount, serializer);
+        <Option<String>>::sse_encode(self.witness_utxo_asset, serializer);
+    }
+}
+
+impl SseEncode for crate::api::transaction::PsetOutput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.script_pubkey, serializer);
+        <Option<u64>>::sse_encode(self.amount, serializer);
+        <Option<String>>::sse_encode(self.asset, serializer);
+        <Option<String>>::sse_encode(self.blinding_key, serializer);
+    }
+}
+
 impl SseEncode for crate::api::types::SizeAndFees {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1555,6 +3434,18 @@ impl SseEncode for crate::api::types::Tx {
     }
 }
 
+impl SseEncode for crate::api::transaction::TxInput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.txid, serializer);
+        <u32>::sse_encode(self.vout, serializer);
+        <String>::sse_encode(self.script_sig, serializer);
+        <u32>::sse_encode(self.sequence, serializer);
+        <Vec<String>>::sse_encode(self.witness, serializer);
+        <bool>::sse_encode(self.is_pegin, serializer);
+    }
+}
+
 impl SseEncode for crate::api::types::TxOut {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1574,6 +3465,16 @@ impl SseEncode for crate::api::types::TxOutSecrets {
         <String>::sse_encode(self.value_bf, serializer);
         <String>::sse_encode(self.asset, serializer);
         <String>::sse_encode(self.asset_bf, serializer);
+    }
+}
+
+impl SseEncode for crate::api::transaction::TxOutput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.script_pubkey, serializer);
+        <Option<String>>::sse_encode(self.asset, serializer);
+        <Option<u64>>::sse_encode(self.value, serializer);
+        <Option<String>>::sse_encode(self.nonce, serializer);
     }
 }
 
@@ -1628,6 +3529,7 @@ mod io {
     // Section: imports
 
     use super::*;
+    use crate::api::transaction::*;
     use crate::api::wallet::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
@@ -1641,9 +3543,70 @@ mod io {
 
     // Section: dart2rust
 
+    impl CstDecode<LiquidTransaction> for usize {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> LiquidTransaction {
+            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
+                RustOpaqueNom<
+                    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>,
+                >,
+            >::cst_decode(
+                self
+            ))
+        }
+    }
+    impl CstDecode<PartiallySignedElementsTransaction> for usize {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> PartiallySignedElementsTransaction {
+            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
+                RustOpaqueNom<
+                    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                        PartiallySignedElementsTransaction,
+                    >,
+                >,
+            >::cst_decode(
+                self
+            ))
+        }
+    }
     impl CstDecode<RustOpaqueNom<Mutex<lwk_wollet::Wollet>>> for usize {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> RustOpaqueNom<Mutex<lwk_wollet::Wollet>> {
+            unsafe { decode_rust_opaque_nom(self as _) }
+        }
+    }
+    impl
+        CstDecode<
+            RustOpaqueNom<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>,
+            >,
+        > for usize
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>
+        {
+            unsafe { decode_rust_opaque_nom(self as _) }
+        }
+    }
+    impl
+        CstDecode<
+            RustOpaqueNom<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    PartiallySignedElementsTransaction,
+                >,
+            >,
+        > for usize
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        > {
             unsafe { decode_rust_opaque_nom(self as _) }
         }
     }
@@ -1694,9 +3657,43 @@ mod io {
             CstDecode::<crate::api::descriptor::Descriptor>::cst_decode(*wrap).into()
         }
     }
+    impl CstDecode<crate::api::transaction::PsetInput> for *mut wire_cst_pset_input {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::PsetInput {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<crate::api::transaction::PsetInput>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<crate::api::transaction::PsetOutput> for *mut wire_cst_pset_output {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::PsetOutput {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<crate::api::transaction::PsetOutput>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<crate::api::transaction::TxInput> for *mut wire_cst_tx_input {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::TxInput {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<crate::api::transaction::TxInput>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<crate::api::transaction::TxOutput> for *mut wire_cst_tx_output {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::TxOutput {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<crate::api::transaction::TxOutput>::cst_decode(*wrap).into()
+        }
+    }
     impl CstDecode<u32> for *mut u32 {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> u32 {
+            unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
+        }
+    }
+    impl CstDecode<u64> for *mut u64 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> u64 {
             unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
         }
     }
@@ -1719,6 +3716,16 @@ mod io {
             crate::api::descriptor::Descriptor {
                 ct_descriptor: self.ct_descriptor.cst_decode(),
             }
+        }
+    }
+    impl CstDecode<Vec<String>> for *mut wire_cst_list_String {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<String> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
     impl CstDecode<Vec<crate::api::types::Balance>> for *mut wire_cst_list_balance {
@@ -1749,6 +3756,26 @@ mod io {
             }
         }
     }
+    impl CstDecode<Vec<crate::api::transaction::PsetInput>> for *mut wire_cst_list_pset_input {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::transaction::PsetInput> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
+    impl CstDecode<Vec<crate::api::transaction::PsetOutput>> for *mut wire_cst_list_pset_output {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::transaction::PsetOutput> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<Vec<crate::api::types::Tx>> for *mut wire_cst_list_tx {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<crate::api::types::Tx> {
@@ -1759,9 +3786,29 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<Vec<crate::api::transaction::TxInput>> for *mut wire_cst_list_tx_input {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::transaction::TxInput> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<Vec<crate::api::types::TxOut>> for *mut wire_cst_list_tx_out {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<crate::api::types::TxOut> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
+    impl CstDecode<Vec<crate::api::transaction::TxOutput>> for *mut wire_cst_list_tx_output {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::transaction::TxOutput> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -1805,6 +3852,27 @@ mod io {
             }
         }
     }
+    impl CstDecode<crate::api::transaction::PsetInput> for wire_cst_pset_input {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::PsetInput {
+            crate::api::transaction::PsetInput {
+                witness_utxo_script: self.witness_utxo_script.cst_decode(),
+                witness_utxo_amount: self.witness_utxo_amount.cst_decode(),
+                witness_utxo_asset: self.witness_utxo_asset.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<crate::api::transaction::PsetOutput> for wire_cst_pset_output {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::PsetOutput {
+            crate::api::transaction::PsetOutput {
+                script_pubkey: self.script_pubkey.cst_decode(),
+                amount: self.amount.cst_decode(),
+                asset: self.asset.cst_decode(),
+                blinding_key: self.blinding_key.cst_decode(),
+            }
+        }
+    }
     impl CstDecode<crate::api::types::SizeAndFees> for wire_cst_size_and_fees {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> crate::api::types::SizeAndFees {
@@ -1832,6 +3900,19 @@ mod io {
             }
         }
     }
+    impl CstDecode<crate::api::transaction::TxInput> for wire_cst_tx_input {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::TxInput {
+            crate::api::transaction::TxInput {
+                txid: self.txid.cst_decode(),
+                vout: self.vout.cst_decode(),
+                script_sig: self.script_sig.cst_decode(),
+                sequence: self.sequence.cst_decode(),
+                witness: self.witness.cst_decode(),
+                is_pegin: self.is_pegin.cst_decode(),
+            }
+        }
+    }
     impl CstDecode<crate::api::types::TxOut> for wire_cst_tx_out {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> crate::api::types::TxOut {
@@ -1853,6 +3934,17 @@ mod io {
                 value_bf: self.value_bf.cst_decode(),
                 asset: self.asset.cst_decode(),
                 asset_bf: self.asset_bf.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<crate::api::transaction::TxOutput> for wire_cst_tx_output {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::TxOutput {
+            crate::api::transaction::TxOutput {
+                script_pubkey: self.script_pubkey.cst_decode(),
+                asset: self.asset.cst_decode(),
+                value: self.value.cst_decode(),
+                nonce: self.nonce.cst_decode(),
             }
         }
     }
@@ -1966,6 +4058,35 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_pset_input {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                witness_utxo_script: core::ptr::null_mut(),
+                witness_utxo_amount: core::ptr::null_mut(),
+                witness_utxo_asset: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_pset_input {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_pset_output {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                script_pubkey: core::ptr::null_mut(),
+                amount: core::ptr::null_mut(),
+                asset: core::ptr::null_mut(),
+                blinding_key: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_pset_output {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_size_and_fees {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -1997,6 +4118,23 @@ mod io {
         }
     }
     impl Default for wire_cst_tx {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_tx_input {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                txid: core::ptr::null_mut(),
+                vout: Default::default(),
+                script_sig: core::ptr::null_mut(),
+                sequence: Default::default(),
+                witness: core::ptr::null_mut(),
+                is_pegin: Default::default(),
+            }
+        }
+    }
+    impl Default for wire_cst_tx_input {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -2033,6 +4171,21 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_tx_output {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                script_pubkey: core::ptr::null_mut(),
+                asset: core::ptr::null_mut(),
+                value: core::ptr::null_mut(),
+                nonce: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_tx_output {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_wallet {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -2044,6 +4197,298 @@ mod io {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_fee(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_fee_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_bytes(
+        tx_bytes: *mut wire_cst_list_prim_u_8_loose,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_from_bytes_impl(tx_bytes)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_pset(
+        pset_string: *mut wire_cst_list_prim_u_8_strict,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_from_pset_impl(pset_string)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_input(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_input_impl(that, index)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_inputs(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_inputs_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_impl(that, index)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_asset(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_asset_impl(that, index)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_nonce(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_nonce_impl(that, index)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey_impl(that, index)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_value(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_value_impl(that, index)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_outputs(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_outputs_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_input_count(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_input_count_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_is_coinbase(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_is_coinbase_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_lock_time(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_lock_time_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_output_count(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_output_count_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_to_bytes(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_to_bytes_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_txid(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_txid_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_version(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_version_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_vsize(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_vsize_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_weight(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_weight_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
+        pset_string: *mut wire_cst_list_prim_u_8_strict,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string_impl(
+            pset_string,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_impl(
+            that, index,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount_impl(
+            that, index,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset_impl(
+            that, index,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script_impl(
+            that, index,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_impl(
+            that, index,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount_impl(
+            that, index,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset_impl(
+            that, index,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key_impl(that, index)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(
+        that: usize,
+        index: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script_impl(
+            that, index,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count_impl(that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
+        that: usize,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string_impl(that)
     }
 
     #[unsafe(no_mangle)]
@@ -2326,6 +4771,50 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>::increment_strong_count(ptr as _);
+        }
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    PartiallySignedElementsTransaction,
+                >,
+            >::increment_strong_count(ptr as _);
+        }
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    PartiallySignedElementsTransaction,
+                >,
+            >::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_blockchain() -> *mut wire_cst_blockchain {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(
             wire_cst_blockchain::new_with_null_ptr(),
@@ -2340,7 +4829,36 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_pset_input() -> *mut wire_cst_pset_input {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_pset_input::new_with_null_ptr(),
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_pset_output() -> *mut wire_cst_pset_output {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_pset_output::new_with_null_ptr(),
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_tx_input() -> *mut wire_cst_tx_input {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_tx_input::new_with_null_ptr())
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_tx_output() -> *mut wire_cst_tx_output {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_tx_output::new_with_null_ptr())
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_u_32(value: u32) -> *mut u32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_u_64(value: u64) -> *mut u64 {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
     }
 
@@ -2352,6 +4870,18 @@ mod io {
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_cst_new_box_autoadd_wallet() -> *mut wire_cst_wallet {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_wallet::new_with_null_ptr())
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_list_String(len: i32) -> *mut wire_cst_list_String {
+        let wrap = wire_cst_list_String {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <*mut wire_cst_list_prim_u_8_strict>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
     }
 
     #[unsafe(no_mangle)]
@@ -2389,6 +4919,34 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_list_pset_input(
+        len: i32,
+    ) -> *mut wire_cst_list_pset_input {
+        let wrap = wire_cst_list_pset_input {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_pset_input>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_list_pset_output(
+        len: i32,
+    ) -> *mut wire_cst_list_pset_output {
+        let wrap = wire_cst_list_pset_output {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_pset_output>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_cst_new_list_tx(len: i32) -> *mut wire_cst_list_tx {
         let wrap = wire_cst_list_tx {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
@@ -2401,10 +4959,34 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_list_tx_input(len: i32) -> *mut wire_cst_list_tx_input {
+        let wrap = wire_cst_list_tx_input {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_tx_input>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_cst_new_list_tx_out(len: i32) -> *mut wire_cst_list_tx_out {
         let wrap = wire_cst_list_tx_out {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
                 <wire_cst_tx_out>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_list_tx_output(len: i32) -> *mut wire_cst_list_tx_output {
+        let wrap = wire_cst_list_tx_output {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_tx_output>::new_with_null_ptr(),
                 len,
             ),
             len,
@@ -2436,6 +5018,12 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_String {
+        ptr: *mut *mut wire_cst_list_prim_u_8_strict,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_balance {
         ptr: *mut wire_cst_balance,
         len: i32,
@@ -2454,14 +5042,38 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_pset_input {
+        ptr: *mut wire_cst_pset_input,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_list_pset_output {
+        ptr: *mut wire_cst_pset_output,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_tx {
         ptr: *mut wire_cst_tx,
         len: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_tx_input {
+        ptr: *mut wire_cst_tx_input,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_tx_out {
         ptr: *mut wire_cst_tx_out,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_list_tx_output {
+        ptr: *mut wire_cst_tx_output,
         len: i32,
     }
     #[repr(C)]
@@ -2490,6 +5102,21 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_pset_input {
+        witness_utxo_script: *mut wire_cst_list_prim_u_8_strict,
+        witness_utxo_amount: *mut u64,
+        witness_utxo_asset: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_pset_output {
+        script_pubkey: *mut wire_cst_list_prim_u_8_strict,
+        amount: *mut u64,
+        asset: *mut wire_cst_list_prim_u_8_strict,
+        blinding_key: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_size_and_fees {
         discounted_vsize: usize,
         discounted_weight: usize,
@@ -2511,6 +5138,16 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_tx_input {
+        txid: *mut wire_cst_list_prim_u_8_strict,
+        vout: u32,
+        script_sig: *mut wire_cst_list_prim_u_8_strict,
+        sequence: u32,
+        witness: *mut wire_cst_list_String,
+        is_pegin: bool,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_tx_out {
         script_pubkey: *mut wire_cst_list_prim_u_8_strict,
         outpoint: wire_cst_out_point,
@@ -2526,6 +5163,14 @@ mod io {
         value_bf: *mut wire_cst_list_prim_u_8_strict,
         asset: *mut wire_cst_list_prim_u_8_strict,
         asset_bf: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_tx_output {
+        script_pubkey: *mut wire_cst_list_prim_u_8_strict,
+        asset: *mut wire_cst_list_prim_u_8_strict,
+        value: *mut u64,
+        nonce: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -2545,6 +5190,7 @@ mod web {
     // Section: imports
 
     use super::*;
+    use crate::api::transaction::*;
     use crate::api::wallet::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
@@ -2644,6 +5290,16 @@ mod web {
             }
         }
     }
+    impl CstDecode<Vec<String>> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<String> {
+            self.dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap()
+                .iter()
+                .map(CstDecode::cst_decode)
+                .collect()
+        }
+    }
     impl CstDecode<Vec<crate::api::types::Balance>>
         for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
     {
@@ -2662,6 +5318,30 @@ mod web {
             self.into_vec()
         }
     }
+    impl CstDecode<Vec<crate::api::transaction::PsetInput>>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::transaction::PsetInput> {
+            self.dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap()
+                .iter()
+                .map(CstDecode::cst_decode)
+                .collect()
+        }
+    }
+    impl CstDecode<Vec<crate::api::transaction::PsetOutput>>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::transaction::PsetOutput> {
+            self.dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap()
+                .iter()
+                .map(CstDecode::cst_decode)
+                .collect()
+        }
+    }
     impl CstDecode<Vec<crate::api::types::Tx>>
         for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
     {
@@ -2674,11 +5354,35 @@ mod web {
                 .collect()
         }
     }
+    impl CstDecode<Vec<crate::api::transaction::TxInput>>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::transaction::TxInput> {
+            self.dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap()
+                .iter()
+                .map(CstDecode::cst_decode)
+                .collect()
+        }
+    }
     impl CstDecode<Vec<crate::api::types::TxOut>>
         for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
     {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<crate::api::types::TxOut> {
+            self.dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap()
+                .iter()
+                .map(CstDecode::cst_decode)
+                .collect()
+        }
+    }
+    impl CstDecode<Vec<crate::api::transaction::TxOutput>>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::transaction::TxOutput> {
             self.dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
                 .unwrap()
                 .iter()
@@ -2772,6 +5476,49 @@ mod web {
             }
         }
     }
+    impl CstDecode<crate::api::transaction::PsetInput>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::PsetInput {
+            let self_ = self
+                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap();
+            assert_eq!(
+                self_.length(),
+                3,
+                "Expected 3 elements, got {}",
+                self_.length()
+            );
+            crate::api::transaction::PsetInput {
+                witness_utxo_script: self_.get(0).cst_decode(),
+                witness_utxo_amount: self_.get(1).cst_decode(),
+                witness_utxo_asset: self_.get(2).cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<crate::api::transaction::PsetOutput>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::PsetOutput {
+            let self_ = self
+                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap();
+            assert_eq!(
+                self_.length(),
+                4,
+                "Expected 4 elements, got {}",
+                self_.length()
+            );
+            crate::api::transaction::PsetOutput {
+                script_pubkey: self_.get(0).cst_decode(),
+                amount: self_.get(1).cst_decode(),
+                asset: self_.get(2).cst_decode(),
+                blinding_key: self_.get(3).cst_decode(),
+            }
+        }
+    }
     impl CstDecode<crate::api::types::SizeAndFees>
         for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
     {
@@ -2821,6 +5568,30 @@ mod web {
             }
         }
     }
+    impl CstDecode<crate::api::transaction::TxInput>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::TxInput {
+            let self_ = self
+                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap();
+            assert_eq!(
+                self_.length(),
+                6,
+                "Expected 6 elements, got {}",
+                self_.length()
+            );
+            crate::api::transaction::TxInput {
+                txid: self_.get(0).cst_decode(),
+                vout: self_.get(1).cst_decode(),
+                script_sig: self_.get(2).cst_decode(),
+                sequence: self_.get(3).cst_decode(),
+                witness: self_.get(4).cst_decode(),
+                is_pegin: self_.get(5).cst_decode(),
+            }
+        }
+    }
     impl CstDecode<crate::api::types::TxOut>
         for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
     {
@@ -2867,6 +5638,28 @@ mod web {
             }
         }
     }
+    impl CstDecode<crate::api::transaction::TxOutput>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::transaction::TxOutput {
+            let self_ = self
+                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap();
+            assert_eq!(
+                self_.length(),
+                4,
+                "Expected 4 elements, got {}",
+                self_.length()
+            );
+            crate::api::transaction::TxOutput {
+                script_pubkey: self_.get(0).cst_decode(),
+                asset: self_.get(1).cst_decode(),
+                value: self_.get(2).cst_decode(),
+                nonce: self_.get(3).cst_decode(),
+            }
+        }
+    }
     impl CstDecode<crate::api::wallet::Wallet>
         for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
     {
@@ -2886,11 +5679,82 @@ mod web {
             }
         }
     }
+    impl CstDecode<LiquidTransaction> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> LiquidTransaction {
+            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
+                RustOpaqueNom<
+                    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>,
+                >,
+            >::cst_decode(
+                self
+            ))
+        }
+    }
+    impl CstDecode<PartiallySignedElementsTransaction>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> PartiallySignedElementsTransaction {
+            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
+                RustOpaqueNom<
+                    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                        PartiallySignedElementsTransaction,
+                    >,
+                >,
+            >::cst_decode(
+                self
+            ))
+        }
+    }
     impl CstDecode<RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>
         for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
     {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> RustOpaqueNom<Mutex<lwk_wollet::Wollet>> {
+            #[cfg(target_pointer_width = "64")]
+            {
+                compile_error!("64-bit pointers are not supported.");
+            }
+            unsafe { decode_rust_opaque_nom((self.as_f64().unwrap() as usize) as _) }
+        }
+    }
+    impl
+        CstDecode<
+            RustOpaqueNom<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>,
+            >,
+        > for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>
+        {
+            #[cfg(target_pointer_width = "64")]
+            {
+                compile_error!("64-bit pointers are not supported.");
+            }
+            unsafe { decode_rust_opaque_nom((self.as_f64().unwrap() as usize) as _) }
+        }
+    }
+    impl
+        CstDecode<
+            RustOpaqueNom<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    PartiallySignedElementsTransaction,
+                >,
+            >,
+        > for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                PartiallySignedElementsTransaction,
+            >,
+        > {
             #[cfg(target_pointer_width = "64")]
             {
                 compile_error!("64-bit pointers are not supported.");
@@ -2967,6 +5831,298 @@ mod web {
         fn cst_decode(self) -> usize {
             ::std::convert::TryInto::<u64>::try_into(self).unwrap() as _
         }
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_fee(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_fee_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_from_bytes(
+        tx_bytes: Box<[u8]>,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_from_bytes_impl(tx_bytes)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_from_pset(
+        pset_string: String,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_from_pset_impl(pset_string)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_get_input(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_input_impl(that, index)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_get_inputs(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_inputs_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_get_output(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_impl(that, index)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_get_output_asset(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_asset_impl(that, index)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_get_output_nonce(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_nonce_impl(that, index)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey_impl(that, index)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_get_output_value(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_output_value_impl(that, index)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_get_outputs(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_get_outputs_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_input_count(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_input_count_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_is_coinbase(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_is_coinbase_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_lock_time(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_lock_time_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_output_count(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_output_count_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_to_bytes(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_to_bytes_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_txid(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_txid_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_version(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_version_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_vsize(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_vsize_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__LiquidTransaction_weight(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__LiquidTransaction_weight_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
+        pset_string: String,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string_impl(
+            pset_string,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_impl(
+            that, index,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount_impl(
+            that, index,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset_impl(
+            that, index,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script_impl(
+            that, index,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_impl(
+            that, index,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount_impl(
+            that, index,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset_impl(
+            that, index,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key_impl(that, index)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        index: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script_impl(
+            that, index,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count_impl(that)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string_impl(that)
     }
 
     #[wasm_bindgen]
@@ -3245,6 +6401,50 @@ mod web {
     ) {
         unsafe {
             StdArc::<Mutex<lwk_wollet::Wollet>>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>::increment_strong_count(ptr as _);
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<LiquidTransaction>>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    PartiallySignedElementsTransaction,
+                >,
+            >::increment_strong_count(ptr as _);
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    PartiallySignedElementsTransaction,
+                >,
+            >::decrement_strong_count(ptr as _);
         }
     }
 }
