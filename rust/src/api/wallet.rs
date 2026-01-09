@@ -219,6 +219,7 @@ impl Wallet {
         asset: String,
         network: Network,
         base_url: Option<String>,
+        is_send_all: bool,
     ) -> anyhow::Result<super::types::PayjoinTx, LwkError> {
         let wallet = self.get_wallet()?;
 
@@ -283,7 +284,7 @@ impl Wallet {
                     asset_id: asset,
                     amount: sats,
                 }],
-                deduct_fee: None,
+                deduct_fee: if is_send_all { Some(0) } else { None },
                 fee_asset: asset,
             },
         )
@@ -598,7 +599,7 @@ mod tests {
         );
 
         let payjoin = wallet
-            .build_payjoin_tx(10000, out_address, asset.to_owned(), network, None)
+            .build_payjoin_tx(10000, out_address, asset.to_owned(), network, None, false)
             .unwrap();
         println!("asset_fee: {}", payjoin.asset_fee);
 
@@ -610,5 +611,139 @@ mod tests {
 
         let txid = Blockchain::broadcast_tx_bytes(electrum_url.to_owned(), tx_bytes).unwrap();
         println!("txid: {txid}");
+    }
+
+    #[ignore = "disabled because it depends on external servers"]
+    #[test]
+    fn test_payjoin_send_all_deducts_fee_from_recipient() {
+        let mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+        let electrum_url = "elements-testnet.blockstream.info:50002";
+        let network = Network::Testnet;
+        let asset = "b612eb46313a2cd6ebabd8b7a8eed5696e29898b87a43bff41c94f51acef9d73";
+
+        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk_send_all".to_string(), desc).unwrap();
+        wallet
+            .sync(electrum_url.to_owned(), true, None, None)
+            .unwrap();
+
+        let out_address = wallet.address_last_unused().unwrap().confidential;
+        println!("out_address: {out_address}");
+
+        let balances = wallet.balances().unwrap();
+        println!("balances: {balances:?}");
+
+        let asset_balance = balances
+            .iter()
+            .find_map(|bal| (bal.asset_id == asset).then_some(bal.value))
+            .unwrap_or_default();
+        // The payjoin fee is about 0.085 USDT.
+        // Make sure your wallet has at least 1 USDT.
+        assert!(
+            asset_balance >= 100000000,
+            "wallet asset balance is low: {asset_balance}"
+        );
+
+        let send_amount: u64 = 50000000;
+
+        // Build payjoin without is_send_all (fees NOT deducted from recipient)
+        let payjoin_normal = wallet
+            .build_payjoin_tx(
+                send_amount,
+                out_address.clone(),
+                asset.to_owned(),
+                network,
+                None,
+                false,
+            )
+            .unwrap();
+        println!(
+            "Normal payjoin - asset_fee: {}, network_fee: {}",
+            payjoin_normal.asset_fee, payjoin_normal.network_fee
+        );
+
+        // Build payjoin with is_send_all (fees SHOULD be deducted from recipient)
+        let payjoin_send_all = wallet
+            .build_payjoin_tx(
+                send_amount,
+                out_address.clone(),
+                asset.to_owned(),
+                network,
+                None,
+                true,
+            )
+            .unwrap();
+        println!(
+            "Send all payjoin - asset_fee: {}, network_fee: {}",
+            payjoin_send_all.asset_fee, payjoin_send_all.network_fee
+        );
+
+        // Parse both PSETs to examine outputs directly
+        // The PSET outputs have unblinded amounts in the `amount` field
+        let pset_normal = PartiallySignedTransaction::from_str(&payjoin_normal.pset).unwrap();
+        let pset_send_all = PartiallySignedTransaction::from_str(&payjoin_send_all.pset).unwrap();
+
+        let recipient_address = LwkAddress::from_str(&out_address).unwrap();
+        let recipient_script = recipient_address.script_pubkey();
+        let asset_id = LwkAssetId::from_str(asset).unwrap();
+
+        // Helper to find recipient output value from PSET outputs
+        let find_recipient_value = |pset: &PartiallySignedTransaction| -> Option<u64> {
+            for output in pset.outputs() {
+                // Check if this output matches the recipient script and asset
+                if output.script_pubkey == recipient_script {
+                    if let Some(output_asset) = output.asset {
+                        if output_asset == asset_id {
+                            return output.amount;
+                        }
+                    }
+                }
+            }
+            None
+        };
+
+        let normal_recipient_value = find_recipient_value(&pset_normal);
+        let send_all_recipient_value = find_recipient_value(&pset_send_all);
+
+        println!("Normal recipient value: {:?}", normal_recipient_value);
+        println!("Send all recipient value: {:?}", send_all_recipient_value);
+
+        // When is_send_all is false: recipient receives exactly send_amount
+        // When is_send_all is true: recipient receives send_amount - asset_fee
+        if let (Some(normal_val), Some(send_all_val)) =
+            (normal_recipient_value, send_all_recipient_value)
+        {
+            println!("Normal recipient gets: {}", normal_val);
+            println!("Send all recipient gets: {}", send_all_val);
+            println!("Difference: {}", normal_val - send_all_val);
+            println!("Asset fee: {}", payjoin_normal.asset_fee);
+
+            // Normal case: recipient should get the full send_amount
+            assert_eq!(
+                normal_val, send_amount,
+                "Without is_send_all, recipient should receive the full amount"
+            );
+
+            // Send all case: recipient should get send_amount - asset_fee
+            let expected_send_all_value = send_amount - payjoin_send_all.asset_fee;
+            assert_eq!(
+                send_all_val, expected_send_all_value,
+                "With is_send_all, recipient should receive amount minus fee. \
+                 Expected: {}, Got: {}",
+                expected_send_all_value, send_all_val
+            );
+
+            // The difference should be the asset fee
+            assert_eq!(
+                normal_val - send_all_val,
+                payjoin_send_all.asset_fee,
+                "The difference between normal and send_all recipient amounts should equal the asset fee"
+            );
+        } else {
+            panic!(
+                "Could not find/unblind recipient outputs. Normal: {:?}, SendAll: {:?}",
+                normal_recipient_value, send_all_recipient_value
+            );
+        }
     }
 }
