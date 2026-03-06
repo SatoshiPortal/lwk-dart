@@ -296,6 +296,7 @@ impl Wallet {
             pset: payjoin.pset.to_string(),
             network_fee: payjoin.network_fee,
             asset_fee: payjoin.asset_fee,
+            unblinded_outputs: payjoin.tx_secrets.into_iter().map(Into::into).collect(),
         })
     }
 
@@ -609,5 +610,24 @@ mod tests {
 
         let txid = Blockchain::broadcast_tx_bytes(electrum_url.to_owned(), tx_bytes).unwrap();
         println!("txid: {txid}");
+
+        let unblinded_values = payjoin
+            .unblinded_outputs
+            .into_iter()
+            .flat_map(|unblinded| {
+                [
+                    unblinded.value.to_string(),
+                    unblinded.asset.to_string(),
+                    unblinded.value_bf.to_string(),
+                    unblinded.asset_bf.to_string(),
+                ]
+            })
+            .collect::<Vec<_>>();
+
+        let unblinded_values = unblinded_values.join(",");
+
+        let unblinded_link =
+            format!("https://blockstream.info/liquidtestnet/tx/{txid}/#blinded={unblinded_values}");
+        println!("unblinded_link: {unblinded_link}");
     }
 }

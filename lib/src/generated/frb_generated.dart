@@ -2320,6 +2320,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  List<TxOutSecrets> dco_decode_list_tx_out_secrets(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_tx_out_secrets).toList();
+  }
+
+  @protected
   List<TxOutput> dco_decode_list_tx_output(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_tx_output).toList();
@@ -2406,12 +2412,13 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   PayjoinTx dco_decode_payjoin_tx(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return PayjoinTx(
       pset: dco_decode_String(arr[0]),
       networkFee: dco_decode_u_64(arr[1]),
       assetFee: dco_decode_u_64(arr[2]),
+      unblindedOutputs: dco_decode_list_tx_out_secrets(arr[3]),
     );
   }
 
@@ -2875,6 +2882,19 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  List<TxOutSecrets> sse_decode_list_tx_out_secrets(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <TxOutSecrets>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_tx_out_secrets(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -3004,8 +3024,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     var var_pset = sse_decode_String(deserializer);
     var var_networkFee = sse_decode_u_64(deserializer);
     var var_assetFee = sse_decode_u_64(deserializer);
+    var var_unblindedOutputs = sse_decode_list_tx_out_secrets(deserializer);
     return PayjoinTx(
-        pset: var_pset, networkFee: var_networkFee, assetFee: var_assetFee);
+        pset: var_pset,
+        networkFee: var_networkFee,
+        assetFee: var_assetFee,
+        unblindedOutputs: var_unblindedOutputs);
   }
 
   @protected
@@ -3556,6 +3580,16 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  void sse_encode_list_tx_out_secrets(
+      List<TxOutSecrets> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_tx_out_secrets(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_tx_output(
       List<TxOutput> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3674,6 +3708,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     sse_encode_String(self.pset, serializer);
     sse_encode_u_64(self.networkFee, serializer);
     sse_encode_u_64(self.assetFee, serializer);
+    sse_encode_list_tx_out_secrets(self.unblindedOutputs, serializer);
   }
 
   @protected

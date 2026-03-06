@@ -2,6 +2,7 @@ use flutter_rust_bridge::frb;
 use lwk_common::PsetBalance;
 use lwk_wollet::{
     elements::{
+        self,
         hex::{FromHex, ToHex},
         pset::PartiallySignedTransaction,
         Address as LwkAddress, AddressParams, AssetId, Script,
@@ -134,17 +135,23 @@ impl From<AssetIdHashMapUInt> for Balances {
     }
 }
 
+impl From<elements::TxOutSecrets> for TxOutSecrets {
+    fn from(value: elements::TxOutSecrets) -> Self {
+        TxOutSecrets {
+            value: value.value,
+            value_bf: value.value_bf.to_string(),
+            asset: value.asset.to_string(),
+            asset_bf: value.asset_bf.to_string(),
+        }
+    }
+}
+
 impl From<WalletTxOut> for TxOut {
     fn from(wallet_tx_out: WalletTxOut) -> Self {
         TxOut {
             script_pubkey: wallet_tx_out.script_pubkey.to_hex(),
             height: wallet_tx_out.height,
-            unblinded: TxOutSecrets {
-                value: wallet_tx_out.unblinded.value,
-                value_bf: wallet_tx_out.unblinded.value_bf.to_string(),
-                asset: wallet_tx_out.unblinded.asset.to_string(),
-                asset_bf: wallet_tx_out.unblinded.asset_bf.to_string(),
-            },
+            unblinded: wallet_tx_out.unblinded.into(),
             outpoint: OutPoint {
                 txid: wallet_tx_out.outpoint.txid.to_string(),
                 vout: wallet_tx_out.outpoint.vout,
@@ -290,12 +297,7 @@ impl From<WalletTx> for Tx {
                 outputs.push(TxOut {
                     script_pubkey: script_pubkey.to_hex(),
                     height: output.clone().unwrap().height,
-                    unblinded: TxOutSecrets {
-                        value: output.clone().unwrap().unblinded.value,
-                        value_bf: output.clone().unwrap().unblinded.value_bf.to_string(),
-                        asset: output.clone().unwrap().unblinded.asset.to_string(),
-                        asset_bf: output.clone().unwrap().unblinded.asset_bf.to_string(),
-                    },
+                    unblinded: output.as_ref().unwrap().unblinded.into(),
                     outpoint: OutPoint {
                         txid: output.clone().unwrap().outpoint.txid.to_string(),
                         vout: output.clone().unwrap().outpoint.vout,
@@ -313,12 +315,7 @@ impl From<WalletTx> for Tx {
                 inputs.push(TxOut {
                     script_pubkey: script_pubkey.to_string(),
                     height: input.clone().unwrap().height,
-                    unblinded: TxOutSecrets {
-                        value: input.clone().unwrap().unblinded.value,
-                        value_bf: input.clone().unwrap().unblinded.value_bf.to_string(),
-                        asset: input.clone().unwrap().unblinded.asset.to_string(),
-                        asset_bf: input.clone().unwrap().unblinded.asset_bf.to_string(),
-                    },
+                    unblinded: input.as_ref().unwrap().unblinded.into(),
                     outpoint: OutPoint {
                         txid: input.clone().unwrap().outpoint.txid.to_string(),
                         vout: input.clone().unwrap().outpoint.vout,
@@ -393,6 +390,8 @@ pub struct PayjoinTx {
     pub network_fee: u64,
     /// Asset fee amount paid to the server
     pub asset_fee: u64,
+    /// All unblinded outputs
+    pub unblinded_outputs: Vec<TxOutSecrets>,
 }
 
 // #[test]
