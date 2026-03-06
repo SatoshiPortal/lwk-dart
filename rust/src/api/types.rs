@@ -231,16 +231,16 @@ impl Address {
                 Network::Testnet => &AddressParams::LIQUID_TESTNET,
             },
         );
-        if address.is_none() {
-            Err(LwkError {
-                msg: "Could not convert script to address".to_string(),
-            })
-        } else {
+        if let Some(address) = address {
             Ok(Address {
-                standard: address.clone().unwrap().to_unconfidential().to_string(),
-                confidential: address.unwrap().to_string(),
+                standard: address.to_unconfidential().to_string(),
+                confidential: address.to_string(),
                 index: None,
                 blinding_key: blinding_key,
+            })
+        } else {
+            Err(LwkError {
+                msg: "Could not convert script to address".to_string(),
             })
         }
     }
@@ -291,37 +291,35 @@ impl From<WalletTx> for Tx {
         let mut inputs: Vec<TxOut> = Vec::new();
 
         for output in &wallet_tx.outputs {
-            if output.is_some() {
-                // safe to unwrap
-                let script_pubkey = output.clone().unwrap().script_pubkey;
+            if let Some(output) = output {
+                let script_pubkey = output.script_pubkey.to_hex();
                 outputs.push(TxOut {
-                    script_pubkey: script_pubkey.to_hex(),
-                    height: output.clone().unwrap().height,
-                    unblinded: output.as_ref().unwrap().unblinded.into(),
+                    script_pubkey,
+                    height: output.height,
+                    unblinded: output.unblinded.into(),
                     outpoint: OutPoint {
-                        txid: output.clone().unwrap().outpoint.txid.to_string(),
-                        vout: output.clone().unwrap().outpoint.vout,
+                        txid: output.outpoint.txid.to_string(),
+                        vout: output.outpoint.vout,
                     },
-                    address: Address::from(output.clone().unwrap().address.clone()),
-                    is_spent: output.clone().unwrap().is_spent,
+                    address: Address::from(output.address.clone()),
+                    is_spent: output.is_spent,
                 })
             }
         }
 
         for input in &wallet_tx.inputs {
-            if input.is_some() {
-                // safe to unwrap
-                let script_pubkey = input.clone().unwrap().script_pubkey;
+            if let Some(input) = input {
+                let script_pubkey = input.script_pubkey.to_string();
                 inputs.push(TxOut {
-                    script_pubkey: script_pubkey.to_string(),
-                    height: input.clone().unwrap().height,
-                    unblinded: input.as_ref().unwrap().unblinded.into(),
+                    script_pubkey,
+                    height: input.height,
+                    unblinded: input.unblinded.into(),
                     outpoint: OutPoint {
-                        txid: input.clone().unwrap().outpoint.txid.to_string(),
-                        vout: input.clone().unwrap().outpoint.vout,
+                        txid: input.outpoint.txid.to_string(),
+                        vout: input.outpoint.vout,
                     },
-                    address: Address::from(input.clone().unwrap().address.clone()),
-                    is_spent: input.clone().unwrap().is_spent,
+                    address: Address::from(input.address.clone()),
+                    is_spent: input.is_spent,
                 })
             }
         }
@@ -333,7 +331,7 @@ impl From<WalletTx> for Tx {
             txid: wallet_tx.tx.txid().to_string().clone(),
             outputs: outputs,
             inputs: inputs,
-            fee: wallet_tx.fee.clone(),
+            fee: wallet_tx.fee,
             timestamp: wallet_tx.timestamp,
             height: wallet_tx.height,
             unblinded_url: wallet_tx.unblinded_url("").clone(),
