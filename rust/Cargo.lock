@@ -1493,7 +1493,7 @@ dependencies = [
 [[package]]
 name = "gdk-pin-client"
 version = "0.1.0"
-source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=f81c508eb3a2a7d6f64a9cd72063a6a55753cce3#f81c508eb3a2a7d6f64a9cd72063a6a55753cce3"
+source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=d91bd0497c7093f677247f16c35f486c34dd29f9#d91bd0497c7093f677247f16c35f486c34dd29f9"
 dependencies = [
  "aes 0.7.5",
  "bitcoin",
@@ -2249,6 +2249,7 @@ dependencies = [
  "lwk_wollet",
  "sideswap_common",
  "sideswap_payjoin",
+ "sideswap_types",
  "thiserror 1.0.69",
 ]
 
@@ -3351,7 +3352,7 @@ checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 [[package]]
 name = "sideswap_api"
 version = "0.1.2"
-source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=f81c508eb3a2a7d6f64a9cd72063a6a55753cce3#f81c508eb3a2a7d6f64a9cd72063a6a55753cce3"
+source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=d91bd0497c7093f677247f16c35f486c34dd29f9#d91bd0497c7093f677247f16c35f486c34dd29f9"
 dependencies = [
  "elements",
  "hex",
@@ -3365,7 +3366,7 @@ dependencies = [
 [[package]]
 name = "sideswap_common"
 version = "0.1.2"
-source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=f81c508eb3a2a7d6f64a9cd72063a6a55753cce3#f81c508eb3a2a7d6f64a9cd72063a6a55753cce3"
+source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=d91bd0497c7093f677247f16c35f486c34dd29f9#d91bd0497c7093f677247f16c35f486c34dd29f9"
 dependencies = [
  "aes-gcm-siv",
  "anyhow",
@@ -3402,7 +3403,7 @@ dependencies = [
 [[package]]
 name = "sideswap_payjoin"
 version = "0.1.2"
-source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=f81c508eb3a2a7d6f64a9cd72063a6a55753cce3#f81c508eb3a2a7d6f64a9cd72063a6a55753cce3"
+source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=d91bd0497c7093f677247f16c35f486c34dd29f9#d91bd0497c7093f677247f16c35f486c34dd29f9"
 dependencies = [
  "anyhow",
  "base64 0.21.7",
@@ -3410,17 +3411,24 @@ dependencies = [
  "rand 0.8.5",
  "serde",
  "sideswap_common",
+ "sideswap_types",
  "ureq",
 ]
 
 [[package]]
 name = "sideswap_types"
 version = "0.1.2"
-source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=f81c508eb3a2a7d6f64a9cd72063a6a55753cce3#f81c508eb3a2a7d6f64a9cd72063a6a55753cce3"
+source = "git+https://github.com/sideswap-io/sideswap_rust.git?rev=d91bd0497c7093f677247f16c35f486c34dd29f9#d91bd0497c7093f677247f16c35f486c34dd29f9"
 dependencies = [
+ "base64 0.21.7",
  "elements",
+ "hex",
+ "hex-literal",
+ "rand 0.8.5",
  "serde",
+ "serde_bytes",
  "serde_json",
+ "thiserror 1.0.69",
 ]
 
 [[package]]

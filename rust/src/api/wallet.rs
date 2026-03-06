@@ -222,29 +222,21 @@ impl Wallet {
     ) -> anyhow::Result<super::types::PayjoinTx, LwkError> {
         let wallet = self.get_wallet()?;
 
-        struct Wallet<'a> {
-            wallet: &'a lwk_wollet::Wollet,
-            next_index: Option<u32>,
-        }
-        impl<'a> sideswap_payjoin::Wallet for Wallet<'a> {
-            fn change_address(&mut self) -> Result<lwk_wollet::elements::Address, anyhow::Error> {
-                let address = self.wallet.change(self.next_index)?;
-                self.next_index = Some(address.index() + 1);
-                Ok(address.address().clone())
-            }
-        }
-        let mut payjoin_wallet = Wallet {
-            wallet: &wallet,
-            next_index: None,
+        let mut next_index: Option<u32> = None;
+
+        let mut change_cb = || -> Result<lwk_wollet::elements::Address, anyhow::Error> {
+            let address = wallet.change(next_index)?;
+            next_index = Some(address.index() + 1);
+            Ok(address.address().clone())
         };
 
         let (network, default_base_url) = match network {
             Network::Mainnet => (
-                sideswap_common::network::Network::Liquid,
+                sideswap_types::network::Network::Liquid,
                 sideswap_payjoin::BASE_URL_PROD,
             ),
             Network::Testnet => (
-                sideswap_common::network::Network::LiquidTestnet,
+                sideswap_types::network::Network::LiquidTestnet,
                 sideswap_payjoin::BASE_URL_TESTNET,
             ),
         };
@@ -258,25 +250,32 @@ impl Wallet {
         let utxos = wallet
             .utxos()?
             .into_iter()
-            .map(|utxo| sideswap_payjoin::Utxo {
-                txid: utxo.outpoint.txid,
-                vout: utxo.outpoint.vout,
-                asset_id: utxo.unblinded.asset,
-                value: utxo.unblinded.value,
-                asset_bf: utxo.unblinded.asset_bf,
-                value_bf: utxo.unblinded.value_bf,
-                script_pub_key: utxo.script_pubkey,
+            .map(|utxo| {
+                let wallet_type = if utxo.script_pubkey.is_v0_p2wpkh() {
+                    sideswap_common::utxo_select::WalletType::Native
+                } else {
+                    sideswap_common::utxo_select::WalletType::Nested
+                };
+                sideswap_payjoin::Utxo {
+                    txid: utxo.outpoint.txid,
+                    vout: utxo.outpoint.vout,
+                    asset_id: utxo.unblinded.asset,
+                    value: utxo.unblinded.value,
+                    asset_bf: utxo.unblinded.asset_bf,
+                    value_bf: utxo.unblinded.value_bf,
+                    script_pub_key: utxo.script_pubkey,
+                    wallet_type,
+                }
             })
             .collect::<Vec<_>>();
 
         let mut payjoin = sideswap_payjoin::create_payjoin(
-            &mut payjoin_wallet,
+            &mut change_cb,
             sideswap_payjoin::CreatePayjoin {
                 network,
                 base_url,
                 user_agent: "lwk-dart".to_owned(),
                 utxos,
-                multisig_wallet: false,
                 use_all_utxos: false,
                 recipients: vec![sideswap_common::recipient::Recipient {
                     address: out_address,
