@@ -146,6 +146,11 @@ typedef struct wire_cst_list_tx_input {
   int32_t len;
 } wire_cst_list_tx_input;
 
+typedef struct wire_cst_list_tx_out_secrets {
+  struct wire_cst_tx_out_secrets *ptr;
+  int32_t len;
+} wire_cst_list_tx_out_secrets;
+
 typedef struct wire_cst_list_tx_output {
   struct wire_cst_tx_output *ptr;
   int32_t len;
@@ -159,6 +164,7 @@ typedef struct wire_cst_payjoin_tx {
   struct wire_cst_list_prim_u_8_strict *pset;
   uint64_t network_fee;
   uint64_t asset_fee;
+  struct wire_cst_list_tx_out_secrets *unblinded_outputs;
 } wire_cst_payjoin_tx;
 
 typedef struct wire_cst_pset_amounts {
@@ -411,6 +417,8 @@ struct wire_cst_list_tx_input *frbgen_lwk_cst_new_list_tx_input(int32_t len);
 
 struct wire_cst_list_tx_out *frbgen_lwk_cst_new_list_tx_out(int32_t len);
 
+struct wire_cst_list_tx_out_secrets *frbgen_lwk_cst_new_list_tx_out_secrets(int32_t len);
+
 struct wire_cst_list_tx_output *frbgen_lwk_cst_new_list_tx_output(int32_t len);
 static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
@@ -433,6 +441,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_input);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_out);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_out_secrets);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_output);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction);

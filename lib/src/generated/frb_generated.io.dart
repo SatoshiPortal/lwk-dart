@@ -153,6 +153,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<TxOut> dco_decode_list_tx_out(dynamic raw);
 
   @protected
+  List<TxOutSecrets> dco_decode_list_tx_out_secrets(dynamic raw);
+
+  @protected
   List<TxOutput> dco_decode_list_tx_output(dynamic raw);
 
   @protected
@@ -353,6 +356,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   List<TxOut> sse_decode_list_tx_out(SseDeserializer deserializer);
+
+  @protected
+  List<TxOutSecrets> sse_decode_list_tx_out_secrets(
+      SseDeserializer deserializer);
 
   @protected
   List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer);
@@ -624,6 +631,17 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_tx_out_secrets> cst_encode_list_tx_out_secrets(
+      List<TxOutSecrets> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_tx_out_secrets(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_tx_out_secrets(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_tx_output> cst_encode_list_tx_output(
       List<TxOutput> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -778,6 +796,8 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     wireObj.pset = cst_encode_String(apiObj.pset);
     wireObj.network_fee = cst_encode_u_64(apiObj.networkFee);
     wireObj.asset_fee = cst_encode_u_64(apiObj.assetFee);
+    wireObj.unblinded_outputs =
+        cst_encode_list_tx_out_secrets(apiObj.unblindedOutputs);
   }
 
   @protected
@@ -1045,6 +1065,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_list_tx_out(List<TxOut> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_tx_out_secrets(
+      List<TxOutSecrets> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_tx_output(List<TxOutput> self, SseSerializer serializer);
@@ -2757,6 +2781,19 @@ class LwkCoreWire implements BaseWire {
   late final _cst_new_list_tx_out = _cst_new_list_tx_outPtr
       .asFunction<ffi.Pointer<wire_cst_list_tx_out> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_tx_out_secrets> cst_new_list_tx_out_secrets(
+    int len,
+  ) {
+    return _cst_new_list_tx_out_secrets(len);
+  }
+
+  late final _cst_new_list_tx_out_secretsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_tx_out_secrets> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_tx_out_secrets');
+  late final _cst_new_list_tx_out_secrets = _cst_new_list_tx_out_secretsPtr
+      .asFunction<ffi.Pointer<wire_cst_list_tx_out_secrets> Function(int)>();
+
   ffi.Pointer<wire_cst_list_tx_output> cst_new_list_tx_output(int len) {
     return _cst_new_list_tx_output(len);
   }
@@ -2982,6 +3019,13 @@ final class wire_cst_list_tx_input extends ffi.Struct {
   external int len;
 }
 
+final class wire_cst_list_tx_out_secrets extends ffi.Struct {
+  external ffi.Pointer<wire_cst_tx_out_secrets> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
 final class wire_cst_list_tx_output extends ffi.Struct {
   external ffi.Pointer<wire_cst_tx_output> ptr;
 
@@ -3001,6 +3045,8 @@ final class wire_cst_payjoin_tx extends ffi.Struct {
 
   @ffi.Uint64()
   external int asset_fee;
+
+  external ffi.Pointer<wire_cst_list_tx_out_secrets> unblinded_outputs;
 }
 
 final class wire_cst_pset_amounts extends ffi.Struct {

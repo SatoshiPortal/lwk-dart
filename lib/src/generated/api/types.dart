@@ -8,7 +8,7 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AssetIdBTreeMapInt`, `AssetIdBTreeMapUInt`, `AssetIdHashMapInt`, `AssetIdHashMapUInt`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `try_from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `try_from`
 
 /// Address class which contains both standard and confidential addresses with the address index in the wallet
 class Address {
@@ -114,14 +114,22 @@ class PayjoinTx {
   /// Asset fee amount paid to the server
   final BigInt assetFee;
 
+  /// All unblinded outputs
+  final List<TxOutSecrets> unblindedOutputs;
+
   const PayjoinTx({
     required this.pset,
     required this.networkFee,
     required this.assetFee,
+    required this.unblindedOutputs,
   });
 
   @override
-  int get hashCode => pset.hashCode ^ networkFee.hashCode ^ assetFee.hashCode;
+  int get hashCode =>
+      pset.hashCode ^
+      networkFee.hashCode ^
+      assetFee.hashCode ^
+      unblindedOutputs.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -130,7 +138,8 @@ class PayjoinTx {
           runtimeType == other.runtimeType &&
           pset == other.pset &&
           networkFee == other.networkFee &&
-          assetFee == other.assetFee;
+          assetFee == other.assetFee &&
+          unblindedOutputs == other.unblindedOutputs;
 }
 
 /// Decoded PSET amounts

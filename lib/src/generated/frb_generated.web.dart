@@ -155,6 +155,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<TxOut> dco_decode_list_tx_out(dynamic raw);
 
   @protected
+  List<TxOutSecrets> dco_decode_list_tx_out_secrets(dynamic raw);
+
+  @protected
   List<TxOutput> dco_decode_list_tx_output(dynamic raw);
 
   @protected
@@ -355,6 +358,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   List<TxOut> sse_decode_list_tx_out(SseDeserializer deserializer);
+
+  @protected
+  List<TxOutSecrets> sse_decode_list_tx_out_secrets(
+      SseDeserializer deserializer);
 
   @protected
   List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer);
@@ -599,6 +606,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_list_tx_out_secrets(List<TxOutSecrets> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_tx_out_secrets).toList().jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_list_tx_output(List<TxOutput> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.map(cst_encode_tx_output).toList().jsify()!;
@@ -670,7 +683,8 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     return [
       cst_encode_String(raw.pset),
       cst_encode_u_64(raw.networkFee),
-      cst_encode_u_64(raw.assetFee)
+      cst_encode_u_64(raw.assetFee),
+      cst_encode_list_tx_out_secrets(raw.unblindedOutputs)
     ].jsify()!;
   }
 
@@ -970,6 +984,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_list_tx_out(List<TxOut> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_tx_out_secrets(
+      List<TxOutSecrets> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_tx_output(List<TxOutput> self, SseSerializer serializer);
