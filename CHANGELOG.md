@@ -1,3 +1,13 @@
+## 0.3.0
+
+- feat: add `LiquidTransaction` and `PartiallySignedElementsTransaction` APIs
+- feat: `isSendAll` for create Payjoin
+- fix: return `unblinded_outputs` from `build_payjoin_tx`
+- fix: building for Flutter >3.32.0
+- fix: Android 16kb page size
+- chore: update `flutter_rust_bridge` to 2.11.1
+- chore: update to the latest `sideswap_rust`
+
 ## 0.2.2
 
 - Fix payjoins for nested segwit wallets. 
