@@ -8,7 +8,7 @@ edition = "2021"
 [lib]
 name = "lwk"
 doctest = false
-crate-type = ["staticlib", "cdylib"]
+crate-type = ["lib", "staticlib", "cdylib"]
 
 [dependencies]
 lwk_wollet = {version = "0.9.0" }
@@ -23,6 +23,9 @@ log = "0.4.22"
 sideswap_types = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "d91bd0497c7093f677247f16c35f486c34dd29f9" }
 sideswap_common = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "d91bd0497c7093f677247f16c35f486c34dd29f9" }
 sideswap_payjoin = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "d91bd0497c7093f677247f16c35f486c34dd29f9" }
+
+[features]
+bull_sdk = []
 
 [build-dependencies]
 flutter_rust_bridge_codegen = { version = "=2.9.0" }
