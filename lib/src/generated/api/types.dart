@@ -10,6 +10,20 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AssetIdBTreeMapInt`, `AssetIdBTreeMapUInt`, `AssetIdHashMapInt`, `AssetIdHashMapUInt`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `try_from`
 
+/// Get balance value for a specific asset ID from a list of balances
+PlatformInt64 getBalanceByAssetId(
+        {required List<Balance> balances, required String assetId}) =>
+    LwkCore.instance.api
+        .crateApiTypesGetBalanceByAssetId(balances: balances, assetId: assetId);
+
+/// Get L-BTC mainnet balance
+PlatformInt64 getLbtcBalance({required List<Balance> balances}) =>
+    LwkCore.instance.api.crateApiTypesGetLbtcBalance(balances: balances);
+
+/// Get L-BTC testnet balance
+PlatformInt64 getLtestBalance({required List<Balance> balances}) =>
+    LwkCore.instance.api.crateApiTypesGetLtestBalance(balances: balances);
+
 /// Address class which contains both standard and confidential addresses with the address index in the wallet
 class Address {
   final String standard;

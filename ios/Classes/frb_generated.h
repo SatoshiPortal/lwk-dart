@@ -28,6 +28,16 @@ typedef struct wire_cst_blockchain {
 
 } wire_cst_blockchain;
 
+typedef struct wire_cst_balance {
+  struct wire_cst_list_prim_u_8_strict *asset_id;
+  int64_t value;
+} wire_cst_balance;
+
+typedef struct wire_cst_list_balance {
+  struct wire_cst_balance *ptr;
+  int32_t len;
+} wire_cst_list_balance;
+
 typedef struct wire_cst_wallet {
   uintptr_t inner;
 } wire_cst_wallet;
@@ -69,16 +79,6 @@ typedef struct wire_cst_tx_output {
   uint64_t *value;
   struct wire_cst_list_prim_u_8_strict *nonce;
 } wire_cst_tx_output;
-
-typedef struct wire_cst_balance {
-  struct wire_cst_list_prim_u_8_strict *asset_id;
-  int64_t value;
-} wire_cst_balance;
-
-typedef struct wire_cst_list_balance {
-  struct wire_cst_balance *ptr;
-  int32_t len;
-} wire_cst_list_balance;
 
 typedef struct wire_cst_list_pset_input {
   struct wire_cst_pset_input *ptr;
@@ -294,6 +294,13 @@ void frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential(int64_
 void frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes(int64_t port_,
                                                                 struct wire_cst_list_prim_u_8_strict *pset);
 
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id(struct wire_cst_list_balance *balances,
+                                                                                 struct wire_cst_list_prim_u_8_strict *asset_id);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_lbtc_balance(struct wire_cst_list_balance *balances);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_ltest_balance(struct wire_cst_list_balance *balances);
+
 void frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees(int64_t port_,
                                                                           struct wire_cst_list_prim_u_8_strict *pset);
 
@@ -330,7 +337,8 @@ void frbgen_lwk_wire__crate__api__wallet__wallet_build_payjoin_tx(int64_t port_,
                                                                   struct wire_cst_list_prim_u_8_strict *out_address,
                                                                   struct wire_cst_list_prim_u_8_strict *asset,
                                                                   int32_t network,
-                                                                  struct wire_cst_list_prim_u_8_strict *base_url);
+                                                                  struct wire_cst_list_prim_u_8_strict *base_url,
+                                                                  bool is_send_all);
 
 void frbgen_lwk_wire__crate__api__wallet__wallet_decode_tx(int64_t port_,
                                                            struct wire_cst_wallet *that,
@@ -494,6 +502,9 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__address_address_from_script);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__address_validate);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__get_lbtc_balance);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__get_ltest_balance);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_address);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_address_last_unused);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_balances);

@@ -1357,6 +1357,20 @@ class LwkCoreWire implements BaseWire {
           NativePortType port_, String pset) =>
       wasmModule.wire__crate__api__transaction__extract_tx_bytes(port_, pset);
 
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_balance_by_asset_id(
+              JSAny balances, String asset_id) =>
+          wasmModule.wire__crate__api__types__get_balance_by_asset_id(
+              balances, asset_id);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_lbtc_balance(JSAny balances) =>
+          wasmModule.wire__crate__api__types__get_lbtc_balance(balances);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_ltest_balance(JSAny balances) =>
+          wasmModule.wire__crate__api__types__get_ltest_balance(balances);
+
   void wire__crate__api__transaction__get_size_and_absolute_fees(
           NativePortType port_, String pset) =>
       wasmModule.wire__crate__api__transaction__get_size_and_absolute_fees(
@@ -1407,9 +1421,9 @@ class LwkCoreWire implements BaseWire {
           String asset,
           int network,
           String? base_url,
-          bool is_send_all = false) =>
-      wasmModule.wire__crate__api__wallet__wallet_build_payjoin_tx(
-          port_, that, sats, out_address, asset, network, base_url, is_send_all);
+          bool is_send_all) =>
+      wasmModule.wire__crate__api__wallet__wallet_build_payjoin_tx(port_, that,
+          sats, out_address, asset, network, base_url, is_send_all);
 
   void wire__crate__api__wallet__wallet_decode_tx(
           NativePortType port_, JSAny that, String pset) =>
@@ -1656,6 +1670,16 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
   external void wire__crate__api__transaction__extract_tx_bytes(
       NativePortType port_, String pset);
 
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_balance_by_asset_id(
+          JSAny balances, String asset_id);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_lbtc_balance(JSAny balances);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_ltest_balance(JSAny balances);
+
   external void wire__crate__api__transaction__get_size_and_absolute_fees(
       NativePortType port_, String pset);
 
@@ -1695,7 +1719,7 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       String asset,
       int network,
       String? base_url,
-      bool is_send_all = false);
+      bool is_send_all);
 
   external void wire__crate__api__wallet__wallet_decode_tx(
       NativePortType port_, JSAny that, String pset);

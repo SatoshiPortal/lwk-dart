@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -130629793;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1656135697;
 
 // Section: executor
 
@@ -1566,6 +1566,67 @@ fn wire__crate__api__transaction__extract_tx_bytes_impl(
                     Ok(output_ok)
                 })())
             }
+        },
+    )
+}
+fn wire__crate__api__types__get_balance_by_asset_id_impl(
+    balances: impl CstDecode<Vec<crate::api::types::Balance>>,
+    asset_id: impl CstDecode<String>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_balance_by_asset_id",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_balances = balances.cst_decode();
+            let api_asset_id = asset_id.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let output_ok = Result::<_, ()>::Ok(crate::api::types::get_balance_by_asset_id(
+                    api_balances,
+                    api_asset_id,
+                ))?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__types__get_lbtc_balance_impl(
+    balances: impl CstDecode<Vec<crate::api::types::Balance>>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_lbtc_balance",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_balances = balances.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let output_ok =
+                    Result::<_, ()>::Ok(crate::api::types::get_lbtc_balance(api_balances))?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__types__get_ltest_balance_impl(
+    balances: impl CstDecode<Vec<crate::api::types::Balance>>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_ltest_balance",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_balances = balances.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let output_ok =
+                    Result::<_, ()>::Ok(crate::api::types::get_ltest_balance(api_balances))?;
+                Ok(output_ok)
+            })())
         },
     )
 }
@@ -4609,6 +4670,28 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id(
+        balances: *mut wire_cst_list_balance,
+        asset_id: *mut wire_cst_list_prim_u_8_strict,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_balance_by_asset_id_impl(balances, asset_id)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__types__get_lbtc_balance(
+        balances: *mut wire_cst_list_balance,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_lbtc_balance_impl(balances)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__types__get_ltest_balance(
+        balances: *mut wire_cst_list_balance,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_ltest_balance_impl(balances)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees(
         port_: i64,
         pset: *mut wire_cst_list_prim_u_8_strict,
@@ -6276,6 +6359,28 @@ mod web {
         pset: String,
     ) {
         wire__crate__api__transaction__extract_tx_bytes_impl(port_, pset)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__types__get_balance_by_asset_id(
+        balances: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        asset_id: String,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_balance_by_asset_id_impl(balances, asset_id)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__types__get_lbtc_balance(
+        balances: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_lbtc_balance_impl(balances)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__types__get_ltest_balance(
+        balances: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_ltest_balance_impl(balances)
     }
 
     #[wasm_bindgen]

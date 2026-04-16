@@ -8,5 +8,4 @@ export './src/generated/api/types.dart';
 export './src/generated/api/blockchain.dart';
 export './src/generated/api/transaction.dart';
 export './src/utils/loader.dart';
-export './src/root.dart';
 export './src/generated/api/error.dart';

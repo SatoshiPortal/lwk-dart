@@ -73,7 +73,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => -130629793;
+  int get rustContentHash => 1656135697;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -231,6 +231,13 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<Uint8List> crateApiTransactionExtractTxBytes({required String pset});
 
+  PlatformInt64 crateApiTypesGetBalanceByAssetId(
+      {required List<Balance> balances, required String assetId});
+
+  PlatformInt64 crateApiTypesGetLbtcBalance({required List<Balance> balances});
+
+  PlatformInt64 crateApiTypesGetLtestBalance({required List<Balance> balances});
+
   Future<SizeAndFees> crateApiTransactionGetSizeAndAbsoluteFees(
       {required String pset});
 
@@ -264,7 +271,7 @@ abstract class LwkCoreApi extends BaseApi {
       required String asset,
       required Network network,
       String? baseUrl,
-      bool isSendAll = false});
+      required bool isSendAll});
 
   Future<PsetAmounts> crateApiWalletWalletDecodeTx(
       {required Wallet that, required String pset});
@@ -1607,6 +1614,79 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
+  PlatformInt64 crateApiTypesGetBalanceByAssetId(
+      {required List<Balance> balances, required String assetId}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        var arg0 = cst_encode_list_balance(balances);
+        var arg1 = cst_encode_String(assetId);
+        return wire.wire__crate__api__types__get_balance_by_asset_id(
+            arg0, arg1);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_i_64,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiTypesGetBalanceByAssetIdConstMeta,
+      argValues: [balances, assetId],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiTypesGetBalanceByAssetIdConstMeta =>
+      const TaskConstMeta(
+        debugName: "get_balance_by_asset_id",
+        argNames: ["balances", "assetId"],
+      );
+
+  @override
+  PlatformInt64 crateApiTypesGetLbtcBalance({required List<Balance> balances}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        var arg0 = cst_encode_list_balance(balances);
+        return wire.wire__crate__api__types__get_lbtc_balance(arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_i_64,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiTypesGetLbtcBalanceConstMeta,
+      argValues: [balances],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiTypesGetLbtcBalanceConstMeta =>
+      const TaskConstMeta(
+        debugName: "get_lbtc_balance",
+        argNames: ["balances"],
+      );
+
+  @override
+  PlatformInt64 crateApiTypesGetLtestBalance(
+      {required List<Balance> balances}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        var arg0 = cst_encode_list_balance(balances);
+        return wire.wire__crate__api__types__get_ltest_balance(arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_i_64,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiTypesGetLtestBalanceConstMeta,
+      argValues: [balances],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiTypesGetLtestBalanceConstMeta =>
+      const TaskConstMeta(
+        debugName: "get_ltest_balance",
+        argNames: ["balances"],
+      );
+
+  @override
   Future<SizeAndFees> crateApiTransactionGetSizeAndAbsoluteFees(
       {required String pset}) {
     return handler.executeNormal(NormalTask(
@@ -1801,7 +1881,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       required String asset,
       required Network network,
       String? baseUrl,
-      bool isSendAll = false}) {
+      required bool isSendAll}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_wallet(that);
