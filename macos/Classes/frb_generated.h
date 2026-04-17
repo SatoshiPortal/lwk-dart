@@ -297,7 +297,11 @@ void frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes(int64_t port_,
 WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id(struct wire_cst_list_balance *balances,
                                                                                  struct wire_cst_list_prim_u_8_strict *asset_id);
 
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_lbtc_asset_id(void);
+
 WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_lbtc_balance(struct wire_cst_list_balance *balances);
+
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_ltest_asset_id(void);
 
 WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_ltest_balance(struct wire_cst_list_balance *balances);
 
@@ -503,7 +507,9 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__address_address_from_script);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__address_validate);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__get_lbtc_asset_id);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__get_lbtc_balance);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__get_ltest_asset_id);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__get_ltest_balance);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_address);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_address_last_unused);

@@ -73,7 +73,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 1656135697;
+  int get rustContentHash => 651086619;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -234,7 +234,11 @@ abstract class LwkCoreApi extends BaseApi {
   PlatformInt64 crateApiTypesGetBalanceByAssetId(
       {required List<Balance> balances, required String assetId});
 
+  String crateApiTypesGetLbtcAssetId();
+
   PlatformInt64 crateApiTypesGetLbtcBalance({required List<Balance> balances});
+
+  String crateApiTypesGetLtestAssetId();
 
   PlatformInt64 crateApiTypesGetLtestBalance({required List<Balance> balances});
 
@@ -1640,6 +1644,28 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
+  String crateApiTypesGetLbtcAssetId() {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        return wire.wire__crate__api__types__get_lbtc_asset_id();
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_String,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiTypesGetLbtcAssetIdConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiTypesGetLbtcAssetIdConstMeta =>
+      const TaskConstMeta(
+        debugName: "get_lbtc_asset_id",
+        argNames: [],
+      );
+
+  @override
   PlatformInt64 crateApiTypesGetLbtcBalance({required List<Balance> balances}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
@@ -1660,6 +1686,28 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       const TaskConstMeta(
         debugName: "get_lbtc_balance",
         argNames: ["balances"],
+      );
+
+  @override
+  String crateApiTypesGetLtestAssetId() {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        return wire.wire__crate__api__types__get_ltest_asset_id();
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_String,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiTypesGetLtestAssetIdConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiTypesGetLtestAssetIdConstMeta =>
+      const TaskConstMeta(
+        debugName: "get_ltest_asset_id",
+        argNames: [],
       );
 
   @override

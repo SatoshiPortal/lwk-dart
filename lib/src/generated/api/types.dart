@@ -24,6 +24,12 @@ PlatformInt64 getLbtcBalance({required List<Balance> balances}) =>
 PlatformInt64 getLtestBalance({required List<Balance> balances}) =>
     LwkCore.instance.api.crateApiTypesGetLtestBalance(balances: balances);
 
+/// Get L-BTC mainnet asset ID
+String getLbtcAssetId() => LwkCore.instance.api.crateApiTypesGetLbtcAssetId();
+
+/// Get L-BTC testnet asset ID
+String getLtestAssetId() => LwkCore.instance.api.crateApiTypesGetLtestAssetId();
+
 /// Address class which contains both standard and confidential addresses with the address index in the wallet
 class Address {
   final String standard;

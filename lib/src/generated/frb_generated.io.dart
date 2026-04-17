@@ -2066,6 +2066,18 @@ class LwkCoreWire implements BaseWire {
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>();
 
+  WireSyncRust2DartDco wire__crate__api__types__get_lbtc_asset_id() {
+    return _wire__crate__api__types__get_lbtc_asset_id();
+  }
+
+  late final _wire__crate__api__types__get_lbtc_asset_idPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function()>>(
+    'frbgen_lwk_wire__crate__api__types__get_lbtc_asset_id',
+  );
+  late final _wire__crate__api__types__get_lbtc_asset_id =
+      _wire__crate__api__types__get_lbtc_asset_idPtr
+          .asFunction<WireSyncRust2DartDco Function()>();
+
   WireSyncRust2DartDco wire__crate__api__types__get_lbtc_balance(
     ffi.Pointer<wire_cst_list_balance> balances,
   ) {
@@ -2080,6 +2092,18 @@ class LwkCoreWire implements BaseWire {
   late final _wire__crate__api__types__get_lbtc_balance =
       _wire__crate__api__types__get_lbtc_balancePtr.asFunction<
           WireSyncRust2DartDco Function(ffi.Pointer<wire_cst_list_balance>)>();
+
+  WireSyncRust2DartDco wire__crate__api__types__get_ltest_asset_id() {
+    return _wire__crate__api__types__get_ltest_asset_id();
+  }
+
+  late final _wire__crate__api__types__get_ltest_asset_idPtr =
+      _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function()>>(
+    'frbgen_lwk_wire__crate__api__types__get_ltest_asset_id',
+  );
+  late final _wire__crate__api__types__get_ltest_asset_id =
+      _wire__crate__api__types__get_ltest_asset_idPtr
+          .asFunction<WireSyncRust2DartDco Function()>();
 
   WireSyncRust2DartDco wire__crate__api__types__get_ltest_balance(
     ffi.Pointer<wire_cst_list_balance> balances,

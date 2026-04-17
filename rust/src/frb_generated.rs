@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1656135697;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 651086619;
 
 // Section: executor
 
@@ -1592,6 +1592,22 @@ fn wire__crate__api__types__get_balance_by_asset_id_impl(
         },
     )
 }
+fn wire__crate__api__types__get_lbtc_asset_id_impl(
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_lbtc_asset_id",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            transform_result_dco::<_, _, ()>((move || {
+                let output_ok = Result::<_, ()>::Ok(crate::api::types::get_lbtc_asset_id())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
 fn wire__crate__api__types__get_lbtc_balance_impl(
     balances: impl CstDecode<Vec<crate::api::types::Balance>>,
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
@@ -1606,6 +1622,22 @@ fn wire__crate__api__types__get_lbtc_balance_impl(
             transform_result_dco::<_, _, ()>((move || {
                 let output_ok =
                     Result::<_, ()>::Ok(crate::api::types::get_lbtc_balance(api_balances))?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__types__get_ltest_asset_id_impl(
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_ltest_asset_id",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            transform_result_dco::<_, _, ()>((move || {
+                let output_ok = Result::<_, ()>::Ok(crate::api::types::get_ltest_asset_id())?;
                 Ok(output_ok)
             })())
         },
@@ -4678,10 +4710,22 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__types__get_lbtc_asset_id(
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_lbtc_asset_id_impl()
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__types__get_lbtc_balance(
         balances: *mut wire_cst_list_balance,
     ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
         wire__crate__api__types__get_lbtc_balance_impl(balances)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__types__get_ltest_asset_id(
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_ltest_asset_id_impl()
     }
 
     #[unsafe(no_mangle)]
@@ -6370,10 +6414,22 @@ mod web {
     }
 
     #[wasm_bindgen]
+    pub fn wire__crate__api__types__get_lbtc_asset_id(
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_lbtc_asset_id_impl()
+    }
+
+    #[wasm_bindgen]
     pub fn wire__crate__api__types__get_lbtc_balance(
         balances: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
         wire__crate__api__types__get_lbtc_balance_impl(balances)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__types__get_ltest_asset_id(
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__types__get_ltest_asset_id_impl()
     }
 
     #[wasm_bindgen]

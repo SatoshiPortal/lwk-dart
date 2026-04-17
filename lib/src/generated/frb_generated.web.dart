@@ -1364,8 +1364,16 @@ class LwkCoreWire implements BaseWire {
               balances, asset_id);
 
   JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_lbtc_asset_id() =>
+          wasmModule.wire__crate__api__types__get_lbtc_asset_id();
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
       wire__crate__api__types__get_lbtc_balance(JSAny balances) =>
           wasmModule.wire__crate__api__types__get_lbtc_balance(balances);
+
+  JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_ltest_asset_id() =>
+          wasmModule.wire__crate__api__types__get_ltest_asset_id();
 
   JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
       wire__crate__api__types__get_ltest_balance(JSAny balances) =>
@@ -1675,7 +1683,13 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
           JSAny balances, String asset_id);
 
   external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_lbtc_asset_id();
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
       wire__crate__api__types__get_lbtc_balance(JSAny balances);
+
+  external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
+      wire__crate__api__types__get_ltest_asset_id();
 
   external JSAny? /* flutter_rust_bridge::for_generated::WireSyncRust2DartDco */
       wire__crate__api__types__get_ltest_balance(JSAny balances);

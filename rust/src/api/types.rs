@@ -29,6 +29,19 @@ pub fn get_lbtc_balance(balances: Vec<Balance>) -> i64 {
 pub fn get_ltest_balance(balances: Vec<Balance>) -> i64 {
     get_balance_by_asset_id(balances, L_TEST_ASSET_ID.to_string())
 }
+
+/// Get L-BTC mainnet asset ID
+#[frb(sync)]
+pub fn get_lbtc_asset_id() -> String {
+    L_BTC_ASSET_ID.to_string()
+}
+
+/// Get L-BTC testnet asset ID
+#[frb(sync)]
+pub fn get_ltest_asset_id() -> String {
+    L_TEST_ASSET_ID.to_string()
+}
+
 use lwk_common::PsetBalance;
 use lwk_wollet::{
     elements::{
