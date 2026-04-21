@@ -44,10 +44,41 @@ class SourceSpanException implements Exception {
   }
 }
 
-enum Toolchain {
-  stable,
-  beta,
-  nightly,
+class Toolchain {
+  /// Name passed to `rustup` (e.g. "stable", "nightly", "1.95.0",
+  /// "nightly-2025-10-01").
+  final String name;
+
+  const Toolchain(this.name);
+
+  static const stable = Toolchain('stable');
+  static const beta = Toolchain('beta');
+  static const nightly = Toolchain('nightly');
+
+  /// True when this toolchain needs the `rust-src` component (required by
+  /// unstable features like `-Z build-std`).
+  bool get isNightly => name == 'nightly' || name.startsWith('nightly-');
+
+  /// Rustup toolchain names accept semver versions (`1.95.0`, `1.95`), dated
+  /// nightlies (`nightly-YYYY-MM-DD`), or custom toolchains (`esp`). We accept
+  /// anything that starts with an alphanumeric and only contains
+  /// `[A-Za-z0-9._-]` — rustup will reject invalid names with its own error.
+  static final _namePattern = RegExp(r'^[A-Za-z0-9][A-Za-z0-9._-]*$');
+
+  static Toolchain? tryParse(String value) {
+    if (!_namePattern.hasMatch(value)) return null;
+    return Toolchain(value);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is Toolchain && other.name == name;
+
+  @override
+  int get hashCode => name.hashCode;
+
+  @override
+  String toString() => 'Toolchain($name)';
 }
 
 class CargoBuildOptions {
@@ -61,14 +92,15 @@ class CargoBuildOptions {
 
   static Toolchain _toolchainFromNode(YamlNode node) {
     if (node case YamlScalar(value: String name)) {
-      final toolchain =
-          Toolchain.values.firstWhereOrNull((element) => element.name == name);
+      final toolchain = Toolchain.tryParse(name);
       if (toolchain != null) {
         return toolchain;
       }
     }
     throw SourceSpanException(
-        'Unknown toolchain. Must be one of ${Toolchain.values.map((e) => e.name)}.',
+        'Invalid toolchain. Must be a rustup toolchain name: a channel '
+        '("stable", "beta", "nightly"), a specific version ("1.95.0"), or a '
+        'dated nightly ("nightly-2025-10-01").',
         node.span);
   }
 

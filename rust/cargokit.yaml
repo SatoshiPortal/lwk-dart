@@ -1,11 +1,8 @@
 cargo:
   debug:
-    toolchain: stable
+    toolchain: 1.95.0
   release:
-    toolchain: nightly
-    extra_flags:
-      - -Z
-      - build-std=panic_abort,std
+    toolchain: 1.95.0
 precompiled_binaries:
   # Uri prefix used when downloading precompiled binaries.
   url_prefix: https://github.com/SatoshiPortal/lwk-dart/releases/download/precompiled_
