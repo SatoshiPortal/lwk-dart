@@ -100,3 +100,39 @@ dart run build_tool reproduce-binaries --manifest-dir=../../rust
 
 Use `--url-prefix` and `--public-key` to check a release source that is not
 declared in `rust/cargokit.yaml`.
+
+## Maintainer Release Checklist
+
+1. Generate a signing keypair:
+
+   ```bash
+   cd cargokit/build_tool
+   dart run build_tool gen-key
+   ```
+
+2. Store the private key in GitHub Actions secrets as
+   `CARGOKIT_PRIVATE_KEY`. Do not commit it.
+
+3. Commit the public key and release URL prefix in `rust/cargokit.yaml`:
+
+   ```yaml
+   precompiled_binaries:
+     url_prefix: https://github.com/SatoshiPortal/lwk-dart/releases/download/precompiled_
+     public_key: <32-byte-ed25519-public-key-hex>
+   ```
+
+4. Build and upload release artifacts from CI with Cargokit's existing
+   `precompile-binaries` command. Android CI needs the Android SDK path, NDK
+   version, and minimum SDK arguments. macOS CI builds macOS and iOS targets.
+
+5. From an independent checkout, run the relevant reproducibility checks:
+
+   ```bash
+   make -f reproducible_builds/makefile linux
+   make -f reproducible_builds/makefile android
+   make -f reproducible_builds/makefile darwin
+   ```
+
+The verification run should print the crate hash, each target, every checked
+artifact name, and a SHA-256 digest for byte-identical artifacts. Any missing
+release asset, invalid signature, or byte mismatch exits non-zero.
