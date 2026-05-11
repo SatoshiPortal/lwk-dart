@@ -1,0 +1,45 @@
+ARG DART_IMAGE=dart:3.2.6
+FROM ${DART_IMAGE}
+
+ARG RUST_TOOLCHAIN=stable
+ARG ANDROID_COMMANDLINE_TOOLS=11076708
+ARG ANDROID_NDK_VERSION=26.3.11579264
+ARG ANDROID_PLATFORM=android-35
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    clang \
+    curl \
+    git \
+    libssl-dev \
+    openjdk-17-jdk-headless \
+    pkg-config \
+    unzip \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV CARGO_HOME=/usr/local/cargo
+ENV RUSTUP_HOME=/usr/local/rustup
+ENV PATH=/usr/local/cargo/bin:${PATH}
+
+RUN curl -fsSL https://sh.rustup.rs \
+  | sh -s -- -y --profile minimal --default-toolchain "${RUST_TOOLCHAIN}"
+
+ENV ANDROID_HOME=/opt/android-sdk
+ENV ANDROID_SDK_ROOT=/opt/android-sdk
+ENV PATH=${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${PATH}
+
+RUN mkdir -p "${ANDROID_HOME}/cmdline-tools" \
+  && curl -fsSLo /tmp/android-commandline-tools.zip \
+    "https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_COMMANDLINE_TOOLS}_latest.zip" \
+  && unzip -q /tmp/android-commandline-tools.zip -d "${ANDROID_HOME}/cmdline-tools" \
+  && mv "${ANDROID_HOME}/cmdline-tools/cmdline-tools" "${ANDROID_HOME}/cmdline-tools/latest" \
+  && rm /tmp/android-commandline-tools.zip \
+  && yes | sdkmanager --licenses >/dev/null \
+  && sdkmanager \
+    "platform-tools" \
+    "platforms;${ANDROID_PLATFORM}" \
+    "ndk;${ANDROID_NDK_VERSION}"
+
+WORKDIR /work

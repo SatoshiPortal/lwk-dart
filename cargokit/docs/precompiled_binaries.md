@@ -93,3 +93,46 @@ By default the `built_tool precompile-binaries` commands build and uploads the b
 
 Android binaries will be built when `--android-sdk-location` and `--android-ndk-version` arguments are provided.
 
+## Reproducing published binaries
+
+`verify-binaries` proves that release assets are present and signed by the
+configured public key. `reproduce-binaries` goes further: it rebuilds the Rust
+crate locally for the selected target, downloads the corresponding signed
+release asset, verifies the signature, and compares the local and remote bytes.
+
+```
+dart run build_tool reproduce-binaries --manifest-dir=../../rust
+```
+
+Use explicit targets to narrow the check:
+
+```
+dart run build_tool reproduce-binaries \
+  --manifest-dir=../../rust \
+  --target aarch64-apple-darwin \
+  --target aarch64-apple-ios
+```
+
+Android targets need the same SDK/NDK arguments as `precompile-binaries`:
+
+```
+dart run build_tool reproduce-binaries \
+  --manifest-dir=../../rust \
+  --android-sdk-location=/usr/local/lib/android/sdk \
+  --android-ndk-version=26.3.11579264 \
+  --android-min-sdk-version=23 \
+  --target aarch64-linux-android
+```
+
+If the crate does not commit a `precompiled_binaries` section in
+`cargokit.yaml`, pass the release URL prefix and public key directly:
+
+```
+dart run build_tool reproduce-binaries \
+  --manifest-dir=../../rust \
+  --url-prefix=https://github.com/<repository-owner>/<repository-name>/releases/download/precompiled_ \
+  --public-key=<public key from gen-key>
+```
+
+For containerized Linux and Android checks, see the scripts in
+`reproducible_builds/`.

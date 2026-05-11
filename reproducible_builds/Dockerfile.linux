@@ -1,0 +1,24 @@
+ARG DART_IMAGE=dart:3.2.6
+FROM ${DART_IMAGE}
+
+ARG RUST_TOOLCHAIN=stable
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    clang \
+    curl \
+    git \
+    libssl-dev \
+    pkg-config \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV CARGO_HOME=/usr/local/cargo
+ENV RUSTUP_HOME=/usr/local/rustup
+ENV PATH=/usr/local/cargo/bin:${PATH}
+
+RUN curl -fsSL https://sh.rustup.rs \
+  | sh -s -- -y --profile minimal --default-toolchain "${RUST_TOOLCHAIN}"
+
+WORKDIR /work
