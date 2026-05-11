@@ -142,8 +142,8 @@ class PrecompileBinariesCommand extends Command {
   @override
   final description = 'Prebuild and upload binaries\n'
       'Private key must be passed through PRIVATE_KEY environment variable. '
-      'Use gen_key through generate priave key.\n'
-      'Github token must be passed as GITHUB_TOKEN environment variable.\n';
+      'Use gen-key to generate a private key.\n'
+      'GitHub token must be passed as GITHUB_TOKEN environment variable.\n';
 
   @override
   Future<void> run() async {

@@ -110,8 +110,8 @@ declared in `rust/cargokit.yaml`.
    dart run build_tool gen-key
    ```
 
-2. Store the private key in GitHub Actions secrets as
-   `CARGOKIT_PRIVATE_KEY`. Do not commit it.
+2. Store the private key in GitHub Actions secrets and expose it to
+   `precompile-binaries` as `PRIVATE_KEY`. Do not commit it.
 
 3. Commit the public key and release URL prefix in `rust/cargokit.yaml`:
 
