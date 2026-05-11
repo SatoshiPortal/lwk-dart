@@ -31,6 +31,12 @@ Run Apple target checks directly on a macOS host:
 ./reproducible_builds/reproduce-darwin.sh
 ```
 
+Or through make:
+
+```bash
+make -f reproducible_builds/makefile darwin
+```
+
 Pass explicit targets when you only want part of the Apple matrix:
 
 ```bash
@@ -45,6 +51,12 @@ Run the Linux verifier in Docker:
 
 ```bash
 ./reproducible_builds/reproduce-linux-docker.sh
+```
+
+Or through make:
+
+```bash
+make -f reproducible_builds/makefile linux
 ```
 
 By default this checks `x86_64-unknown-linux-gnu` on `linux/amd64`. Override the
@@ -62,6 +74,12 @@ Run the Android verifier in Docker:
 
 ```bash
 ./reproducible_builds/reproduce-android-docker.sh
+```
+
+Or through make:
+
+```bash
+make -f reproducible_builds/makefile android
 ```
 
 This checks all Android targets supported by Cargokit:
