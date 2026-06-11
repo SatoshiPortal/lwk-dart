@@ -28,7 +28,7 @@ sideswap_payjoin = { git = "https://github.com/sideswap-io/sideswap_rust.git", r
 bull_sdk = []
 
 [build-dependencies]
-flutter_rust_bridge_codegen = { version = "=2.9.0" }
+flutter_rust_bridge_codegen = { version = "=2.12.0" }
 
 [build]
 profiler = true
