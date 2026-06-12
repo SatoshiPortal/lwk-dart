@@ -327,7 +327,7 @@ impl From<WalletTx> for Tx {
         // let since_the_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
         Tx {
             kind: wallet_tx.type_.clone(),
-            balances: Balances::from(AssetIdBTreeMapInt(wallet_tx.balance.clone())),
+            balances: Balances::from(AssetIdBTreeMapInt(wallet_tx.balance.as_ref().clone())),
             txid: wallet_tx.tx.txid().to_string().clone(),
             outputs: outputs,
             inputs: inputs,
@@ -350,7 +350,7 @@ impl From<PsetBalance> for PsetAmounts {
     fn from(balance: PsetBalance) -> Self {
         PsetAmounts {
             absolute_fees: balance.fee,
-            balances: Balances::from(AssetIdBTreeMapInt(balance.balances)),
+            balances: Balances::from(AssetIdBTreeMapInt(balance.balances.as_ref().clone())),
         }
     }
 }

@@ -9,7 +9,6 @@ use lwk_wollet::elements::{
 };
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
-use lwk_wollet::Wollet;
 use lwk_wollet::WolletDescriptor;
 use std::str::FromStr;
 pub use std::sync::Mutex;
@@ -51,7 +50,9 @@ impl Wallet {
     ) -> anyhow::Result<Wallet, LwkError> {
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
-        let wollet = Wollet::with_fs_persist(network.into(), descriptor, dbpath.clone())?;
+        let wollet = lwk_wollet::WolletBuilder::new(network.into(), descriptor)
+            .with_legacy_fs_store(dbpath.clone())?
+            .build()?;
         let opaque = RustOpaque::new(Mutex::new(wollet));
         let wallet = Wallet { inner: opaque };
         Ok(wallet)
@@ -88,12 +89,12 @@ impl Wallet {
 
     /// Get the descriptor string for the wallet
     pub fn descriptor(&self) -> anyhow::Result<String, LwkError> {
-        Ok(self.get_wallet()?.descriptor().to_string())
+        Ok(self.get_wallet()?.descriptor()?.to_string())
     }
 
     /// Get the blinding key string for the wallet
     pub fn blinding_key(&self) -> anyhow::Result<String, LwkError> {
-        Ok(self.get_wallet()?.descriptor().key.to_string())
+        Ok(self.get_wallet()?.descriptor()?.key.to_string())
     }
 
     /// Get the last unused address from the wallet
@@ -110,7 +111,7 @@ impl Wallet {
 
     /// Get balances for a wallet.
     pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
-        let balance_map: AssetIdBTreeMapUInt = (self.get_wallet()?.balance()?).into();
+        let balance_map: AssetIdBTreeMapUInt = self.get_wallet()?.balance()?.as_ref().clone().into();
         let balance = Balances::from(balance_map);
         Ok(balance)
     }

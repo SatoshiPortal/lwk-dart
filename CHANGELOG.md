@@ -1,3 +1,9 @@
+## Unreleased
+
+- chore: update `lwk_wollet`, `lwk_signer` and `lwk_common` to 0.17.0
+- chore: update `sideswap_rust` to latest (rev `3722a83`)
+- chore: replace deprecated `Wollet::with_fs_persist` with `WolletBuilder` using the legacy fs store (same on-disk format, existing wallet caches still load)
+
 ## 0.3.0
 
 - feat: add `LiquidTransaction` and `PartiallySignedElementsTransaction` APIs
