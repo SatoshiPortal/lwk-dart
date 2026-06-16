@@ -13,7 +13,7 @@ pub use std::collections::{BTreeMap, HashMap};
 use std::str::FromStr;
 pub use std::vec::Vec;
 
-use lwk_wollet::ElementsNetwork;
+use lwk_wollet::Network as ElementsNetwork;
 use std::convert::TryFrom;
 
 use super::error::LwkError;
@@ -28,7 +28,7 @@ impl Into<ElementsNetwork> for Network {
     fn into(self) -> ElementsNetwork {
         match self {
             Network::Mainnet => ElementsNetwork::Liquid,
-            Network::Testnet => ElementsNetwork::LiquidTestnet,
+            Network::Testnet => ElementsNetwork::TestnetLiquid,
         }
     }
 }
@@ -346,10 +346,10 @@ pub struct PsetAmounts {
     pub absolute_fees: u64,
     pub balances: Balances,
 }
-impl From<PsetBalance> for PsetAmounts {
-    fn from(balance: PsetBalance) -> Self {
+impl PsetAmounts {
+    pub fn from_balance(balance: PsetBalance, policy_asset: &AssetId) -> Self {
         PsetAmounts {
-            absolute_fees: balance.fee,
+            absolute_fees: balance.fees_in(policy_asset),
             balances: Balances::from(AssetIdBTreeMapInt(balance.balances.as_ref().clone())),
         }
     }

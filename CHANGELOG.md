@@ -1,8 +1,8 @@
 ## Unreleased
 
-- chore: update `lwk_wollet`, `lwk_signer` and `lwk_common` to 0.17.0
-- chore: update `sideswap_rust` to latest (rev `3722a83`)
-- chore: replace deprecated `Wollet::with_fs_persist` with `WolletBuilder` using the legacy fs store (same on-disk format, existing wallet caches still load)
+- chore: update `lwk_wollet`, `lwk_signer` and `lwk_common` to 0.18.0
+- chore: replace `lwk_wollet::ElementsNetwork` with `lwk_wollet::Network` (re-export of `lwk_common::Network`); `LiquidTestnet` is now `TestnetLiquid`
+- chore: switch `PsetAmounts` construction to `PsetBalance::fees_in(policy_asset)` after `PsetBalance::fee` was removed upstream
 
 ## 0.3.0
 

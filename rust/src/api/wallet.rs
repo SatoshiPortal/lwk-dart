@@ -305,8 +305,10 @@ impl Wallet {
     /// Decode a transaction given a PSET
     pub fn decode_tx(&self, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-        let pset_details = self.get_wallet()?.get_details(&mut pset)?;
-        Ok(PsetAmounts::from(pset_details.balance))
+        let wallet = self.get_wallet()?;
+        let pset_details = wallet.get_details(&mut pset)?;
+        let policy_asset = wallet.policy_asset();
+        Ok(PsetAmounts::from_balance(pset_details.balance, &policy_asset))
     }
 
     fn sign_tx_common(

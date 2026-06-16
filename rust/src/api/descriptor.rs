@@ -1,5 +1,5 @@
 use lwk_signer::SwSigner;
-use lwk_wollet::ElementsNetwork;
+use lwk_wollet::Network as ElementsNetwork;
 
 // use crate::frb_generated::RustOpaque;
 

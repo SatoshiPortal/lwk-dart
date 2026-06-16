@@ -2311,7 +2311,7 @@ checksum = "112b39cec0b298b6c1999fee3e31427f74f676e4cb9879ed1a121b43661a4154"
 
 [[package]]
 name = "lwk"
-version = "0.2.2"
+version = "0.4.0"
 dependencies = [
  "anyhow",
  "flutter_rust_bridge",
@@ -2330,9 +2330,9 @@ dependencies = [
 
 [[package]]
 name = "lwk_common"
-version = "0.17.0"
+version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b2c72efef1d108bbfeb135d0b6617729165532533d362ae4c9c93b2699b5132b"
+checksum = "5005b40da95234f48081b23036ca035b1688401b386b417a0b3df38db4ca7948"
 dependencies = [
  "aes-gcm-siv",
  "base64 0.21.7",
@@ -2349,9 +2349,9 @@ dependencies = [
 
 [[package]]
 name = "lwk_containers"
-version = "0.14.0"
+version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0cb8dd8521dc2613c494b5ad4856d864499b694a83e3bd33c4aec2c30e084462"
+checksum = "b5397769bc228222a38bd7240a499c9d3f6223f850bd52be10e2ceec78affedb"
 dependencies = [
  "elements 0.25.2",
  "rand 0.8.6",
@@ -2361,9 +2361,9 @@ dependencies = [
 
 [[package]]
 name = "lwk_jade"
-version = "0.17.0"
+version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a7cc3a75c3180678a994342dd3c6a786c8a17c3ed726cb0f4541640e923eb627"
+checksum = "d6bdd2f4a633d99ec988bd4f753fa22388248cf46115220aa644ef1d57e0d58c"
 dependencies = [
  "elements 0.25.2",
  "elements-miniscript",
@@ -2384,9 +2384,9 @@ dependencies = [
 
 [[package]]
 name = "lwk_signer"
-version = "0.17.0"
+version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fb785cdac68415571632ebc28eba718180d4b47839e37f4b48e0e3d159ad5a5b"
+checksum = "246cb65bf2fe906749407cb9c4e7a7a5e6b7776f1a5a9838cb7c70d77b012328"
 dependencies = [
  "base64 0.21.7",
  "bip39",
@@ -2398,9 +2398,9 @@ dependencies = [
 
 [[package]]
 name = "lwk_wollet"
-version = "0.17.0"
+version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0b9fa3bfd61ee241a0deea4395dfa6392e52b79f9961e919eb35bd32137c53cf"
+checksum = "390f086729f10ad154531b716f0ea43b3ee533530af777b3e598ebe7529f740d"
 dependencies = [
  "aes 0.8.4",
  "aes-gcm",
