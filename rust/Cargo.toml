@@ -2,7 +2,7 @@
 name = "lwk"
 description = "Flutter-Rust Bridge for Liquid Wallet Kit (lwk)"
 authors = ["i5hi <ishi@satoshiportal.com>, mocodesmo <morteza@satoshiportal.com>"]
-version = "0.4.0"
+version = "0.3.0"
 edition = "2021"
 
 [lib]
