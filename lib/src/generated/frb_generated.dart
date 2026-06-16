@@ -264,7 +264,7 @@ abstract class LwkCoreApi extends BaseApi {
       required String asset,
       required Network network,
       String? baseUrl,
-      bool isSendAll = false});
+      required bool isSendAll});
 
   Future<PsetAmounts> crateApiWalletWalletDecodeTx(
       {required Wallet that, required String pset});
@@ -1801,7 +1801,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       required String asset,
       required Network network,
       String? baseUrl,
-      bool isSendAll = false}) {
+      required bool isSendAll}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_wallet(that);

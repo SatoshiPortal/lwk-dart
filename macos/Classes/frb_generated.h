@@ -330,7 +330,8 @@ void frbgen_lwk_wire__crate__api__wallet__wallet_build_payjoin_tx(int64_t port_,
                                                                   struct wire_cst_list_prim_u_8_strict *out_address,
                                                                   struct wire_cst_list_prim_u_8_strict *asset,
                                                                   int32_t network,
-                                                                  struct wire_cst_list_prim_u_8_strict *base_url);
+                                                                  struct wire_cst_list_prim_u_8_strict *base_url,
+                                                                  bool is_send_all);
 
 void frbgen_lwk_wire__crate__api__wallet__wallet_decode_tx(int64_t port_,
                                                            struct wire_cst_wallet *that,
