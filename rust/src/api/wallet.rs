@@ -1,3 +1,4 @@
+use flutter_rust_bridge::frb;
 use lwk_common::Signer;
 use lwk_signer::SwSigner;
 use lwk_wollet::{full_scan_to_index_with_electrum_client, ElectrumOptions};
@@ -213,6 +214,7 @@ impl Wallet {
     /// - review server fee
     /// - call signed_pset_with_extra_details, extract_tx and broadcast_tx.
     /// See the `test_payjoin` test for an example of how to use it:
+    #[frb]
     pub fn build_payjoin_tx(
         &self,
         sats: u64,
@@ -220,7 +222,7 @@ impl Wallet {
         asset: String,
         network: Network,
         base_url: Option<String>,
-        is_send_all: bool,
+        #[frb(default = false)] is_send_all: bool,
     ) -> anyhow::Result<super::types::PayjoinTx, LwkError> {
         let wallet = self.get_wallet()?;
 

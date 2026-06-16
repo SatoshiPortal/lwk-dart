@@ -87,7 +87,7 @@ class Wallet {
           required String asset,
           required Network network,
           String? baseUrl,
-          required bool isSendAll}) =>
+          bool isSendAll = false}) =>
       LwkCore.instance.api.crateApiWalletWalletBuildPayjoinTx(
           that: this,
           sats: sats,
