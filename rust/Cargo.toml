@@ -2,7 +2,7 @@
 name = "lwk"
 description = "Flutter-Rust Bridge for Liquid Wallet Kit (lwk)"
 authors = ["i5hi <ishi@satoshiportal.com>, mocodesmo <morteza@satoshiportal.com>"]
-version = "0.4.0"
+version = "0.3.0"
 edition = "2021"
 
 [lib]
@@ -11,18 +11,18 @@ doctest = false
 crate-type = ["lib", "staticlib", "cdylib"]
 
 [dependencies]
-lwk_wollet = {version = "0.9.0" }
-lwk_signer = { version = "0.9.0" }
-lwk_common = {version = "0.9.0" }
-thiserror = "1.0.50"
+lwk_wollet = {version = "0.17.0" }
+lwk_signer = { version = "0.17.0" }
+lwk_common = {version = "0.17.0" }
+thiserror = "2.0.18"
 flutter_rust_bridge = "=2.12.0"
 anyhow = "1.0.68"
-lazy_static = "1.4.0"
+lazy_static = "1.5.0"
 hex = "0.4"
 log = "0.4.22"
-sideswap_types = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "d91bd0497c7093f677247f16c35f486c34dd29f9" }
-sideswap_common = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "d91bd0497c7093f677247f16c35f486c34dd29f9" }
-sideswap_payjoin = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "d91bd0497c7093f677247f16c35f486c34dd29f9" }
+sideswap_types = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "3722a83da1c440c8a8c8edc79b7dc89ed01ae11c" }
+sideswap_common = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "3722a83da1c440c8a8c8edc79b7dc89ed01ae11c" }
+sideswap_payjoin = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "3722a83da1c440c8a8c8edc79b7dc89ed01ae11c" }
 
 [features]
 bull_sdk = []
