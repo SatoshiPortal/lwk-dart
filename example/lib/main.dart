@@ -54,8 +54,8 @@ class TestApp extends StatefulWidget {
     return true;
   }
 
-  static Future<Balances> balance(Wallet wallet) async {
-    final Balances balance = await wallet.balances();
+  static Future<List<Balance>> balance(Wallet wallet) async {
+    final List<Balance> balance = await wallet.balances();
     return balance;
   }
 
@@ -76,7 +76,7 @@ class _TestAppState extends State<TestApp> {
   bool loading = false;
   Wallet? wallet;
   bool isWalletSynced = false;
-  Balances? balance;
+  List<Balance>? balance;
   List<Map<String, int>>? txs;
   String newAddress = "...";
   String? pset;

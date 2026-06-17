@@ -1,4 +1,47 @@
 use flutter_rust_bridge::frb;
+
+/// Liquid Bitcoin mainnet asset ID
+pub const L_BTC_ASSET_ID: &str =
+    "6f0279e9ed041c3d710a9f57d0c02928416460c4b722ae3457a11eec381c526d";
+
+/// Liquid Bitcoin testnet asset ID
+pub const L_TEST_ASSET_ID: &str =
+    "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
+
+/// Get balance value for a specific asset ID from a list of balances
+#[frb(sync)]
+pub fn get_balance_by_asset_id(balances: Vec<Balance>, asset_id: String) -> i64 {
+    balances
+        .iter()
+        .find(|b| b.asset_id == asset_id)
+        .map(|b| b.value)
+        .unwrap_or(0)
+}
+
+/// Get L-BTC mainnet balance
+#[frb(sync)]
+pub fn get_lbtc_balance(balances: Vec<Balance>) -> i64 {
+    get_balance_by_asset_id(balances, L_BTC_ASSET_ID.to_string())
+}
+
+/// Get L-BTC testnet balance
+#[frb(sync)]
+pub fn get_ltest_balance(balances: Vec<Balance>) -> i64 {
+    get_balance_by_asset_id(balances, L_TEST_ASSET_ID.to_string())
+}
+
+/// Get L-BTC mainnet asset ID
+#[frb(sync)]
+pub fn get_lbtc_asset_id() -> String {
+    L_BTC_ASSET_ID.to_string()
+}
+
+/// Get L-BTC testnet asset ID
+#[frb(sync)]
+pub fn get_ltest_asset_id() -> String {
+    L_TEST_ASSET_ID.to_string()
+}
+
 use lwk_common::PsetBalance;
 use lwk_wollet::{
     elements::{

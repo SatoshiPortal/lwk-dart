@@ -3,7 +3,7 @@ use lwk_common::Signer;
 use lwk_signer::SwSigner;
 use lwk_wollet::{full_scan_to_index_with_electrum_client, ElectrumOptions};
 // use lwk_wollet::elements_miniscript::descriptor;
-use crate::frb_generated::RustOpaque;
+use flutter_rust_bridge::RustOpaqueNom as RustOpaque;
 // use log::{info, warn};
 use lwk_wollet::elements::{
     pset::PartiallySignedTransaction, Address as LwkAddress, AssetId as LwkAssetId,
@@ -27,7 +27,7 @@ use super::types::TxOut;
 
 /// Main wallet object
 pub struct Wallet {
-    pub inner: RustOpaque<Mutex<lwk_wollet::Wollet>>,
+    pub(crate) inner: RustOpaque<Mutex<lwk_wollet::Wollet>>,
 }
 
 impl Wallet {
