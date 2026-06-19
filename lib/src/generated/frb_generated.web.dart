@@ -1596,24 +1596,16 @@ class LwkCoreWire implements BaseWire {
   );
 
   void wire__crate__api__wallet__wallet_build_payjoin_tx(
-    NativePortType port_,
-    JSAny that,
-    JSAny sats,
-    String out_address,
-    String asset,
-    int network,
-    String? base_url,
-    bool is_send_all,
-  ) => wasmModule.wire__crate__api__wallet__wallet_build_payjoin_tx(
-    port_,
-    that,
-    sats,
-    out_address,
-    asset,
-    network,
-    base_url,
-    is_send_all,
-  );
+          NativePortType port_,
+          JSAny that,
+          JSAny sats,
+          String out_address,
+          String asset,
+          int network,
+          String? base_url,
+          bool is_send_all) =>
+      wasmModule.wire__crate__api__wallet__wallet_build_payjoin_tx(port_, that,
+          sats, out_address, asset, network, base_url, is_send_all);
 
   void wire__crate__api__wallet__wallet_decode_tx(
     NativePortType port_,
@@ -2018,14 +2010,14 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
   );
 
   external void wire__crate__api__wallet__wallet_build_payjoin_tx(
-    NativePortType port_,
-    JSAny that,
-    JSAny sats,
-    String out_address,
-    String asset,
-    int network,
-    String? base_url,
-    bool is_send_all,
+      NativePortType port_,
+      JSAny that,
+      JSAny sats,
+      String out_address,
+      String asset,
+      int network,
+      String? base_url,
+      bool is_send_all
   );
 
   external void wire__crate__api__wallet__wallet_decode_tx(

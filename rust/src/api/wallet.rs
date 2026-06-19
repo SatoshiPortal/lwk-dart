@@ -1,3 +1,4 @@
+use flutter_rust_bridge::frb;
 use lwk_common::Signer;
 use lwk_signer::SwSigner;
 use lwk_wollet::{full_scan_to_index_with_electrum_client, ElectrumOptions};
@@ -213,6 +214,7 @@ impl Wallet {
     /// - review server fee
     /// - call signed_pset_with_extra_details, extract_tx and broadcast_tx.
     /// See the `test_payjoin` test for an example of how to use it:
+    #[frb]
     pub fn build_payjoin_tx(
         &self,
         sats: u64,
@@ -220,7 +222,7 @@ impl Wallet {
         asset: String,
         network: Network,
         base_url: Option<String>,
-        is_send_all: bool,
+        #[frb(default = false)] is_send_all: bool,
     ) -> anyhow::Result<super::types::PayjoinTx, LwkError> {
         let wallet = self.get_wallet()?;
 
@@ -305,8 +307,10 @@ impl Wallet {
     /// Decode a transaction given a PSET
     pub fn decode_tx(&self, pset: String) -> anyhow::Result<PsetAmounts, LwkError> {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
-        let pset_details = self.get_wallet()?.get_details(&mut pset)?;
-        Ok(PsetAmounts::from(pset_details.balance))
+        let wallet = self.get_wallet()?;
+        let pset_details = wallet.get_details(&mut pset)?;
+        let policy_asset = wallet.policy_asset();
+        Ok(PsetAmounts::from_balance(pset_details.balance, &policy_asset))
     }
 
     fn sign_tx_common(
