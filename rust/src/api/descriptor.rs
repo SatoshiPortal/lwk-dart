@@ -3,7 +3,7 @@ use lwk_wollet::Network as ElementsNetwork;
 
 // use crate::frb_generated::RustOpaque;
 
-use super::{error::LwkError, types::Network};
+use super::{error::LwkError, types::LiquidNetwork};
 
 /// Wallet descriptor class used to create a new wallet
 #[derive(Debug)]
@@ -12,7 +12,7 @@ pub struct Descriptor {
 }
 impl Descriptor {
     /// Createa new wpkh confidential descriptor based on Slip77 blinding key derivation
-    pub fn new_confidential(network: Network, mnemonic: String) -> Result<Descriptor, LwkError> {
+    pub fn new_confidential(network: LiquidNetwork, mnemonic: String) -> Result<Descriptor, LwkError> {
         let el_network: ElementsNetwork = network.into();
         let is_mainnet = el_network == ElementsNetwork::Liquid;
         let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?.into();

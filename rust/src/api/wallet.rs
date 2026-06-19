@@ -20,7 +20,7 @@ use super::error::LwkError;
 use super::types::Address;
 use super::types::AssetIdBTreeMapUInt;
 use super::types::Balances;
-use super::types::Network;
+use super::types::LiquidNetwork;
 use super::types::PsetAmounts;
 use super::types::Tx;
 use super::types::TxOut;
@@ -45,7 +45,7 @@ impl Wallet {
 
     /// Initializes a wallet from a specific db path and descriptor
     pub fn init(
-        network: Network,
+        network: LiquidNetwork,
         dbpath: String,
         descriptor: Descriptor,
     ) -> anyhow::Result<Wallet, LwkError> {
@@ -68,6 +68,7 @@ impl Wallet {
         stop_at_index: Option<u32>,
         timeout: Option<u8>,
     ) -> anyhow::Result<(), LwkError> {
+        super::ensure_crypto_provider();
         let url = electrum_url
             .strip_prefix("ssl://")
             .or_else(|| electrum_url.strip_prefix("tcp://"))
@@ -220,9 +221,12 @@ impl Wallet {
         sats: u64,
         out_address: String,
         asset: String,
-        network: Network,
+        network: LiquidNetwork,
         base_url: Option<String>,
-        #[frb(default = false)] is_send_all: bool,
+        // NOTE: `#[frb(default = false)]` on this param is not supported by frb
+        // 2.12.0's codegen (cargo expand rejects the attribute on a fn param),
+        // so isSendAll is a required bool in Dart. No caller relies on a default.
+        is_send_all: bool,
     ) -> anyhow::Result<super::types::PayjoinTx, LwkError> {
         let wallet = self.get_wallet()?;
 
@@ -235,11 +239,11 @@ impl Wallet {
         };
 
         let (network, default_base_url) = match network {
-            Network::Mainnet => (
+            LiquidNetwork::Mainnet => (
                 sideswap_types::network::Network::Liquid,
                 sideswap_payjoin::BASE_URL_PROD,
             ),
-            Network::Testnet => (
+            LiquidNetwork::Testnet => (
                 sideswap_types::network::Network::LiquidTestnet,
                 sideswap_payjoin::BASE_URL_TESTNET,
             ),
@@ -315,12 +319,12 @@ impl Wallet {
 
     fn sign_tx_common(
         &self,
-        network: Network,
+        network: LiquidNetwork,
         pset: String,
         mnemonic: String,
         add_details: bool,
     ) -> anyhow::Result<String, LwkError> {
-        let is_mainnet = network == Network::Testnet;
+        let is_mainnet = network == LiquidNetwork::Testnet;
         let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         if add_details {
@@ -335,7 +339,7 @@ impl Wallet {
     /// Sign a wallet transaction, returns (pset, signed_bytes)
     pub fn sign_tx(
         &self,
-        network: Network,
+        network: LiquidNetwork,
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<String, LwkError> {
@@ -352,7 +356,7 @@ impl Wallet {
     /// Sign a pset with extra details (used for asset transactions)
     pub fn signed_pset_with_extra_details(
         &self,
-        network: Network,
+        network: LiquidNetwork,
         pset: String,
         mnemonic: String,
     ) -> anyhow::Result<String, LwkError> {
@@ -372,7 +376,7 @@ mod tests {
         let mnemonic =
             "umbrella response wide outer mystery drastic crew festival poet coconut error act";
         let electrum_url = "les.bullbitcoin.com:995".to_string();
-        let network = Network::Mainnet;
+        let network = LiquidNetwork::Mainnet;
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
         let _ = wallet.sync(electrum_url.clone(), true, None, None);
@@ -577,7 +581,7 @@ mod tests {
     fn test_payjoin() {
         let mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
         let electrum_url = "elements-testnet.blockstream.info:50002";
-        let network = Network::Testnet;
+        let network = LiquidNetwork::Testnet;
         let asset = "b612eb46313a2cd6ebabd8b7a8eed5696e29898b87a43bff41c94f51acef9d73";
 
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
@@ -642,7 +646,7 @@ mod tests {
     fn test_payjoin_send_all_deducts_fee_from_recipient() {
         let mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
         let electrum_url = "elements-testnet.blockstream.info:50002";
-        let network = Network::Testnet;
+        let network = LiquidNetwork::Testnet;
         let asset = "b612eb46313a2cd6ebabd8b7a8eed5696e29898b87a43bff41c94f51acef9d73";
 
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();

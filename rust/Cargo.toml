@@ -11,6 +11,10 @@ doctest = false
 crate-type = ["lib", "staticlib", "cdylib"]
 
 [dependencies]
+# Pin the rustls crypto provider to ring; both ring + aws-lc-rs are linked
+# transitively in the bull_sdk aggregate, which makes rustls 0.23 panic when it
+# tries to auto-pick a default. We install ring explicitly at runtime.
+rustls = { version = "0.23", default-features = false, features = ["ring"] }
 lwk_wollet = {version = "0.18.0" }
 lwk_signer = { version = "0.18.0" }
 lwk_common = {version = "0.18.0" }
