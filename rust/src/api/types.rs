@@ -62,16 +62,16 @@ use std::convert::TryFrom;
 use super::error::LwkError;
 
 #[derive(Clone, Copy, PartialEq, Debug)]
-pub enum Network {
+pub enum LiquidNetwork {
     Mainnet,
     Testnet,
 }
 
-impl Into<ElementsNetwork> for Network {
+impl Into<ElementsNetwork> for LiquidNetwork {
     fn into(self) -> ElementsNetwork {
         match self {
-            Network::Mainnet => ElementsNetwork::Liquid,
-            Network::Testnet => ElementsNetwork::TestnetLiquid,
+            LiquidNetwork::Mainnet => ElementsNetwork::Liquid,
+            LiquidNetwork::Testnet => ElementsNetwork::TestnetLiquid,
         }
     }
 }
@@ -237,18 +237,18 @@ impl From<LwkAddress> for Address {
 
 impl Address {
     /// Validate the address string and return the network
-    pub fn validate(address_string: String) -> anyhow::Result<Network, LwkError> {
+    pub fn validate(address_string: String) -> anyhow::Result<LiquidNetwork, LwkError> {
         let address = LwkAddress::from_str(&address_string)?;
         if address.params.to_owned() == AddressParams::LIQUID {
-            Ok(Network::Mainnet)
+            Ok(LiquidNetwork::Mainnet)
         } else {
-            Ok(Network::Testnet)
+            Ok(LiquidNetwork::Testnet)
         }
     }
 
     /// Create an address from a scriptpubkey. Always returns 0 as the index is only for wallet generated addresses
     pub fn address_from_script(
-        network: Network,
+        network: LiquidNetwork,
         script: String,
         blinding_key: Option<String>,
     ) -> anyhow::Result<Address, LwkError> {
@@ -270,8 +270,8 @@ impl Address {
             &script_pubkey,
             blinding_pubkey,
             match network {
-                Network::Mainnet => &AddressParams::LIQUID,
-                Network::Testnet => &AddressParams::LIQUID_TESTNET,
+                LiquidNetwork::Mainnet => &AddressParams::LIQUID,
+                LiquidNetwork::Testnet => &AddressParams::LIQUID_TESTNET,
             },
         );
         if let Some(address) = address {
@@ -427,7 +427,7 @@ impl TryFrom<String> for SizeAndFees {
 pub struct PayjoinTx {
     /// Partially signed transaction
     pub pset: String,
-    /// Network fee
+    /// LiquidNetwork fee
     pub network_fee: u64,
     /// Asset fee amount paid to the server
     pub asset_fee: u64,
@@ -446,7 +446,7 @@ pub struct PayjoinTx {
 
 //     // Call the address_from_script method
 //     let address_result = Address::address_from_script(
-//         Network::Mainnet,
+//         LiquidNetwork::Mainnet,
 //         script,
 //         slip77_string,
 //     ).unwrap();

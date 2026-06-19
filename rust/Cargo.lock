@@ -2265,6 +2265,7 @@ dependencies = [
  "lwk_common",
  "lwk_signer",
  "lwk_wollet",
+ "rustls",
  "sideswap_common",
  "sideswap_payjoin",
  "sideswap_types",
