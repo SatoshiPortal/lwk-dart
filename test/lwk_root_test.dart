@@ -9,7 +9,7 @@ void main() {
       await LibLwk.init();
       const mnemonic =
           "umbrella response wide outer mystery drastic crew festival poet coconut error act";
-      const network = Network.mainnet;
+      const network = LiquidNetwork.mainnet;
       const electrumUrl = 'les.bullbitcoin.com:995';
       const dbPath = '/tmp/lwk-darti';
       final descriptor = await Descriptor.newConfidential(
@@ -54,5 +54,5 @@ void main() {
       //     network: network, pset: pset, mnemonic: mnemonic);
       // print(signedPset);
     });
-  });
+  }, skip: 'live mainnet integration test: requires network + compiled lwk lib');
 }
