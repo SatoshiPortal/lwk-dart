@@ -1,11 +1,18 @@
-## Unreleased
+## 0.5.0
 
-- chore: update `lwk_wollet`, `lwk_signer` and `lwk_common` to 0.17.0
+- feat (BREAKING): rename the public `Network` enum to `LiquidNetwork`
+- feat: add `getLbtcAssetId` and `getLtestAssetId` functions
+- chore: update `lwk_wollet`, `lwk_signer` and `lwk_common` to 0.18.0 (via 0.17.0)
 - chore: update `sideswap_rust` to latest (rev `3722a83`)
+- chore: install the rustls `ring` CryptoProvider at init (required by lwk 0.18's rustls)
 - chore: replace deprecated `Wollet::with_fs_persist` with `WolletBuilder` using the legacy fs store (same on-disk format, existing wallet caches still load)
-- chore: update `lwk_wollet`, `lwk_signer` and `lwk_common` to 0.18.0
-- chore: replace `lwk_wollet::ElementsNetwork` with `lwk_wollet::Network` (re-export of `lwk_common::Network`); `LiquidTestnet` is now `TestnetLiquid`
 - chore: switch `PsetAmounts` construction to `PsetBalance::fees_in(policy_asset)` after `PsetBalance::fee` was removed upstream
+- chore: cfg-gate `frb_generated` behind a `bull_sdk` feature for the aggregated bull_sdk crate
+- chore: regenerate FRB bindings (standalone crate compiles again; Dart surface now exposes `LiquidNetwork`)
+
+## 0.4.0
+
+- chore: pin lockfiles and update dependencies to latest; Flutter 3.44.1 / Dart 3.12.1 / `flutter_rust_bridge` 2.12.0; release toolchain on stable Rust
 
 ## 0.3.0
 

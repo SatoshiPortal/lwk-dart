@@ -14,16 +14,15 @@ import 'types.dart';
 class Descriptor {
   final String ctDescriptor;
 
-  const Descriptor({required this.ctDescriptor});
+  const Descriptor({
+    required this.ctDescriptor,
+  });
 
   /// Createa new wpkh confidential descriptor based on Slip77 blinding key derivation
-  static Future<Descriptor> newConfidential({
-    required Network network,
-    required String mnemonic,
-  }) => LwkCore.instance.api.crateApiDescriptorDescriptorNewConfidential(
-    network: network,
-    mnemonic: mnemonic,
-  );
+  static Future<Descriptor> newConfidential(
+          {required LiquidNetwork network, required String mnemonic}) =>
+      LwkCore.instance.api.crateApiDescriptorDescriptorNewConfidential(
+          network: network, mnemonic: mnemonic);
 
   @override
   int get hashCode => ctDescriptor.hashCode;

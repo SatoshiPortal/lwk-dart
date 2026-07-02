@@ -12,7 +12,9 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 class LwkError implements FrbException {
   final String msg;
 
-  const LwkError({required this.msg});
+  const LwkError({
+    required this.msg,
+  });
 
   @override
   int get hashCode => msg.hashCode;

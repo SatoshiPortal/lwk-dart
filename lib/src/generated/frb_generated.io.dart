@@ -24,55 +24,49 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   });
 
   CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_MutexWolletPtr =>
-      wire._rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr;
+      get rust_arc_decrement_strong_count_MutexWolletPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr;
 
   CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_LiquidTransactionPtr => wire
-      ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr;
+      get rust_arc_decrement_strong_count_LiquidTransactionPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr;
 
   CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_PartiallySignedElementsTransactionPtr => wire
-      ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr;
+      get rust_arc_decrement_strong_count_PartiallySignedElementsTransactionPtr =>
+          wire._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr;
 
   @protected
   LiquidTransaction
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    dynamic raw,
-  );
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          dynamic raw);
 
   @protected
   PartiallySignedElementsTransaction
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    dynamic raw,
-  );
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          dynamic raw);
 
   @protected
   LiquidTransaction
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    dynamic raw,
-  );
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          dynamic raw);
 
   @protected
   PartiallySignedElementsTransaction
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    dynamic raw,
-  );
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          dynamic raw);
 
   @protected
   MutexWollet dco_decode_RustOpaque_Mutexlwk_wolletWollet(dynamic raw);
 
   @protected
   LiquidTransaction
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    dynamic raw,
-  );
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          dynamic raw);
 
   @protected
   PartiallySignedElementsTransaction
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    dynamic raw,
-  );
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          dynamic raw);
 
   @protected
   String dco_decode_String(dynamic raw);
@@ -132,6 +126,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PlatformInt64 dco_decode_i_64(dynamic raw);
 
   @protected
+  LiquidNetwork dco_decode_liquid_network(dynamic raw);
+
+  @protected
   List<String> dco_decode_list_String(dynamic raw);
 
   @protected
@@ -166,9 +163,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   LwkError dco_decode_lwk_error(dynamic raw);
-
-  @protected
-  Network dco_decode_network(dynamic raw);
 
   @protected
   String? dco_decode_opt_String(dynamic raw);
@@ -247,44 +241,37 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   LiquidTransaction
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    SseDeserializer deserializer,
-  );
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          SseDeserializer deserializer);
 
   @protected
   PartiallySignedElementsTransaction
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    SseDeserializer deserializer,
-  );
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          SseDeserializer deserializer);
 
   @protected
   LiquidTransaction
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    SseDeserializer deserializer,
-  );
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          SseDeserializer deserializer);
 
   @protected
   PartiallySignedElementsTransaction
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    SseDeserializer deserializer,
-  );
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          SseDeserializer deserializer);
 
   @protected
   MutexWollet sse_decode_RustOpaque_Mutexlwk_wolletWollet(
-    SseDeserializer deserializer,
-  );
+      SseDeserializer deserializer);
 
   @protected
   LiquidTransaction
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    SseDeserializer deserializer,
-  );
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          SseDeserializer deserializer);
 
   @protected
   PartiallySignedElementsTransaction
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    SseDeserializer deserializer,
-  );
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          SseDeserializer deserializer);
 
   @protected
   String sse_decode_String(SseDeserializer deserializer);
@@ -344,6 +331,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
+  LiquidNetwork sse_decode_liquid_network(SseDeserializer deserializer);
+
+  @protected
   List<String> sse_decode_list_String(SseDeserializer deserializer);
 
   @protected
@@ -372,8 +362,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   List<TxOutSecrets> sse_decode_list_tx_out_secrets(
-    SseDeserializer deserializer,
-  );
+      SseDeserializer deserializer);
 
   @protected
   List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer);
@@ -382,20 +371,15 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   LwkError sse_decode_lwk_error(SseDeserializer deserializer);
 
   @protected
-  Network sse_decode_network(SseDeserializer deserializer);
-
-  @protected
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
   PsetInput? sse_decode_opt_box_autoadd_pset_input(
-    SseDeserializer deserializer,
-  );
+      SseDeserializer deserializer);
 
   @protected
   PsetOutput? sse_decode_opt_box_autoadd_pset_output(
-    SseDeserializer deserializer,
-  );
+      SseDeserializer deserializer);
 
   @protected
   TxInput? sse_decode_opt_box_autoadd_tx_input(SseDeserializer deserializer);
@@ -471,8 +455,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_blockchain> cst_encode_box_autoadd_blockchain(
-    Blockchain raw,
-  ) {
+      Blockchain raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_blockchain();
 
@@ -481,8 +464,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_descriptor> cst_encode_box_autoadd_descriptor(
-    Descriptor raw,
-  ) {
+      Descriptor raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_descriptor();
     cst_api_fill_to_wire_descriptor(raw, ptr.ref);
@@ -491,8 +473,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_pset_input> cst_encode_box_autoadd_pset_input(
-    PsetInput raw,
-  ) {
+      PsetInput raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_pset_input();
     cst_api_fill_to_wire_pset_input(raw, ptr.ref);
@@ -501,8 +482,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_pset_output> cst_encode_box_autoadd_pset_output(
-    PsetOutput raw,
-  ) {
+      PsetOutput raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_pset_output();
     cst_api_fill_to_wire_pset_output(raw, ptr.ref);
@@ -519,8 +499,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_tx_output> cst_encode_box_autoadd_tx_output(
-    TxOutput raw,
-  ) {
+      TxOutput raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_tx_output();
     cst_api_fill_to_wire_tx_output(raw, ptr.ref);
@@ -571,8 +550,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_list_balance> cst_encode_list_balance(
-    List<Balance> raw,
-  ) {
+      List<Balance> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_balance(raw.length);
     for (var i = 0; i < raw.length; ++i) {
@@ -583,8 +561,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_list_prim_u_8_loose> cst_encode_list_prim_u_8_loose(
-    List<int> raw,
-  ) {
+      List<int> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_prim_u_8_loose(raw.length);
     ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
@@ -593,8 +570,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_list_prim_u_8_strict(
-    Uint8List raw,
-  ) {
+      Uint8List raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_prim_u_8_strict(raw.length);
     ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
@@ -603,8 +579,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_list_pset_input> cst_encode_list_pset_input(
-    List<PsetInput> raw,
-  ) {
+      List<PsetInput> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_pset_input(raw.length);
     for (var i = 0; i < raw.length; ++i) {
@@ -615,8 +590,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_list_pset_output> cst_encode_list_pset_output(
-    List<PsetOutput> raw,
-  ) {
+      List<PsetOutput> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_pset_output(raw.length);
     for (var i = 0; i < raw.length; ++i) {
@@ -637,8 +611,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_list_tx_input> cst_encode_list_tx_input(
-    List<TxInput> raw,
-  ) {
+      List<TxInput> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_tx_input(raw.length);
     for (var i = 0; i < raw.length; ++i) {
@@ -659,8 +632,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_list_tx_out_secrets> cst_encode_list_tx_out_secrets(
-    List<TxOutSecrets> raw,
-  ) {
+      List<TxOutSecrets> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_tx_out_secrets(raw.length);
     for (var i = 0; i < raw.length; ++i) {
@@ -671,8 +643,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_list_tx_output> cst_encode_list_tx_output(
-    List<TxOutput> raw,
-  ) {
+      List<TxOutput> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_tx_output(raw.length);
     for (var i = 0; i < raw.length; ++i) {
@@ -683,40 +654,35 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_opt_String(
-    String? raw,
-  ) {
+      String? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_String(raw);
   }
 
   @protected
   ffi.Pointer<wire_cst_pset_input> cst_encode_opt_box_autoadd_pset_input(
-    PsetInput? raw,
-  ) {
+      PsetInput? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_pset_input(raw);
   }
 
   @protected
   ffi.Pointer<wire_cst_pset_output> cst_encode_opt_box_autoadd_pset_output(
-    PsetOutput? raw,
-  ) {
+      PsetOutput? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_pset_output(raw);
   }
 
   @protected
   ffi.Pointer<wire_cst_tx_input> cst_encode_opt_box_autoadd_tx_input(
-    TxInput? raw,
-  ) {
+      TxInput? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_tx_input(raw);
   }
 
   @protected
   ffi.Pointer<wire_cst_tx_output> cst_encode_opt_box_autoadd_tx_output(
-    TxOutput? raw,
-  ) {
+      TxOutput? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_tx_output(raw);
   }
@@ -767,124 +733,93 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_api_fill_to_wire_blockchain(
-    Blockchain apiObj,
-    wire_cst_blockchain wireObj,
-  ) {}
+      Blockchain apiObj, wire_cst_blockchain wireObj) {}
 
   @protected
   void cst_api_fill_to_wire_box_autoadd_descriptor(
-    Descriptor apiObj,
-    ffi.Pointer<wire_cst_descriptor> wireObj,
-  ) {
+      Descriptor apiObj, ffi.Pointer<wire_cst_descriptor> wireObj) {
     cst_api_fill_to_wire_descriptor(apiObj, wireObj.ref);
   }
 
   @protected
   void cst_api_fill_to_wire_box_autoadd_pset_input(
-    PsetInput apiObj,
-    ffi.Pointer<wire_cst_pset_input> wireObj,
-  ) {
+      PsetInput apiObj, ffi.Pointer<wire_cst_pset_input> wireObj) {
     cst_api_fill_to_wire_pset_input(apiObj, wireObj.ref);
   }
 
   @protected
   void cst_api_fill_to_wire_box_autoadd_pset_output(
-    PsetOutput apiObj,
-    ffi.Pointer<wire_cst_pset_output> wireObj,
-  ) {
+      PsetOutput apiObj, ffi.Pointer<wire_cst_pset_output> wireObj) {
     cst_api_fill_to_wire_pset_output(apiObj, wireObj.ref);
   }
 
   @protected
   void cst_api_fill_to_wire_box_autoadd_tx_input(
-    TxInput apiObj,
-    ffi.Pointer<wire_cst_tx_input> wireObj,
-  ) {
+      TxInput apiObj, ffi.Pointer<wire_cst_tx_input> wireObj) {
     cst_api_fill_to_wire_tx_input(apiObj, wireObj.ref);
   }
 
   @protected
   void cst_api_fill_to_wire_box_autoadd_tx_output(
-    TxOutput apiObj,
-    ffi.Pointer<wire_cst_tx_output> wireObj,
-  ) {
+      TxOutput apiObj, ffi.Pointer<wire_cst_tx_output> wireObj) {
     cst_api_fill_to_wire_tx_output(apiObj, wireObj.ref);
   }
 
   @protected
   void cst_api_fill_to_wire_box_autoadd_wallet(
-    Wallet apiObj,
-    ffi.Pointer<wire_cst_wallet> wireObj,
-  ) {
+      Wallet apiObj, ffi.Pointer<wire_cst_wallet> wireObj) {
     cst_api_fill_to_wire_wallet(apiObj, wireObj.ref);
   }
 
   @protected
   void cst_api_fill_to_wire_descriptor(
-    Descriptor apiObj,
-    wire_cst_descriptor wireObj,
-  ) {
+      Descriptor apiObj, wire_cst_descriptor wireObj) {
     wireObj.ct_descriptor = cst_encode_String(apiObj.ctDescriptor);
   }
 
   @protected
   void cst_api_fill_to_wire_lwk_error(
-    LwkError apiObj,
-    wire_cst_lwk_error wireObj,
-  ) {
+      LwkError apiObj, wire_cst_lwk_error wireObj) {
     wireObj.msg = cst_encode_String(apiObj.msg);
   }
 
   @protected
   void cst_api_fill_to_wire_out_point(
-    OutPoint apiObj,
-    wire_cst_out_point wireObj,
-  ) {
+      OutPoint apiObj, wire_cst_out_point wireObj) {
     wireObj.txid = cst_encode_String(apiObj.txid);
     wireObj.vout = cst_encode_u_32(apiObj.vout);
   }
 
   @protected
   void cst_api_fill_to_wire_payjoin_tx(
-    PayjoinTx apiObj,
-    wire_cst_payjoin_tx wireObj,
-  ) {
+      PayjoinTx apiObj, wire_cst_payjoin_tx wireObj) {
     wireObj.pset = cst_encode_String(apiObj.pset);
     wireObj.network_fee = cst_encode_u_64(apiObj.networkFee);
     wireObj.asset_fee = cst_encode_u_64(apiObj.assetFee);
-    wireObj.unblinded_outputs = cst_encode_list_tx_out_secrets(
-      apiObj.unblindedOutputs,
-    );
+    wireObj.unblinded_outputs =
+        cst_encode_list_tx_out_secrets(apiObj.unblindedOutputs);
   }
 
   @protected
   void cst_api_fill_to_wire_pset_amounts(
-    PsetAmounts apiObj,
-    wire_cst_pset_amounts wireObj,
-  ) {
+      PsetAmounts apiObj, wire_cst_pset_amounts wireObj) {
     wireObj.absolute_fees = cst_encode_u_64(apiObj.absoluteFees);
     wireObj.balances = cst_encode_list_balance(apiObj.balances);
   }
 
   @protected
   void cst_api_fill_to_wire_pset_input(
-    PsetInput apiObj,
-    wire_cst_pset_input wireObj,
-  ) {
-    wireObj.witness_utxo_script = cst_encode_opt_String(
-      apiObj.witnessUtxoScript,
-    );
-    wireObj.witness_utxo_amount = cst_encode_opt_box_autoadd_u_64(
-      apiObj.witnessUtxoAmount,
-    );
+      PsetInput apiObj, wire_cst_pset_input wireObj) {
+    wireObj.witness_utxo_script =
+        cst_encode_opt_String(apiObj.witnessUtxoScript);
+    wireObj.witness_utxo_amount =
+        cst_encode_opt_box_autoadd_u_64(apiObj.witnessUtxoAmount);
     wireObj.witness_utxo_asset = cst_encode_opt_String(apiObj.witnessUtxoAsset);
   }
 
   @protected
   void cst_api_fill_to_wire_pset_output(
-    PsetOutput apiObj,
-    wire_cst_pset_output wireObj,
-  ) {
+      PsetOutput apiObj, wire_cst_pset_output wireObj) {
     wireObj.script_pubkey = cst_encode_String(apiObj.scriptPubkey);
     wireObj.amount = cst_encode_opt_box_autoadd_u_64(apiObj.amount);
     wireObj.asset = cst_encode_opt_String(apiObj.asset);
@@ -893,9 +828,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_api_fill_to_wire_size_and_fees(
-    SizeAndFees apiObj,
-    wire_cst_size_and_fees wireObj,
-  ) {
+      SizeAndFees apiObj, wire_cst_size_and_fees wireObj) {
     wireObj.discounted_vsize = cst_encode_usize(apiObj.discountedVsize);
     wireObj.discounted_weight = cst_encode_usize(apiObj.discountedWeight);
     wireObj.absolute_fees = cst_encode_list_balance(apiObj.absoluteFees);
@@ -917,9 +850,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_api_fill_to_wire_tx_input(
-    TxInput apiObj,
-    wire_cst_tx_input wireObj,
-  ) {
+      TxInput apiObj, wire_cst_tx_input wireObj) {
     wireObj.txid = cst_encode_String(apiObj.txid);
     wireObj.vout = cst_encode_u_32(apiObj.vout);
     wireObj.script_sig = cst_encode_String(apiObj.scriptSig);
@@ -940,9 +871,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_api_fill_to_wire_tx_out_secrets(
-    TxOutSecrets apiObj,
-    wire_cst_tx_out_secrets wireObj,
-  ) {
+      TxOutSecrets apiObj, wire_cst_tx_out_secrets wireObj) {
     wireObj.value = cst_encode_u_64(apiObj.value);
     wireObj.value_bf = cst_encode_String(apiObj.valueBf);
     wireObj.asset = cst_encode_String(apiObj.asset);
@@ -951,9 +880,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_api_fill_to_wire_tx_output(
-    TxOutput apiObj,
-    wire_cst_tx_output wireObj,
-  ) {
+      TxOutput apiObj, wire_cst_tx_output wireObj) {
     wireObj.script_pubkey = cst_encode_String(apiObj.scriptPubkey);
     wireObj.asset = cst_encode_opt_String(apiObj.asset);
     wireObj.value = cst_encode_opt_box_autoadd_u_64(apiObj.value);
@@ -966,43 +893,31 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
-  int
-  cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    LiquidTransaction raw,
-  );
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      LiquidTransaction raw);
 
   @protected
-  int
-  cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    PartiallySignedElementsTransaction raw,
-  );
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      PartiallySignedElementsTransaction raw);
 
   @protected
-  int
-  cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    LiquidTransaction raw,
-  );
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      LiquidTransaction raw);
 
   @protected
-  int
-  cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    PartiallySignedElementsTransaction raw,
-  );
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      PartiallySignedElementsTransaction raw);
 
   @protected
   int cst_encode_RustOpaque_Mutexlwk_wolletWollet(MutexWollet raw);
 
   @protected
-  int
-  cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    LiquidTransaction raw,
-  );
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      LiquidTransaction raw);
 
   @protected
-  int
-  cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    PartiallySignedElementsTransaction raw,
-  );
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      PartiallySignedElementsTransaction raw);
 
   @protected
   bool cst_encode_bool(bool raw);
@@ -1014,7 +929,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int cst_encode_i_32(int raw);
 
   @protected
-  int cst_encode_network(Network raw);
+  int cst_encode_liquid_network(LiquidNetwork raw);
 
   @protected
   int cst_encode_u_32(int raw);
@@ -1027,51 +942,37 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    LiquidTransaction self,
-    SseSerializer serializer,
-  );
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          LiquidTransaction self, SseSerializer serializer);
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    PartiallySignedElementsTransaction self,
-    SseSerializer serializer,
-  );
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          PartiallySignedElementsTransaction self, SseSerializer serializer);
 
   @protected
   void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    LiquidTransaction self,
-    SseSerializer serializer,
-  );
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          LiquidTransaction self, SseSerializer serializer);
 
   @protected
   void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    PartiallySignedElementsTransaction self,
-    SseSerializer serializer,
-  );
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          PartiallySignedElementsTransaction self, SseSerializer serializer);
 
   @protected
   void sse_encode_RustOpaque_Mutexlwk_wolletWollet(
-    MutexWollet self,
-    SseSerializer serializer,
-  );
+      MutexWollet self, SseSerializer serializer);
 
   @protected
   void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
-    LiquidTransaction self,
-    SseSerializer serializer,
-  );
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+          LiquidTransaction self, SseSerializer serializer);
 
   @protected
   void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
-    PartiallySignedElementsTransaction self,
-    SseSerializer serializer,
-  );
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+          PartiallySignedElementsTransaction self, SseSerializer serializer);
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
@@ -1090,36 +991,26 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_box_autoadd_blockchain(
-    Blockchain self,
-    SseSerializer serializer,
-  );
+      Blockchain self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_descriptor(
-    Descriptor self,
-    SseSerializer serializer,
-  );
+      Descriptor self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_pset_input(
-    PsetInput self,
-    SseSerializer serializer,
-  );
+      PsetInput self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_pset_output(
-    PsetOutput self,
-    SseSerializer serializer,
-  );
+      PsetOutput self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_tx_input(TxInput self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_tx_output(
-    TxOutput self,
-    SseSerializer serializer,
-  );
+      TxOutput self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
@@ -1146,6 +1037,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
 
   @protected
+  void sse_encode_liquid_network(LiquidNetwork self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
 
   @protected
@@ -1156,21 +1050,15 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_list_prim_u_8_strict(
-    Uint8List self,
-    SseSerializer serializer,
-  );
+      Uint8List self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_pset_input(
-    List<PsetInput> self,
-    SseSerializer serializer,
-  );
+      List<PsetInput> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_pset_output(
-    List<PsetOutput> self,
-    SseSerializer serializer,
-  );
+      List<PsetOutput> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_tx(List<Tx> self, SseSerializer serializer);
@@ -1183,9 +1071,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_list_tx_out_secrets(
-    List<TxOutSecrets> self,
-    SseSerializer serializer,
-  );
+      List<TxOutSecrets> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_tx_output(List<TxOutput> self, SseSerializer serializer);
@@ -1194,34 +1080,23 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer);
 
   @protected
-  void sse_encode_network(Network self, SseSerializer serializer);
-
-  @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_pset_input(
-    PsetInput? self,
-    SseSerializer serializer,
-  );
+      PsetInput? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_pset_output(
-    PsetOutput? self,
-    SseSerializer serializer,
-  );
+      PsetOutput? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_tx_input(
-    TxInput? self,
-    SseSerializer serializer,
-  );
+      TxInput? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_tx_output(
-    TxOutput? self,
-    SseSerializer serializer,
-  );
+      TxOutput? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
@@ -1299,11 +1174,11 @@ class LwkCoreWire implements BaseWire {
 
   /// Holds the symbol lookup function.
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-  _lookup;
+      _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
   LwkCoreWire(ffi.DynamicLibrary dynamicLibrary)
-    : _lookup = dynamicLibrary.lookup;
+      : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
   LwkCoreWire.fromLookup(
@@ -1316,8 +1191,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _store_dart_post_cobjectPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(DartPostCObjectFnType)>>(
-        'store_dart_post_cobject',
-      );
+    'store_dart_post_cobject',
+  );
   late final _store_dart_post_cobject = _store_dart_post_cobjectPtr
       .asFunction<void Function(DartPostCObjectFnType)>();
 
@@ -1329,14 +1204,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_feePtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_fee',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_fee',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_fee =
       _wire__crate__api__transaction__LiquidTransaction_feePtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_from_bytes(
+      wire__crate__api__transaction__LiquidTransaction_from_bytes(
     ffi.Pointer<wire_cst_list_prim_u_8_loose> tx_bytes,
   ) {
     return _wire__crate__api__transaction__LiquidTransaction_from_bytes(
@@ -1346,24 +1221,21 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_from_bytesPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(
-            ffi.Pointer<wire_cst_list_prim_u_8_loose>,
-          )
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_bytes',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_bytes',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_from_bytes =
       _wire__crate__api__transaction__LiquidTransaction_from_bytesPtr
           .asFunction<
-            WireSyncRust2DartDco Function(
-              ffi.Pointer<wire_cst_list_prim_u_8_loose>,
-            )
-          >();
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_from_pset(
+      wire__crate__api__transaction__LiquidTransaction_from_pset(
     ffi.Pointer<wire_cst_list_prim_u_8_strict> pset_string,
   ) {
     return _wire__crate__api__transaction__LiquidTransaction_from_pset(
@@ -1373,24 +1245,20 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_from_psetPtr =
       _lookup<
-        ffi.NativeFunction<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_pset',
+  );
+  late final _wire__crate__api__transaction__LiquidTransaction_from_pset =
+      _wire__crate__api__transaction__LiquidTransaction_from_psetPtr.asFunction<
           WireSyncRust2DartDco Function(
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_pset',
-      );
-  late final _wire__crate__api__transaction__LiquidTransaction_from_pset =
-      _wire__crate__api__transaction__LiquidTransaction_from_psetPtr
-          .asFunction<
-            WireSyncRust2DartDco Function(
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+          )>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_get_input(
+      wire__crate__api__transaction__LiquidTransaction_get_input(
     int that,
     int index,
   ) {
@@ -1402,31 +1270,29 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_get_inputPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_input',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_input',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_get_input =
       _wire__crate__api__transaction__LiquidTransaction_get_inputPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_get_inputs(int that) {
+      wire__crate__api__transaction__LiquidTransaction_get_inputs(int that) {
     return _wire__crate__api__transaction__LiquidTransaction_get_inputs(that);
   }
 
   late final _wire__crate__api__transaction__LiquidTransaction_get_inputsPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_inputs',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_inputs',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_get_inputs =
       _wire__crate__api__transaction__LiquidTransaction_get_inputsPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_get_output(
+      wire__crate__api__transaction__LiquidTransaction_get_output(
     int that,
     int index,
   ) {
@@ -1438,18 +1304,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_get_outputPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_get_output =
       _wire__crate__api__transaction__LiquidTransaction_get_outputPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_get_output_asset(
+      wire__crate__api__transaction__LiquidTransaction_get_output_asset(
     int that,
     int index,
   ) {
@@ -1461,18 +1325,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_get_output_assetPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_asset',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_asset',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_get_output_asset =
       _wire__crate__api__transaction__LiquidTransaction_get_output_assetPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_get_output_nonce(
+      wire__crate__api__transaction__LiquidTransaction_get_output_nonce(
     int that,
     int index,
   ) {
@@ -1484,18 +1346,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_get_output_noncePtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_nonce',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_nonce',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_get_output_nonce =
       _wire__crate__api__transaction__LiquidTransaction_get_output_noncePtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(
+      wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey(
     int that,
     int index,
   ) {
@@ -1507,18 +1367,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkeyPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkey =
       _wire__crate__api__transaction__LiquidTransaction_get_output_script_pubkeyPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_get_output_value(
+      wire__crate__api__transaction__LiquidTransaction_get_output_value(
     int that,
     int index,
   ) {
@@ -1530,90 +1388,88 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_get_output_valuePtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_value',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_output_value',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_get_output_value =
       _wire__crate__api__transaction__LiquidTransaction_get_output_valuePtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_get_outputs(int that) {
+      wire__crate__api__transaction__LiquidTransaction_get_outputs(int that) {
     return _wire__crate__api__transaction__LiquidTransaction_get_outputs(that);
   }
 
   late final _wire__crate__api__transaction__LiquidTransaction_get_outputsPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_outputs',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_get_outputs',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_get_outputs =
       _wire__crate__api__transaction__LiquidTransaction_get_outputsPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_input_count(int that) {
+      wire__crate__api__transaction__LiquidTransaction_input_count(int that) {
     return _wire__crate__api__transaction__LiquidTransaction_input_count(that);
   }
 
   late final _wire__crate__api__transaction__LiquidTransaction_input_countPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_input_count',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_input_count',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_input_count =
       _wire__crate__api__transaction__LiquidTransaction_input_countPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_is_coinbase(int that) {
+      wire__crate__api__transaction__LiquidTransaction_is_coinbase(int that) {
     return _wire__crate__api__transaction__LiquidTransaction_is_coinbase(that);
   }
 
   late final _wire__crate__api__transaction__LiquidTransaction_is_coinbasePtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_is_coinbase',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_is_coinbase',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_is_coinbase =
       _wire__crate__api__transaction__LiquidTransaction_is_coinbasePtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_lock_time(int that) {
+      wire__crate__api__transaction__LiquidTransaction_lock_time(int that) {
     return _wire__crate__api__transaction__LiquidTransaction_lock_time(that);
   }
 
   late final _wire__crate__api__transaction__LiquidTransaction_lock_timePtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_lock_time',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_lock_time',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_lock_time =
       _wire__crate__api__transaction__LiquidTransaction_lock_timePtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_output_count(int that) {
+      wire__crate__api__transaction__LiquidTransaction_output_count(int that) {
     return _wire__crate__api__transaction__LiquidTransaction_output_count(that);
   }
 
   late final _wire__crate__api__transaction__LiquidTransaction_output_countPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_output_count',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_output_count',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_output_count =
       _wire__crate__api__transaction__LiquidTransaction_output_countPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__LiquidTransaction_to_bytes(int that) {
+      wire__crate__api__transaction__LiquidTransaction_to_bytes(int that) {
     return _wire__crate__api__transaction__LiquidTransaction_to_bytes(that);
   }
 
   late final _wire__crate__api__transaction__LiquidTransaction_to_bytesPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_to_bytes',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_to_bytes',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_to_bytes =
       _wire__crate__api__transaction__LiquidTransaction_to_bytesPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
@@ -1626,8 +1482,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_txidPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_txid',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_txid',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_txid =
       _wire__crate__api__transaction__LiquidTransaction_txidPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
@@ -1640,8 +1496,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_versionPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_version',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_version',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_version =
       _wire__crate__api__transaction__LiquidTransaction_versionPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
@@ -1654,8 +1510,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_vsizePtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_vsize',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_vsize',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_vsize =
       _wire__crate__api__transaction__LiquidTransaction_vsizePtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
@@ -1668,14 +1524,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__LiquidTransaction_weightPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_weight',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_weight',
+  );
   late final _wire__crate__api__transaction__LiquidTransaction_weight =
       _wire__crate__api__transaction__LiquidTransaction_weightPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
     int that,
   ) {
     return _wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx(
@@ -1685,14 +1541,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_txPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_tx =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_extract_txPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
     ffi.Pointer<wire_cst_list_prim_u_8_strict> pset_string,
   ) {
     return _wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string(
@@ -1702,24 +1558,21 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_from_stringPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_from_string =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_from_stringPtr
           .asFunction<
-            WireSyncRust2DartDco Function(
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input(
     int that,
     int index,
   ) {
@@ -1731,18 +1584,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount(
     int that,
     int index,
   ) {
@@ -1754,18 +1605,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amountPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amount =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_amountPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset(
     int that,
     int index,
   ) {
@@ -1777,18 +1626,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_assetPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_asset =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_assetPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script(
     int that,
     int index,
   ) {
@@ -1800,18 +1647,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_scriptPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_script =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_input_utxo_scriptPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
     int that,
   ) {
     return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs(
@@ -1821,14 +1666,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputsPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputs =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_inputsPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output(
     int that,
     int index,
   ) {
@@ -1840,18 +1685,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount(
     int that,
     int index,
   ) {
@@ -1863,18 +1706,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amountPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amount =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_amountPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset(
     int that,
     int index,
   ) {
@@ -1886,18 +1727,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_assetPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_asset =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_assetPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key(
     int that,
     int index,
   ) {
@@ -1909,18 +1748,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_keyPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_key =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_blinding_keyPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script(
     int that,
     int index,
   ) {
@@ -1932,18 +1769,16 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_scriptPtr =
       _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script',
-      );
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_script =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_output_scriptPtr
           .asFunction<WireSyncRust2DartDco Function(int, int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
     int that,
   ) {
     return _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs(
@@ -1953,14 +1788,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputsPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputs =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_get_outputsPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
     int that,
   ) {
     return _wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count(
@@ -1970,14 +1805,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_input_countPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_input_count =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_input_countPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
     int that,
   ) {
     return _wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time(
@@ -1987,14 +1822,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_timePtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_time =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_lock_timePtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
     int that,
   ) {
     return _wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count(
@@ -2004,14 +1839,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_output_countPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_output_count =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_output_countPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
 
   WireSyncRust2DartDco
-  wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
+      wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
     int that,
   ) {
     return _wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string(
@@ -2021,8 +1856,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_to_stringPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function(ffi.UintPtr)>>(
-        'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string',
-      );
+    'frbgen_lwk_wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string',
+  );
   late final _wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string =
       _wire__crate__api__transaction__PartiallySignedElementsTransaction_to_stringPtr
           .asFunction<WireSyncRust2DartDco Function(int)>();
@@ -2041,27 +1876,23 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__types__address_address_from_scriptPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Int64,
-            ffi.Int32,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__types__address_address_from_script');
+  late final _wire__crate__api__types__address_address_from_scriptPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Int32,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+      'frbgen_lwk_wire__crate__api__types__address_address_from_script');
   late final _wire__crate__api__types__address_address_from_script =
-      _wire__crate__api__types__address_address_from_scriptPtr
-          .asFunction<
-            void Function(
-              int,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+      _wire__crate__api__types__address_address_from_scriptPtr.asFunction<
+          void Function(
+            int,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
 
   void wire__crate__api__types__address_validate(
     int port_,
@@ -2070,20 +1901,15 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__types__address_validate(port_, address_string);
   }
 
-  late final _wire__crate__api__types__address_validatePtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__types__address_validatePtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__types__address_validate');
+          )>>('frbgen_lwk_wire__crate__api__types__address_validate');
   late final _wire__crate__api__types__address_validate =
-      _wire__crate__api__types__address_validatePtr
-          .asFunction<
-            void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)
-          >();
+      _wire__crate__api__types__address_validatePtr.asFunction<
+          void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   void wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
     int port_,
@@ -2099,25 +1925,22 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__blockchain__blockchain_broadcast_signed_psetPtr =
       _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Int64,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_signed_pset',
-      );
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_signed_pset',
+  );
   late final _wire__crate__api__blockchain__blockchain_broadcast_signed_pset =
       _wire__crate__api__blockchain__blockchain_broadcast_signed_psetPtr
           .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+              void Function(
+                int,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>();
 
   void wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
     int port_,
@@ -2133,25 +1956,22 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__blockchain__blockchain_broadcast_tx_bytesPtr =
       _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Int64,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Pointer<wire_cst_list_prim_u_8_loose>,
-          )
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_tx_bytes',
-      );
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_tx_bytes',
+  );
   late final _wire__crate__api__blockchain__blockchain_broadcast_tx_bytes =
       _wire__crate__api__blockchain__blockchain_broadcast_tx_bytesPtr
           .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_prim_u_8_loose>,
-            )
-          >();
+              void Function(
+                int,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>();
 
   void wire__crate__api__blockchain__blockchain_test(
     int port_,
@@ -2165,25 +1985,20 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__blockchain__blockchain_testPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__blockchain__blockchain_testPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_blockchain>,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__blockchain__blockchain_test');
+          )>>('frbgen_lwk_wire__crate__api__blockchain__blockchain_test');
   late final _wire__crate__api__blockchain__blockchain_test =
-      _wire__crate__api__blockchain__blockchain_testPtr
-          .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_blockchain>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+      _wire__crate__api__blockchain__blockchain_testPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_blockchain>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
 
   void wire__crate__api__descriptor__descriptor_new_confidential(
     int port_,
@@ -2199,19 +2014,17 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__descriptor__descriptor_new_confidentialPtr =
       _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Int64,
-            ffi.Int32,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential');
+              ffi.NativeFunction<
+                  ffi.Void Function(
+                    ffi.Int64,
+                    ffi.Int32,
+                    ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                  )>>(
+          'frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential');
   late final _wire__crate__api__descriptor__descriptor_new_confidential =
-      _wire__crate__api__descriptor__descriptor_new_confidentialPtr
-          .asFunction<
-            void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)
-          >();
+      _wire__crate__api__descriptor__descriptor_new_confidentialPtr.asFunction<
+          void Function(
+              int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   void wire__crate__api__transaction__extract_tx_bytes(
     int port_,
@@ -2220,20 +2033,15 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__transaction__extract_tx_bytes(port_, pset);
   }
 
-  late final _wire__crate__api__transaction__extract_tx_bytesPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__transaction__extract_tx_bytesPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes');
+          )>>('frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes');
   late final _wire__crate__api__transaction__extract_tx_bytes =
-      _wire__crate__api__transaction__extract_tx_bytesPtr
-          .asFunction<
-            void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)
-          >();
+      _wire__crate__api__transaction__extract_tx_bytesPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   WireSyncRust2DartDco wire__crate__api__types__get_balance_by_asset_id(
     ffi.Pointer<wire_cst_list_balance> balances,
@@ -2245,23 +2053,18 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__types__get_balance_by_asset_idPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__types__get_balance_by_asset_idPtr = _lookup<
+      ffi.NativeFunction<
           WireSyncRust2DartDco Function(
             ffi.Pointer<wire_cst_list_balance>,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id');
+          )>>('frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id');
   late final _wire__crate__api__types__get_balance_by_asset_id =
-      _wire__crate__api__types__get_balance_by_asset_idPtr
-          .asFunction<
-            WireSyncRust2DartDco Function(
-              ffi.Pointer<wire_cst_list_balance>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+      _wire__crate__api__types__get_balance_by_asset_idPtr.asFunction<
+          WireSyncRust2DartDco Function(
+            ffi.Pointer<wire_cst_list_balance>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
 
   WireSyncRust2DartDco wire__crate__api__types__get_lbtc_asset_id() {
     return _wire__crate__api__types__get_lbtc_asset_id();
@@ -2269,8 +2072,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__types__get_lbtc_asset_idPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function()>>(
-        'frbgen_lwk_wire__crate__api__types__get_lbtc_asset_id',
-      );
+    'frbgen_lwk_wire__crate__api__types__get_lbtc_asset_id',
+  );
   late final _wire__crate__api__types__get_lbtc_asset_id =
       _wire__crate__api__types__get_lbtc_asset_idPtr
           .asFunction<WireSyncRust2DartDco Function()>();
@@ -2281,17 +2084,14 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__types__get_lbtc_balance(balances);
   }
 
-  late final _wire__crate__api__types__get_lbtc_balancePtr =
-      _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.Pointer<wire_cst_list_balance>)
-        >
-      >('frbgen_lwk_wire__crate__api__types__get_lbtc_balance');
+  late final _wire__crate__api__types__get_lbtc_balancePtr = _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                  ffi.Pointer<wire_cst_list_balance>)>>(
+      'frbgen_lwk_wire__crate__api__types__get_lbtc_balance');
   late final _wire__crate__api__types__get_lbtc_balance =
-      _wire__crate__api__types__get_lbtc_balancePtr
-          .asFunction<
-            WireSyncRust2DartDco Function(ffi.Pointer<wire_cst_list_balance>)
-          >();
+      _wire__crate__api__types__get_lbtc_balancePtr.asFunction<
+          WireSyncRust2DartDco Function(ffi.Pointer<wire_cst_list_balance>)>();
 
   WireSyncRust2DartDco wire__crate__api__types__get_ltest_asset_id() {
     return _wire__crate__api__types__get_ltest_asset_id();
@@ -2299,8 +2099,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__types__get_ltest_asset_idPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function()>>(
-        'frbgen_lwk_wire__crate__api__types__get_ltest_asset_id',
-      );
+    'frbgen_lwk_wire__crate__api__types__get_ltest_asset_id',
+  );
   late final _wire__crate__api__types__get_ltest_asset_id =
       _wire__crate__api__types__get_ltest_asset_idPtr
           .asFunction<WireSyncRust2DartDco Function()>();
@@ -2311,17 +2111,14 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__types__get_ltest_balance(balances);
   }
 
-  late final _wire__crate__api__types__get_ltest_balancePtr =
-      _lookup<
-        ffi.NativeFunction<
-          WireSyncRust2DartDco Function(ffi.Pointer<wire_cst_list_balance>)
-        >
-      >('frbgen_lwk_wire__crate__api__types__get_ltest_balance');
+  late final _wire__crate__api__types__get_ltest_balancePtr = _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                  ffi.Pointer<wire_cst_list_balance>)>>(
+      'frbgen_lwk_wire__crate__api__types__get_ltest_balance');
   late final _wire__crate__api__types__get_ltest_balance =
-      _wire__crate__api__types__get_ltest_balancePtr
-          .asFunction<
-            WireSyncRust2DartDco Function(ffi.Pointer<wire_cst_list_balance>)
-          >();
+      _wire__crate__api__types__get_ltest_balancePtr.asFunction<
+          WireSyncRust2DartDco Function(ffi.Pointer<wire_cst_list_balance>)>();
 
   void wire__crate__api__transaction__get_size_and_absolute_fees(
     int port_,
@@ -2335,18 +2132,15 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__transaction__get_size_and_absolute_feesPtr =
       _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Int64,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees');
+              ffi.NativeFunction<
+                  ffi.Void Function(
+                    ffi.Int64,
+                    ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                  )>>(
+          'frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees');
   late final _wire__crate__api__transaction__get_size_and_absolute_fees =
-      _wire__crate__api__transaction__get_size_and_absolute_feesPtr
-          .asFunction<
-            void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)
-          >();
+      _wire__crate__api__transaction__get_size_and_absolute_feesPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   void wire__crate__api__wallet__wallet_address(
     int port_,
@@ -2356,12 +2150,11 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__wallet__wallet_address(port_, that, index);
   }
 
-  late final _wire__crate__api__wallet__wallet_addressPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>, ffi.Uint32)
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_address');
+  late final _wire__crate__api__wallet__wallet_addressPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Int64, ffi.Pointer<wire_cst_wallet>, ffi.Uint32)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_address');
   late final _wire__crate__api__wallet__wallet_address =
       _wire__crate__api__wallet__wallet_addressPtr
           .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>, int)>();
@@ -2373,12 +2166,10 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__wallet__wallet_address_last_unused(port_, that);
   }
 
-  late final _wire__crate__api__wallet__wallet_address_last_unusedPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_address_last_unused');
+  late final _wire__crate__api__wallet__wallet_address_last_unusedPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_address_last_unused');
   late final _wire__crate__api__wallet__wallet_address_last_unused =
       _wire__crate__api__wallet__wallet_address_last_unusedPtr
           .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
@@ -2390,12 +2181,10 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__wallet__wallet_balances(port_, that);
   }
 
-  late final _wire__crate__api__wallet__wallet_balancesPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_balances');
+  late final _wire__crate__api__wallet__wallet_balancesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_balances');
   late final _wire__crate__api__wallet__wallet_balances =
       _wire__crate__api__wallet__wallet_balancesPtr
           .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
@@ -2407,12 +2196,10 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__wallet__wallet_blinding_key(port_, that);
   }
 
-  late final _wire__crate__api__wallet__wallet_blinding_keyPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_blinding_key');
+  late final _wire__crate__api__wallet__wallet_blinding_keyPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_blinding_key');
   late final _wire__crate__api__wallet__wallet_blinding_key =
       _wire__crate__api__wallet__wallet_blinding_keyPtr
           .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
@@ -2435,9 +2222,8 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__wallet__wallet_build_asset_txPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__wallet__wallet_build_asset_txPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_wallet>,
@@ -2445,21 +2231,17 @@ class LwkCoreWire implements BaseWire {
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Float,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_build_asset_tx');
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_build_asset_tx');
   late final _wire__crate__api__wallet__wallet_build_asset_tx =
-      _wire__crate__api__wallet__wallet_build_asset_txPtr
-          .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_wallet>,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              double,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+      _wire__crate__api__wallet__wallet_build_asset_txPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            double,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
 
   void wire__crate__api__wallet__wallet_build_lbtc_tx(
     int port_,
@@ -2479,9 +2261,8 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__wallet__wallet_build_lbtc_txPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__wallet__wallet_build_lbtc_txPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_wallet>,
@@ -2489,21 +2270,17 @@ class LwkCoreWire implements BaseWire {
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Float,
             ffi.Bool,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_build_lbtc_tx');
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_build_lbtc_tx');
   late final _wire__crate__api__wallet__wallet_build_lbtc_tx =
-      _wire__crate__api__wallet__wallet_build_lbtc_txPtr
-          .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_wallet>,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              double,
-              bool,
-            )
-          >();
+      _wire__crate__api__wallet__wallet_build_lbtc_txPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            double,
+            bool,
+          )>();
 
   void wire__crate__api__wallet__wallet_build_payjoin_tx(
     int port_,
@@ -2527,9 +2304,8 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__wallet__wallet_build_payjoin_txPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__wallet__wallet_build_payjoin_txPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_wallet>,
@@ -2539,23 +2315,19 @@ class LwkCoreWire implements BaseWire {
             ffi.Int32,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Bool,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_build_payjoin_tx');
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_build_payjoin_tx');
   late final _wire__crate__api__wallet__wallet_build_payjoin_tx =
-      _wire__crate__api__wallet__wallet_build_payjoin_txPtr
-          .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_wallet>,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              bool,
-            )
-          >();
+      _wire__crate__api__wallet__wallet_build_payjoin_txPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            bool,
+          )>();
 
   void wire__crate__api__wallet__wallet_decode_tx(
     int port_,
@@ -2565,25 +2337,20 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__wallet__wallet_decode_tx(port_, that, pset);
   }
 
-  late final _wire__crate__api__wallet__wallet_decode_txPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__wallet__wallet_decode_txPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_wallet>,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_decode_tx');
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_decode_tx');
   late final _wire__crate__api__wallet__wallet_decode_tx =
-      _wire__crate__api__wallet__wallet_decode_txPtr
-          .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_wallet>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+      _wire__crate__api__wallet__wallet_decode_txPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
 
   void wire__crate__api__wallet__wallet_descriptor(
     int port_,
@@ -2592,12 +2359,10 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__wallet__wallet_descriptor(port_, that);
   }
 
-  late final _wire__crate__api__wallet__wallet_descriptorPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_descriptor');
+  late final _wire__crate__api__wallet__wallet_descriptorPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_descriptor');
   late final _wire__crate__api__wallet__wallet_descriptor =
       _wire__crate__api__wallet__wallet_descriptorPtr
           .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
@@ -2616,27 +2381,22 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__wallet__wallet_initPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__wallet__wallet_initPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Int32,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Pointer<wire_cst_descriptor>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_init');
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_init');
   late final _wire__crate__api__wallet__wallet_init =
-      _wire__crate__api__wallet__wallet_initPtr
-          .asFunction<
-            void Function(
-              int,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_descriptor>,
-            )
-          >();
+      _wire__crate__api__wallet__wallet_initPtr.asFunction<
+          void Function(
+            int,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_descriptor>,
+          )>();
 
   void wire__crate__api__wallet__wallet_sign_tx(
     int port_,
@@ -2654,29 +2414,24 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__wallet__wallet_sign_txPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__wallet__wallet_sign_txPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_wallet>,
             ffi.Int32,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx');
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx');
   late final _wire__crate__api__wallet__wallet_sign_tx =
-      _wire__crate__api__wallet__wallet_sign_txPtr
-          .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_wallet>,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+      _wire__crate__api__wallet__wallet_sign_txPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
 
   void wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
     int port_,
@@ -2696,29 +2451,26 @@ class LwkCoreWire implements BaseWire {
 
   late final _wire__crate__api__wallet__wallet_signed_pset_with_extra_detailsPtr =
       _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Int64,
-            ffi.Pointer<wire_cst_wallet>,
-            ffi.Int32,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-          )
-        >
-      >(
-        'frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details',
-      );
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Pointer<wire_cst_wallet>,
+                ffi.Int32,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details',
+  );
   late final _wire__crate__api__wallet__wallet_signed_pset_with_extra_details =
       _wire__crate__api__wallet__wallet_signed_pset_with_extra_detailsPtr
           .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_wallet>,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            )
-          >();
+              void Function(
+                int,
+                ffi.Pointer<wire_cst_wallet>,
+                int,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>();
 
   void wire__crate__api__wallet__wallet_sync(
     int port_,
@@ -2738,9 +2490,8 @@ class LwkCoreWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__wallet__wallet_syncPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _wire__crate__api__wallet__wallet_syncPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_wallet>,
@@ -2748,21 +2499,17 @@ class LwkCoreWire implements BaseWire {
             ffi.Bool,
             ffi.Pointer<ffi.Uint32>,
             ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_sync');
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_sync');
   late final _wire__crate__api__wallet__wallet_sync =
-      _wire__crate__api__wallet__wallet_syncPtr
-          .asFunction<
-            void Function(
-              int,
-              ffi.Pointer<wire_cst_wallet>,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              bool,
-              ffi.Pointer<ffi.Uint32>,
-              ffi.Pointer<ffi.Uint8>,
-            )
-          >();
+      _wire__crate__api__wallet__wallet_syncPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            bool,
+            ffi.Pointer<ffi.Uint32>,
+            ffi.Pointer<ffi.Uint8>,
+          )>();
 
   void wire__crate__api__wallet__wallet_txs(
     int port_,
@@ -2771,12 +2518,10 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__wallet__wallet_txs(port_, that);
   }
 
-  late final _wire__crate__api__wallet__wallet_txsPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_txs');
+  late final _wire__crate__api__wallet__wallet_txsPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_txs');
   late final _wire__crate__api__wallet__wallet_txs =
       _wire__crate__api__wallet__wallet_txsPtr
           .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
@@ -2788,12 +2533,10 @@ class LwkCoreWire implements BaseWire {
     return _wire__crate__api__wallet__wallet_utxos(port_, that);
   }
 
-  late final _wire__crate__api__wallet__wallet_utxosPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)
-        >
-      >('frbgen_lwk_wire__crate__api__wallet__wallet_utxos');
+  late final _wire__crate__api__wallet__wallet_utxosPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_utxos');
   late final _wire__crate__api__wallet__wallet_utxos =
       _wire__crate__api__wallet__wallet_utxosPtr
           .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
@@ -2808,8 +2551,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-        'frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet',
-      );
+    'frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet',
+  );
   late final _rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWollet =
       _rust_arc_increment_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
@@ -2824,14 +2567,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-        'frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet',
-      );
+    'frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet',
+  );
   late final _rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet =
       _rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWolletPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void
-  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
     ffi.Pointer<ffi.Void> ptr,
   ) {
     return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
@@ -2841,14 +2584,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-        'frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction',
-      );
+    'frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction',
+  );
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction =
       _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void
-  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
     ffi.Pointer<ffi.Void> ptr,
   ) {
     return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
@@ -2858,14 +2601,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-        'frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction',
-      );
+    'frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction',
+  );
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransactionPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void
-  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
     ffi.Pointer<ffi.Void> ptr,
   ) {
     return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
@@ -2875,14 +2618,14 @@ class LwkCoreWire implements BaseWire {
 
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-        'frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction',
-      );
+    'frbgen_lwk_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction',
+  );
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction =
       _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void
-  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
     ffi.Pointer<ffi.Void> ptr,
   ) {
     return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction(
@@ -2892,8 +2635,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-        'frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction',
-      );
+    'frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction',
+  );
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransactionPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
@@ -2904,8 +2647,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_blockchainPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_blockchain> Function()>>(
-        'frbgen_lwk_cst_new_box_autoadd_blockchain',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_blockchain',
+  );
   late final _cst_new_box_autoadd_blockchain =
       _cst_new_box_autoadd_blockchainPtr
           .asFunction<ffi.Pointer<wire_cst_blockchain> Function()>();
@@ -2916,8 +2659,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_descriptorPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_descriptor> Function()>>(
-        'frbgen_lwk_cst_new_box_autoadd_descriptor',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_descriptor',
+  );
   late final _cst_new_box_autoadd_descriptor =
       _cst_new_box_autoadd_descriptorPtr
           .asFunction<ffi.Pointer<wire_cst_descriptor> Function()>();
@@ -2928,8 +2671,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_pset_inputPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_pset_input> Function()>>(
-        'frbgen_lwk_cst_new_box_autoadd_pset_input',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_pset_input',
+  );
   late final _cst_new_box_autoadd_pset_input =
       _cst_new_box_autoadd_pset_inputPtr
           .asFunction<ffi.Pointer<wire_cst_pset_input> Function()>();
@@ -2940,8 +2683,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_pset_outputPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_pset_output> Function()>>(
-        'frbgen_lwk_cst_new_box_autoadd_pset_output',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_pset_output',
+  );
   late final _cst_new_box_autoadd_pset_output =
       _cst_new_box_autoadd_pset_outputPtr
           .asFunction<ffi.Pointer<wire_cst_pset_output> Function()>();
@@ -2952,8 +2695,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_tx_inputPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_tx_input> Function()>>(
-        'frbgen_lwk_cst_new_box_autoadd_tx_input',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_tx_input',
+  );
   late final _cst_new_box_autoadd_tx_input = _cst_new_box_autoadd_tx_inputPtr
       .asFunction<ffi.Pointer<wire_cst_tx_input> Function()>();
 
@@ -2963,8 +2706,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_tx_outputPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_tx_output> Function()>>(
-        'frbgen_lwk_cst_new_box_autoadd_tx_output',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_tx_output',
+  );
   late final _cst_new_box_autoadd_tx_output = _cst_new_box_autoadd_tx_outputPtr
       .asFunction<ffi.Pointer<wire_cst_tx_output> Function()>();
 
@@ -2974,8 +2717,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_u_32Ptr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint32> Function(ffi.Uint32)>>(
-        'frbgen_lwk_cst_new_box_autoadd_u_32',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_u_32',
+  );
   late final _cst_new_box_autoadd_u_32 = _cst_new_box_autoadd_u_32Ptr
       .asFunction<ffi.Pointer<ffi.Uint32> Function(int)>();
 
@@ -2985,8 +2728,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_u_64Ptr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint64> Function(ffi.Uint64)>>(
-        'frbgen_lwk_cst_new_box_autoadd_u_64',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_u_64',
+  );
   late final _cst_new_box_autoadd_u_64 = _cst_new_box_autoadd_u_64Ptr
       .asFunction<ffi.Pointer<ffi.Uint64> Function(int)>();
 
@@ -2996,8 +2739,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_u_8Ptr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Uint8)>>(
-        'frbgen_lwk_cst_new_box_autoadd_u_8',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_u_8',
+  );
   late final _cst_new_box_autoadd_u_8 = _cst_new_box_autoadd_u_8Ptr
       .asFunction<ffi.Pointer<ffi.Uint8> Function(int)>();
 
@@ -3007,8 +2750,8 @@ class LwkCoreWire implements BaseWire {
 
   late final _cst_new_box_autoadd_walletPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_wallet> Function()>>(
-        'frbgen_lwk_cst_new_box_autoadd_wallet',
-      );
+    'frbgen_lwk_cst_new_box_autoadd_wallet',
+  );
   late final _cst_new_box_autoadd_wallet = _cst_new_box_autoadd_walletPtr
       .asFunction<ffi.Pointer<wire_cst_wallet> Function()>();
 
@@ -3016,12 +2759,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_String(len);
   }
 
-  late final _cst_new_list_StringPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_String> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_String');
+  late final _cst_new_list_StringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_String> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_String');
   late final _cst_new_list_String = _cst_new_list_StringPtr
       .asFunction<ffi.Pointer<wire_cst_list_String> Function(int)>();
 
@@ -3029,12 +2770,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_balance(len);
   }
 
-  late final _cst_new_list_balancePtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_balance> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_balance');
+  late final _cst_new_list_balancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_balance> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_balance');
   late final _cst_new_list_balance = _cst_new_list_balancePtr
       .asFunction<ffi.Pointer<wire_cst_list_balance> Function(int)>();
 
@@ -3044,12 +2783,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_prim_u_8_loose(len);
   }
 
-  late final _cst_new_list_prim_u_8_loosePtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_prim_u_8_loose> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_prim_u_8_loose');
+  late final _cst_new_list_prim_u_8_loosePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_prim_u_8_loose> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_prim_u_8_loose');
   late final _cst_new_list_prim_u_8_loose = _cst_new_list_prim_u_8_loosePtr
       .asFunction<ffi.Pointer<wire_cst_list_prim_u_8_loose> Function(int)>();
 
@@ -3059,12 +2796,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_prim_u_8_strict(len);
   }
 
-  late final _cst_new_list_prim_u_8_strictPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_prim_u_8_strict> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_prim_u_8_strict');
+  late final _cst_new_list_prim_u_8_strictPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_prim_u_8_strict> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_prim_u_8_strict');
   late final _cst_new_list_prim_u_8_strict = _cst_new_list_prim_u_8_strictPtr
       .asFunction<ffi.Pointer<wire_cst_list_prim_u_8_strict> Function(int)>();
 
@@ -3072,12 +2807,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_pset_input(len);
   }
 
-  late final _cst_new_list_pset_inputPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_pset_input> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_pset_input');
+  late final _cst_new_list_pset_inputPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_pset_input> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_pset_input');
   late final _cst_new_list_pset_input = _cst_new_list_pset_inputPtr
       .asFunction<ffi.Pointer<wire_cst_list_pset_input> Function(int)>();
 
@@ -3085,12 +2818,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_pset_output(len);
   }
 
-  late final _cst_new_list_pset_outputPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_pset_output> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_pset_output');
+  late final _cst_new_list_pset_outputPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_pset_output> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_pset_output');
   late final _cst_new_list_pset_output = _cst_new_list_pset_outputPtr
       .asFunction<ffi.Pointer<wire_cst_list_pset_output> Function(int)>();
 
@@ -3098,10 +2829,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_tx(len);
   }
 
-  late final _cst_new_list_txPtr =
-      _lookup<
-        ffi.NativeFunction<ffi.Pointer<wire_cst_list_tx> Function(ffi.Int32)>
-      >('frbgen_lwk_cst_new_list_tx');
+  late final _cst_new_list_txPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Pointer<wire_cst_list_tx> Function(ffi.Int32)>>(
+      'frbgen_lwk_cst_new_list_tx');
   late final _cst_new_list_tx = _cst_new_list_txPtr
       .asFunction<ffi.Pointer<wire_cst_list_tx> Function(int)>();
 
@@ -3109,12 +2840,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_tx_input(len);
   }
 
-  late final _cst_new_list_tx_inputPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_tx_input> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_tx_input');
+  late final _cst_new_list_tx_inputPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_tx_input> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_tx_input');
   late final _cst_new_list_tx_input = _cst_new_list_tx_inputPtr
       .asFunction<ffi.Pointer<wire_cst_list_tx_input> Function(int)>();
 
@@ -3122,12 +2851,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_tx_out(len);
   }
 
-  late final _cst_new_list_tx_outPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_tx_out> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_tx_out');
+  late final _cst_new_list_tx_outPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_tx_out> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_tx_out');
   late final _cst_new_list_tx_out = _cst_new_list_tx_outPtr
       .asFunction<ffi.Pointer<wire_cst_list_tx_out> Function(int)>();
 
@@ -3137,12 +2864,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_tx_out_secrets(len);
   }
 
-  late final _cst_new_list_tx_out_secretsPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_tx_out_secrets> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_tx_out_secrets');
+  late final _cst_new_list_tx_out_secretsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_tx_out_secrets> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_tx_out_secrets');
   late final _cst_new_list_tx_out_secrets = _cst_new_list_tx_out_secretsPtr
       .asFunction<ffi.Pointer<wire_cst_list_tx_out_secrets> Function(int)>();
 
@@ -3150,12 +2875,10 @@ class LwkCoreWire implements BaseWire {
     return _cst_new_list_tx_output(len);
   }
 
-  late final _cst_new_list_tx_outputPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_tx_output> Function(ffi.Int32)
-        >
-      >('frbgen_lwk_cst_new_list_tx_output');
+  late final _cst_new_list_tx_outputPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_tx_output> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_tx_output');
   late final _cst_new_list_tx_output = _cst_new_list_tx_outputPtr
       .asFunction<ffi.Pointer<wire_cst_list_tx_output> Function(int)>();
 
@@ -3165,20 +2888,20 @@ class LwkCoreWire implements BaseWire {
 
   late final _dummy_method_to_enforce_bundlingPtr =
       _lookup<ffi.NativeFunction<ffi.Int64 Function()>>(
-        'dummy_method_to_enforce_bundling',
-      );
+    'dummy_method_to_enforce_bundling',
+  );
   late final _dummy_method_to_enforce_bundling =
       _dummy_method_to_enforce_bundlingPtr.asFunction<int Function()>();
 }
 
 typedef DartPort = ffi.Int64;
 typedef DartDartPort = int;
-typedef DartPostCObjectFnTypeFunction =
-    ffi.Bool Function(DartPort port_id, ffi.Pointer<ffi.Void> message);
-typedef DartDartPostCObjectFnTypeFunction =
-    bool Function(DartDartPort port_id, ffi.Pointer<ffi.Void> message);
-typedef DartPostCObjectFnType =
-    ffi.Pointer<ffi.NativeFunction<DartPostCObjectFnTypeFunction>>;
+typedef DartPostCObjectFnTypeFunction = ffi.Bool Function(
+    DartPort port_id, ffi.Pointer<ffi.Void> message);
+typedef DartDartPostCObjectFnTypeFunction = bool Function(
+    DartDartPort port_id, ffi.Pointer<ffi.Void> message);
+typedef DartPostCObjectFnType
+    = ffi.Pointer<ffi.NativeFunction<DartPostCObjectFnTypeFunction>>;
 
 final class wire_cst_list_prim_u_8_loose extends ffi.Struct {
   external ffi.Pointer<ffi.Uint8> ptr;
