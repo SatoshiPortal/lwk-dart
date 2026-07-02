@@ -9,6 +9,7 @@
 - chore: switch `PsetAmounts` construction to `PsetBalance::fees_in(policy_asset)` after `PsetBalance::fee` was removed upstream
 - chore: cfg-gate `frb_generated` behind a `bull_sdk` feature for the aggregated bull_sdk crate
 - chore: regenerate FRB bindings (standalone crate compiles again; Dart surface now exposes `LiquidNetwork`)
+- chore: ignore `test_broadcast` (live-network test; its pre-signed tx inputs are long spent)
 
 ## 0.4.0
 
