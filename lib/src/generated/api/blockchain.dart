@@ -11,22 +11,16 @@ class Blockchain {
   const Blockchain();
 
   /// Broadcast a signed pset
-  static Future<String> broadcastSignedPset({
-    required String electrumUrl,
-    required String signedPset,
-  }) => LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastSignedPset(
-    electrumUrl: electrumUrl,
-    signedPset: signedPset,
-  );
+  static Future<String> broadcastSignedPset(
+          {required String electrumUrl, required String signedPset}) =>
+      LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastSignedPset(
+          electrumUrl: electrumUrl, signedPset: signedPset);
 
   /// Broadcast transaction bytes
-  static Future<String> broadcastTxBytes({
-    required String electrumUrl,
-    required List<int> txBytes,
-  }) => LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastTxBytes(
-    electrumUrl: electrumUrl,
-    txBytes: txBytes,
-  );
+  static Future<String> broadcastTxBytes(
+          {required String electrumUrl, required List<int> txBytes}) =>
+      LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastTxBytes(
+          electrumUrl: electrumUrl, txBytes: txBytes);
 
   Future<void> test({required String electrumUrl}) => LwkCore.instance.api
       .crateApiBlockchainBlockchainTest(that: this, electrumUrl: electrumUrl);

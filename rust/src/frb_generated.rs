@@ -1399,7 +1399,7 @@ fn wire__crate__api__transaction__PartiallySignedElementsTransaction_to_string_i
 }
 fn wire__crate__api__types__address_address_from_script_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    network: impl CstDecode<crate::api::types::Network>,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
     script: impl CstDecode<String>,
     blinding_key: impl CstDecode<Option<String>>,
 ) {
@@ -1525,7 +1525,7 @@ fn wire__crate__api__blockchain__blockchain_test_impl(
 }
 fn wire__crate__api__descriptor__descriptor_new_confidential_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    network: impl CstDecode<crate::api::types::Network>,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
     mnemonic: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -1846,7 +1846,7 @@ fn wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
     sats: impl CstDecode<u64>,
     out_address: impl CstDecode<String>,
     asset: impl CstDecode<String>,
-    network: impl CstDecode<crate::api::types::Network>,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
     base_url: impl CstDecode<Option<String>>,
     is_send_all: impl CstDecode<bool>,
 ) {
@@ -1927,7 +1927,7 @@ fn wire__crate__api__wallet__wallet_descriptor_impl(
 }
 fn wire__crate__api__wallet__wallet_init_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    network: impl CstDecode<crate::api::types::Network>,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
     dbpath: impl CstDecode<String>,
     descriptor: impl CstDecode<crate::api::descriptor::Descriptor>,
 ) {
@@ -1954,7 +1954,7 @@ fn wire__crate__api__wallet__wallet_init_impl(
 fn wire__crate__api__wallet__wallet_sign_tx_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<crate::api::wallet::Wallet>,
-    network: impl CstDecode<crate::api::types::Network>,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
     pset: impl CstDecode<String>,
     mnemonic: impl CstDecode<String>,
 ) {
@@ -1986,7 +1986,7 @@ fn wire__crate__api__wallet__wallet_sign_tx_impl(
 fn wire__crate__api__wallet__wallet_signed_pset_with_extra_details_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<crate::api::wallet::Wallet>,
-    network: impl CstDecode<crate::api::types::Network>,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
     pset: impl CstDecode<String>,
     mnemonic: impl CstDecode<String>,
 ) {
@@ -2119,13 +2119,13 @@ impl CstDecode<i64> for i64 {
         self
     }
 }
-impl CstDecode<crate::api::types::Network> for i32 {
+impl CstDecode<crate::api::types::LiquidNetwork> for i32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> crate::api::types::Network {
+    fn cst_decode(self) -> crate::api::types::LiquidNetwork {
         match self {
-            0 => crate::api::types::Network::Mainnet,
-            1 => crate::api::types::Network::Testnet,
-            _ => unreachable!("Invalid variant for Network: {}", self),
+            0 => crate::api::types::LiquidNetwork::Mainnet,
+            1 => crate::api::types::LiquidNetwork::Testnet,
+            _ => unreachable!("Invalid variant for LiquidNetwork: {}", self),
         }
     }
 }
@@ -2286,6 +2286,18 @@ impl SseDecode for i64 {
     }
 }
 
+impl SseDecode for crate::api::types::LiquidNetwork {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::types::LiquidNetwork::Mainnet,
+            1 => crate::api::types::LiquidNetwork::Testnet,
+            _ => unreachable!("Invalid variant for LiquidNetwork: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for Vec<String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2417,18 +2429,6 @@ impl SseDecode for crate::api::error::LwkError {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_msg = <String>::sse_decode(deserializer);
         return crate::api::error::LwkError { msg: var_msg };
-    }
-}
-
-impl SseDecode for crate::api::types::Network {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <i32>::sse_decode(deserializer);
-        return match inner {
-            0 => crate::api::types::Network::Mainnet,
-            1 => crate::api::types::Network::Testnet,
-            _ => unreachable!("Invalid variant for Network: {}", inner),
-        };
     }
 }
 
@@ -2883,6 +2883,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::descriptor::Descriptor>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::types::LiquidNetwork {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Mainnet => 0.into_dart(),
+            Self::Testnet => 1.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::types::LiquidNetwork
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::LiquidNetwork>
+    for crate::api::types::LiquidNetwork
+{
+    fn into_into_dart(self) -> crate::api::types::LiquidNetwork {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::error::LwkError {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [self.msg.into_into_dart().into_dart()].into_dart()
@@ -2893,22 +2914,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::error::LwkError>
     for crate::api::error::LwkError
 {
     fn into_into_dart(self) -> crate::api::error::LwkError {
-        self
-    }
-}
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::Network {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        match self {
-            Self::Mainnet => 0.into_dart(),
-            Self::Testnet => 1.into_dart(),
-            _ => unreachable!(),
-        }
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::types::Network {}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::Network> for crate::api::types::Network {
-    fn into_into_dart(self) -> crate::api::types::Network {
         self
     }
 }
@@ -3285,6 +3290,22 @@ impl SseEncode for i64 {
     }
 }
 
+impl SseEncode for crate::api::types::LiquidNetwork {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::types::LiquidNetwork::Mainnet => 0,
+                crate::api::types::LiquidNetwork::Testnet => 1,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for Vec<String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3389,22 +3410,6 @@ impl SseEncode for crate::api::error::LwkError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.msg, serializer);
-    }
-}
-
-impl SseEncode for crate::api::types::Network {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(
-            match self {
-                crate::api::types::Network::Mainnet => 0,
-                crate::api::types::Network::Testnet => 1,
-                _ => {
-                    unimplemented!("");
-                }
-            },
-            serializer,
-        );
     }
 }
 
@@ -5998,20 +6003,20 @@ mod web {
             ::std::convert::TryInto::<i64>::try_into(self).unwrap() as _
         }
     }
+    impl CstDecode<crate::api::types::LiquidNetwork>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::types::LiquidNetwork {
+            (self.unchecked_into_f64() as i32).cst_decode()
+        }
+    }
     impl CstDecode<Vec<u8>> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<u8> {
             self.unchecked_into::<flutter_rust_bridge::for_generated::js_sys::Uint8Array>()
                 .to_vec()
                 .into()
-        }
-    }
-    impl CstDecode<crate::api::types::Network>
-        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
-    {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> crate::api::types::Network {
-            (self.unchecked_into_f64() as i32).cst_decode()
         }
     }
     impl CstDecode<u32> for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue {
