@@ -92,7 +92,7 @@ class CargoKitPlugin implements Plugin<Project> {
    private Plugin _findFlutterPlugin(Map projects) {
         for (project in projects) {
             for (plugin in project.value.getPlugins()) {
-                if (plugin.class.name == "FlutterPlugin") {
+                if (plugin.class.name == "FlutterPlugin" || plugin.class.name == "com.flutter.gradle.FlutterPlugin") {
                     return plugin;
                 }
             }

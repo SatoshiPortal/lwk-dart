@@ -38,7 +38,7 @@ fi
 #
 Pod::Spec.new do |s|
   s.name             = 'lwk'
-  s.version          = '0.1.6'
+  s.version          = '0.3.0'
   s.summary          = 'Liquid Wallet Kit.'
   s.description      = <<-DESC
   A liquid wallet development kit

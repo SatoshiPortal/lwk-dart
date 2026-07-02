@@ -1,14 +1,21 @@
 use std::str::FromStr;
 
-use lwk_wollet::{blocking::BlockchainBackend, elements::{pset::{serialize::Deserialize, PartiallySignedTransaction}, Transaction, Txid}, ElectrumClient};
+use lwk_wollet::{
+    blocking::BlockchainBackend,
+    elements::{
+        pset::{serialize::Deserialize, PartiallySignedTransaction},
+        Transaction, Txid,
+    },
+    ElectrumClient,
+};
 
 use super::error::LwkError;
-
 
 pub struct Blockchain {}
 
 impl Blockchain {
     pub fn test(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
+        super::ensure_crypto_provider();
         ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
         Ok(())
     }
@@ -17,6 +24,7 @@ impl Blockchain {
         electrum_url: String,
         tx_bytes: Vec<u8>,
     ) -> anyhow::Result<String, LwkError> {
+        super::ensure_crypto_provider();
         let electrum_client: ElectrumClient =
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, true))?;
         let tx = Transaction::deserialize(&tx_bytes)?;
@@ -29,6 +37,7 @@ impl Blockchain {
         electrum_url: String,
         signed_pset: String,
     ) -> anyhow::Result<String, LwkError> {
+        super::ensure_crypto_provider();
         let electrum_client: ElectrumClient =
             ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, true))?;
         let pset = PartiallySignedTransaction::from_str(&signed_pset)?;
@@ -37,4 +46,3 @@ impl Blockchain {
         Ok(txid.to_string())
     }
 }
-

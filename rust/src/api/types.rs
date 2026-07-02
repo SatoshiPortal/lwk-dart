@@ -1,7 +1,51 @@
 use flutter_rust_bridge::frb;
+
+/// Liquid Bitcoin mainnet asset ID
+pub const L_BTC_ASSET_ID: &str =
+    "6f0279e9ed041c3d710a9f57d0c02928416460c4b722ae3457a11eec381c526d";
+
+/// Liquid Bitcoin testnet asset ID
+pub const L_TEST_ASSET_ID: &str =
+    "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
+
+/// Get balance value for a specific asset ID from a list of balances
+#[frb(sync)]
+pub fn get_balance_by_asset_id(balances: Vec<Balance>, asset_id: String) -> i64 {
+    balances
+        .iter()
+        .find(|b| b.asset_id == asset_id)
+        .map(|b| b.value)
+        .unwrap_or(0)
+}
+
+/// Get L-BTC mainnet balance
+#[frb(sync)]
+pub fn get_lbtc_balance(balances: Vec<Balance>) -> i64 {
+    get_balance_by_asset_id(balances, L_BTC_ASSET_ID.to_string())
+}
+
+/// Get L-BTC testnet balance
+#[frb(sync)]
+pub fn get_ltest_balance(balances: Vec<Balance>) -> i64 {
+    get_balance_by_asset_id(balances, L_TEST_ASSET_ID.to_string())
+}
+
+/// Get L-BTC mainnet asset ID
+#[frb(sync)]
+pub fn get_lbtc_asset_id() -> String {
+    L_BTC_ASSET_ID.to_string()
+}
+
+/// Get L-BTC testnet asset ID
+#[frb(sync)]
+pub fn get_ltest_asset_id() -> String {
+    L_TEST_ASSET_ID.to_string()
+}
+
 use lwk_common::PsetBalance;
 use lwk_wollet::{
     elements::{
+        self,
         hex::{FromHex, ToHex},
         pset::PartiallySignedTransaction,
         Address as LwkAddress, AddressParams, AssetId, Script,
@@ -12,22 +56,22 @@ pub use std::collections::{BTreeMap, HashMap};
 use std::str::FromStr;
 pub use std::vec::Vec;
 
-use lwk_wollet::ElementsNetwork;
+use lwk_wollet::Network as ElementsNetwork;
 use std::convert::TryFrom;
 
 use super::error::LwkError;
 
 #[derive(Clone, Copy, PartialEq, Debug)]
-pub enum Network {
+pub enum LiquidNetwork {
     Mainnet,
     Testnet,
 }
 
-impl Into<ElementsNetwork> for Network {
+impl Into<ElementsNetwork> for LiquidNetwork {
     fn into(self) -> ElementsNetwork {
         match self {
-            Network::Mainnet => ElementsNetwork::Liquid,
-            Network::Testnet => ElementsNetwork::LiquidTestnet,
+            LiquidNetwork::Mainnet => ElementsNetwork::Liquid,
+            LiquidNetwork::Testnet => ElementsNetwork::TestnetLiquid,
         }
     }
 }
@@ -134,17 +178,23 @@ impl From<AssetIdHashMapUInt> for Balances {
     }
 }
 
+impl From<elements::TxOutSecrets> for TxOutSecrets {
+    fn from(value: elements::TxOutSecrets) -> Self {
+        TxOutSecrets {
+            value: value.value,
+            value_bf: value.value_bf.to_string(),
+            asset: value.asset.to_string(),
+            asset_bf: value.asset_bf.to_string(),
+        }
+    }
+}
+
 impl From<WalletTxOut> for TxOut {
     fn from(wallet_tx_out: WalletTxOut) -> Self {
         TxOut {
             script_pubkey: wallet_tx_out.script_pubkey.to_hex(),
             height: wallet_tx_out.height,
-            unblinded: TxOutSecrets {
-                value: wallet_tx_out.unblinded.value,
-                value_bf: wallet_tx_out.unblinded.value_bf.to_string(),
-                asset: wallet_tx_out.unblinded.asset.to_string(),
-                asset_bf: wallet_tx_out.unblinded.asset_bf.to_string(),
-            },
+            unblinded: wallet_tx_out.unblinded.into(),
             outpoint: OutPoint {
                 txid: wallet_tx_out.outpoint.txid.to_string(),
                 vout: wallet_tx_out.outpoint.vout,
@@ -187,18 +237,18 @@ impl From<LwkAddress> for Address {
 
 impl Address {
     /// Validate the address string and return the network
-    pub fn validate(address_string: String) -> anyhow::Result<Network, LwkError> {
+    pub fn validate(address_string: String) -> anyhow::Result<LiquidNetwork, LwkError> {
         let address = LwkAddress::from_str(&address_string)?;
         if address.params.to_owned() == AddressParams::LIQUID {
-            Ok(Network::Mainnet)
+            Ok(LiquidNetwork::Mainnet)
         } else {
-            Ok(Network::Testnet)
+            Ok(LiquidNetwork::Testnet)
         }
     }
 
     /// Create an address from a scriptpubkey. Always returns 0 as the index is only for wallet generated addresses
     pub fn address_from_script(
-        network: Network,
+        network: LiquidNetwork,
         script: String,
         blinding_key: Option<String>,
     ) -> anyhow::Result<Address, LwkError> {
@@ -220,20 +270,20 @@ impl Address {
             &script_pubkey,
             blinding_pubkey,
             match network {
-                Network::Mainnet => &AddressParams::LIQUID,
-                Network::Testnet => &AddressParams::LIQUID_TESTNET,
+                LiquidNetwork::Mainnet => &AddressParams::LIQUID,
+                LiquidNetwork::Testnet => &AddressParams::LIQUID_TESTNET,
             },
         );
-        if address.is_none() {
-            Err(LwkError {
-                msg: "Could not convert script to address".to_string(),
-            })
-        } else {
+        if let Some(address) = address {
             Ok(Address {
-                standard: address.clone().unwrap().to_unconfidential().to_string(),
-                confidential: address.unwrap().to_string(),
+                standard: address.to_unconfidential().to_string(),
+                confidential: address.to_string(),
                 index: None,
                 blinding_key: blinding_key,
+            })
+        } else {
+            Err(LwkError {
+                msg: "Could not convert script to address".to_string(),
             })
         }
     }
@@ -284,47 +334,35 @@ impl From<WalletTx> for Tx {
         let mut inputs: Vec<TxOut> = Vec::new();
 
         for output in &wallet_tx.outputs {
-            if output.is_some() {
-                // safe to unwrap
-                let script_pubkey = output.clone().unwrap().script_pubkey;
+            if let Some(output) = output {
+                let script_pubkey = output.script_pubkey.to_hex();
                 outputs.push(TxOut {
-                    script_pubkey: script_pubkey.to_hex(),
-                    height: output.clone().unwrap().height,
-                    unblinded: TxOutSecrets {
-                        value: output.clone().unwrap().unblinded.value,
-                        value_bf: output.clone().unwrap().unblinded.value_bf.to_string(),
-                        asset: output.clone().unwrap().unblinded.asset.to_string(),
-                        asset_bf: output.clone().unwrap().unblinded.asset_bf.to_string(),
-                    },
+                    script_pubkey,
+                    height: output.height,
+                    unblinded: output.unblinded.into(),
                     outpoint: OutPoint {
-                        txid: output.clone().unwrap().outpoint.txid.to_string(),
-                        vout: output.clone().unwrap().outpoint.vout,
+                        txid: output.outpoint.txid.to_string(),
+                        vout: output.outpoint.vout,
                     },
-                    address: Address::from(output.clone().unwrap().address.clone()),
-                    is_spent: output.clone().unwrap().is_spent,
+                    address: Address::from(output.address.clone()),
+                    is_spent: output.is_spent,
                 })
             }
         }
 
         for input in &wallet_tx.inputs {
-            if input.is_some() {
-                // safe to unwrap
-                let script_pubkey = input.clone().unwrap().script_pubkey;
+            if let Some(input) = input {
+                let script_pubkey = input.script_pubkey.to_string();
                 inputs.push(TxOut {
-                    script_pubkey: script_pubkey.to_string(),
-                    height: input.clone().unwrap().height,
-                    unblinded: TxOutSecrets {
-                        value: input.clone().unwrap().unblinded.value,
-                        value_bf: input.clone().unwrap().unblinded.value_bf.to_string(),
-                        asset: input.clone().unwrap().unblinded.asset.to_string(),
-                        asset_bf: input.clone().unwrap().unblinded.asset_bf.to_string(),
-                    },
+                    script_pubkey,
+                    height: input.height,
+                    unblinded: input.unblinded.into(),
                     outpoint: OutPoint {
-                        txid: input.clone().unwrap().outpoint.txid.to_string(),
-                        vout: input.clone().unwrap().outpoint.vout,
+                        txid: input.outpoint.txid.to_string(),
+                        vout: input.outpoint.vout,
                     },
-                    address: Address::from(input.clone().unwrap().address.clone()),
-                    is_spent: input.clone().unwrap().is_spent,
+                    address: Address::from(input.address.clone()),
+                    is_spent: input.is_spent,
                 })
             }
         }
@@ -332,11 +370,11 @@ impl From<WalletTx> for Tx {
         // let since_the_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
         Tx {
             kind: wallet_tx.type_.clone(),
-            balances: Balances::from(AssetIdBTreeMapInt(wallet_tx.balance.clone())),
+            balances: Balances::from(AssetIdBTreeMapInt(wallet_tx.balance.as_ref().clone())),
             txid: wallet_tx.tx.txid().to_string().clone(),
             outputs: outputs,
             inputs: inputs,
-            fee: wallet_tx.fee.clone(),
+            fee: wallet_tx.fee,
             timestamp: wallet_tx.timestamp,
             height: wallet_tx.height,
             unblinded_url: wallet_tx.unblinded_url("").clone(),
@@ -351,11 +389,11 @@ pub struct PsetAmounts {
     pub absolute_fees: u64,
     pub balances: Balances,
 }
-impl From<PsetBalance> for PsetAmounts {
-    fn from(balance: PsetBalance) -> Self {
+impl PsetAmounts {
+    pub(super) fn from_balance(balance: PsetBalance, policy_asset: &AssetId) -> Self {
         PsetAmounts {
-            absolute_fees: balance.fee,
-            balances: Balances::from(AssetIdBTreeMapInt(balance.balances)),
+            absolute_fees: balance.fees_in(policy_asset),
+            balances: Balances::from(AssetIdBTreeMapInt(balance.balances.as_ref().clone())),
         }
     }
 }
@@ -389,10 +427,12 @@ impl TryFrom<String> for SizeAndFees {
 pub struct PayjoinTx {
     /// Partially signed transaction
     pub pset: String,
-    /// Network fee
+    /// LiquidNetwork fee
     pub network_fee: u64,
     /// Asset fee amount paid to the server
     pub asset_fee: u64,
+    /// All unblinded outputs
+    pub unblinded_outputs: Vec<TxOutSecrets>,
 }
 
 // #[test]
@@ -406,7 +446,7 @@ pub struct PayjoinTx {
 
 //     // Call the address_from_script method
 //     let address_result = Address::address_from_script(
-//         Network::Mainnet,
+//         LiquidNetwork::Mainnet,
 //         script,
 //         slip77_string,
 //     ).unwrap();
