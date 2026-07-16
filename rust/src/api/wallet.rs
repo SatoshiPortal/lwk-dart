@@ -18,6 +18,7 @@ use std::sync::MutexGuard;
 use super::descriptor::Descriptor;
 use super::error::LwkError;
 use super::types::Address;
+use super::types::AddressWithBlindingSecret;
 use super::types::AssetIdBTreeMapUInt;
 use super::types::Balances;
 use super::types::LiquidNetwork;
@@ -109,6 +110,29 @@ impl Wallet {
     pub fn address(&self, index: u32) -> anyhow::Result<Address, LwkError> {
         let address: AddressResult = self.get_wallet()?.address(Some(index))?.into();
         Ok(address.into())
+    }
+
+    /// Get an address and the secret blinding key derived specifically for it.
+    pub fn address_with_blinding_secret(
+        &self,
+        index: u32,
+    ) -> anyhow::Result<AddressWithBlindingSecret, LwkError> {
+        let wallet = self.get_wallet()?;
+        let address: AddressResult = wallet.address(Some(index))?.into();
+        let blinding_secret = lwk_common::derive_blinding_key(
+            wallet.descriptor()?,
+            &address.address().script_pubkey(),
+        )
+        .ok_or_else(|| LwkError {
+            msg: "Wallet descriptor cannot derive an address blinding secret".to_string(),
+        })?
+        .display_secret()
+        .to_string();
+
+        Ok(AddressWithBlindingSecret {
+            address: address.into(),
+            blinding_secret,
+        })
     }
 
     /// Get balances for a wallet.
@@ -369,8 +393,48 @@ mod tests {
 
     use crate::api::blockchain::Blockchain;
     use crate::api::transaction::extract_tx_bytes;
+    use lwk_wollet::elements::secp256k1_zkp::{PublicKey, Secp256k1, SecretKey};
 
     use super::*;
+
+    #[test]
+    fn address_with_blinding_secret_matches_address_and_index() {
+        let mnemonic =
+            "umbrella response wide outer mystery drastic crew festival poet coconut error act";
+        let network = LiquidNetwork::Testnet;
+        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
+        let dbpath = std::env::temp_dir().join(format!(
+            "lwk_address_blinding_secret_{}",
+            std::process::id()
+        ));
+        let wallet = Wallet::init(network, dbpath.to_string_lossy().into_owned(), desc).unwrap();
+
+        let first = wallet.address_with_blinding_secret(0).unwrap();
+        let second = wallet.address_with_blinding_secret(1).unwrap();
+
+        assert_eq!(first.blinding_secret.len(), 64);
+        assert!(first
+            .blinding_secret
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit()));
+
+        let secret = SecretKey::from_str(&first.blinding_secret).unwrap();
+        let public = PublicKey::from_secret_key(&Secp256k1::new(), &secret);
+        let public = public.to_string();
+        assert_eq!(
+            first.address.blinding_key.as_deref(),
+            Some(public.as_str())
+        );
+
+        assert_eq!(first.address.index, Some(0));
+        assert_eq!(second.address.index, Some(1));
+        assert_ne!(first.address.confidential, second.address.confidential);
+        assert_ne!(first.blinding_secret, second.blinding_secret);
+
+        drop(wallet);
+        let _ = std::fs::remove_dir_all(dbpath);
+    }
+
     #[test]
     fn testable_wallets() {
         let mnemonic =

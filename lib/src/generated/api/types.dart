@@ -76,6 +76,28 @@ class Address {
           blindingKey == other.blindingKey;
 }
 
+/// A wallet address paired with the secret blinding key derived for that address.
+class AddressWithBlindingSecret {
+  final Address address;
+  final String blindingSecret;
+
+  const AddressWithBlindingSecret({
+    required this.address,
+    required this.blindingSecret,
+  });
+
+  @override
+  int get hashCode => address.hashCode ^ blindingSecret.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AddressWithBlindingSecret &&
+          runtimeType == other.runtimeType &&
+          address == other.address &&
+          blindingSecret == other.blindingSecret;
+}
+
 /// Balance represents a balance of a specific asset
 class Balance {
   final String assetId;
