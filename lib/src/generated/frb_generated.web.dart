@@ -77,6 +77,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Address dco_decode_address(dynamic raw);
 
   @protected
+  AddressWithBlindingSecret dco_decode_address_with_blinding_secret(
+      dynamic raw);
+
+  @protected
   Balance dco_decode_balance(dynamic raw);
 
   @protected
@@ -282,6 +286,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Address sse_decode_address(SseDeserializer deserializer);
 
   @protected
+  AddressWithBlindingSecret sse_decode_address_with_blinding_secret(
+      SseDeserializer deserializer);
+
+  @protected
   Balance sse_decode_balance(SseDeserializer deserializer);
 
   @protected
@@ -463,6 +471,15 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       cst_encode_String(raw.confidential),
       cst_encode_opt_box_autoadd_u_32(raw.index),
       cst_encode_opt_String(raw.blindingKey)
+    ].jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_address_with_blinding_secret(AddressWithBlindingSecret raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_address(raw.address),
+      cst_encode_String(raw.blindingSecret)
     ].jsify()!;
   }
 
@@ -898,6 +915,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_address(Address self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_address_with_blinding_secret(
+      AddressWithBlindingSecret self, SseSerializer serializer);
 
   @protected
   void sse_encode_balance(Balance self, SseSerializer serializer);
@@ -1393,6 +1414,11 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire__crate__api__wallet__wallet_address_last_unused(
           port_, that);
 
+  void wire__crate__api__wallet__wallet_address_with_blinding_secret(
+          NativePortType port_, JSAny that, int index) =>
+      wasmModule.wire__crate__api__wallet__wallet_address_with_blinding_secret(
+          port_, that, index);
+
   void wire__crate__api__wallet__wallet_balances(
           NativePortType port_, JSAny that) =>
       wasmModule.wire__crate__api__wallet__wallet_balances(port_, that);
@@ -1702,6 +1728,9 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
 
   external void wire__crate__api__wallet__wallet_address_last_unused(
       NativePortType port_, JSAny that);
+
+  external void wire__crate__api__wallet__wallet_address_with_blinding_secret(
+      NativePortType port_, JSAny that, int index);
 
   external void wire__crate__api__wallet__wallet_balances(
       NativePortType port_, JSAny that);
