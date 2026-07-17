@@ -40,7 +40,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1929226336;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 651086619;
 
 // Section: executor
 
@@ -1728,31 +1728,6 @@ fn wire__crate__api__wallet__wallet_address_last_unused_impl(
         },
     )
 }
-fn wire__crate__api__wallet__wallet_address_with_blinding_secret_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
-    index: impl CstDecode<u32>,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_address_with_blinding_secret",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let api_that = that.cst_decode();
-            let api_index = index.cst_decode();
-            move |context| {
-                transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
-                    let output_ok = crate::api::wallet::Wallet::address_with_blinding_secret(
-                        &api_that, api_index,
-                    )?;
-                    Ok(output_ok)
-                })())
-            }
-        },
-    )
-}
 fn wire__crate__api__wallet__wallet_balances_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<crate::api::wallet::Wallet>,
@@ -2250,18 +2225,6 @@ impl SseDecode for crate::api::types::Address {
             confidential: var_confidential,
             index: var_index,
             blinding_key: var_blindingKey,
-        };
-    }
-}
-
-impl SseDecode for crate::api::types::AddressWithBlindingSecret {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_address = <crate::api::types::Address>::sse_decode(deserializer);
-        let mut var_blindingSecret = <String>::sse_decode(deserializer);
-        return crate::api::types::AddressWithBlindingSecret {
-            address: var_address,
-            blinding_secret: var_blindingSecret,
         };
     }
 }
@@ -2870,27 +2833,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::Address> for crate::ap
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::AddressWithBlindingSecret {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        [
-            self.address.into_into_dart().into_dart(),
-            self.blinding_secret.into_into_dart().into_dart(),
-        ]
-        .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::types::AddressWithBlindingSecret
-{
-}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::AddressWithBlindingSecret>
-    for crate::api::types::AddressWithBlindingSecret
-{
-    fn into_into_dart(self) -> crate::api::types::AddressWithBlindingSecret {
-        self
-    }
-}
-// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::types::Balance {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -3297,14 +3239,6 @@ impl SseEncode for crate::api::types::Address {
         <String>::sse_encode(self.confidential, serializer);
         <Option<u32>>::sse_encode(self.index, serializer);
         <Option<String>>::sse_encode(self.blinding_key, serializer);
-    }
-}
-
-impl SseEncode for crate::api::types::AddressWithBlindingSecret {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <crate::api::types::Address>::sse_encode(self.address, serializer);
-        <String>::sse_encode(self.blinding_secret, serializer);
     }
 }
 
@@ -3823,17 +3757,6 @@ mod io {
             }
         }
     }
-    impl CstDecode<crate::api::types::AddressWithBlindingSecret>
-        for wire_cst_address_with_blinding_secret
-    {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> crate::api::types::AddressWithBlindingSecret {
-            crate::api::types::AddressWithBlindingSecret {
-                address: self.address.cst_decode(),
-                blinding_secret: self.blinding_secret.cst_decode(),
-            }
-        }
-    }
     impl CstDecode<crate::api::types::Balance> for wire_cst_balance {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> crate::api::types::Balance {
@@ -4184,19 +4107,6 @@ mod io {
         }
     }
     impl Default for wire_cst_address {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_address_with_blinding_secret {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                address: Default::default(),
-                blinding_secret: core::ptr::null_mut(),
-            }
-        }
-    }
-    impl Default for wire_cst_address_with_blinding_secret {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -4857,15 +4767,6 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_address_with_blinding_secret(
-        port_: i64,
-        that: *mut wire_cst_wallet,
-        index: u32,
-    ) {
-        wire__crate__api__wallet__wallet_address_with_blinding_secret_impl(port_, that, index)
-    }
-
-    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_balances(
         port_: i64,
         that: *mut wire_cst_wallet,
@@ -5294,12 +5195,6 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_address_with_blinding_secret {
-        address: wire_cst_address,
-        blinding_secret: *mut wire_cst_list_prim_u_8_strict,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
     pub struct wire_cst_balance {
         asset_id: *mut wire_cst_list_prim_u_8_strict,
         value: i64,
@@ -5534,26 +5429,6 @@ mod web {
                 confidential: self_.get(1).cst_decode(),
                 index: self_.get(2).cst_decode(),
                 blinding_key: self_.get(3).cst_decode(),
-            }
-        }
-    }
-    impl CstDecode<crate::api::types::AddressWithBlindingSecret>
-        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
-    {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> crate::api::types::AddressWithBlindingSecret {
-            let self_ = self
-                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
-                .unwrap();
-            assert_eq!(
-                self_.length(),
-                2,
-                "Expected 2 elements, got {}",
-                self_.length()
-            );
-            crate::api::types::AddressWithBlindingSecret {
-                address: self_.get(0).cst_decode(),
-                blinding_secret: self_.get(1).cst_decode(),
             }
         }
     }
@@ -6593,15 +6468,6 @@ mod web {
         that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
     ) {
         wire__crate__api__wallet__wallet_address_last_unused_impl(port_, that)
-    }
-
-    #[wasm_bindgen]
-    pub fn wire__crate__api__wallet__wallet_address_with_blinding_secret(
-        port_: flutter_rust_bridge::for_generated::MessagePort,
-        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
-        index: u32,
-    ) {
-        wire__crate__api__wallet__wallet_address_with_blinding_secret_impl(port_, that, index)
     }
 
     #[wasm_bindgen]
