@@ -214,6 +214,12 @@ pub struct Address {
     pub blinding_key: Option<String>,
 }
 
+/// A wallet address paired with the secret blinding key derived for that address.
+pub struct AddressWithBlindingSecret {
+    pub address: Address,
+    pub blinding_secret: String,
+}
+
 impl From<AddressResult> for Address {
     fn from(address: AddressResult) -> Self {
         Address {
