@@ -73,7 +73,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 651086619;
+  int get rustContentHash => -1446001672;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -280,6 +280,12 @@ abstract class LwkCoreApi extends BaseApi {
       required LiquidNetwork network,
       String? baseUrl,
       required bool isSendAll});
+
+  Future<List<String>> crateApiWalletWalletConsolidate(
+      {required Wallet that,
+      required double feeRate,
+      int? highUtxoThreshold,
+      int? maximumInputs});
 
   Future<PsetAmounts> crateApiWalletWalletDecodeTx(
       {required Wallet that, required String pset});
@@ -1970,6 +1976,37 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
           "baseUrl",
           "isSendAll"
         ],
+      );
+
+  @override
+  Future<List<String>> crateApiWalletWalletConsolidate(
+      {required Wallet that,
+      required double feeRate,
+      int? highUtxoThreshold,
+      int? maximumInputs}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        var arg1 = cst_encode_f_32(feeRate);
+        var arg2 = cst_encode_opt_box_autoadd_u_32(highUtxoThreshold);
+        var arg3 = cst_encode_opt_box_autoadd_u_32(maximumInputs);
+        return wire.wire__crate__api__wallet__wallet_consolidate(
+            port_, arg0, arg1, arg2, arg3);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_list_String,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta: kCrateApiWalletWalletConsolidateConstMeta,
+      argValues: [that, feeRate, highUtxoThreshold, maximumInputs],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletWalletConsolidateConstMeta =>
+      const TaskConstMeta(
+        debugName: "wallet_consolidate",
+        argNames: ["that", "feeRate", "highUtxoThreshold", "maximumInputs"],
       );
 
   @override

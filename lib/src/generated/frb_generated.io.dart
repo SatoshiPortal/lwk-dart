@@ -2329,6 +2329,41 @@ class LwkCoreWire implements BaseWire {
             bool,
           )>();
 
+  void wire__crate__api__wallet__wallet_consolidate(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+    double fee_rate,
+    ffi.Pointer<ffi.Uint32> high_utxo_threshold,
+    ffi.Pointer<ffi.Uint32> maximum_inputs,
+  ) {
+    return _wire__crate__api__wallet__wallet_consolidate(
+      port_,
+      that,
+      fee_rate,
+      high_utxo_threshold,
+      maximum_inputs,
+    );
+  }
+
+  late final _wire__crate__api__wallet__wallet_consolidatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Int64,
+            ffi.Pointer<wire_cst_wallet>,
+            ffi.Float,
+            ffi.Pointer<ffi.Uint32>,
+            ffi.Pointer<ffi.Uint32>,
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_consolidate');
+  late final _wire__crate__api__wallet__wallet_consolidate =
+      _wire__crate__api__wallet__wallet_consolidatePtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            double,
+            ffi.Pointer<ffi.Uint32>,
+            ffi.Pointer<ffi.Uint32>,
+          )>();
+
   void wire__crate__api__wallet__wallet_decode_tx(
     int port_,
     ffi.Pointer<wire_cst_wallet> that,
@@ -3142,3 +3177,7 @@ final class wire_cst_size_and_fees extends ffi.Struct {
 
   external ffi.Pointer<wire_cst_list_balance> absolute_fees;
 }
+
+const int HIGH_UTXO_THRESHOLD = 125;
+
+const int MAXIMUM_INPUTS = 250;

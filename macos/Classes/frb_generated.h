@@ -14,6 +14,16 @@ void store_dart_post_cobject(DartPostCObjectFnType ptr);
 // EXTRA END
 typedef struct _Dart_Handle* Dart_Handle;
 
+/**
+ * UTXO count above which consolidation is offered
+ */
+#define HIGH_UTXO_THRESHOLD 125
+
+/**
+ * Max inputs per consolidation tx (safety margin under the 256 hard limit)
+ */
+#define MAXIMUM_INPUTS 250
+
 typedef struct wire_cst_list_prim_u_8_loose {
   uint8_t *ptr;
   int32_t len;
@@ -344,6 +354,12 @@ void frbgen_lwk_wire__crate__api__wallet__wallet_build_payjoin_tx(int64_t port_,
                                                                   struct wire_cst_list_prim_u_8_strict *base_url,
                                                                   bool is_send_all);
 
+void frbgen_lwk_wire__crate__api__wallet__wallet_consolidate(int64_t port_,
+                                                             struct wire_cst_wallet *that,
+                                                             float fee_rate,
+                                                             uint32_t *high_utxo_threshold,
+                                                             uint32_t *maximum_inputs);
+
 void frbgen_lwk_wire__crate__api__wallet__wallet_decode_tx(int64_t port_,
                                                            struct wire_cst_wallet *that,
                                                            struct wire_cst_list_prim_u_8_strict *pset);
@@ -518,6 +534,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_build_asset_tx);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_build_lbtc_tx);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_build_payjoin_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_consolidate);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_decode_tx);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_descriptor);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_init);

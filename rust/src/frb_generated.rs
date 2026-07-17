@@ -40,7 +40,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 651086619;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1446001672;
 
 // Section: executor
 
@@ -1874,6 +1874,38 @@ fn wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
                         api_network,
                         api_base_url,
                         api_is_send_all,
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__crate__api__wallet__wallet_consolidate_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<crate::api::wallet::Wallet>,
+    fee_rate: impl CstDecode<f32>,
+    high_utxo_threshold: impl CstDecode<Option<u32>>,
+    maximum_inputs: impl CstDecode<Option<u32>>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "wallet_consolidate",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_fee_rate = fee_rate.cst_decode();
+            let api_high_utxo_threshold = high_utxo_threshold.cst_decode();
+            let api_maximum_inputs = maximum_inputs.cst_decode();
+            move |context| {
+                transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                    let output_ok = crate::api::wallet::Wallet::consolidate(
+                        &api_that,
+                        api_fee_rate,
+                        api_high_utxo_threshold,
+                        api_maximum_inputs,
                     )?;
                     Ok(output_ok)
                 })())
@@ -4844,6 +4876,23 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_consolidate(
+        port_: i64,
+        that: *mut wire_cst_wallet,
+        fee_rate: f32,
+        high_utxo_threshold: *mut u32,
+        maximum_inputs: *mut u32,
+    ) {
+        wire__crate__api__wallet__wallet_consolidate_impl(
+            port_,
+            that,
+            fee_rate,
+            high_utxo_threshold,
+            maximum_inputs,
+        )
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_decode_tx(
         port_: i64,
         that: *mut wire_cst_wallet,
@@ -6544,6 +6593,23 @@ mod web {
             network,
             base_url,
             is_send_all,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__wallet__wallet_consolidate(
+        port_: flutter_rust_bridge::for_generated::MessagePort,
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        fee_rate: f32,
+        high_utxo_threshold: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        maximum_inputs: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) {
+        wire__crate__api__wallet__wallet_consolidate_impl(
+            port_,
+            that,
+            fee_rate,
+            high_utxo_threshold,
+            maximum_inputs,
         )
     }
 
