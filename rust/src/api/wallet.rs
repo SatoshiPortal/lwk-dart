@@ -30,6 +30,21 @@ pub struct Wallet {
     pub(crate) inner: RustOpaque<Mutex<lwk_wollet::Wollet>>,
 }
 
+/// UTXO count above which consolidation is offered
+pub const HIGH_UTXO_THRESHOLD: u32 = 125;
+/// Max inputs per consolidation tx (safety margin under the 256 hard limit)
+pub const MAXIMUM_INPUTS: u32 = 250;
+
+/// Compute the number of consolidation batches and how many UTXOs go in each,
+/// so that no batch exceeds `max_inputs` and batches are as evenly sized as
+/// possible.
+///
+/// Returns `(number_of_batches, utxos_per_batch)`.
+fn batch_sizes(total: usize, max_inputs: usize) -> (usize, usize) {
+    let n = total.div_ceil(max_inputs);
+    (n, total.div_ceil(n))
+}
+
 impl Wallet {
     /// Used internally to create a lock on the wallet while being used.
     fn get_wallet(&self) -> Result<MutexGuard<lwk_wollet::Wollet>, LwkError> {
@@ -156,6 +171,77 @@ impl Wallet {
                 .finish()?;
             Ok(pset.to_string())
         }
+    }
+    /// Build N unsigned PSETs that consolidate the wallet's confirmed L-BTC UTXOs.
+    ///
+    /// Each PSET sweeps up to `maximum_inputs` coins into a single output, sent to
+    /// a fresh unused address (a different address is used for each batch).
+    /// Returns an empty vec if the UTXO count is <= `high_utxo_threshold`.
+    ///
+    /// Batches whose value doesn't cover the fee (dust batches) are skipped. If
+    /// every batch is dust, an error is returned.
+    pub fn consolidate(
+        &self,
+        fee_rate: f32,
+        high_utxo_threshold: Option<u32>,
+        maximum_inputs: Option<u32>,
+    ) -> anyhow::Result<Vec<String>, LwkError> {
+        let wallet = self.get_wallet()?;
+        let policy_asset = wallet.policy_asset();
+
+        let threshold = high_utxo_threshold.unwrap_or(HIGH_UTXO_THRESHOLD);
+        let mi = maximum_inputs.unwrap_or(MAXIMUM_INPUTS).min(MAXIMUM_INPUTS) as usize;
+        if mi == 0 {
+            return Err(LwkError {
+                msg: "maximum_inputs must be greater than 0".to_string(),
+            });
+        }
+
+        let utxos: Vec<_> = wallet
+            .utxos()?
+            .into_iter()
+            .filter(|u| u.unblinded.asset == policy_asset && u.height.is_some())
+            .collect();
+
+        let total = utxos.len();
+        if total <= threshold as usize {
+            return Ok(vec![]);
+        }
+
+        let (n, per_batch) = batch_sizes(total, mi);
+
+        let start_index = wallet.address(None)?.index();
+
+        let mut psets = Vec::with_capacity(n);
+        for (i, chunk) in utxos.chunks(per_batch).enumerate() {
+            let address = wallet
+                .address(Some(start_index + i as u32))?
+                .address()
+                .clone();
+            let outpoints: Vec<_> = chunk.iter().map(|u| u.outpoint).collect();
+            match wallet
+                .tx_builder()
+                .set_wallet_utxos(outpoints)
+                .drain_lbtc_to(address)
+                .enable_ct_discount()
+                .fee_rate(Some(fee_rate))
+                .finish()
+            {
+                Ok(pset) => psets.push(pset.to_string()),
+                Err(lwk_wollet::Error::InsufficientFunds { .. }) => continue, // dust batch
+                Err(e) => return Err(e.into()),
+            }
+        }
+
+        if psets.is_empty() {
+            return Err(LwkError {
+                msg: format!(
+                    "consolidation: all {n} batches are dust (batch value <= fee at {fee_rate} sat/vb)"
+                ),
+            });
+        }
+
+        Ok(psets)
     }
     /// Build a transaction for a specific asset
     pub fn build_asset_tx(
@@ -403,6 +489,40 @@ mod tests {
         // for tx in _txs.unwrap(){
         //     println!("{:?}\n{:?}\n{:?}", tx.balances, tx.timestamp, tx.height)
         // }
+    }
+    #[test]
+    fn test_batch_sizes() {
+        assert_eq!(batch_sizes(500, 250), (2, 250));
+        assert_eq!(batch_sizes(501, 250), (3, 167));
+        assert_eq!(batch_sizes(126, 250), (1, 126));
+        assert_eq!(batch_sizes(251, 250), (2, 126));
+    }
+
+    #[ignore = "hits a live testnet electrum server"]
+    #[test]
+    fn test_consolidate() {
+        // set your own funded testnet mnemonic here
+        let mnemonic = "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
+        let electrum_url = "elements-testnet.blockstream.info:50002".to_string();
+        let network = LiquidNetwork::Testnet;
+
+        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk_consolidate".to_string(), desc).unwrap();
+        wallet.sync(electrum_url, true, None, None).unwrap();
+
+        let count = wallet.utxos().unwrap().len();
+        println!("total utxos: {count}");
+
+        // threshold = 0 forces it to run even with few coins
+        let psets = wallet.consolidate(0.1, Some(0), Some(250)).unwrap();
+        // or, to use lwk's defaults (125 / 250):
+        // let psets = wallet.consolidate(0.1, None, None).unwrap();
+        println!("consolidate returned {} PSET(s)", psets.len());
+
+        if let Some(first) = psets.first() {
+            let decoded = wallet.decode_tx(first.clone()).unwrap();
+            println!("first pset decoded: {decoded:?}");
+        }
     }
     #[ignore = "disabled because it broadcasts a pre-signed tx against a live server (inputs long spent)"]
     #[test]

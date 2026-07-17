@@ -1,3 +1,10 @@
+## 0.6.0
+
+- feat: add `Wallet.consolidate` — builds N unsigned PSETs batching confirmed
+  L-BTC UTXOs under a safe input cap (default threshold 125, max 250 inputs/tx);
+  each batch drains to a fresh unused address; dust batches are skipped
+- feat: add `confirmedLbtcUtxoCount`, `batchSign`, `batchBroadcast` helpers
+
 ## 0.5.0
 
 - feat (BREAKING): rename the public `Network` enum to `LiquidNetwork`
