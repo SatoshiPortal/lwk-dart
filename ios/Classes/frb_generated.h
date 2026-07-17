@@ -156,6 +156,11 @@ typedef struct wire_cst_list_tx_output {
   int32_t len;
 } wire_cst_list_tx_output;
 
+typedef struct wire_cst_address_with_blinding_secret {
+  struct wire_cst_address address;
+  struct wire_cst_list_prim_u_8_strict *blinding_secret;
+} wire_cst_address_with_blinding_secret;
+
 typedef struct wire_cst_lwk_error {
   struct wire_cst_list_prim_u_8_strict *msg;
 } wire_cst_lwk_error;
@@ -314,6 +319,10 @@ void frbgen_lwk_wire__crate__api__wallet__wallet_address(int64_t port_,
 
 void frbgen_lwk_wire__crate__api__wallet__wallet_address_last_unused(int64_t port_,
                                                                      struct wire_cst_wallet *that);
+
+void frbgen_lwk_wire__crate__api__wallet__wallet_address_with_blinding_secret(int64_t port_,
+                                                                              struct wire_cst_wallet *that,
+                                                                              uint32_t index);
 
 void frbgen_lwk_wire__crate__api__wallet__wallet_balances(int64_t port_,
                                                           struct wire_cst_wallet *that);
@@ -513,6 +522,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__types__get_ltest_balance);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_address);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_address_last_unused);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_address_with_blinding_secret);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_balances);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_blinding_key);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_build_asset_tx);
