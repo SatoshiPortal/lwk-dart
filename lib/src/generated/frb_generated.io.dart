@@ -75,10 +75,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Address dco_decode_address(dynamic raw);
 
   @protected
-  AddressWithBlindingSecret dco_decode_address_with_blinding_secret(
-      dynamic raw);
-
-  @protected
   Balance dco_decode_balance(dynamic raw);
 
   @protected
@@ -282,10 +278,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   Address sse_decode_address(SseDeserializer deserializer);
-
-  @protected
-  AddressWithBlindingSecret sse_decode_address_with_blinding_secret(
-      SseDeserializer deserializer);
 
   @protected
   Balance sse_decode_balance(SseDeserializer deserializer);
@@ -734,14 +726,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_address_with_blinding_secret(
-      AddressWithBlindingSecret apiObj,
-      wire_cst_address_with_blinding_secret wireObj) {
-    cst_api_fill_to_wire_address(apiObj.address, wireObj.address);
-    wireObj.blinding_secret = cst_encode_String(apiObj.blindingSecret);
-  }
-
-  @protected
   void cst_api_fill_to_wire_balance(Balance apiObj, wire_cst_balance wireObj) {
     wireObj.asset_id = cst_encode_String(apiObj.assetId);
     wireObj.value = cst_encode_i_64(apiObj.value);
@@ -995,10 +979,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_address(Address self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_address_with_blinding_secret(
-      AddressWithBlindingSecret self, SseSerializer serializer);
 
   @protected
   void sse_encode_balance(Balance self, SseSerializer serializer);
@@ -2194,29 +2174,6 @@ class LwkCoreWire implements BaseWire {
       _wire__crate__api__wallet__wallet_address_last_unusedPtr
           .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
 
-  void wire__crate__api__wallet__wallet_address_with_blinding_secret(
-    int port_,
-    ffi.Pointer<wire_cst_wallet> that,
-    int index,
-  ) {
-    return _wire__crate__api__wallet__wallet_address_with_blinding_secret(
-      port_,
-      that,
-      index,
-    );
-  }
-
-  late final _wire__crate__api__wallet__wallet_address_with_blinding_secretPtr =
-      _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Int64, ffi.Pointer<wire_cst_wallet>, ffi.Uint32)>>(
-    'frbgen_lwk_wire__crate__api__wallet__wallet_address_with_blinding_secret',
-  );
-  late final _wire__crate__api__wallet__wallet_address_with_blinding_secret =
-      _wire__crate__api__wallet__wallet_address_with_blinding_secretPtr
-          .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>, int)>();
-
   void wire__crate__api__wallet__wallet_balances(
     int port_,
     ffi.Pointer<wire_cst_wallet> that,
@@ -3151,12 +3108,6 @@ final class wire_cst_list_tx_output extends ffi.Struct {
 
   @ffi.Int32()
   external int len;
-}
-
-final class wire_cst_address_with_blinding_secret extends ffi.Struct {
-  external wire_cst_address address;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> blinding_secret;
 }
 
 final class wire_cst_lwk_error extends ffi.Struct {

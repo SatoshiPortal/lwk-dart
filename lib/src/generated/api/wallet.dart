@@ -32,12 +32,6 @@ class Wallet {
         that: this,
       );
 
-  /// Get an address and the secret blinding key derived specifically for it.
-  Future<AddressWithBlindingSecret> addressWithBlindingSecret(
-          {required int index}) =>
-      LwkCore.instance.api.crateApiWalletWalletAddressWithBlindingSecret(
-          that: this, index: index);
-
   /// Get balances for a wallet.
   Future<List<Balance>> balances() =>
       LwkCore.instance.api.crateApiWalletWalletBalances(

@@ -1,51 +1,9 @@
 // ignore_for_file: avoid_print
 
-import 'dart:io';
-
 import 'package:lwk/lwk.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Wallet address blinding secret', () {
-    late Directory dbDirectory;
-
-    setUpAll(() async {
-      dbDirectory = await Directory.systemTemp.createTemp(
-        'lwk_address_blinding_secret_',
-      );
-      await LibLwk.init();
-    });
-
-    tearDownAll(() async {
-      await dbDirectory.delete(recursive: true);
-    });
-
-    test('is paired with the generated address', () async {
-      const mnemonic =
-          'umbrella response wide outer mystery drastic crew festival poet coconut error act';
-      const network = LiquidNetwork.testnet;
-      final descriptor = await Descriptor.newConfidential(
-        network: network,
-        mnemonic: mnemonic,
-      );
-      final wallet = await Wallet.init(
-        network: network,
-        dbpath: dbDirectory.path,
-        descriptor: descriptor,
-      );
-
-      final first = await wallet.addressWithBlindingSecret(index: 0);
-      final second = await wallet.addressWithBlindingSecret(index: 1);
-
-      expect(first.blindingSecret, matches(RegExp(r'^[0-9a-f]{64}$')));
-      expect(first.address.index, 0);
-      expect(first.address.blindingKey, isNotNull);
-      expect(second.address.index, 1);
-      expect(second.address.confidential, isNot(first.address.confidential));
-      expect(second.blindingSecret, isNot(first.blindingSecret));
-    });
-  });
-
   group('Wallet', () {
     test('Wallet Flow', () async {
       await LibLwk.init();
@@ -96,7 +54,5 @@ void main() {
       //     network: network, pset: pset, mnemonic: mnemonic);
       // print(signedPset);
     });
-  },
-      skip:
-          'live mainnet integration test: requires network + compiled lwk lib');
+  }, skip: 'live mainnet integration test: requires network + compiled lwk lib');
 }

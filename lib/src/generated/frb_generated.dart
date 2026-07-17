@@ -73,7 +73,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 1929226336;
+  int get rustContentHash => 651086619;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -253,10 +253,6 @@ abstract class LwkCoreApi extends BaseApi {
       {required Wallet that, required int index});
 
   Future<Address> crateApiWalletWalletAddressLastUnused({required Wallet that});
-
-  Future<AddressWithBlindingSecret>
-      crateApiWalletWalletAddressWithBlindingSecret(
-          {required Wallet that, required int index});
 
   Future<List<Balance>> crateApiWalletWalletBalances({required Wallet that});
 
@@ -1820,34 +1816,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  Future<AddressWithBlindingSecret>
-      crateApiWalletWalletAddressWithBlindingSecret(
-          {required Wallet that, required int index}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_wallet(that);
-        var arg1 = cst_encode_u_32(index);
-        return wire
-            .wire__crate__api__wallet__wallet_address_with_blinding_secret(
-                port_, arg0, arg1);
-      },
-      codec: DcoCodec(
-        decodeSuccessData: dco_decode_address_with_blinding_secret,
-        decodeErrorData: dco_decode_lwk_error,
-      ),
-      constMeta: kCrateApiWalletWalletAddressWithBlindingSecretConstMeta,
-      argValues: [that, index],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiWalletWalletAddressWithBlindingSecretConstMeta =>
-      const TaskConstMeta(
-        debugName: "wallet_address_with_blinding_secret",
-        argNames: ["that", "index"],
-      );
-
-  @override
   Future<List<Balance>> crateApiWalletWalletBalances({required Wallet that}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -2323,19 +2291,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       confidential: dco_decode_String(arr[1]),
       index: dco_decode_opt_box_autoadd_u_32(arr[2]),
       blindingKey: dco_decode_opt_String(arr[3]),
-    );
-  }
-
-  @protected
-  AddressWithBlindingSecret dco_decode_address_with_blinding_secret(
-      dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
-    return AddressWithBlindingSecret(
-      address: dco_decode_address(arr[0]),
-      blindingSecret: dco_decode_String(arr[1]),
     );
   }
 
@@ -2866,16 +2821,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
         confidential: var_confidential,
         index: var_index,
         blindingKey: var_blindingKey);
-  }
-
-  @protected
-  AddressWithBlindingSecret sse_decode_address_with_blinding_secret(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_address = sse_decode_address(deserializer);
-    var var_blindingSecret = sse_decode_String(deserializer);
-    return AddressWithBlindingSecret(
-        address: var_address, blindingSecret: var_blindingSecret);
   }
 
   @protected
@@ -3588,14 +3533,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     sse_encode_String(self.confidential, serializer);
     sse_encode_opt_box_autoadd_u_32(self.index, serializer);
     sse_encode_opt_String(self.blindingKey, serializer);
-  }
-
-  @protected
-  void sse_encode_address_with_blinding_secret(
-      AddressWithBlindingSecret self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_address(self.address, serializer);
-    sse_encode_String(self.blindingSecret, serializer);
   }
 
   @protected
