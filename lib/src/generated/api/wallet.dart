@@ -57,6 +57,22 @@ class Wallet {
           feeRate: feeRate,
           asset: asset);
 
+  /// Build a PSET spending `utxos`, paying `outputs`, with any leftover
+  /// L-BTC swept to `drain_to` if set.
+  ///
+  /// General-purpose builder for custom output shapes
+  Future<String> buildCustomTx(
+          {required List<OutPoint> utxos,
+          required List<TxOutputSpec> outputs,
+          String? drainTo,
+          required double feeRate}) =>
+      LwkCore.instance.api.crateApiWalletWalletBuildCustomTx(
+          that: this,
+          utxos: utxos,
+          outputs: outputs,
+          drainTo: drainTo,
+          feeRate: feeRate);
+
   /// Build a LBTC transaction
   Future<String> buildLbtcTx(
           {required BigInt sats,
