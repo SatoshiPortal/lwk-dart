@@ -7,6 +7,7 @@ use flutter_rust_bridge::RustOpaqueNom as RustOpaque;
 // use log::{info, warn};
 use lwk_wollet::elements::{
     pset::PartiallySignedTransaction, Address as LwkAddress, AssetId as LwkAssetId,
+    OutPoint as LwkOutPoint, Txid as LwkTxid,
 };
 use lwk_wollet::AddressResult;
 use lwk_wollet::ElectrumClient;
@@ -21,9 +22,11 @@ use super::types::Address;
 use super::types::AssetIdBTreeMapUInt;
 use super::types::Balances;
 use super::types::LiquidNetwork;
+use super::types::OutPoint;
 use super::types::PsetAmounts;
 use super::types::Tx;
 use super::types::TxOut;
+use super::types::TxOutputSpec;
 
 /// Main wallet object
 pub struct Wallet {
@@ -243,6 +246,60 @@ impl Wallet {
 
         Ok(psets)
     }
+
+    /// Build a PSET spending `utxos`, paying `outputs`, with any leftover
+    /// L-BTC swept to `drain_to` if set.
+    ///
+    /// General-purpose builder for custom output shapes
+    pub fn build_custom_tx(
+        &self,
+        utxos: Vec<OutPoint>,
+        outputs: Vec<TxOutputSpec>,
+        drain_to: Option<String>,
+        fee_rate: f32,
+    ) -> anyhow::Result<String, LwkError> {
+        let wallet = self.get_wallet()?;
+
+        let outpoints: Vec<LwkOutPoint> = utxos
+            .into_iter()
+            .map(|o| -> anyhow::Result<LwkOutPoint, LwkError> {
+                let txid = LwkTxid::from_str(&o.txid)?;
+                Ok(LwkOutPoint::new(txid, o.vout))
+            })
+            .collect::<Result<_, _>>()?;
+
+        let mut builder = wallet.tx_builder().set_wallet_utxos(outpoints);
+
+        for out in outputs {
+            let address = LwkAddress::from_str(&out.address)?;
+            builder = match out.asset_id {
+                None => builder.add_lbtc_recipient(&address, out.satoshi)?,
+                Some(asset) => {
+                    let asset_id = match LwkAssetId::from_str(&asset) {
+                        Ok(result) => result,
+                        Err(_) => {
+                            return Err(LwkError {
+                                msg: "Invalid asset".to_string(),
+                            })
+                        }
+                    };
+                    builder.add_recipient(&address, out.satoshi, asset_id)?
+                }
+            };
+        }
+
+        if let Some(drain_addr) = drain_to {
+            let address = LwkAddress::from_str(&drain_addr)?;
+            builder = builder.drain_lbtc_wallet().drain_lbtc_to(address);
+        }
+
+        let pset = builder
+            .enable_ct_discount()
+            .fee_rate(Some(fee_rate))
+            .finish()?;
+        Ok(pset.to_string())
+    }
+
     /// Build a transaction for a specific asset
     pub fn build_asset_tx(
         &self,
@@ -524,6 +581,44 @@ mod tests {
             println!("first pset decoded: {decoded:?}");
         }
     }
+    #[ignore = "hits a live testnet electrum server"]
+    #[test]
+    fn test_build_custom_tx() {
+        // set your own funded testnet mnemonic here
+        let mnemonic = "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
+        let electrum_url = "elements-testnet.blockstream.info:50002".to_string();
+        let network = LiquidNetwork::Testnet;
+
+        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk_build_custom_tx".to_string(), desc).unwrap();
+        wallet.sync(electrum_url, true, None, None).unwrap();
+
+        let utxos = wallet.utxos().unwrap();
+        assert!(!utxos.is_empty(), "wallet needs at least one confirmed UTXO");
+        let outpoint = utxos[0].outpoint.clone();
+
+        let decoy_address = wallet.address(1).unwrap().confidential;
+        let drain_address = wallet.address(2).unwrap().confidential;
+
+        // One explicit 1-sat decoy output plus the drained remainder — should
+        // produce a PSET with exactly 2 outputs (excluding the fee output).
+        let pset = wallet
+            .build_custom_tx(
+                vec![outpoint],
+                vec![TxOutputSpec {
+                    address: decoy_address,
+                    satoshi: 1,
+                    asset_id: None,
+                }],
+                Some(drain_address),
+                0.1,
+            )
+            .unwrap();
+
+        let decoded = wallet.decode_tx(pset).unwrap();
+        println!("build_custom_tx decoded: {decoded:?}");
+    }
+
     #[ignore = "disabled because it broadcasts a pre-signed tx against a live server (inputs long spent)"]
     #[test]
     fn test_broadcast() {

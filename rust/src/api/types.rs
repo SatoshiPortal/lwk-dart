@@ -296,6 +296,14 @@ pub struct OutPoint {
 }
 
 #[derive(Clone, Debug, PartialEq)]
+pub struct TxOutputSpec {
+    pub address: String,
+    pub satoshi: u64,
+    /// `None` means the policy asset (L-BTC).
+    pub asset_id: Option<String>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub struct TxOut {
     pub script_pubkey: String,
     pub outpoint: OutPoint,

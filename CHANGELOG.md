@@ -4,6 +4,8 @@
   L-BTC UTXOs under a safe input cap (default threshold 125, max 250 inputs/tx);
   each batch drains to a fresh unused address; dust batches are skipped
 - feat: add `confirmedLbtcUtxoCount`, `batchSign`, `batchBroadcast` helpers
+- feat: add `Wallet.build_custom_tx` — general-purpose builder for custom
+  output shapes (explicit UTXOs, recipients, optional drain-to address)
 
 ## 0.5.0
 
