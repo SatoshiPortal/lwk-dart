@@ -289,8 +289,13 @@ impl Wallet {
         }
 
         if let Some(drain_addr) = drain_to {
+            // `drain_lbtc_wallet()` sets a flag (`drain_lbtc`) that
+            // `lwk_wollet` 0.18's TxBuilder::finish never reads — dead
+            // regardless of manual UTXO selection. `drain_lbtc_to` alone
+            // (consumed at tx_builder.rs:1174) is what actually directs
+            // leftover L-BTC to `address`.
             let address = LwkAddress::from_str(&drain_addr)?;
-            builder = builder.drain_lbtc_wallet().drain_lbtc_to(address);
+            builder = builder.drain_lbtc_to(address);
         }
 
         let pset = builder
