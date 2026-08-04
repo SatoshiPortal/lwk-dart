@@ -9,7 +9,7 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
-// These functions are ignored because they are not marked as `pub`: `get_wallet`, `move_payjoin_signatures`, `sign_tx_common`
+// These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `move_payjoin_signatures`, `sign_tx_common`
 
 // Rust type: RustOpaqueNom<Mutex < lwk_wollet :: Wollet >>
 abstract class MutexWollet implements RustOpaqueInterface {}
@@ -57,6 +57,22 @@ class Wallet {
           feeRate: feeRate,
           asset: asset);
 
+  /// Build a PSET spending `utxos`, paying `outputs`, with any leftover
+  /// L-BTC swept to `drain_to` if set.
+  ///
+  /// General-purpose builder for custom output shapes
+  Future<String> buildCustomTx(
+          {required List<OutPoint> utxos,
+          required List<TxOutputSpec> outputs,
+          String? drainTo,
+          required double feeRate}) =>
+      LwkCore.instance.api.crateApiWalletWalletBuildCustomTx(
+          that: this,
+          utxos: utxos,
+          outputs: outputs,
+          drainTo: drainTo,
+          feeRate: feeRate);
+
   /// Build a LBTC transaction
   Future<String> buildLbtcTx(
           {required BigInt sats,
@@ -96,6 +112,24 @@ class Wallet {
           network: network,
           baseUrl: baseUrl,
           isSendAll: isSendAll);
+
+  /// Build N unsigned PSETs that consolidate the wallet's confirmed L-BTC UTXOs.
+  ///
+  /// Each PSET sweeps up to `maximum_inputs` coins into a single output, sent to
+  /// a fresh unused address (a different address is used for each batch).
+  /// Returns an empty vec if the UTXO count is <= `high_utxo_threshold`.
+  ///
+  /// Batches whose value doesn't cover the fee (dust batches) are skipped. If
+  /// every batch is dust, an error is returned.
+  Future<List<String>> consolidate(
+          {required double feeRate,
+          int? highUtxoThreshold,
+          int? maximumInputs}) =>
+      LwkCore.instance.api.crateApiWalletWalletConsolidate(
+          that: this,
+          feeRate: feeRate,
+          highUtxoThreshold: highUtxoThreshold,
+          maximumInputs: maximumInputs);
 
   /// Decode a transaction given a PSET
   Future<PsetAmounts> decodeTx({required String pset}) =>

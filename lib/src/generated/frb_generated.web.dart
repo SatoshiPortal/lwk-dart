@@ -137,6 +137,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<Balance> dco_decode_list_balance(dynamic raw);
 
   @protected
+  List<OutPoint> dco_decode_list_out_point(dynamic raw);
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw);
 
   @protected
@@ -162,6 +165,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   List<TxOutput> dco_decode_list_tx_output(dynamic raw);
+
+  @protected
+  List<TxOutputSpec> dco_decode_list_tx_output_spec(dynamic raw);
 
   @protected
   LwkError dco_decode_lwk_error(dynamic raw);
@@ -222,6 +228,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   TxOutput dco_decode_tx_output(dynamic raw);
+
+  @protected
+  TxOutputSpec dco_decode_tx_output_spec(dynamic raw);
 
   @protected
   int dco_decode_u_32(dynamic raw);
@@ -342,6 +351,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<Balance> sse_decode_list_balance(SseDeserializer deserializer);
 
   @protected
+  List<OutPoint> sse_decode_list_out_point(SseDeserializer deserializer);
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer);
 
   @protected
@@ -368,6 +380,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer);
+
+  @protected
+  List<TxOutputSpec> sse_decode_list_tx_output_spec(
+      SseDeserializer deserializer);
 
   @protected
   LwkError sse_decode_lwk_error(SseDeserializer deserializer);
@@ -430,6 +446,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   TxOutput sse_decode_tx_output(SseDeserializer deserializer);
+
+  @protected
+  TxOutputSpec sse_decode_tx_output_spec(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_32(SseDeserializer deserializer);
@@ -564,6 +583,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_list_out_point(List<OutPoint> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_out_point).toList().jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_list_prim_u_8_loose(List<int> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.jsify()!;
@@ -615,6 +640,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   JSAny cst_encode_list_tx_output(List<TxOutput> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.map(cst_encode_tx_output).toList().jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_list_tx_output_spec(List<TxOutputSpec> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_tx_output_spec).toList().jsify()!;
   }
 
   @protected
@@ -794,6 +825,16 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_tx_output_spec(TxOutputSpec raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_String(raw.address),
+      cst_encode_u_64(raw.satoshi),
+      cst_encode_opt_String(raw.assetId)
+    ].jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_u_64(BigInt raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return castNativeBigInt(raw);
@@ -965,6 +1006,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_list_balance(List<Balance> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_out_point(List<OutPoint> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_prim_u_8_loose(List<int> self, SseSerializer serializer);
 
   @protected
@@ -994,6 +1038,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_list_tx_output(List<TxOutput> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_tx_output_spec(
+      List<TxOutputSpec> self, SseSerializer serializer);
 
   @protected
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer);
@@ -1058,6 +1106,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_tx_output(TxOutput self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_tx_output_spec(TxOutputSpec self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_32(int self, SseSerializer serializer);
@@ -1411,6 +1462,16 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire__crate__api__wallet__wallet_build_asset_tx(
           port_, that, sats, out_address, fee_rate, asset);
 
+  void wire__crate__api__wallet__wallet_build_custom_tx(
+          NativePortType port_,
+          JSAny that,
+          JSAny utxos,
+          JSAny outputs,
+          String? drain_to,
+          double fee_rate) =>
+      wasmModule.wire__crate__api__wallet__wallet_build_custom_tx(
+          port_, that, utxos, outputs, drain_to, fee_rate);
+
   void wire__crate__api__wallet__wallet_build_lbtc_tx(
           NativePortType port_,
           JSAny that,
@@ -1432,6 +1493,15 @@ class LwkCoreWire implements BaseWire {
           bool is_send_all) =>
       wasmModule.wire__crate__api__wallet__wallet_build_payjoin_tx(port_, that,
           sats, out_address, asset, network, base_url, is_send_all);
+
+  void wire__crate__api__wallet__wallet_consolidate(
+          NativePortType port_,
+          JSAny that,
+          double fee_rate,
+          int? high_utxo_threshold,
+          int? maximum_inputs) =>
+      wasmModule.wire__crate__api__wallet__wallet_consolidate(
+          port_, that, fee_rate, high_utxo_threshold, maximum_inputs);
 
   void wire__crate__api__wallet__wallet_decode_tx(
           NativePortType port_, JSAny that, String pset) =>
@@ -1717,6 +1787,14 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       double fee_rate,
       String asset);
 
+  external void wire__crate__api__wallet__wallet_build_custom_tx(
+      NativePortType port_,
+      JSAny that,
+      JSAny utxos,
+      JSAny outputs,
+      String? drain_to,
+      double fee_rate);
+
   external void wire__crate__api__wallet__wallet_build_lbtc_tx(
       NativePortType port_,
       JSAny that,
@@ -1734,6 +1812,13 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       int network,
       String? base_url,
       bool is_send_all);
+
+  external void wire__crate__api__wallet__wallet_consolidate(
+      NativePortType port_,
+      JSAny that,
+      double fee_rate,
+      int? high_utxo_threshold,
+      int? maximum_inputs);
 
   external void wire__crate__api__wallet__wallet_decode_tx(
       NativePortType port_, JSAny that, String pset);

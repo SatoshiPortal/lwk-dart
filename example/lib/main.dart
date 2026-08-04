@@ -12,8 +12,7 @@ class TestApp extends StatefulWidget {
   const TestApp({super.key});
   static const mnemonic =
       "bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon bacon";
-  static const network = Network.testnet;
-
+  static const network = LiquidNetwork.testnet;
   static const electrumUrl = 'blockstream.info:465';
   static const outAmount = 10000;
   static const outAddress =
