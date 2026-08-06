@@ -20,13 +20,13 @@ use super::descriptor::Descriptor;
 use super::error::LwkError;
 use super::types::Address;
 use super::types::AssetIdBTreeMapUInt;
-use super::types::Balances;
 use super::types::LiquidNetwork;
 use super::types::OutPoint;
 use super::types::PsetAmounts;
 use super::types::Tx;
 use super::types::TxOut;
 use super::types::TxOutputSpec;
+use super::types::WalletBalances;
 
 /// Upper sanity bound on the fee rate, in sats/kvB: 100 sat/vB.
 ///
@@ -195,9 +195,9 @@ impl Wallet {
     }
 
     /// Get balances for a wallet.
-    pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
+    pub fn balances(&self) -> anyhow::Result<WalletBalances, LwkError> {
         let balance_map: AssetIdBTreeMapUInt = self.get_wallet()?.balance()?.as_ref().clone().into();
-        let balance = Balances::from(balance_map);
+        let balance = WalletBalances::from(balance_map);
         Ok(balance)
     }
 

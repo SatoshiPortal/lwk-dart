@@ -1571,7 +1571,7 @@ fn wire__crate__api__transaction__extract_tx_bytes_impl(
     )
 }
 fn wire__crate__api__types__get_balance_by_asset_id_impl(
-    balances: impl CstDecode<Vec<crate::api::types::Balance>>,
+    balances: impl CstDecode<Vec<crate::api::types::WalletBalance>>,
     asset_id: impl CstDecode<String>,
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
@@ -1610,7 +1610,7 @@ fn wire__crate__api__types__get_lbtc_asset_id_impl(
     )
 }
 fn wire__crate__api__types__get_lbtc_balance_impl(
-    balances: impl CstDecode<Vec<crate::api::types::Balance>>,
+    balances: impl CstDecode<Vec<crate::api::types::WalletBalance>>,
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
@@ -1645,7 +1645,7 @@ fn wire__crate__api__types__get_ltest_asset_id_impl(
     )
 }
 fn wire__crate__api__types__get_ltest_balance_impl(
-    balances: impl CstDecode<Vec<crate::api::types::Balance>>,
+    balances: impl CstDecode<Vec<crate::api::types::WalletBalance>>,
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
@@ -2515,6 +2515,18 @@ impl SseDecode for Vec<crate::api::types::TxOutputSpec> {
     }
 }
 
+impl SseDecode for Vec<crate::api::types::WalletBalance> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::types::WalletBalance>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for crate::api::error::LwkError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2693,7 +2705,8 @@ impl SseDecode for crate::api::types::SizeAndFees {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_discountedVsize = <usize>::sse_decode(deserializer);
         let mut var_discountedWeight = <usize>::sse_decode(deserializer);
-        let mut var_absoluteFees = <Vec<crate::api::types::Balance>>::sse_decode(deserializer);
+        let mut var_absoluteFees =
+            <Vec<crate::api::types::WalletBalance>>::sse_decode(deserializer);
         return crate::api::types::SizeAndFees {
             discounted_vsize: var_discountedVsize,
             discounted_weight: var_discountedWeight,
@@ -2854,6 +2867,18 @@ impl SseDecode for crate::api::wallet::Wallet {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_inner = <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_decode(deserializer);
         return crate::api::wallet::Wallet { inner: var_inner };
+    }
+}
+
+impl SseDecode for crate::api::types::WalletBalance {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_assetId = <String>::sse_decode(deserializer);
+        let mut var_value = <u64>::sse_decode(deserializer);
+        return crate::api::types::WalletBalance {
+            asset_id: var_assetId,
+            value: var_value,
+        };
     }
 }
 
@@ -3297,6 +3322,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::wallet::Wallet> for crate::ap
         self
     }
 }
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::types::WalletBalance {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.asset_id.into_into_dart().into_dart(),
+            self.value.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::types::WalletBalance
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::types::WalletBalance>
+    for crate::api::types::WalletBalance
+{
+    fn into_into_dart(self) -> crate::api::types::WalletBalance {
+        self
+    }
+}
 
 impl SseEncode for LiquidTransaction {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3553,6 +3599,16 @@ impl SseEncode for Vec<crate::api::types::TxOutputSpec> {
     }
 }
 
+impl SseEncode for Vec<crate::api::types::WalletBalance> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::types::WalletBalance>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for crate::api::error::LwkError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3690,7 +3746,7 @@ impl SseEncode for crate::api::types::SizeAndFees {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <usize>::sse_encode(self.discounted_vsize, serializer);
         <usize>::sse_encode(self.discounted_weight, serializer);
-        <Vec<crate::api::types::Balance>>::sse_encode(self.absolute_fees, serializer);
+        <Vec<crate::api::types::WalletBalance>>::sse_encode(self.absolute_fees, serializer);
     }
 }
 
@@ -3803,6 +3859,14 @@ impl SseEncode for crate::api::wallet::Wallet {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <RustOpaqueNom<Mutex<lwk_wollet::Wollet>>>::sse_encode(self.inner, serializer);
+    }
+}
+
+impl SseEncode for crate::api::types::WalletBalance {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.asset_id, serializer);
+        <u64>::sse_encode(self.value, serializer);
     }
 }
 
@@ -4131,6 +4195,16 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<Vec<crate::api::types::WalletBalance>> for *mut wire_cst_list_wallet_balance {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::types::WalletBalance> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<crate::api::error::LwkError> for wire_cst_lwk_error {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> crate::api::error::LwkError {
@@ -4279,6 +4353,15 @@ mod io {
         fn cst_decode(self) -> crate::api::wallet::Wallet {
             crate::api::wallet::Wallet {
                 inner: self.inner.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<crate::api::types::WalletBalance> for wire_cst_wallet_balance {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::types::WalletBalance {
+            crate::api::types::WalletBalance {
+                asset_id: self.asset_id.cst_decode(),
+                value: self.value.cst_decode(),
             }
         }
     }
@@ -4535,6 +4618,19 @@ mod io {
         }
     }
     impl Default for wire_cst_wallet {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_wallet_balance {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                asset_id: core::ptr::null_mut(),
+                value: Default::default(),
+            }
+        }
+    }
+    impl Default for wire_cst_wallet_balance {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -4909,7 +5005,7 @@ mod io {
 
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id(
-        balances: *mut wire_cst_list_balance,
+        balances: *mut wire_cst_list_wallet_balance,
         asset_id: *mut wire_cst_list_prim_u_8_strict,
     ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
         wire__crate__api__types__get_balance_by_asset_id_impl(balances, asset_id)
@@ -4923,7 +5019,7 @@ mod io {
 
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__types__get_lbtc_balance(
-        balances: *mut wire_cst_list_balance,
+        balances: *mut wire_cst_list_wallet_balance,
     ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
         wire__crate__api__types__get_lbtc_balance_impl(balances)
     }
@@ -4936,7 +5032,7 @@ mod io {
 
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__types__get_ltest_balance(
-        balances: *mut wire_cst_list_balance,
+        balances: *mut wire_cst_list_wallet_balance,
     ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
         wire__crate__api__types__get_ltest_balance_impl(balances)
     }
@@ -5442,6 +5538,20 @@ mod io {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
     }
 
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_cst_new_list_wallet_balance(
+        len: i32,
+    ) -> *mut wire_cst_list_wallet_balance {
+        let wrap = wire_cst_list_wallet_balance {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_wallet_balance>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_address {
@@ -5544,6 +5654,12 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_wallet_balance {
+        ptr: *mut wire_cst_wallet_balance,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_lwk_error {
         msg: *mut wire_cst_list_prim_u_8_strict,
     }
@@ -5587,7 +5703,7 @@ mod io {
     pub struct wire_cst_size_and_fees {
         discounted_vsize: usize,
         discounted_weight: usize,
-        absolute_fees: *mut wire_cst_list_balance,
+        absolute_fees: *mut wire_cst_list_wallet_balance,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -5650,6 +5766,12 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_wallet {
         inner: usize,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_wallet_balance {
+        asset_id: *mut wire_cst_list_prim_u_8_strict,
+        value: u64,
     }
 }
 #[cfg(not(target_family = "wasm"))]
@@ -5893,6 +6015,18 @@ mod web {
     {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<crate::api::types::TxOutputSpec> {
+            self.dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap()
+                .iter()
+                .map(CstDecode::cst_decode)
+                .collect()
+        }
+    }
+    impl CstDecode<Vec<crate::api::types::WalletBalance>>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<crate::api::types::WalletBalance> {
             self.dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
                 .unwrap()
                 .iter()
@@ -6208,6 +6342,26 @@ mod web {
             );
             crate::api::wallet::Wallet {
                 inner: self_.get(0).cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<crate::api::types::WalletBalance>
+        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> crate::api::types::WalletBalance {
+            let self_ = self
+                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
+                .unwrap();
+            assert_eq!(
+                self_.length(),
+                2,
+                "Expected 2 elements, got {}",
+                self_.length()
+            );
+            crate::api::types::WalletBalance {
+                asset_id: self_.get(0).cst_decode(),
+                value: self_.get(1).cst_decode(),
             }
         }
     }
