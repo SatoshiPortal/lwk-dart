@@ -2,7 +2,10 @@ default: gen lint
 
 gen:
     flutter pub get
-    flutter_rust_bridge_codegen
+    flutter_rust_bridge_codegen generate
+    # Re-applies the unsigned-integer bounds check that codegen overwrites.
+    # Keep in sync with codegen.sh.
+    dart run tool/patch_generated_u64.dart
 
 lint:
     cd native && cargo fmt

@@ -1,3 +1,30 @@
+## 0.7.0
+
+- fix (BREAKING): `Wallet.balances()` and `SizeAndFees.absoluteFees` now return
+  `WalletBalance` (unsigned `BigInt`) instead of `Balance` (signed). Balances
+  above `i64::MAX` were previously dropped from the list entirely. `Tx.balances`
+  still uses the signed `Balance`, since transaction deltas can be negative
+- fix (BREAKING): `getBalanceByAssetId`, `getLbtcBalance` and `getLtestBalance`
+  take `WalletBalance` and return `BigInt`
+- fix (BREAKING): `Address.validate` now fails on addresses that are neither
+  Liquid mainnet nor Liquid testnet, instead of reporting Elements/regtest
+  addresses as testnet
+- fix (BREAKING): transaction builders reject a non-finite, zero, negative or
+  implausibly large `feeRate`. The unit is sats/kvB, so 1 sat/vB is `1000.0`;
+  lwk previously turned such values into a 0 sat or `u64::MAX` fee
+- fix: validate the destination address on drain paths (`buildLbtcTx`,
+  `buildCustomTx`), which accepted a wrong-network or unblinded address
+- fix: derive signing keys for the requested network — `signTx` and
+  `signedPsetWithExtraDetails` had mainnet/testnet inverted
+- fix: propagate signing failures instead of finalizing an unsigned PSET
+- fix: reject `BigInt` amounts outside the unsigned 64-bit range at the FFI
+  boundary rather than wrapping them modulo 2^64
+- chore: zeroize mnemonic strings after use; remove the hardcoded mainnet test
+  mnemonic in favour of `LWK_MAINNET_TEST_MNEMONIC`
+- chore: verify downloaded native libraries against a pinned digest, repair the
+  release asset URL, and pin the release Rust nightly
+- docs: add `SECURITY.md`
+
 ## 0.6.0
 
 - feat: add `Wallet.consolidate` — builds N unsigned PSETs batching confirmed
