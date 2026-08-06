@@ -14,7 +14,7 @@ config = read_key_value_pairs.call(config_file_path)
 tag_version = "#{config['TAG_VERSION']}"
 framework = 'liblwk.xcframework'
 lib_name = "liblwk.#{tag_version}"
-url = "#{config['REPOSITORY_URL']}#{tag_version}/#{lib_name}.zip"
+url = "#{config['REPOSITORY_URL']}/#{tag_version}/#{lib_name}.zip"
 frameworks_dir = "macos"
 
 

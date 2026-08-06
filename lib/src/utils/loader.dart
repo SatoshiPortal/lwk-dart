@@ -14,7 +14,7 @@ class Dylib {
   static Map<String, dynamic>? _config;
   static String get libName => "unittest.liblwk.${_config!['TAG_VERSION']}";
   static String get remoteUrl =>
-      "${_config!['REPOSITORY_URL']}${_config!['TAG_VERSION']}/$libName.zip";
+      "${_config!['REPOSITORY_URL']}/${_config!['TAG_VERSION']}/$libName.zip";
   static Future<void> _loadJsonAsset() async {
     final String content =
         await rootBundle.loadString("packages/lwk/assets/release.config.txt");
