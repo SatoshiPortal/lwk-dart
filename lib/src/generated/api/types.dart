@@ -9,20 +9,20 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `from_balance`
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AssetIdBTreeMapInt`, `AssetIdBTreeMapUInt`, `AssetIdHashMapInt`, `AssetIdHashMapUInt`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `try_from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `try_from`
 
 /// Get balance value for a specific asset ID from a list of balances
-PlatformInt64 getBalanceByAssetId(
-        {required List<Balance> balances, required String assetId}) =>
+BigInt getBalanceByAssetId(
+        {required List<WalletBalance> balances, required String assetId}) =>
     LwkCore.instance.api
         .crateApiTypesGetBalanceByAssetId(balances: balances, assetId: assetId);
 
 /// Get L-BTC mainnet balance
-PlatformInt64 getLbtcBalance({required List<Balance> balances}) =>
+BigInt getLbtcBalance({required List<WalletBalance> balances}) =>
     LwkCore.instance.api.crateApiTypesGetLbtcBalance(balances: balances);
 
 /// Get L-BTC testnet balance
-PlatformInt64 getLtestBalance({required List<Balance> balances}) =>
+BigInt getLtestBalance({required List<WalletBalance> balances}) =>
     LwkCore.instance.api.crateApiTypesGetLtestBalance(balances: balances);
 
 /// Get L-BTC mainnet asset ID
@@ -188,7 +188,7 @@ class PsetAmounts {
 class SizeAndFees {
   final BigInt discountedVsize;
   final BigInt discountedWeight;
-  final List<Balance> absoluteFees;
+  final List<WalletBalance> absoluteFees;
 
   const SizeAndFees({
     required this.discountedVsize,
@@ -359,4 +359,26 @@ class TxOutputSpec {
           address == other.address &&
           satoshi == other.satoshi &&
           assetId == other.assetId;
+}
+
+/// WalletBalance represents a non-negative amount held by a wallet.
+class WalletBalance {
+  final String assetId;
+  final BigInt value;
+
+  const WalletBalance({
+    required this.assetId,
+    required this.value,
+  });
+
+  @override
+  int get hashCode => assetId.hashCode ^ value.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WalletBalance &&
+          runtimeType == other.runtimeType &&
+          assetId == other.assetId &&
+          value == other.value;
 }

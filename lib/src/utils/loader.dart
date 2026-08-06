@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:archive/archive.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart' show Uint8List, rootBundle;
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,7 @@ class Dylib {
   static Map<String, dynamic>? _config;
   static String get libName => "unittest.liblwk.${_config!['TAG_VERSION']}";
   static String get remoteUrl =>
-      "${_config!['REPOSITORY_URL']}${_config!['TAG_VERSION']}/$libName.zip";
+      "${_config!['REPOSITORY_URL']}/${_config!['TAG_VERSION']}/$libName.zip";
   static Future<void> _loadJsonAsset() async {
     final String content =
         await rootBundle.loadString("packages/lwk/assets/release.config.txt");
@@ -40,6 +41,18 @@ class Dylib {
         final response = await http.get(Uri.parse(remoteUrl));
         if (response.statusCode == 200) {
           final bytes = response.bodyBytes;
+          // The archive holds the native library this process then dlopens, so
+          // unzipping an unverified download is arbitrary code execution.
+          final expected = _config!['UNITTEST_LIB_SHA256'] as String?;
+          if (expected == null || expected.isEmpty) {
+            throw StateError(
+                'UNITTEST_LIB_SHA256 missing from release.config.txt');
+          }
+          final actual = sha256.convert(bytes).toString();
+          if (actual != expected) {
+            throw StateError(
+                'Refusing $libName.zip: expected sha256 $expected, got $actual');
+          }
           final archive = ZipDecoder().decodeBytes(Uint8List.fromList(bytes));
           for (final file in archive) {
             final filename = '$assetsDir/${file.name}';

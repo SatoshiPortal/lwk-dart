@@ -15,6 +15,15 @@ void store_dart_post_cobject(DartPostCObjectFnType ptr);
 typedef struct _Dart_Handle* Dart_Handle;
 
 /**
+ * Upper sanity bound on the fee rate, in sats/kvB: 100 sat/vB.
+ *
+ * Liquid fees sit around 0.1 sat/vB, so this is three orders of magnitude of
+ * headroom. It exists to stop a fat-fingered or unit-confused value, not to
+ * express policy.
+ */
+#define MAX_FEE_RATE_SATS_PER_KVB 100000.0
+
+/**
  * UTXO count above which consolidation is offered
  */
 #define HIGH_UTXO_THRESHOLD 125
@@ -38,15 +47,15 @@ typedef struct wire_cst_blockchain {
 
 } wire_cst_blockchain;
 
-typedef struct wire_cst_balance {
+typedef struct wire_cst_wallet_balance {
   struct wire_cst_list_prim_u_8_strict *asset_id;
-  int64_t value;
-} wire_cst_balance;
+  uint64_t value;
+} wire_cst_wallet_balance;
 
-typedef struct wire_cst_list_balance {
-  struct wire_cst_balance *ptr;
+typedef struct wire_cst_list_wallet_balance {
+  struct wire_cst_wallet_balance *ptr;
   int32_t len;
-} wire_cst_list_balance;
+} wire_cst_list_wallet_balance;
 
 typedef struct wire_cst_wallet {
   uintptr_t inner;
@@ -110,6 +119,16 @@ typedef struct wire_cst_tx_output {
   uint64_t *value;
   struct wire_cst_list_prim_u_8_strict *nonce;
 } wire_cst_tx_output;
+
+typedef struct wire_cst_balance {
+  struct wire_cst_list_prim_u_8_strict *asset_id;
+  int64_t value;
+} wire_cst_balance;
+
+typedef struct wire_cst_list_balance {
+  struct wire_cst_balance *ptr;
+  int32_t len;
+} wire_cst_list_balance;
 
 typedef struct wire_cst_list_pset_input {
   struct wire_cst_pset_input *ptr;
@@ -201,7 +220,7 @@ typedef struct wire_cst_pset_amounts {
 typedef struct wire_cst_size_and_fees {
   uintptr_t discounted_vsize;
   uintptr_t discounted_weight;
-  struct wire_cst_list_balance *absolute_fees;
+  struct wire_cst_list_wallet_balance *absolute_fees;
 } wire_cst_size_and_fees;
 
 WireSyncRust2DartDco frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_fee(uintptr_t that);
@@ -320,16 +339,16 @@ void frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential(int64_
 void frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes(int64_t port_,
                                                                 struct wire_cst_list_prim_u_8_strict *pset);
 
-WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id(struct wire_cst_list_balance *balances,
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_balance_by_asset_id(struct wire_cst_list_wallet_balance *balances,
                                                                                  struct wire_cst_list_prim_u_8_strict *asset_id);
 
 WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_lbtc_asset_id(void);
 
-WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_lbtc_balance(struct wire_cst_list_balance *balances);
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_lbtc_balance(struct wire_cst_list_wallet_balance *balances);
 
 WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_ltest_asset_id(void);
 
-WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_ltest_balance(struct wire_cst_list_balance *balances);
+WireSyncRust2DartDco frbgen_lwk_wire__crate__api__types__get_ltest_balance(struct wire_cst_list_wallet_balance *balances);
 
 void frbgen_lwk_wire__crate__api__transaction__get_size_and_absolute_fees(int64_t port_,
                                                                           struct wire_cst_list_prim_u_8_strict *pset);
@@ -475,6 +494,8 @@ struct wire_cst_list_tx_out_secrets *frbgen_lwk_cst_new_list_tx_out_secrets(int3
 struct wire_cst_list_tx_output *frbgen_lwk_cst_new_list_tx_output(int32_t len);
 
 struct wire_cst_list_tx_output_spec *frbgen_lwk_cst_new_list_tx_output_spec(int32_t len);
+
+struct wire_cst_list_wallet_balance *frbgen_lwk_cst_new_list_wallet_balance(int32_t len);
 static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_blockchain);
@@ -500,6 +521,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_out_secrets);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_output);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_output_spec);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_wallet_balance);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction);

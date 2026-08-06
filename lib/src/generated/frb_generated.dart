@@ -235,16 +235,16 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<Uint8List> crateApiTransactionExtractTxBytes({required String pset});
 
-  PlatformInt64 crateApiTypesGetBalanceByAssetId(
-      {required List<Balance> balances, required String assetId});
+  BigInt crateApiTypesGetBalanceByAssetId(
+      {required List<WalletBalance> balances, required String assetId});
 
   String crateApiTypesGetLbtcAssetId();
 
-  PlatformInt64 crateApiTypesGetLbtcBalance({required List<Balance> balances});
+  BigInt crateApiTypesGetLbtcBalance({required List<WalletBalance> balances});
 
   String crateApiTypesGetLtestAssetId();
 
-  PlatformInt64 crateApiTypesGetLtestBalance({required List<Balance> balances});
+  BigInt crateApiTypesGetLtestBalance({required List<WalletBalance> balances});
 
   Future<SizeAndFees> crateApiTransactionGetSizeAndAbsoluteFees(
       {required String pset});
@@ -254,7 +254,8 @@ abstract class LwkCoreApi extends BaseApi {
 
   Future<Address> crateApiWalletWalletAddressLastUnused({required Wallet that});
 
-  Future<List<Balance>> crateApiWalletWalletBalances({required Wallet that});
+  Future<List<WalletBalance>> crateApiWalletWalletBalances(
+      {required Wallet that});
 
   Future<String> crateApiWalletWalletBlindingKey({required Wallet that});
 
@@ -1637,17 +1638,17 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  PlatformInt64 crateApiTypesGetBalanceByAssetId(
-      {required List<Balance> balances, required String assetId}) {
+  BigInt crateApiTypesGetBalanceByAssetId(
+      {required List<WalletBalance> balances, required String assetId}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
-        var arg0 = cst_encode_list_balance(balances);
+        var arg0 = cst_encode_list_wallet_balance(balances);
         var arg1 = cst_encode_String(assetId);
         return wire.wire__crate__api__types__get_balance_by_asset_id(
             arg0, arg1);
       },
       codec: DcoCodec(
-        decodeSuccessData: dco_decode_i_64,
+        decodeSuccessData: dco_decode_u_64,
         decodeErrorData: null,
       ),
       constMeta: kCrateApiTypesGetBalanceByAssetIdConstMeta,
@@ -1685,14 +1686,14 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  PlatformInt64 crateApiTypesGetLbtcBalance({required List<Balance> balances}) {
+  BigInt crateApiTypesGetLbtcBalance({required List<WalletBalance> balances}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
-        var arg0 = cst_encode_list_balance(balances);
+        var arg0 = cst_encode_list_wallet_balance(balances);
         return wire.wire__crate__api__types__get_lbtc_balance(arg0);
       },
       codec: DcoCodec(
-        decodeSuccessData: dco_decode_i_64,
+        decodeSuccessData: dco_decode_u_64,
         decodeErrorData: null,
       ),
       constMeta: kCrateApiTypesGetLbtcBalanceConstMeta,
@@ -1730,15 +1731,14 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  PlatformInt64 crateApiTypesGetLtestBalance(
-      {required List<Balance> balances}) {
+  BigInt crateApiTypesGetLtestBalance({required List<WalletBalance> balances}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
-        var arg0 = cst_encode_list_balance(balances);
+        var arg0 = cst_encode_list_wallet_balance(balances);
         return wire.wire__crate__api__types__get_ltest_balance(arg0);
       },
       codec: DcoCodec(
-        decodeSuccessData: dco_decode_i_64,
+        decodeSuccessData: dco_decode_u_64,
         decodeErrorData: null,
       ),
       constMeta: kCrateApiTypesGetLtestBalanceConstMeta,
@@ -1829,14 +1829,15 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  Future<List<Balance>> crateApiWalletWalletBalances({required Wallet that}) {
+  Future<List<WalletBalance>> crateApiWalletWalletBalances(
+      {required Wallet that}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_wallet(that);
         return wire.wire__crate__api__wallet__wallet_balances(port_, arg0);
       },
       codec: DcoCodec(
-        decodeSuccessData: dco_decode_list_balance,
+        decodeSuccessData: dco_decode_list_wallet_balance,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kCrateApiWalletWalletBalancesConstMeta,
@@ -2572,6 +2573,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  List<WalletBalance> dco_decode_list_wallet_balance(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_wallet_balance).toList();
+  }
+
+  @protected
   LwkError dco_decode_lwk_error(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2704,7 +2711,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     return SizeAndFees(
       discountedVsize: dco_decode_usize(arr[0]),
       discountedWeight: dco_decode_usize(arr[1]),
-      absoluteFees: dco_decode_list_balance(arr[2]),
+      absoluteFees: dco_decode_list_wallet_balance(arr[2]),
     );
   }
 
@@ -2839,6 +2846,18 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
     return Wallet(
       inner: dco_decode_RustOpaque_Mutexlwk_wolletWollet(arr[0]),
+    );
+  }
+
+  @protected
+  WalletBalance dco_decode_wallet_balance(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return WalletBalance(
+      assetId: dco_decode_String(arr[0]),
+      value: dco_decode_u_64(arr[1]),
     );
   }
 
@@ -3186,6 +3205,19 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  List<WalletBalance> sse_decode_list_wallet_balance(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <WalletBalance>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_wallet_balance(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   LwkError sse_decode_lwk_error(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_msg = sse_decode_String(deserializer);
@@ -3343,7 +3375,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_discountedVsize = sse_decode_usize(deserializer);
     var var_discountedWeight = sse_decode_usize(deserializer);
-    var var_absoluteFees = sse_decode_list_balance(deserializer);
+    var var_absoluteFees = sse_decode_list_wallet_balance(deserializer);
     return SizeAndFees(
         discountedVsize: var_discountedVsize,
         discountedWeight: var_discountedWeight,
@@ -3484,6 +3516,14 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_inner = sse_decode_RustOpaque_Mutexlwk_wolletWollet(deserializer);
     return Wallet(inner: var_inner);
+  }
+
+  @protected
+  WalletBalance sse_decode_wallet_balance(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_assetId = sse_decode_String(deserializer);
+    var var_value = sse_decode_u_64(deserializer);
+    return WalletBalance(assetId: var_assetId, value: var_value);
   }
 
   @protected
@@ -3908,6 +3948,16 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  void sse_encode_list_wallet_balance(
+      List<WalletBalance> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_wallet_balance(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.msg, serializer);
@@ -4042,7 +4092,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(self.discountedVsize, serializer);
     sse_encode_usize(self.discountedWeight, serializer);
-    sse_encode_list_balance(self.absoluteFees, serializer);
+    sse_encode_list_wallet_balance(self.absoluteFees, serializer);
   }
 
   @protected
@@ -4141,6 +4191,13 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   void sse_encode_wallet(Wallet self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_RustOpaque_Mutexlwk_wolletWollet(self.inner, serializer);
+  }
+
+  @protected
+  void sse_encode_wallet_balance(WalletBalance self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.assetId, serializer);
+    sse_encode_u_64(self.value, serializer);
   }
 }
 

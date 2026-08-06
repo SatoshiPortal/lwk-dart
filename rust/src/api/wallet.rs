@@ -15,18 +15,84 @@ use lwk_wollet::WolletDescriptor;
 use std::str::FromStr;
 pub use std::sync::Mutex;
 use std::sync::MutexGuard;
+use zeroize::Zeroizing;
 
 use super::descriptor::Descriptor;
 use super::error::LwkError;
 use super::types::Address;
 use super::types::AssetIdBTreeMapUInt;
-use super::types::Balances;
 use super::types::LiquidNetwork;
 use super::types::OutPoint;
 use super::types::PsetAmounts;
 use super::types::Tx;
 use super::types::TxOut;
 use super::types::TxOutputSpec;
+use super::types::WalletBalances;
+
+/// Upper sanity bound on the fee rate, in sats/kvB: 100 sat/vB.
+///
+/// Liquid fees sit around 0.1 sat/vB, so this is three orders of magnitude of
+/// headroom. It exists to stop a fat-fingered or unit-confused value, not to
+/// express policy.
+pub const MAX_FEE_RATE_SATS_PER_KVB: f32 = 100_000.0;
+
+/// Reject a fee rate that cannot mean what the caller intended.
+///
+/// The unit here is sats/**kvB**, not sat/vB: 1 sat/vB is 1000.0. Nothing in
+/// the old signature said so, and the values lwk derives from a bad one are
+/// silent rather than loud — on a 2500 WU confidential transaction, `f32::NAN`
+/// and `-5.0` both produce a 0 sat fee, and `f32::INFINITY` produces a fee of
+/// `u64::MAX`. A caller assuming sat/vB and passing `1.0` gets 0.001 sat/vB,
+/// under Liquid's relay floor, so the transaction never confirms and the coins
+/// stay locked in an unconfirmed spend.
+fn validate_fee_rate(fee_rate: f32) -> anyhow::Result<(), LwkError> {
+    if !fee_rate.is_finite() {
+        return Err(LwkError {
+            msg: format!("Fee rate must be a finite number, got {fee_rate}"),
+        });
+    }
+    if fee_rate <= 0.0 {
+        return Err(LwkError {
+            msg: format!("Fee rate must be positive, got {fee_rate} sats/kvB"),
+        });
+    }
+    if fee_rate > MAX_FEE_RATE_SATS_PER_KVB {
+        return Err(LwkError {
+            msg: format!(
+                "Fee rate {fee_rate} sats/kvB exceeds the {MAX_FEE_RATE_SATS_PER_KVB} \
+                 sats/kvB bound; note the unit is sats/kvB, so 1 sat/vB is 1000.0"
+            ),
+        });
+    }
+    Ok(())
+}
+
+/// Validate a destination address the way lwk validates a normal recipient.
+///
+/// `LwkAddress::from_str` accepts an address for any network and says nothing
+/// about confidentiality, and `TxBuilder::drain_lbtc_to` takes the address
+/// without validating it — unlike `add_lbtc_recipient`, which routes through
+/// lwk's own `validate_address`. A drain therefore accepted a mainnet address
+/// on a testnet wallet, and an unblinded address that leaks the amount and
+/// recipient of the whole sweep.
+///
+/// Mirrors lwk_wollet's `validate_address`: parse under the wallet's own
+/// address params, then require a blinding key.
+fn validate_out_address(
+    address: &str,
+    network: lwk_wollet::Network,
+) -> anyhow::Result<LwkAddress, LwkError> {
+    let address = LwkAddress::parse_with_params(address, network.address_params())
+        .map_err(|e| LwkError {
+            msg: format!("Invalid address for {:?}: {}", network, e),
+        })?;
+    if address.blinding_pubkey.is_none() {
+        return Err(LwkError {
+            msg: "Address is not confidential".to_string(),
+        });
+    }
+    Ok(address)
+}
 
 /// Main wallet object
 pub struct Wallet {
@@ -130,9 +196,9 @@ impl Wallet {
     }
 
     /// Get balances for a wallet.
-    pub fn balances(&self) -> anyhow::Result<Balances, LwkError> {
+    pub fn balances(&self) -> anyhow::Result<WalletBalances, LwkError> {
         let balance_map: AssetIdBTreeMapUInt = self.get_wallet()?.balance()?.as_ref().clone().into();
-        let balance = Balances::from(balance_map);
+        let balance = WalletBalances::from(balance_map);
         Ok(balance)
     }
 
@@ -155,9 +221,14 @@ impl Wallet {
         fee_rate: f32,
         drain: bool,
     ) -> anyhow::Result<String, LwkError> {
+        validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
+        let network = wallet.network();
         let tx_builder = wallet.tx_builder();
-        let address = LwkAddress::from_str(&out_address)?;
+        // Validated for both branches: the drain path never validated at all,
+        // and validating up front gives the same rejection a clearer message on
+        // the recipient path.
+        let address = validate_out_address(&out_address, network)?;
         if drain {
             let pset = tx_builder
                 .drain_lbtc_wallet()
@@ -189,6 +260,7 @@ impl Wallet {
         high_utxo_threshold: Option<u32>,
         maximum_inputs: Option<u32>,
     ) -> anyhow::Result<Vec<String>, LwkError> {
+        validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let policy_asset = wallet.policy_asset();
 
@@ -258,6 +330,7 @@ impl Wallet {
         drain_to: Option<String>,
         fee_rate: f32,
     ) -> anyhow::Result<String, LwkError> {
+        validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
 
         let outpoints: Vec<LwkOutPoint> = utxos
@@ -294,7 +367,11 @@ impl Wallet {
             // regardless of manual UTXO selection. `drain_lbtc_to` alone
             // (consumed at tx_builder.rs:1174) is what actually directs
             // leftover L-BTC to `address`.
-            let address = LwkAddress::from_str(&drain_addr)?;
+            // Same gap as build_lbtc_tx: drain_lbtc_to does not validate, so
+            // without this a sweep could go to a wrong-network or unblinded
+            // address. The consolidate path above is fine because it drains to
+            // the wallet's own address rather than a caller-supplied one.
+            let address = validate_out_address(&drain_addr, wallet.network())?;
             builder = builder.drain_lbtc_to(address);
         }
 
@@ -313,6 +390,7 @@ impl Wallet {
         fee_rate: f32,
         asset: String,
     ) -> anyhow::Result<String, LwkError> {
+        validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let tx_builder = wallet.tx_builder();
         let address = LwkAddress::from_str(&out_address)?;
@@ -472,13 +550,13 @@ impl Wallet {
         mnemonic: String,
         add_details: bool,
     ) -> anyhow::Result<String, LwkError> {
-        let is_mainnet = network == LiquidNetwork::Testnet;
-        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
+        let mnemonic = Zeroizing::new(mnemonic);
+        let signer: SwSigner = SwSigner::new(&mnemonic, network.is_mainnet())?;
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         if add_details {
             self.get_wallet()?.add_details(&mut pset)?;
         }
-        let _ = signer.sign(&mut pset);
+        signer.sign(&mut pset)?;
         let tx = self.get_wallet()?.finalize(&mut pset)?;
         let finalized_pset = PartiallySignedTransaction::from_tx(tx.clone());
         Ok(finalized_pset.to_string())
@@ -520,12 +598,66 @@ mod tests {
 
     use super::*;
     #[test]
+    fn fee_rate_rejects_values_that_cannot_be_meant() {
+        // lwk turns each of these into a silently wrong fee rather than an error.
+        assert!(validate_fee_rate(f32::NAN).is_err(), "NaN yields a 0 sat fee");
+        assert!(
+            validate_fee_rate(f32::INFINITY).is_err(),
+            "infinity yields a u64::MAX fee"
+        );
+        assert!(validate_fee_rate(-5.0).is_err(), "negative yields a 0 sat fee");
+        assert!(validate_fee_rate(0.0).is_err());
+        assert!(
+            validate_fee_rate(1_000_000.0).is_err(),
+            "1000 sat/vB is far past any plausible Liquid fee"
+        );
+    }
+
+    #[test]
+    fn fee_rate_accepts_the_usable_range() {
+        assert!(validate_fee_rate(100.0).is_ok(), "0.1 sat/vB, typical for Liquid");
+        assert!(validate_fee_rate(1000.0).is_ok(), "1 sat/vB");
+        assert!(validate_fee_rate(MAX_FEE_RATE_SATS_PER_KVB).is_ok());
+    }
+
+    #[test]
+    fn out_address_must_match_the_wallet_network() {
+        // Liquid testnet confidential address, from lwk_wollet's own test.
+        let testnet = "tlq1qq2xvpcvfup5j8zscjq05u2wxxjcyewk7979f3mmz5l7uw5pqmx6xf5xy50hsn6vhkm5euwt72x878eq6zxx2z58hd7zrsg9qn";
+
+        assert!(validate_out_address(testnet, lwk_wollet::Network::TestnetLiquid).is_ok());
+        assert!(
+            validate_out_address(testnet, lwk_wollet::Network::Liquid).is_err(),
+            "a testnet address must be refused on a mainnet wallet"
+        );
+    }
+
+    #[test]
+    fn out_address_must_be_confidential() {
+        // Same key material as the address above, without the blinding key:
+        // a valid testnet address that leaks amount and recipient.
+        let confidential = "tlq1qq2xvpcvfup5j8zscjq05u2wxxjcyewk7979f3mmz5l7uw5pqmx6xf5xy50hsn6vhkm5euwt72x878eq6zxx2z58hd7zrsg9qn";
+        let parsed = LwkAddress::parse_with_params(
+            confidential,
+            lwk_wollet::Network::TestnetLiquid.address_params(),
+        )
+        .unwrap();
+        let explicit = parsed.to_unconfidential().to_string();
+
+        assert!(
+            validate_out_address(&explicit, lwk_wollet::Network::TestnetLiquid).is_err(),
+            "an unblinded address must be refused"
+        );
+    }
+
+    #[test]
+    #[ignore = "live mainnet integration test; set LWK_MAINNET_TEST_MNEMONIC"]
     fn testable_wallets() {
-        let mnemonic =
-            "umbrella response wide outer mystery drastic crew festival poet coconut error act";
+        let mnemonic = std::env::var("LWK_MAINNET_TEST_MNEMONIC")
+            .expect("LWK_MAINNET_TEST_MNEMONIC must be set");
         let electrum_url = "les.bullbitcoin.com:995".to_string();
         let network = LiquidNetwork::Mainnet;
-        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
+        let desc = Descriptor::new_confidential(network, mnemonic).unwrap();
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
         let _ = wallet.sync(electrum_url.clone(), true, None, None);
         let _txs = wallet.txs();

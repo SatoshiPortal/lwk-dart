@@ -10,7 +10,7 @@ pub const L_TEST_ASSET_ID: &str =
 
 /// Get balance value for a specific asset ID from a list of balances
 #[frb(sync)]
-pub fn get_balance_by_asset_id(balances: Vec<Balance>, asset_id: String) -> i64 {
+pub fn get_balance_by_asset_id(balances: Vec<WalletBalance>, asset_id: String) -> u64 {
     balances
         .iter()
         .find(|b| b.asset_id == asset_id)
@@ -20,13 +20,13 @@ pub fn get_balance_by_asset_id(balances: Vec<Balance>, asset_id: String) -> i64 
 
 /// Get L-BTC mainnet balance
 #[frb(sync)]
-pub fn get_lbtc_balance(balances: Vec<Balance>) -> i64 {
+pub fn get_lbtc_balance(balances: Vec<WalletBalance>) -> u64 {
     get_balance_by_asset_id(balances, L_BTC_ASSET_ID.to_string())
 }
 
 /// Get L-BTC testnet balance
 #[frb(sync)]
-pub fn get_ltest_balance(balances: Vec<Balance>) -> i64 {
+pub fn get_ltest_balance(balances: Vec<WalletBalance>) -> u64 {
     get_balance_by_asset_id(balances, L_TEST_ASSET_ID.to_string())
 }
 
@@ -65,6 +65,12 @@ use super::error::LwkError;
 pub enum LiquidNetwork {
     Mainnet,
     Testnet,
+}
+
+impl LiquidNetwork {
+    pub(crate) fn is_mainnet(self) -> bool {
+        self == LiquidNetwork::Mainnet
+    }
 }
 
 impl Into<ElementsNetwork> for LiquidNetwork {
@@ -115,6 +121,16 @@ pub struct Balance {
 /// A multi asset wallet will have more than one item in the list for each asset
 pub type Balances = Vec<Balance>;
 
+/// WalletBalance represents a non-negative amount held by a wallet.
+#[derive(Clone, Debug, PartialEq)]
+pub struct WalletBalance {
+    pub asset_id: String,
+    pub value: u64,
+}
+
+/// Current wallet balances, keyed by asset.
+pub type WalletBalances = Vec<WalletBalance>;
+
 impl From<AssetIdBTreeMapInt> for Balances {
     fn from(asset_id_map: AssetIdBTreeMapInt) -> Self {
         asset_id_map
@@ -140,39 +156,27 @@ impl From<AssetIdHashMapInt> for Balances {
     }
 }
 
-impl From<AssetIdBTreeMapUInt> for Balances {
+impl From<AssetIdBTreeMapUInt> for WalletBalances {
     fn from(asset_id_map: AssetIdBTreeMapUInt) -> Self {
         asset_id_map
             .0
             .into_iter()
-            .filter_map(|(key, value)| match i64::try_from(value) {
-                Ok(converted_value) => Some(Balance {
-                    asset_id: key.to_string(),
-                    value: converted_value,
-                }),
-                Err(_) => {
-                    eprintln!("Warning: Overflow encountered converting {} to i64", value);
-                    None
-                }
+            .map(|(key, value)| WalletBalance {
+                asset_id: key.to_string(),
+                value,
             })
             .collect()
     }
 }
 
-impl From<AssetIdHashMapUInt> for Balances {
+impl From<AssetIdHashMapUInt> for WalletBalances {
     fn from(asset_id_map: AssetIdHashMapUInt) -> Self {
         asset_id_map
             .0
             .into_iter()
-            .filter_map(|(key, value)| match u64::try_from(value) {
-                Ok(converted_value) => Some(Balance {
-                    asset_id: key.to_string(),
-                    value: converted_value as i64,
-                }),
-                Err(_) => {
-                    eprintln!("Warning: Overflow encountered converting {} to i64", value);
-                    None
-                }
+            .map(|(key, value)| WalletBalance {
+                asset_id: key.to_string(),
+                value,
             })
             .collect()
     }
@@ -239,10 +243,14 @@ impl Address {
     /// Validate the address string and return the network
     pub fn validate(address_string: String) -> anyhow::Result<LiquidNetwork, LwkError> {
         let address = LwkAddress::from_str(&address_string)?;
-        if address.params.to_owned() == AddressParams::LIQUID {
+        if address.params == &AddressParams::LIQUID {
             Ok(LiquidNetwork::Mainnet)
-        } else {
+        } else if address.params == &AddressParams::LIQUID_TESTNET {
             Ok(LiquidNetwork::Testnet)
+        } else {
+            Err(LwkError {
+                msg: "Unsupported address network".to_string(),
+            })
         }
     }
 
@@ -286,6 +294,49 @@ impl Address {
                 msg: "Could not convert script to address".to_string(),
             })
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn address_validate_only_accepts_supported_liquid_networks() {
+        let mainnet = "ex1q7gkeyjut0mrxc3j0kjlt7rmcnvsh0gt45d3fud";
+        let testnet = "tlq1qq2xvpcvfup5j8zscjq05u2wxxjcyewk7979f3mmz5l7uw5pqmx6xf5xy50hsn6vhkm5euwt72x878eq6zxx2z58hd7zrsg9qn";
+        let elements_regtest = "ert1qwhh2n5qypypm0eufahm2pvj8raj9zq5c27cysu";
+
+        assert_eq!(
+            Address::validate(mainnet.to_string()).unwrap(),
+            LiquidNetwork::Mainnet
+        );
+        assert_eq!(
+            Address::validate(testnet.to_string()).unwrap(),
+            LiquidNetwork::Testnet
+        );
+        assert!(Address::validate(elements_regtest.to_string()).is_err());
+    }
+
+    #[test]
+    fn wallet_balances_preserve_the_full_u64_range() {
+        let asset = AssetId::from_str(L_BTC_ASSET_ID).unwrap();
+        let balances = WalletBalances::from(AssetIdBTreeMapUInt(BTreeMap::from([(
+            asset,
+            u64::MAX,
+        )])));
+
+        assert_eq!(balances[0].value, u64::MAX);
+        assert_eq!(
+            get_balance_by_asset_id(balances, L_BTC_ASSET_ID.to_string()),
+            u64::MAX
+        );
+    }
+
+    #[test]
+    fn only_liquid_mainnet_uses_mainnet_signing_keys() {
+        assert!(LiquidNetwork::Mainnet.is_mainnet());
+        assert!(!LiquidNetwork::Testnet.is_mainnet());
     }
 }
 
@@ -411,7 +462,7 @@ impl PsetAmounts {
 pub struct SizeAndFees {
     pub discounted_vsize: usize,
     pub discounted_weight: usize,
-    pub absolute_fees: Balances,
+    pub absolute_fees: WalletBalances,
 }
 impl TryFrom<String> for SizeAndFees {
     type Error = LwkError;

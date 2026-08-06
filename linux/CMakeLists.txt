@@ -13,13 +13,25 @@ foreach(line IN LISTS lines)
     if(CMAKE_MATCH_1)
         set(REPOSITORY_URL ${CMAKE_MATCH_1})
     endif()
+    string(REGEX MATCH "LIB_SHA256=(.*)" _ ${line})
+    if(CMAKE_MATCH_1)
+        set(LIB_SHA256 ${CMAKE_MATCH_1})
+    endif()
 endforeach()
+
+# The archive carries the native wallet library that gets loaded into the app,
+# so an unverified download is arbitrary native code execution. EXPECTED_HASH
+# makes CMake fail the build on a mismatch instead of unzipping it.
+if(NOT LIB_SHA256)
+    message(FATAL_ERROR "LIB_SHA256 missing from ${TEXT_FILE_PATH}")
+endif()
 
 set(LIB_NAME "liblwk.${TAG_VERSION}")
 set(URL "${REPOSITORY_URL}/${TAG_VERSION}/${LIB_NAME}.zip")
 set(OUTPUT_PATH "${CMAKE_PARENT_DIR}/${LIB_NAME}.zip")
 if(NOT EXISTS "${CMAKE_PARENT_DIR}/${LIB_NAME}")
         file(DOWNLOAD ${URL} ${OUTPUT_PATH}
+                EXPECTED_HASH SHA256=${LIB_SHA256}
                 STATUS DOWNLOAD_STATUS
                 SHOW_PROGRESS)
         list(GET DOWNLOAD_STATUS 0 STATUS_CODE)

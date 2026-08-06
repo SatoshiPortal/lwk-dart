@@ -15,4 +15,5 @@ cd rust
 cargo update
 cd - || exit 1
 
-flutter_rust_bridge_codegen generate 
+flutter_rust_bridge_codegen generate
+fvm dart run tool/patch_generated_u64.dart

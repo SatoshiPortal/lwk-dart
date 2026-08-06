@@ -15,6 +15,7 @@ import 'api/wallet.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
+import '../checked_u64.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
 
 abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
@@ -170,6 +171,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<TxOutputSpec> dco_decode_list_tx_output_spec(dynamic raw);
 
   @protected
+  List<WalletBalance> dco_decode_list_wallet_balance(dynamic raw);
+
+  @protected
   LwkError dco_decode_lwk_error(dynamic raw);
 
   @protected
@@ -249,6 +253,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   Wallet dco_decode_wallet(dynamic raw);
+
+  @protected
+  WalletBalance dco_decode_wallet_balance(dynamic raw);
 
   @protected
   LiquidTransaction
@@ -386,6 +393,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       SseDeserializer deserializer);
 
   @protected
+  List<WalletBalance> sse_decode_list_wallet_balance(
+      SseDeserializer deserializer);
+
+  @protected
   LwkError sse_decode_lwk_error(SseDeserializer deserializer);
 
   @protected
@@ -467,6 +478,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   Wallet sse_decode_wallet(SseDeserializer deserializer);
+
+  @protected
+  WalletBalance sse_decode_wallet_balance(SseDeserializer deserializer);
 
   @protected
   String cst_encode_String(String raw) {
@@ -649,6 +663,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_list_wallet_balance(List<WalletBalance> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_wallet_balance).toList().jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_lwk_error(LwkError raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [cst_encode_String(raw.msg)].jsify()!;
@@ -755,7 +775,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     return [
       cst_encode_usize(raw.discountedVsize),
       cst_encode_usize(raw.discountedWeight),
-      cst_encode_list_balance(raw.absoluteFees)
+      cst_encode_list_wallet_balance(raw.absoluteFees)
     ].jsify()!;
   }
 
@@ -837,19 +857,26 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   @protected
   JSAny cst_encode_u_64(BigInt raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return castNativeBigInt(raw);
+    return castNativeBigInt(checkedU64(raw));
   }
 
   @protected
   JSAny cst_encode_usize(BigInt raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return castNativeBigInt(raw);
+    return castNativeBigInt(checkedU64(raw));
   }
 
   @protected
   JSAny cst_encode_wallet(Wallet raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [cst_encode_RustOpaque_Mutexlwk_wolletWollet(raw.inner)].jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_wallet_balance(WalletBalance raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [cst_encode_String(raw.assetId), cst_encode_u_64(raw.value)]
+        .jsify()!;
   }
 
   @protected
@@ -1044,6 +1071,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       List<TxOutputSpec> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_wallet_balance(
+      List<WalletBalance> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer);
 
   @protected
@@ -1127,6 +1158,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_wallet(Wallet self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_wallet_balance(WalletBalance self, SseSerializer serializer);
 }
 
 // Section: wire_class

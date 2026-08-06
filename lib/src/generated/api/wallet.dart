@@ -9,7 +9,7 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
-// These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `move_payjoin_signatures`, `sign_tx_common`
+// These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `move_payjoin_signatures`, `sign_tx_common`, `validate_fee_rate`, `validate_out_address`
 
 // Rust type: RustOpaqueNom<Mutex < lwk_wollet :: Wollet >>
 abstract class MutexWollet implements RustOpaqueInterface {}
@@ -33,7 +33,7 @@ class Wallet {
       );
 
   /// Get balances for a wallet.
-  Future<List<Balance>> balances() =>
+  Future<List<WalletBalance>> balances() =>
       LwkCore.instance.api.crateApiWalletWalletBalances(
         that: this,
       );
