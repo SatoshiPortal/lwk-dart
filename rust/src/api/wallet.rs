@@ -28,6 +28,33 @@ use super::types::Tx;
 use super::types::TxOut;
 use super::types::TxOutputSpec;
 
+/// Validate a destination address the way lwk validates a normal recipient.
+///
+/// `LwkAddress::from_str` accepts an address for any network and says nothing
+/// about confidentiality, and `TxBuilder::drain_lbtc_to` takes the address
+/// without validating it — unlike `add_lbtc_recipient`, which routes through
+/// lwk's own `validate_address`. A drain therefore accepted a mainnet address
+/// on a testnet wallet, and an unblinded address that leaks the amount and
+/// recipient of the whole sweep.
+///
+/// Mirrors lwk_wollet's `validate_address`: parse under the wallet's own
+/// address params, then require a blinding key.
+fn validate_out_address(
+    address: &str,
+    network: lwk_wollet::Network,
+) -> anyhow::Result<LwkAddress, LwkError> {
+    let address = LwkAddress::parse_with_params(address, network.address_params())
+        .map_err(|e| LwkError {
+            msg: format!("Invalid address for {:?}: {}", network, e),
+        })?;
+    if address.blinding_pubkey.is_none() {
+        return Err(LwkError {
+            msg: "Address is not confidential".to_string(),
+        });
+    }
+    Ok(address)
+}
+
 /// Main wallet object
 pub struct Wallet {
     pub(crate) inner: RustOpaque<Mutex<lwk_wollet::Wollet>>,
@@ -156,8 +183,12 @@ impl Wallet {
         drain: bool,
     ) -> anyhow::Result<String, LwkError> {
         let wallet = self.get_wallet()?;
+        let network = wallet.network();
         let tx_builder = wallet.tx_builder();
-        let address = LwkAddress::from_str(&out_address)?;
+        // Validated for both branches: the drain path never validated at all,
+        // and validating up front gives the same rejection a clearer message on
+        // the recipient path.
+        let address = validate_out_address(&out_address, network)?;
         if drain {
             let pset = tx_builder
                 .drain_lbtc_wallet()
@@ -294,7 +325,11 @@ impl Wallet {
             // regardless of manual UTXO selection. `drain_lbtc_to` alone
             // (consumed at tx_builder.rs:1174) is what actually directs
             // leftover L-BTC to `address`.
-            let address = LwkAddress::from_str(&drain_addr)?;
+            // Same gap as build_lbtc_tx: drain_lbtc_to does not validate, so
+            // without this a sweep could go to a wrong-network or unblinded
+            // address. The consolidate path above is fine because it drains to
+            // the wallet's own address rather than a caller-supplied one.
+            let address = validate_out_address(&drain_addr, wallet.network())?;
             builder = builder.drain_lbtc_to(address);
         }
 
@@ -519,6 +554,36 @@ mod tests {
     use crate::api::transaction::extract_tx_bytes;
 
     use super::*;
+    #[test]
+    fn out_address_must_match_the_wallet_network() {
+        // Liquid testnet confidential address, from lwk_wollet's own test.
+        let testnet = "tlq1qq2xvpcvfup5j8zscjq05u2wxxjcyewk7979f3mmz5l7uw5pqmx6xf5xy50hsn6vhkm5euwt72x878eq6zxx2z58hd7zrsg9qn";
+
+        assert!(validate_out_address(testnet, lwk_wollet::Network::TestnetLiquid).is_ok());
+        assert!(
+            validate_out_address(testnet, lwk_wollet::Network::Liquid).is_err(),
+            "a testnet address must be refused on a mainnet wallet"
+        );
+    }
+
+    #[test]
+    fn out_address_must_be_confidential() {
+        // Same key material as the address above, without the blinding key:
+        // a valid testnet address that leaks amount and recipient.
+        let confidential = "tlq1qq2xvpcvfup5j8zscjq05u2wxxjcyewk7979f3mmz5l7uw5pqmx6xf5xy50hsn6vhkm5euwt72x878eq6zxx2z58hd7zrsg9qn";
+        let parsed = LwkAddress::parse_with_params(
+            confidential,
+            lwk_wollet::Network::TestnetLiquid.address_params(),
+        )
+        .unwrap();
+        let explicit = parsed.to_unconfidential().to_string();
+
+        assert!(
+            validate_out_address(&explicit, lwk_wollet::Network::TestnetLiquid).is_err(),
+            "an unblinded address must be refused"
+        );
+    }
+
     #[test]
     fn testable_wallets() {
         let mnemonic =
