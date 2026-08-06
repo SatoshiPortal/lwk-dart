@@ -12,6 +12,8 @@ config_file_path = File.join(assets_dir, 'release.config.txt')
 config = read_key_value_pairs.call(config_file_path)
 
 tag_version = "#{config['TAG_VERSION']}"
+lib_sha256 = "#{config['LIB_SHA256']}"
+raise "LIB_SHA256 missing from #{config_file_path}" if lib_sha256.to_s.strip.empty?
 framework = 'liblwk.xcframework'
 lib_name = "liblwk.#{tag_version}"
 url = "#{config['REPOSITORY_URL']}/#{tag_version}/#{lib_name}.zip"
@@ -21,7 +23,9 @@ frameworks_dir = "macos"
 `
 cd ../
 if [ ! -d #{lib_name} ]; then
-    curl -L #{url} -o #{lib_name}.zip
+    set -e
+    curl -fL #{url} -o #{lib_name}.zip
+    echo "#{lib_sha256}  #{lib_name}.zip" | shasum -a 256 -c -
     unzip #{lib_name}.zip
     rm -rf __MACOSX
     rm #{lib_name}.zip

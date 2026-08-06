@@ -20,6 +20,7 @@ dependencies:
   freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
   archive: ^4.0.2
+  crypto: ^3.0.6
   http: ^1.2.2
 
 dev_dependencies:
