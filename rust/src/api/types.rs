@@ -239,10 +239,14 @@ impl Address {
     /// Validate the address string and return the network
     pub fn validate(address_string: String) -> anyhow::Result<LiquidNetwork, LwkError> {
         let address = LwkAddress::from_str(&address_string)?;
-        if address.params.to_owned() == AddressParams::LIQUID {
+        if address.params == &AddressParams::LIQUID {
             Ok(LiquidNetwork::Mainnet)
-        } else {
+        } else if address.params == &AddressParams::LIQUID_TESTNET {
             Ok(LiquidNetwork::Testnet)
+        } else {
+            Err(LwkError {
+                msg: "Unsupported address network".to_string(),
+            })
         }
     }
 
@@ -286,6 +290,28 @@ impl Address {
                 msg: "Could not convert script to address".to_string(),
             })
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn address_validate_only_accepts_supported_liquid_networks() {
+        let mainnet = "ex1q7gkeyjut0mrxc3j0kjlt7rmcnvsh0gt45d3fud";
+        let testnet = "tlq1qq2xvpcvfup5j8zscjq05u2wxxjcyewk7979f3mmz5l7uw5pqmx6xf5xy50hsn6vhkm5euwt72x878eq6zxx2z58hd7zrsg9qn";
+        let elements_regtest = "ert1qwhh2n5qypypm0eufahm2pvj8raj9zq5c27cysu";
+
+        assert_eq!(
+            Address::validate(mainnet.to_string()).unwrap(),
+            LiquidNetwork::Mainnet
+        );
+        assert_eq!(
+            Address::validate(testnet.to_string()).unwrap(),
+            LiquidNetwork::Testnet
+        );
+        assert!(Address::validate(elements_regtest.to_string()).is_err());
     }
 }
 
