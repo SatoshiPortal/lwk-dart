@@ -28,6 +28,44 @@ use super::types::Tx;
 use super::types::TxOut;
 use super::types::TxOutputSpec;
 
+/// Upper sanity bound on the fee rate, in sats/kvB: 100 sat/vB.
+///
+/// Liquid fees sit around 0.1 sat/vB, so this is three orders of magnitude of
+/// headroom. It exists to stop a fat-fingered or unit-confused value, not to
+/// express policy.
+pub const MAX_FEE_RATE_SATS_PER_KVB: f32 = 100_000.0;
+
+/// Reject a fee rate that cannot mean what the caller intended.
+///
+/// The unit here is sats/**kvB**, not sat/vB: 1 sat/vB is 1000.0. Nothing in
+/// the old signature said so, and the values lwk derives from a bad one are
+/// silent rather than loud — on a 2500 WU confidential transaction, `f32::NAN`
+/// and `-5.0` both produce a 0 sat fee, and `f32::INFINITY` produces a fee of
+/// `u64::MAX`. A caller assuming sat/vB and passing `1.0` gets 0.001 sat/vB,
+/// under Liquid's relay floor, so the transaction never confirms and the coins
+/// stay locked in an unconfirmed spend.
+fn validate_fee_rate(fee_rate: f32) -> anyhow::Result<(), LwkError> {
+    if !fee_rate.is_finite() {
+        return Err(LwkError {
+            msg: format!("Fee rate must be a finite number, got {fee_rate}"),
+        });
+    }
+    if fee_rate <= 0.0 {
+        return Err(LwkError {
+            msg: format!("Fee rate must be positive, got {fee_rate} sats/kvB"),
+        });
+    }
+    if fee_rate > MAX_FEE_RATE_SATS_PER_KVB {
+        return Err(LwkError {
+            msg: format!(
+                "Fee rate {fee_rate} sats/kvB exceeds the {MAX_FEE_RATE_SATS_PER_KVB} \
+                 sats/kvB bound; note the unit is sats/kvB, so 1 sat/vB is 1000.0"
+            ),
+        });
+    }
+    Ok(())
+}
+
 /// Validate a destination address the way lwk validates a normal recipient.
 ///
 /// `LwkAddress::from_str` accepts an address for any network and says nothing
@@ -182,6 +220,7 @@ impl Wallet {
         fee_rate: f32,
         drain: bool,
     ) -> anyhow::Result<String, LwkError> {
+        validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let network = wallet.network();
         let tx_builder = wallet.tx_builder();
@@ -220,6 +259,7 @@ impl Wallet {
         high_utxo_threshold: Option<u32>,
         maximum_inputs: Option<u32>,
     ) -> anyhow::Result<Vec<String>, LwkError> {
+        validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let policy_asset = wallet.policy_asset();
 
@@ -289,6 +329,7 @@ impl Wallet {
         drain_to: Option<String>,
         fee_rate: f32,
     ) -> anyhow::Result<String, LwkError> {
+        validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
 
         let outpoints: Vec<LwkOutPoint> = utxos
@@ -348,6 +389,7 @@ impl Wallet {
         fee_rate: f32,
         asset: String,
     ) -> anyhow::Result<String, LwkError> {
+        validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let tx_builder = wallet.tx_builder();
         let address = LwkAddress::from_str(&out_address)?;
@@ -554,6 +596,29 @@ mod tests {
     use crate::api::transaction::extract_tx_bytes;
 
     use super::*;
+    #[test]
+    fn fee_rate_rejects_values_that_cannot_be_meant() {
+        // lwk turns each of these into a silently wrong fee rather than an error.
+        assert!(validate_fee_rate(f32::NAN).is_err(), "NaN yields a 0 sat fee");
+        assert!(
+            validate_fee_rate(f32::INFINITY).is_err(),
+            "infinity yields a u64::MAX fee"
+        );
+        assert!(validate_fee_rate(-5.0).is_err(), "negative yields a 0 sat fee");
+        assert!(validate_fee_rate(0.0).is_err());
+        assert!(
+            validate_fee_rate(1_000_000.0).is_err(),
+            "1000 sat/vB is far past any plausible Liquid fee"
+        );
+    }
+
+    #[test]
+    fn fee_rate_accepts_the_usable_range() {
+        assert!(validate_fee_rate(100.0).is_ok(), "0.1 sat/vB, typical for Liquid");
+        assert!(validate_fee_rate(1000.0).is_ok(), "1 sat/vB");
+        assert!(validate_fee_rate(MAX_FEE_RATE_SATS_PER_KVB).is_ok());
+    }
+
     #[test]
     fn out_address_must_match_the_wallet_network() {
         // Liquid testnet confidential address, from lwk_wollet's own test.
