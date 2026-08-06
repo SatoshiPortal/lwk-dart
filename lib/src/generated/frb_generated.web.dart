@@ -15,6 +15,7 @@ import 'api/wallet.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
+import '../checked_u64.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
 
 abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
@@ -856,13 +857,13 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   @protected
   JSAny cst_encode_u_64(BigInt raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return castNativeBigInt(raw);
+    return castNativeBigInt(checkedU64(raw));
   }
 
   @protected
   JSAny cst_encode_usize(BigInt raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return castNativeBigInt(raw);
+    return castNativeBigInt(checkedU64(raw));
   }
 
   @protected
