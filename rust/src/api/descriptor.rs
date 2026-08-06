@@ -1,5 +1,5 @@
 use lwk_signer::SwSigner;
-use lwk_wollet::Network as ElementsNetwork;
+use zeroize::Zeroizing;
 
 // use crate::frb_generated::RustOpaque;
 
@@ -13,9 +13,8 @@ pub struct Descriptor {
 impl Descriptor {
     /// Createa new wpkh confidential descriptor based on Slip77 blinding key derivation
     pub fn new_confidential(network: LiquidNetwork, mnemonic: String) -> Result<Descriptor, LwkError> {
-        let el_network: ElementsNetwork = network.into();
-        let is_mainnet = el_network == ElementsNetwork::Liquid;
-        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?.into();
+        let mnemonic = Zeroizing::new(mnemonic);
+        let signer: SwSigner = SwSigner::new(&mnemonic, network.is_mainnet())?.into();
         let script_variant = lwk_common::Singlesig::Wpkh;
         let blinding_variant = lwk_common::DescriptorBlindingKey::Slip77;
         let desc_str = lwk_common::singlesig_desc(&signer, script_variant, blinding_variant)?;

@@ -15,6 +15,7 @@ use lwk_wollet::WolletDescriptor;
 use std::str::FromStr;
 pub use std::sync::Mutex;
 use std::sync::MutexGuard;
+use zeroize::Zeroizing;
 
 use super::descriptor::Descriptor;
 use super::error::LwkError;
@@ -549,13 +550,13 @@ impl Wallet {
         mnemonic: String,
         add_details: bool,
     ) -> anyhow::Result<String, LwkError> {
-        let is_mainnet = network == LiquidNetwork::Testnet;
-        let signer: SwSigner = SwSigner::new(&mnemonic, is_mainnet)?;
+        let mnemonic = Zeroizing::new(mnemonic);
+        let signer: SwSigner = SwSigner::new(&mnemonic, network.is_mainnet())?;
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         if add_details {
             self.get_wallet()?.add_details(&mut pset)?;
         }
-        let _ = signer.sign(&mut pset);
+        signer.sign(&mut pset)?;
         let tx = self.get_wallet()?.finalize(&mut pset)?;
         let finalized_pset = PartiallySignedTransaction::from_tx(tx.clone());
         Ok(finalized_pset.to_string())
@@ -650,12 +651,13 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "live mainnet integration test; set LWK_MAINNET_TEST_MNEMONIC"]
     fn testable_wallets() {
-        let mnemonic =
-            "umbrella response wide outer mystery drastic crew festival poet coconut error act";
+        let mnemonic = std::env::var("LWK_MAINNET_TEST_MNEMONIC")
+            .expect("LWK_MAINNET_TEST_MNEMONIC must be set");
         let electrum_url = "les.bullbitcoin.com:995".to_string();
         let network = LiquidNetwork::Mainnet;
-        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
+        let desc = Descriptor::new_confidential(network, mnemonic).unwrap();
         let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
         let _ = wallet.sync(electrum_url.clone(), true, None, None);
         let _txs = wallet.txs();

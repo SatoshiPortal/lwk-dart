@@ -24,6 +24,7 @@ anyhow = "1.0.68"
 lazy_static = "1.5.0"
 hex = "0.4"
 log = "0.4.22"
+zeroize = "1.8"
 sideswap_types = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "3722a83da1c440c8a8c8edc79b7dc89ed01ae11c" }
 sideswap_common = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "3722a83da1c440c8a8c8edc79b7dc89ed01ae11c" }
 sideswap_payjoin = { git = "https://github.com/sideswap-io/sideswap_rust.git", rev = "3722a83da1c440c8a8c8edc79b7dc89ed01ae11c" }

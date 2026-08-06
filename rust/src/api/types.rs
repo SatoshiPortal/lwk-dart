@@ -67,6 +67,12 @@ pub enum LiquidNetwork {
     Testnet,
 }
 
+impl LiquidNetwork {
+    pub(crate) fn is_mainnet(self) -> bool {
+        self == LiquidNetwork::Mainnet
+    }
+}
+
 impl Into<ElementsNetwork> for LiquidNetwork {
     fn into(self) -> ElementsNetwork {
         match self {
@@ -325,6 +331,12 @@ mod tests {
             get_balance_by_asset_id(balances, L_BTC_ASSET_ID.to_string()),
             u64::MAX
         );
+    }
+
+    #[test]
+    fn only_liquid_mainnet_uses_mainnet_signing_keys() {
+        assert!(LiquidNetwork::Mainnet.is_mainnet());
+        assert!(!LiquidNetwork::Testnet.is_mainnet());
     }
 }
 

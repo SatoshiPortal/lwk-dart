@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
+
 import 'package:lwk/lwk.dart';
 import 'package:test/test.dart';
 
@@ -7,8 +9,10 @@ void main() {
   group('Wallet', () {
     test('Wallet Flow', () async {
       await LibLwk.init();
-      const mnemonic =
-          "umbrella response wide outer mystery drastic crew festival poet coconut error act";
+      final mnemonic = Platform.environment['LWK_MAINNET_TEST_MNEMONIC'];
+      if (mnemonic == null) {
+        fail('LWK_MAINNET_TEST_MNEMONIC is required for this live test');
+      }
       const network = LiquidNetwork.mainnet;
       const electrumUrl = 'les.bullbitcoin.com:995';
       const dbPath = '/tmp/lwk-darti';
@@ -54,5 +58,7 @@ void main() {
       //     network: network, pset: pset, mnemonic: mnemonic);
       // print(signedPset);
     });
-  }, skip: 'live mainnet integration test: requires network + compiled lwk lib');
+  },
+      skip:
+          'live mainnet integration test: requires network + compiled lwk lib');
 }

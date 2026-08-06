@@ -2356,6 +2356,7 @@ dependencies = [
  "sideswap_payjoin",
  "sideswap_types",
  "thiserror 2.0.19",
+ "zeroize",
 ]
 
 [[package]]
