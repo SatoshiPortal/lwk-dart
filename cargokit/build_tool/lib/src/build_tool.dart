@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:ed25519_edwards/ed25519_edwards.dart';
+import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
 import 'package:github/github.dart';
 import 'package:hex/hex.dart';
 import 'package:logging/logging.dart';
@@ -13,6 +13,7 @@ import 'build_pod.dart';
 import 'logging.dart';
 import 'options.dart';
 import 'precompile_binaries.dart';
+import 'reproduce_binaries.dart';
 import 'target.dart';
 import 'util.dart';
 import 'verify_binaries.dart';
@@ -86,7 +87,7 @@ class GenKeyCommand extends Command {
 
   @override
   void run() {
-    final kp = generateKey();
+    final kp = ed25519.generateKey();
     final private = HEX.encode(kp.privateKey.bytes);
     final public = HEX.encode(kp.publicKey.bytes);
     print("Private Key: $private");
@@ -141,8 +142,8 @@ class PrecompileBinariesCommand extends Command {
   @override
   final description = 'Prebuild and upload binaries\n'
       'Private key must be passed through PRIVATE_KEY environment variable. '
-      'Use gen_key through generate priave key.\n'
-      'Github token must be passed as GITHUB_TOKEN environment variable.\n';
+      'Use gen-key to generate a private key.\n'
+      'GitHub token must be passed as GITHUB_TOKEN environment variable.\n';
 
   @override
   Future<void> run() async {
@@ -186,7 +187,7 @@ class PrecompileBinariesCommand extends Command {
       return res;
     }).toList(growable: false);
     final precompileBinaries = PrecompileBinaries(
-      privateKey: PrivateKey(privateKey),
+      privateKey: ed25519.PrivateKey(privateKey),
       githubToken: githubToken,
       manifestDir: manifestDir,
       repositorySlug: RepositorySlug.full(argResults!['repository'] as String),
@@ -198,6 +199,130 @@ class PrecompileBinariesCommand extends Command {
     );
 
     await precompileBinaries.run();
+  }
+}
+
+class ReproduceBinariesCommand extends Command {
+  ReproduceBinariesCommand() {
+    argParser
+      ..addOption(
+        'manifest-dir',
+        mandatory: true,
+        help: 'Directory containing Cargo.toml',
+      )
+      ..addMultiOption(
+        'target',
+        help: 'Rust target triple of artifact to reproduce. '
+            'Can be specified multiple times. If omitted, all targets '
+            'buildable on the current host are checked. Android targets are '
+            'also checked when --android-sdk-location is set.',
+      )
+      ..addOption(
+        'android-sdk-location',
+        help: 'Location of Android SDK (if available)',
+      )
+      ..addOption(
+        'android-ndk-version',
+        help: 'Android NDK version (if available)',
+      )
+      ..addOption(
+        'android-min-sdk-version',
+        help: 'Android minimum required version (if available)',
+      )
+      ..addOption(
+        'url-prefix',
+        help: 'Override cargokit.yaml precompiled_binaries.url_prefix.',
+      )
+      ..addOption(
+        'public-key',
+        help: 'Override cargokit.yaml precompiled_binaries.public_key.',
+      )
+      ..addOption(
+        'temp-dir',
+        help: 'Directory to store temporary build artifacts',
+      )
+      ..addFlag(
+        'keep-temp',
+        defaultsTo: false,
+        help: 'Keep temporary build artifacts when --temp-dir is omitted.',
+      )
+      ..addFlag(
+        'verbose',
+        abbr: 'v',
+        defaultsTo: false,
+        help: 'Enable verbose logging',
+      );
+  }
+
+  @override
+  final name = 'reproduce-binaries';
+
+  @override
+  final description = 'Rebuild published binaries locally and compare them '
+      'byte-for-byte against signed GitHub release assets.';
+
+  @override
+  Future<void> run() async {
+    final verbose = argResults!['verbose'] as bool;
+    if (verbose) {
+      enableVerboseLogging();
+    }
+
+    final manifestDir = argResults!['manifest-dir'] as String;
+    if (!Directory(manifestDir).existsSync()) {
+      throw ArgumentError('Manifest directory does not exist: $manifestDir');
+    }
+
+    String? androidMinSdkVersionString =
+        argResults!['android-min-sdk-version'] as String?;
+    int? androidMinSdkVersion;
+    if (androidMinSdkVersionString != null) {
+      androidMinSdkVersion = int.tryParse(androidMinSdkVersionString);
+      if (androidMinSdkVersion == null) {
+        throw ArgumentError(
+            'Invalid android-min-sdk-version: $androidMinSdkVersionString');
+      }
+    }
+
+    final targetStrings = argResults!['target'] as List<String>;
+    final targets = targetStrings.map((target) {
+      final res = Target.forRustTriple(target);
+      if (res == null) {
+        throw ArgumentError('Invalid target: $target');
+      }
+      return res;
+    }).toList(growable: false);
+
+    final urlPrefix = argResults!['url-prefix'] as String?;
+    final publicKeyString = argResults!['public-key'] as String?;
+    PrecompiledBinaries? precompiledBinariesOverride;
+    if (urlPrefix != null || publicKeyString != null) {
+      if (urlPrefix == null || publicKeyString == null) {
+        throw ArgumentError(
+            '--url-prefix and --public-key must be passed together');
+      }
+      final publicKey = HEX.decode(publicKeyString);
+      if (publicKey.length != 32) {
+        throw ArgumentError('Public key must be 32 bytes long');
+      }
+      precompiledBinariesOverride = PrecompiledBinaries(
+        uriPrefix: urlPrefix,
+        publicKey: ed25519.PublicKey(publicKey),
+      );
+    }
+
+    final reproduceBinaries = ReproduceBinaries(
+      manifestDir: manifestDir,
+      targets: targets,
+      androidSdkLocation: argResults!['android-sdk-location'] as String?,
+      androidNdkVersion: argResults!['android-ndk-version'] as String?,
+      androidMinSdkVersion: androidMinSdkVersion,
+      precompiledBinariesOverride: precompiledBinariesOverride,
+      tempDir: argResults!['temp-dir'] as String?,
+      keepTemp: argResults!['keep-temp'] as bool,
+    );
+
+    await reproduceBinaries.run();
   }
 }
 
@@ -243,6 +368,7 @@ Future<void> runMain(List<String> args) async {
       ..addCommand(BuildCMakeCommand())
       ..addCommand(GenKeyCommand())
       ..addCommand(PrecompileBinariesCommand())
+      ..addCommand(ReproduceBinariesCommand())
       ..addCommand(VerifyBinariesCommand());
 
     await runner.run(args);
