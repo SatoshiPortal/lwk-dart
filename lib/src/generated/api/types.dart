@@ -7,9 +7,9 @@ import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `from_balance`
+// These functions are ignored because they are not marked as `pub`: `compact_entries`, `compact_wallet_tx_out`, `from_balance`, `from_wallet_tx`, `is_mainnet`, `map_preserving_placeholders`, `maybe_include`, `script_pubkey_hex`, `wallet_tx_chain`
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `AssetIdBTreeMapInt`, `AssetIdBTreeMapUInt`, `AssetIdHashMapInt`, `AssetIdHashMapUInt`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `try_from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `try_from`
 
 /// Get balance value for a specific asset ID from a list of balances
 BigInt getBalanceByAssetId(
@@ -381,4 +381,128 @@ class WalletBalance {
           runtimeType == other.runtimeType &&
           assetId == other.assetId &&
           value == other.value;
+}
+
+/// Whether a wallet transaction output belongs to the external chain or the
+/// internal change chain.
+enum WalletTxChain {
+  external_,
+  internal,
+  ;
+}
+
+/// Compact projection of a wallet-owned transaction input or output.
+///
+/// Only address strings are exposed. In particular, this type cannot carry an
+/// `Address` and its blinding key.
+class WalletTxOutCompact {
+  final OutPoint outpoint;
+  final String scriptPubkey;
+  final String standardAddress;
+  final String confidentialAddress;
+  final BigInt value;
+  final String asset;
+  final bool isSpent;
+  final int? height;
+  final WalletTxChain chain;
+
+  const WalletTxOutCompact({
+    required this.outpoint,
+    required this.scriptPubkey,
+    required this.standardAddress,
+    required this.confidentialAddress,
+    required this.value,
+    required this.asset,
+    required this.isSpent,
+    this.height,
+    required this.chain,
+  });
+
+  @override
+  int get hashCode =>
+      outpoint.hashCode ^
+      scriptPubkey.hashCode ^
+      standardAddress.hashCode ^
+      confidentialAddress.hashCode ^
+      value.hashCode ^
+      asset.hashCode ^
+      isSpent.hashCode ^
+      height.hashCode ^
+      chain.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WalletTxOutCompact &&
+          runtimeType == other.runtimeType &&
+          outpoint == other.outpoint &&
+          scriptPubkey == other.scriptPubkey &&
+          standardAddress == other.standardAddress &&
+          confidentialAddress == other.confidentialAddress &&
+          value == other.value &&
+          asset == other.asset &&
+          isSpent == other.isSpent &&
+          height == other.height &&
+          chain == other.chain;
+}
+
+/// Wallet transaction details with placeholders for third-party vin/vout entries.
+class WalletTxProjection {
+  final String txid;
+  final int? timestamp;
+  final String kind;
+  final List<Balance> balances;
+  final BigInt fee;
+  final int? height;
+
+  /// Confidential unblinding factors encoded in an explorer URL.
+  ///
+  /// This is populated only when explicitly requested. Never log or persist
+  /// it, and never include it in package snapshots.
+  final String? unblindedUrl;
+  final BigInt vsize;
+  final List<WalletTxOutCompact?> inputs;
+  final List<WalletTxOutCompact?> outputs;
+
+  const WalletTxProjection({
+    required this.txid,
+    this.timestamp,
+    required this.kind,
+    required this.balances,
+    required this.fee,
+    this.height,
+    this.unblindedUrl,
+    required this.vsize,
+    required this.inputs,
+    required this.outputs,
+  });
+
+  @override
+  int get hashCode =>
+      txid.hashCode ^
+      timestamp.hashCode ^
+      kind.hashCode ^
+      balances.hashCode ^
+      fee.hashCode ^
+      height.hashCode ^
+      unblindedUrl.hashCode ^
+      vsize.hashCode ^
+      inputs.hashCode ^
+      outputs.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WalletTxProjection &&
+          runtimeType == other.runtimeType &&
+          txid == other.txid &&
+          timestamp == other.timestamp &&
+          kind == other.kind &&
+          balances == other.balances &&
+          fee == other.fee &&
+          height == other.height &&
+          unblindedUrl == other.unblindedUrl &&
+          vsize == other.vsize &&
+          inputs == other.inputs &&
+          outputs == other.outputs;
 }

@@ -115,6 +115,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet dco_decode_box_autoadd_wallet(dynamic raw);
 
   @protected
+  WalletTxOutCompact dco_decode_box_autoadd_wallet_tx_out_compact(dynamic raw);
+
+  @protected
+  WalletTxProjection dco_decode_box_autoadd_wallet_tx_projection(dynamic raw);
+
+  @protected
   Descriptor dco_decode_descriptor(dynamic raw);
 
   @protected
@@ -134,6 +140,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   List<Balance> dco_decode_list_balance(dynamic raw);
+
+  @protected
+  List<WalletTxOutCompact?>
+      dco_decode_list_opt_box_autoadd_wallet_tx_out_compact(dynamic raw);
 
   @protected
   List<OutPoint> dco_decode_list_out_point(dynamic raw);
@@ -172,6 +182,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<WalletBalance> dco_decode_list_wallet_balance(dynamic raw);
 
   @protected
+  List<WalletTxProjection> dco_decode_list_wallet_tx_projection(dynamic raw);
+
+  @protected
   LwkError dco_decode_lwk_error(dynamic raw);
 
   @protected
@@ -197,6 +210,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   int? dco_decode_opt_box_autoadd_u_8(dynamic raw);
+
+  @protected
+  WalletTxOutCompact? dco_decode_opt_box_autoadd_wallet_tx_out_compact(
+      dynamic raw);
+
+  @protected
+  WalletTxProjection? dco_decode_opt_box_autoadd_wallet_tx_projection(
+      dynamic raw);
 
   @protected
   OutPoint dco_decode_out_point(dynamic raw);
@@ -254,6 +275,15 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   WalletBalance dco_decode_wallet_balance(dynamic raw);
+
+  @protected
+  WalletTxChain dco_decode_wallet_tx_chain(dynamic raw);
+
+  @protected
+  WalletTxOutCompact dco_decode_wallet_tx_out_compact(dynamic raw);
+
+  @protected
+  WalletTxProjection dco_decode_wallet_tx_projection(dynamic raw);
 
   @protected
   LiquidTransaction
@@ -335,6 +365,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer);
 
   @protected
+  WalletTxOutCompact sse_decode_box_autoadd_wallet_tx_out_compact(
+      SseDeserializer deserializer);
+
+  @protected
+  WalletTxProjection sse_decode_box_autoadd_wallet_tx_projection(
+      SseDeserializer deserializer);
+
+  @protected
   Descriptor sse_decode_descriptor(SseDeserializer deserializer);
 
   @protected
@@ -354,6 +392,11 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   List<Balance> sse_decode_list_balance(SseDeserializer deserializer);
+
+  @protected
+  List<WalletTxOutCompact?>
+      sse_decode_list_opt_box_autoadd_wallet_tx_out_compact(
+          SseDeserializer deserializer);
 
   @protected
   List<OutPoint> sse_decode_list_out_point(SseDeserializer deserializer);
@@ -395,6 +438,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       SseDeserializer deserializer);
 
   @protected
+  List<WalletTxProjection> sse_decode_list_wallet_tx_projection(
+      SseDeserializer deserializer);
+
+  @protected
   LwkError sse_decode_lwk_error(SseDeserializer deserializer);
 
   @protected
@@ -422,6 +469,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   int? sse_decode_opt_box_autoadd_u_8(SseDeserializer deserializer);
+
+  @protected
+  WalletTxOutCompact? sse_decode_opt_box_autoadd_wallet_tx_out_compact(
+      SseDeserializer deserializer);
+
+  @protected
+  WalletTxProjection? sse_decode_opt_box_autoadd_wallet_tx_projection(
+      SseDeserializer deserializer);
 
   @protected
   OutPoint sse_decode_out_point(SseDeserializer deserializer);
@@ -479,6 +534,17 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   WalletBalance sse_decode_wallet_balance(SseDeserializer deserializer);
+
+  @protected
+  WalletTxChain sse_decode_wallet_tx_chain(SseDeserializer deserializer);
+
+  @protected
+  WalletTxOutCompact sse_decode_wallet_tx_out_compact(
+      SseDeserializer deserializer);
+
+  @protected
+  WalletTxProjection sse_decode_wallet_tx_projection(
+      SseDeserializer deserializer);
 
   @protected
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_String(String raw) {
@@ -566,6 +632,24 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_wallet_tx_out_compact>
+      cst_encode_box_autoadd_wallet_tx_out_compact(WalletTxOutCompact raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_wallet_tx_out_compact();
+    cst_api_fill_to_wire_wallet_tx_out_compact(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_wallet_tx_projection>
+      cst_encode_box_autoadd_wallet_tx_projection(WalletTxProjection raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_wallet_tx_projection();
+    cst_api_fill_to_wire_wallet_tx_projection(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
   int cst_encode_i_64(PlatformInt64 raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.toInt();
@@ -588,6 +672,19 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     final ans = wire.cst_new_list_balance(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_balance(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_opt_box_autoadd_wallet_tx_out_compact>
+      cst_encode_list_opt_box_autoadd_wallet_tx_out_compact(
+          List<WalletTxOutCompact?> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans =
+        wire.cst_new_list_opt_box_autoadd_wallet_tx_out_compact(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      ans.ref.ptr[i] = cst_encode_opt_box_autoadd_wallet_tx_out_compact(raw[i]);
     }
     return ans;
   }
@@ -719,6 +816,17 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_wallet_tx_projection>
+      cst_encode_list_wallet_tx_projection(List<WalletTxProjection> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_wallet_tx_projection(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_wallet_tx_projection(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_opt_String(
       String? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -769,6 +877,25 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   ffi.Pointer<ffi.Uint8> cst_encode_opt_box_autoadd_u_8(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_u_8(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_wallet_tx_out_compact>
+      cst_encode_opt_box_autoadd_wallet_tx_out_compact(
+          WalletTxOutCompact? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null
+        ? ffi.nullptr
+        : cst_encode_box_autoadd_wallet_tx_out_compact(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_wallet_tx_projection>
+      cst_encode_opt_box_autoadd_wallet_tx_projection(WalletTxProjection? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null
+        ? ffi.nullptr
+        : cst_encode_box_autoadd_wallet_tx_projection(raw);
   }
 
   @protected
@@ -835,6 +962,20 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void cst_api_fill_to_wire_box_autoadd_wallet(
       Wallet apiObj, ffi.Pointer<wire_cst_wallet> wireObj) {
     cst_api_fill_to_wire_wallet(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_wallet_tx_out_compact(
+      WalletTxOutCompact apiObj,
+      ffi.Pointer<wire_cst_wallet_tx_out_compact> wireObj) {
+    cst_api_fill_to_wire_wallet_tx_out_compact(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_wallet_tx_projection(
+      WalletTxProjection apiObj,
+      ffi.Pointer<wire_cst_wallet_tx_projection> wireObj) {
+    cst_api_fill_to_wire_wallet_tx_projection(apiObj, wireObj.ref);
   }
 
   @protected
@@ -974,6 +1115,38 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_wallet_tx_out_compact(
+      WalletTxOutCompact apiObj, wire_cst_wallet_tx_out_compact wireObj) {
+    cst_api_fill_to_wire_out_point(apiObj.outpoint, wireObj.outpoint);
+    wireObj.script_pubkey = cst_encode_String(apiObj.scriptPubkey);
+    wireObj.standard_address = cst_encode_String(apiObj.standardAddress);
+    wireObj.confidential_address =
+        cst_encode_String(apiObj.confidentialAddress);
+    wireObj.value = cst_encode_u_64(apiObj.value);
+    wireObj.asset = cst_encode_String(apiObj.asset);
+    wireObj.is_spent = cst_encode_bool(apiObj.isSpent);
+    wireObj.height = cst_encode_opt_box_autoadd_u_32(apiObj.height);
+    wireObj.chain = cst_encode_wallet_tx_chain(apiObj.chain);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_wallet_tx_projection(
+      WalletTxProjection apiObj, wire_cst_wallet_tx_projection wireObj) {
+    wireObj.txid = cst_encode_String(apiObj.txid);
+    wireObj.timestamp = cst_encode_opt_box_autoadd_u_32(apiObj.timestamp);
+    wireObj.kind = cst_encode_String(apiObj.kind);
+    wireObj.balances = cst_encode_list_balance(apiObj.balances);
+    wireObj.fee = cst_encode_u_64(apiObj.fee);
+    wireObj.height = cst_encode_opt_box_autoadd_u_32(apiObj.height);
+    wireObj.unblinded_url = cst_encode_opt_String(apiObj.unblindedUrl);
+    wireObj.vsize = cst_encode_usize(apiObj.vsize);
+    wireObj.inputs =
+        cst_encode_list_opt_box_autoadd_wallet_tx_out_compact(apiObj.inputs);
+    wireObj.outputs =
+        cst_encode_list_opt_box_autoadd_wallet_tx_out_compact(apiObj.outputs);
+  }
+
+  @protected
   int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
       LiquidTransaction raw);
 
@@ -1020,6 +1193,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_encode_unit(void raw);
+
+  @protected
+  int cst_encode_wallet_tx_chain(WalletTxChain raw);
 
   @protected
   void
@@ -1106,6 +1282,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_wallet_tx_out_compact(
+      WalletTxOutCompact self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_wallet_tx_projection(
+      WalletTxProjection self, SseSerializer serializer);
+
+  @protected
   void sse_encode_descriptor(Descriptor self, SseSerializer serializer);
 
   @protected
@@ -1125,6 +1309,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_list_balance(List<Balance> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_opt_box_autoadd_wallet_tx_out_compact(
+      List<WalletTxOutCompact?> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_out_point(List<OutPoint> self, SseSerializer serializer);
@@ -1169,6 +1357,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       List<WalletBalance> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_wallet_tx_projection(
+      List<WalletTxProjection> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer);
 
   @protected
@@ -1198,6 +1390,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_u_8(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_wallet_tx_out_compact(
+      WalletTxOutCompact? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_wallet_tx_projection(
+      WalletTxProjection? self, SseSerializer serializer);
 
   @protected
   void sse_encode_out_point(OutPoint self, SseSerializer serializer);
@@ -1255,6 +1455,17 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_wallet_balance(WalletBalance self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_wallet_tx_chain(WalletTxChain self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_wallet_tx_out_compact(
+      WalletTxOutCompact self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_wallet_tx_projection(
+      WalletTxProjection self, SseSerializer serializer);
 }
 
 // Section: wire_class
@@ -2687,6 +2898,61 @@ class LwkCoreWire implements BaseWire {
             ffi.Pointer<ffi.Uint8>,
           )>();
 
+  void wire__crate__api__wallet__wallet_transaction_projection(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> txid,
+    bool include_unblinding_data,
+  ) {
+    return _wire__crate__api__wallet__wallet_transaction_projection(
+      port_,
+      that,
+      txid,
+      include_unblinding_data,
+    );
+  }
+
+  late final _wire__crate__api__wallet__wallet_transaction_projectionPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Void Function(
+                    ffi.Int64,
+                    ffi.Pointer<wire_cst_wallet>,
+                    ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                    ffi.Bool,
+                  )>>(
+          'frbgen_lwk_wire__crate__api__wallet__wallet_transaction_projection');
+  late final _wire__crate__api__wallet__wallet_transaction_projection =
+      _wire__crate__api__wallet__wallet_transaction_projectionPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            bool,
+          )>();
+
+  void wire__crate__api__wallet__wallet_transactions_projection(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+    bool include_unblinding_data,
+  ) {
+    return _wire__crate__api__wallet__wallet_transactions_projection(
+      port_,
+      that,
+      include_unblinding_data,
+    );
+  }
+
+  late final _wire__crate__api__wallet__wallet_transactions_projectionPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Void Function(
+                      ffi.Int64, ffi.Pointer<wire_cst_wallet>, ffi.Bool)>>(
+          'frbgen_lwk_wire__crate__api__wallet__wallet_transactions_projection');
+  late final _wire__crate__api__wallet__wallet_transactions_projection =
+      _wire__crate__api__wallet__wallet_transactions_projectionPtr
+          .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>, bool)>();
+
   void wire__crate__api__wallet__wallet_txs(
     int port_,
     ffi.Pointer<wire_cst_wallet> that,
@@ -2931,6 +3197,32 @@ class LwkCoreWire implements BaseWire {
   late final _cst_new_box_autoadd_wallet = _cst_new_box_autoadd_walletPtr
       .asFunction<ffi.Pointer<wire_cst_wallet> Function()>();
 
+  ffi.Pointer<wire_cst_wallet_tx_out_compact>
+      cst_new_box_autoadd_wallet_tx_out_compact() {
+    return _cst_new_box_autoadd_wallet_tx_out_compact();
+  }
+
+  late final _cst_new_box_autoadd_wallet_tx_out_compactPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<wire_cst_wallet_tx_out_compact> Function()>>(
+      'frbgen_lwk_cst_new_box_autoadd_wallet_tx_out_compact');
+  late final _cst_new_box_autoadd_wallet_tx_out_compact =
+      _cst_new_box_autoadd_wallet_tx_out_compactPtr
+          .asFunction<ffi.Pointer<wire_cst_wallet_tx_out_compact> Function()>();
+
+  ffi.Pointer<wire_cst_wallet_tx_projection>
+      cst_new_box_autoadd_wallet_tx_projection() {
+    return _cst_new_box_autoadd_wallet_tx_projection();
+  }
+
+  late final _cst_new_box_autoadd_wallet_tx_projectionPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<wire_cst_wallet_tx_projection> Function()>>(
+      'frbgen_lwk_cst_new_box_autoadd_wallet_tx_projection');
+  late final _cst_new_box_autoadd_wallet_tx_projection =
+      _cst_new_box_autoadd_wallet_tx_projectionPtr
+          .asFunction<ffi.Pointer<wire_cst_wallet_tx_projection> Function()>();
+
   ffi.Pointer<wire_cst_list_String> cst_new_list_String(int len) {
     return _cst_new_list_String(len);
   }
@@ -2952,6 +3244,21 @@ class LwkCoreWire implements BaseWire {
               ffi.Int32)>>('frbgen_lwk_cst_new_list_balance');
   late final _cst_new_list_balance = _cst_new_list_balancePtr
       .asFunction<ffi.Pointer<wire_cst_list_balance> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_opt_box_autoadd_wallet_tx_out_compact>
+      cst_new_list_opt_box_autoadd_wallet_tx_out_compact(int len) {
+    return _cst_new_list_opt_box_autoadd_wallet_tx_out_compact(len);
+  }
+
+  late final _cst_new_list_opt_box_autoadd_wallet_tx_out_compactPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<wire_cst_list_opt_box_autoadd_wallet_tx_out_compact>
+                  Function(ffi.Int32)>>(
+      'frbgen_lwk_cst_new_list_opt_box_autoadd_wallet_tx_out_compact');
+  late final _cst_new_list_opt_box_autoadd_wallet_tx_out_compact =
+      _cst_new_list_opt_box_autoadd_wallet_tx_out_compactPtr.asFunction<
+          ffi.Pointer<wire_cst_list_opt_box_autoadd_wallet_tx_out_compact>
+              Function(int)>();
 
   ffi.Pointer<wire_cst_list_out_point> cst_new_list_out_point(int len) {
     return _cst_new_list_out_point(len);
@@ -3095,6 +3402,19 @@ class LwkCoreWire implements BaseWire {
   late final _cst_new_list_wallet_balance = _cst_new_list_wallet_balancePtr
       .asFunction<ffi.Pointer<wire_cst_list_wallet_balance> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_wallet_tx_projection>
+      cst_new_list_wallet_tx_projection(int len) {
+    return _cst_new_list_wallet_tx_projection(len);
+  }
+
+  late final _cst_new_list_wallet_tx_projectionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_wallet_tx_projection> Function(
+              ffi.Int32)>>('frbgen_lwk_cst_new_list_wallet_tx_projection');
+  late final _cst_new_list_wallet_tx_projection =
+      _cst_new_list_wallet_tx_projectionPtr.asFunction<
+          ffi.Pointer<wire_cst_list_wallet_tx_projection> Function(int)>();
+
   int dummy_method_to_enforce_bundling() {
     return _dummy_method_to_enforce_bundling();
   }
@@ -3237,6 +3557,29 @@ final class wire_cst_tx_output extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> nonce;
 }
 
+final class wire_cst_wallet_tx_out_compact extends ffi.Struct {
+  external wire_cst_out_point outpoint;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> script_pubkey;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> standard_address;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> confidential_address;
+
+  @ffi.Uint64()
+  external int value;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> asset;
+
+  @ffi.Bool()
+  external bool is_spent;
+
+  external ffi.Pointer<ffi.Uint32> height;
+
+  @ffi.Int32()
+  external int chain;
+}
+
 final class wire_cst_balance extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> asset_id;
 
@@ -3249,6 +3592,40 @@ final class wire_cst_list_balance extends ffi.Struct {
 
   @ffi.Int32()
   external int len;
+}
+
+final class wire_cst_list_opt_box_autoadd_wallet_tx_out_compact
+    extends ffi.Struct {
+  external ffi.Pointer<ffi.Pointer<wire_cst_wallet_tx_out_compact>> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_wallet_tx_projection extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> txid;
+
+  external ffi.Pointer<ffi.Uint32> timestamp;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> kind;
+
+  external ffi.Pointer<wire_cst_list_balance> balances;
+
+  @ffi.Uint64()
+  external int fee;
+
+  external ffi.Pointer<ffi.Uint32> height;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> unblinded_url;
+
+  @ffi.UintPtr()
+  external int vsize;
+
+  external ffi.Pointer<wire_cst_list_opt_box_autoadd_wallet_tx_out_compact>
+      inputs;
+
+  external ffi.Pointer<wire_cst_list_opt_box_autoadd_wallet_tx_out_compact>
+      outputs;
 }
 
 final class wire_cst_list_pset_input extends ffi.Struct {
@@ -3355,6 +3732,13 @@ final class wire_cst_list_tx_out_secrets extends ffi.Struct {
 
 final class wire_cst_list_tx_output extends ffi.Struct {
   external ffi.Pointer<wire_cst_tx_output> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_list_wallet_tx_projection extends ffi.Struct {
+  external ffi.Pointer<wire_cst_wallet_tx_projection> ptr;
 
   @ffi.Int32()
   external int len;

@@ -179,6 +179,18 @@ class Wallet {
           stopAtIndex: stopAtIndex,
           timeout: timeout);
 
+  /// Get the wallet-owned transaction details while preserving original vin/vout indexes.
+  Future<WalletTxProjection?> transactionProjection(
+          {required String txid, required bool includeUnblindingData}) =>
+      LwkCore.instance.api.crateApiWalletWalletTransactionProjection(
+          that: this, txid: txid, includeUnblindingData: includeUnblindingData);
+
+  /// Get compact projections for the complete transaction history under one wallet lock.
+  Future<List<WalletTxProjection>> transactionsProjection(
+          {required bool includeUnblindingData}) =>
+      LwkCore.instance.api.crateApiWalletWalletTransactionsProjection(
+          that: this, includeUnblindingData: includeUnblindingData);
+
   /// Get the transaction history of the wallet
   Future<List<Tx>> txs() => LwkCore.instance.api.crateApiWalletWalletTxs(
         that: this,

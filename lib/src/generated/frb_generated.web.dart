@@ -117,6 +117,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet dco_decode_box_autoadd_wallet(dynamic raw);
 
   @protected
+  WalletTxOutCompact dco_decode_box_autoadd_wallet_tx_out_compact(dynamic raw);
+
+  @protected
+  WalletTxProjection dco_decode_box_autoadd_wallet_tx_projection(dynamic raw);
+
+  @protected
   Descriptor dco_decode_descriptor(dynamic raw);
 
   @protected
@@ -136,6 +142,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   List<Balance> dco_decode_list_balance(dynamic raw);
+
+  @protected
+  List<WalletTxOutCompact?>
+      dco_decode_list_opt_box_autoadd_wallet_tx_out_compact(dynamic raw);
 
   @protected
   List<OutPoint> dco_decode_list_out_point(dynamic raw);
@@ -174,6 +184,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<WalletBalance> dco_decode_list_wallet_balance(dynamic raw);
 
   @protected
+  List<WalletTxProjection> dco_decode_list_wallet_tx_projection(dynamic raw);
+
+  @protected
   LwkError dco_decode_lwk_error(dynamic raw);
 
   @protected
@@ -199,6 +212,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   int? dco_decode_opt_box_autoadd_u_8(dynamic raw);
+
+  @protected
+  WalletTxOutCompact? dco_decode_opt_box_autoadd_wallet_tx_out_compact(
+      dynamic raw);
+
+  @protected
+  WalletTxProjection? dco_decode_opt_box_autoadd_wallet_tx_projection(
+      dynamic raw);
 
   @protected
   OutPoint dco_decode_out_point(dynamic raw);
@@ -256,6 +277,15 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   WalletBalance dco_decode_wallet_balance(dynamic raw);
+
+  @protected
+  WalletTxChain dco_decode_wallet_tx_chain(dynamic raw);
+
+  @protected
+  WalletTxOutCompact dco_decode_wallet_tx_out_compact(dynamic raw);
+
+  @protected
+  WalletTxProjection dco_decode_wallet_tx_projection(dynamic raw);
 
   @protected
   LiquidTransaction
@@ -337,6 +367,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   Wallet sse_decode_box_autoadd_wallet(SseDeserializer deserializer);
 
   @protected
+  WalletTxOutCompact sse_decode_box_autoadd_wallet_tx_out_compact(
+      SseDeserializer deserializer);
+
+  @protected
+  WalletTxProjection sse_decode_box_autoadd_wallet_tx_projection(
+      SseDeserializer deserializer);
+
+  @protected
   Descriptor sse_decode_descriptor(SseDeserializer deserializer);
 
   @protected
@@ -356,6 +394,11 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   List<Balance> sse_decode_list_balance(SseDeserializer deserializer);
+
+  @protected
+  List<WalletTxOutCompact?>
+      sse_decode_list_opt_box_autoadd_wallet_tx_out_compact(
+          SseDeserializer deserializer);
 
   @protected
   List<OutPoint> sse_decode_list_out_point(SseDeserializer deserializer);
@@ -397,6 +440,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       SseDeserializer deserializer);
 
   @protected
+  List<WalletTxProjection> sse_decode_list_wallet_tx_projection(
+      SseDeserializer deserializer);
+
+  @protected
   LwkError sse_decode_lwk_error(SseDeserializer deserializer);
 
   @protected
@@ -424,6 +471,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   int? sse_decode_opt_box_autoadd_u_8(SseDeserializer deserializer);
+
+  @protected
+  WalletTxOutCompact? sse_decode_opt_box_autoadd_wallet_tx_out_compact(
+      SseDeserializer deserializer);
+
+  @protected
+  WalletTxProjection? sse_decode_opt_box_autoadd_wallet_tx_projection(
+      SseDeserializer deserializer);
 
   @protected
   OutPoint sse_decode_out_point(SseDeserializer deserializer);
@@ -481,6 +536,17 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   WalletBalance sse_decode_wallet_balance(SseDeserializer deserializer);
+
+  @protected
+  WalletTxChain sse_decode_wallet_tx_chain(SseDeserializer deserializer);
+
+  @protected
+  WalletTxOutCompact sse_decode_wallet_tx_out_compact(
+      SseDeserializer deserializer);
+
+  @protected
+  WalletTxProjection sse_decode_wallet_tx_projection(
+      SseDeserializer deserializer);
 
   @protected
   String cst_encode_String(String raw) {
@@ -573,6 +639,18 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_box_autoadd_wallet_tx_out_compact(WalletTxOutCompact raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_wallet_tx_out_compact(raw);
+  }
+
+  @protected
+  JSAny cst_encode_box_autoadd_wallet_tx_projection(WalletTxProjection raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_wallet_tx_projection(raw);
+  }
+
+  @protected
   JSAny cst_encode_descriptor(Descriptor raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [cst_encode_String(raw.ctDescriptor)].jsify()!;
@@ -594,6 +672,16 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   JSAny cst_encode_list_balance(List<Balance> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.map(cst_encode_balance).toList().jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_list_opt_box_autoadd_wallet_tx_out_compact(
+      List<WalletTxOutCompact?> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw
+        .map(cst_encode_opt_box_autoadd_wallet_tx_out_compact)
+        .toList()
+        .jsify()!;
   }
 
   @protected
@@ -669,6 +757,12 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_list_wallet_tx_projection(List<WalletTxProjection> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.map(cst_encode_wallet_tx_projection).toList().jsify()!;
+  }
+
+  @protected
   JSAny cst_encode_lwk_error(LwkError raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [cst_encode_String(raw.msg)].jsify()!;
@@ -720,6 +814,24 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   int? cst_encode_opt_box_autoadd_u_8(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? null : cst_encode_box_autoadd_u_8(raw);
+  }
+
+  @protected
+  JSAny? cst_encode_opt_box_autoadd_wallet_tx_out_compact(
+      WalletTxOutCompact? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null
+        ? null
+        : cst_encode_box_autoadd_wallet_tx_out_compact(raw);
+  }
+
+  @protected
+  JSAny? cst_encode_opt_box_autoadd_wallet_tx_projection(
+      WalletTxProjection? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null
+        ? null
+        : cst_encode_box_autoadd_wallet_tx_projection(raw);
   }
 
   @protected
@@ -880,6 +992,39 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
+  JSAny cst_encode_wallet_tx_out_compact(WalletTxOutCompact raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_out_point(raw.outpoint),
+      cst_encode_String(raw.scriptPubkey),
+      cst_encode_String(raw.standardAddress),
+      cst_encode_String(raw.confidentialAddress),
+      cst_encode_u_64(raw.value),
+      cst_encode_String(raw.asset),
+      cst_encode_bool(raw.isSpent),
+      cst_encode_opt_box_autoadd_u_32(raw.height),
+      cst_encode_wallet_tx_chain(raw.chain)
+    ].jsify()!;
+  }
+
+  @protected
+  JSAny cst_encode_wallet_tx_projection(WalletTxProjection raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return [
+      cst_encode_String(raw.txid),
+      cst_encode_opt_box_autoadd_u_32(raw.timestamp),
+      cst_encode_String(raw.kind),
+      cst_encode_list_balance(raw.balances),
+      cst_encode_u_64(raw.fee),
+      cst_encode_opt_box_autoadd_u_32(raw.height),
+      cst_encode_opt_String(raw.unblindedUrl),
+      cst_encode_usize(raw.vsize),
+      cst_encode_list_opt_box_autoadd_wallet_tx_out_compact(raw.inputs),
+      cst_encode_list_opt_box_autoadd_wallet_tx_out_compact(raw.outputs)
+    ].jsify()!;
+  }
+
+  @protected
   int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
       LiquidTransaction raw);
 
@@ -926,6 +1071,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void cst_encode_unit(void raw);
+
+  @protected
+  int cst_encode_wallet_tx_chain(WalletTxChain raw);
 
   @protected
   void
@@ -1012,6 +1160,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_box_autoadd_wallet(Wallet self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_wallet_tx_out_compact(
+      WalletTxOutCompact self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_wallet_tx_projection(
+      WalletTxProjection self, SseSerializer serializer);
+
+  @protected
   void sse_encode_descriptor(Descriptor self, SseSerializer serializer);
 
   @protected
@@ -1031,6 +1187,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_list_balance(List<Balance> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_opt_box_autoadd_wallet_tx_out_compact(
+      List<WalletTxOutCompact?> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_out_point(List<OutPoint> self, SseSerializer serializer);
@@ -1075,6 +1235,10 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       List<WalletBalance> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_wallet_tx_projection(
+      List<WalletTxProjection> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer);
 
   @protected
@@ -1104,6 +1268,14 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_u_8(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_wallet_tx_out_compact(
+      WalletTxOutCompact? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_wallet_tx_projection(
+      WalletTxProjection? self, SseSerializer serializer);
 
   @protected
   void sse_encode_out_point(OutPoint self, SseSerializer serializer);
@@ -1161,6 +1333,17 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_wallet_balance(WalletBalance self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_wallet_tx_chain(WalletTxChain self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_wallet_tx_out_compact(
+      WalletTxOutCompact self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_wallet_tx_projection(
+      WalletTxProjection self, SseSerializer serializer);
 }
 
 // Section: wire_class
@@ -1575,6 +1758,19 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire__crate__api__wallet__wallet_sync(
           port_, that, electrum_url, validate_domain, stop_at_index, timeout);
 
+  void wire__crate__api__wallet__wallet_transaction_projection(
+          NativePortType port_,
+          JSAny that,
+          String txid,
+          bool include_unblinding_data) =>
+      wasmModule.wire__crate__api__wallet__wallet_transaction_projection(
+          port_, that, txid, include_unblinding_data);
+
+  void wire__crate__api__wallet__wallet_transactions_projection(
+          NativePortType port_, JSAny that, bool include_unblinding_data) =>
+      wasmModule.wire__crate__api__wallet__wallet_transactions_projection(
+          port_, that, include_unblinding_data);
+
   void wire__crate__api__wallet__wallet_txs(NativePortType port_, JSAny that) =>
       wasmModule.wire__crate__api__wallet__wallet_txs(port_, that);
 
@@ -1880,6 +2076,15 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       bool validate_domain,
       int? stop_at_index,
       int? timeout);
+
+  external void wire__crate__api__wallet__wallet_transaction_projection(
+      NativePortType port_,
+      JSAny that,
+      String txid,
+      bool include_unblinding_data);
+
+  external void wire__crate__api__wallet__wallet_transactions_projection(
+      NativePortType port_, JSAny that, bool include_unblinding_data);
 
   external void wire__crate__api__wallet__wallet_txs(
       NativePortType port_, JSAny that);

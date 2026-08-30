@@ -120,6 +120,18 @@ typedef struct wire_cst_tx_output {
   struct wire_cst_list_prim_u_8_strict *nonce;
 } wire_cst_tx_output;
 
+typedef struct wire_cst_wallet_tx_out_compact {
+  struct wire_cst_out_point outpoint;
+  struct wire_cst_list_prim_u_8_strict *script_pubkey;
+  struct wire_cst_list_prim_u_8_strict *standard_address;
+  struct wire_cst_list_prim_u_8_strict *confidential_address;
+  uint64_t value;
+  struct wire_cst_list_prim_u_8_strict *asset;
+  bool is_spent;
+  uint32_t *height;
+  int32_t chain;
+} wire_cst_wallet_tx_out_compact;
+
 typedef struct wire_cst_balance {
   struct wire_cst_list_prim_u_8_strict *asset_id;
   int64_t value;
@@ -129,6 +141,24 @@ typedef struct wire_cst_list_balance {
   struct wire_cst_balance *ptr;
   int32_t len;
 } wire_cst_list_balance;
+
+typedef struct wire_cst_list_opt_box_autoadd_wallet_tx_out_compact {
+  struct wire_cst_wallet_tx_out_compact **ptr;
+  int32_t len;
+} wire_cst_list_opt_box_autoadd_wallet_tx_out_compact;
+
+typedef struct wire_cst_wallet_tx_projection {
+  struct wire_cst_list_prim_u_8_strict *txid;
+  uint32_t *timestamp;
+  struct wire_cst_list_prim_u_8_strict *kind;
+  struct wire_cst_list_balance *balances;
+  uint64_t fee;
+  uint32_t *height;
+  struct wire_cst_list_prim_u_8_strict *unblinded_url;
+  uintptr_t vsize;
+  struct wire_cst_list_opt_box_autoadd_wallet_tx_out_compact *inputs;
+  struct wire_cst_list_opt_box_autoadd_wallet_tx_out_compact *outputs;
+} wire_cst_wallet_tx_projection;
 
 typedef struct wire_cst_list_pset_input {
   struct wire_cst_pset_input *ptr;
@@ -200,6 +230,11 @@ typedef struct wire_cst_list_tx_output {
   struct wire_cst_tx_output *ptr;
   int32_t len;
 } wire_cst_list_tx_output;
+
+typedef struct wire_cst_list_wallet_tx_projection {
+  struct wire_cst_wallet_tx_projection *ptr;
+  int32_t len;
+} wire_cst_list_wallet_tx_projection;
 
 typedef struct wire_cst_lwk_error {
   struct wire_cst_list_prim_u_8_strict *msg;
@@ -433,6 +468,15 @@ void frbgen_lwk_wire__crate__api__wallet__wallet_sync(int64_t port_,
                                                       uint32_t *stop_at_index,
                                                       uint8_t *timeout);
 
+void frbgen_lwk_wire__crate__api__wallet__wallet_transaction_projection(int64_t port_,
+                                                                        struct wire_cst_wallet *that,
+                                                                        struct wire_cst_list_prim_u_8_strict *txid,
+                                                                        bool include_unblinding_data);
+
+void frbgen_lwk_wire__crate__api__wallet__wallet_transactions_projection(int64_t port_,
+                                                                         struct wire_cst_wallet *that,
+                                                                         bool include_unblinding_data);
+
 void frbgen_lwk_wire__crate__api__wallet__wallet_txs(int64_t port_, struct wire_cst_wallet *that);
 
 void frbgen_lwk_wire__crate__api__wallet__wallet_utxos(int64_t port_, struct wire_cst_wallet *that);
@@ -469,9 +513,15 @@ uint8_t *frbgen_lwk_cst_new_box_autoadd_u_8(uint8_t value);
 
 struct wire_cst_wallet *frbgen_lwk_cst_new_box_autoadd_wallet(void);
 
+struct wire_cst_wallet_tx_out_compact *frbgen_lwk_cst_new_box_autoadd_wallet_tx_out_compact(void);
+
+struct wire_cst_wallet_tx_projection *frbgen_lwk_cst_new_box_autoadd_wallet_tx_projection(void);
+
 struct wire_cst_list_String *frbgen_lwk_cst_new_list_String(int32_t len);
 
 struct wire_cst_list_balance *frbgen_lwk_cst_new_list_balance(int32_t len);
+
+struct wire_cst_list_opt_box_autoadd_wallet_tx_out_compact *frbgen_lwk_cst_new_list_opt_box_autoadd_wallet_tx_out_compact(int32_t len);
 
 struct wire_cst_list_out_point *frbgen_lwk_cst_new_list_out_point(int32_t len);
 
@@ -496,6 +546,8 @@ struct wire_cst_list_tx_output *frbgen_lwk_cst_new_list_tx_output(int32_t len);
 struct wire_cst_list_tx_output_spec *frbgen_lwk_cst_new_list_tx_output_spec(int32_t len);
 
 struct wire_cst_list_wallet_balance *frbgen_lwk_cst_new_list_wallet_balance(int32_t len);
+
+struct wire_cst_list_wallet_tx_projection *frbgen_lwk_cst_new_list_wallet_tx_projection(int32_t len);
 static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_blockchain);
@@ -508,8 +560,11 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_u_64);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_u_8);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_wallet);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_wallet_tx_out_compact);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_box_autoadd_wallet_tx_projection);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_String);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_balance);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_opt_box_autoadd_wallet_tx_out_compact);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_out_point);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_prim_u_8_loose);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_prim_u_8_strict);
@@ -522,6 +577,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_output);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_tx_output_spec);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_wallet_balance);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_cst_new_list_wallet_tx_projection);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_Mutexlwk_wolletWollet);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPartiallySignedElementsTransaction);
@@ -593,6 +649,8 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_sync);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_transaction_projection);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_transactions_projection);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_txs);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_utxos);
     dummy_var ^= ((int64_t) (void*) store_dart_post_cobject);

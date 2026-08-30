@@ -196,7 +196,7 @@ impl From<elements::TxOutSecrets> for TxOutSecrets {
 impl From<WalletTxOut> for TxOut {
     fn from(wallet_tx_out: WalletTxOut) -> Self {
         TxOut {
-            script_pubkey: wallet_tx_out.script_pubkey.to_hex(),
+            script_pubkey: script_pubkey_hex(&wallet_tx_out.script_pubkey),
             height: wallet_tx_out.height,
             unblinded: wallet_tx_out.unblinded.into(),
             outpoint: OutPoint {
@@ -338,6 +338,43 @@ mod tests {
         assert!(LiquidNetwork::Mainnet.is_mainnet());
         assert!(!LiquidNetwork::Testnet.is_mainnet());
     }
+
+    #[test]
+    fn compact_entries_preserve_positions_and_placeholders() {
+        let entries = vec![Some(10), None, Some(30)];
+
+        let compact = map_preserving_placeholders(&entries, |entry| entry * 2);
+
+        assert_eq!(compact, vec![Some(20), None, Some(60)]);
+    }
+
+    #[test]
+    fn wallet_tx_chain_maps_both_derivation_chains() {
+        assert_eq!(
+            wallet_tx_chain(lwk_wollet::Chain::External),
+            WalletTxChain::External
+        );
+        assert_eq!(
+            wallet_tx_chain(lwk_wollet::Chain::Internal),
+            WalletTxChain::Internal
+        );
+    }
+
+    #[test]
+    fn script_pubkey_hex_uses_canonical_hex_encoding() {
+        let script = Script::from_hex("0014ac45b647d82582d4ed416e5b84fd418789025dc5").unwrap();
+
+        assert_eq!(
+            script_pubkey_hex(&script),
+            "0014ac45b647d82582d4ed416e5b84fd418789025dc5"
+        );
+    }
+
+    #[test]
+    fn unblinding_url_is_only_built_when_opted_in() {
+        assert_eq!(maybe_include(false, || panic!("must not build")), None);
+        assert_eq!(maybe_include(true, || "confidential"), Some("confidential"));
+    }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -387,6 +424,118 @@ pub struct Tx {
     pub vsize: usize,
 }
 
+/// Compact projection of a wallet-owned transaction input or output.
+///
+/// Only address strings are exposed. In particular, this type cannot carry an
+/// `Address` and its blinding key.
+#[derive(Clone, Debug, PartialEq)]
+pub struct WalletTxOutCompact {
+    pub outpoint: OutPoint,
+    pub script_pubkey: String,
+    pub standard_address: String,
+    pub confidential_address: String,
+    pub value: u64,
+    pub asset: String,
+    pub is_spent: bool,
+    pub height: Option<u32>,
+    pub chain: WalletTxChain,
+}
+
+fn compact_wallet_tx_out(output: &WalletTxOut) -> WalletTxOutCompact {
+    WalletTxOutCompact {
+        outpoint: OutPoint {
+            txid: output.outpoint.txid.to_string(),
+            vout: output.outpoint.vout,
+        },
+        script_pubkey: script_pubkey_hex(&output.script_pubkey),
+        standard_address: output.address.to_unconfidential().to_string(),
+        confidential_address: output.address.to_string(),
+        value: output.unblinded.value,
+        asset: output.unblinded.asset.to_string(),
+        is_spent: output.is_spent,
+        height: output.height,
+        chain: wallet_tx_chain(output.ext_int),
+    }
+}
+
+fn script_pubkey_hex(script_pubkey: &Script) -> String {
+    script_pubkey.to_hex()
+}
+
+fn wallet_tx_chain(chain: lwk_wollet::Chain) -> WalletTxChain {
+    match chain {
+        lwk_wollet::Chain::External => WalletTxChain::External,
+        lwk_wollet::Chain::Internal => WalletTxChain::Internal,
+    }
+}
+
+fn maybe_include<T, F>(include: bool, build: F) -> Option<T>
+where
+    F: FnOnce() -> T,
+{
+    include.then(build)
+}
+
+fn map_preserving_placeholders<T, U, F>(entries: &[Option<T>], mut map: F) -> Vec<Option<U>>
+where
+    F: FnMut(&T) -> U,
+{
+    entries
+        .iter()
+        .map(|entry| entry.as_ref().map(&mut map))
+        .collect()
+}
+
+fn compact_entries(entries: &[Option<WalletTxOut>]) -> Vec<Option<WalletTxOutCompact>> {
+    map_preserving_placeholders(entries, compact_wallet_tx_out)
+}
+
+/// Whether a wallet transaction output belongs to the external chain or the
+/// internal change chain.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum WalletTxChain {
+    External,
+    Internal,
+}
+
+/// Wallet transaction details with placeholders for third-party vin/vout entries.
+#[derive(Clone, Debug, PartialEq)]
+pub struct WalletTxProjection {
+    pub txid: String,
+    pub timestamp: Option<u32>,
+    pub kind: String,
+    pub balances: Balances,
+    pub fee: u64,
+    pub height: Option<u32>,
+    /// Confidential unblinding factors encoded in an explorer URL.
+    ///
+    /// This is populated only when explicitly requested. Never log or persist
+    /// it, and never include it in package snapshots.
+    pub unblinded_url: Option<String>,
+    pub vsize: usize,
+    pub inputs: Vec<Option<WalletTxOutCompact>>,
+    pub outputs: Vec<Option<WalletTxOutCompact>>,
+}
+
+impl WalletTxProjection {
+    pub(crate) fn from_wallet_tx(wallet_tx: &WalletTx, include_unblinding_data: bool) -> Self {
+        Self {
+            txid: wallet_tx.txid.to_string(),
+            timestamp: wallet_tx.timestamp,
+            kind: wallet_tx.type_.clone(),
+            balances: Balances::from(AssetIdBTreeMapInt(wallet_tx.balance.as_ref().clone())),
+            fee: wallet_tx.fee,
+            height: wallet_tx.height,
+            unblinded_url: maybe_include(include_unblinding_data, || {
+                wallet_tx.unblinded_url("")
+            }),
+            vsize: wallet_tx.tx.discount_vsize(),
+            inputs: compact_entries(&wallet_tx.inputs),
+            outputs: compact_entries(&wallet_tx.outputs),
+        }
+    }
+}
+
 impl From<WalletTx> for Tx {
     fn from(wallet_tx: WalletTx) -> Self {
         let mut outputs: Vec<TxOut> = Vec::new();
@@ -394,7 +543,7 @@ impl From<WalletTx> for Tx {
 
         for output in &wallet_tx.outputs {
             if let Some(output) = output {
-                let script_pubkey = output.script_pubkey.to_hex();
+                let script_pubkey = script_pubkey_hex(&output.script_pubkey);
                 outputs.push(TxOut {
                     script_pubkey,
                     height: output.height,
@@ -411,7 +560,7 @@ impl From<WalletTx> for Tx {
 
         for input in &wallet_tx.inputs {
             if let Some(input) = input {
-                let script_pubkey = input.script_pubkey.to_string();
+                let script_pubkey = script_pubkey_hex(&input.script_pubkey);
                 inputs.push(TxOut {
                     script_pubkey,
                     height: input.height,

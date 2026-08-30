@@ -28,6 +28,7 @@ use super::types::Tx;
 use super::types::TxOut;
 use super::types::TxOutputSpec;
 use super::types::WalletBalances;
+use super::types::WalletTxProjection;
 
 /// Upper sanity bound on the fee rate, in sats/kvB: 100 sat/vB.
 ///
@@ -211,6 +212,36 @@ impl Wallet {
             .map(|x| Tx::from(x.to_owned()))
             .collect();
         Ok(txs)
+    }
+
+    /// Get the wallet-owned transaction details while preserving original vin/vout indexes.
+    pub fn transaction_projection(
+        &self,
+        txid: String,
+        include_unblinding_data: bool,
+    ) -> anyhow::Result<Option<WalletTxProjection>, LwkError> {
+        let txid = LwkTxid::from_str(&txid)?;
+        Ok(self
+            .get_wallet()?
+            .transaction(&txid)?
+            .map(|transaction| {
+                WalletTxProjection::from_wallet_tx(&transaction, include_unblinding_data)
+            }))
+    }
+
+    /// Get compact projections for the complete transaction history under one wallet lock.
+    pub fn transactions_projection(
+        &self,
+        include_unblinding_data: bool,
+    ) -> anyhow::Result<Vec<WalletTxProjection>, LwkError> {
+        Ok(self
+            .get_wallet()?
+            .transactions()?
+            .iter()
+            .map(|transaction| {
+                WalletTxProjection::from_wallet_tx(transaction, include_unblinding_data)
+            })
+            .collect())
     }
 
     /// Build a LBTC transaction

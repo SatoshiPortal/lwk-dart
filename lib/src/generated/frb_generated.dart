@@ -73,7 +73,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 511360800;
+  int get rustContentHash => -1030002871;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -323,6 +323,14 @@ abstract class LwkCoreApi extends BaseApi {
       required bool validateDomain,
       int? stopAtIndex,
       int? timeout});
+
+  Future<WalletTxProjection?> crateApiWalletWalletTransactionProjection(
+      {required Wallet that,
+      required String txid,
+      required bool includeUnblindingData});
+
+  Future<List<WalletTxProjection>> crateApiWalletWalletTransactionsProjection(
+      {required Wallet that, required bool includeUnblindingData});
 
   Future<List<Tx>> crateApiWalletWalletTxs({required Wallet that});
 
@@ -2228,6 +2236,61 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
+  Future<WalletTxProjection?> crateApiWalletWalletTransactionProjection(
+      {required Wallet that,
+      required String txid,
+      required bool includeUnblindingData}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        var arg1 = cst_encode_String(txid);
+        var arg2 = cst_encode_bool(includeUnblindingData);
+        return wire.wire__crate__api__wallet__wallet_transaction_projection(
+            port_, arg0, arg1, arg2);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_opt_box_autoadd_wallet_tx_projection,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta: kCrateApiWalletWalletTransactionProjectionConstMeta,
+      argValues: [that, txid, includeUnblindingData],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletWalletTransactionProjectionConstMeta =>
+      const TaskConstMeta(
+        debugName: "wallet_transaction_projection",
+        argNames: ["that", "txid", "includeUnblindingData"],
+      );
+
+  @override
+  Future<List<WalletTxProjection>> crateApiWalletWalletTransactionsProjection(
+      {required Wallet that, required bool includeUnblindingData}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        var arg1 = cst_encode_bool(includeUnblindingData);
+        return wire.wire__crate__api__wallet__wallet_transactions_projection(
+            port_, arg0, arg1);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_list_wallet_tx_projection,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta: kCrateApiWalletWalletTransactionsProjectionConstMeta,
+      argValues: [that, includeUnblindingData],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletWalletTransactionsProjectionConstMeta =>
+      const TaskConstMeta(
+        debugName: "wallet_transactions_projection",
+        argNames: ["that", "includeUnblindingData"],
+      );
+
+  @override
   Future<List<Tx>> crateApiWalletWalletTxs({required Wallet that}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -2460,6 +2523,18 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  WalletTxOutCompact dco_decode_box_autoadd_wallet_tx_out_compact(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_wallet_tx_out_compact(raw);
+  }
+
+  @protected
+  WalletTxProjection dco_decode_box_autoadd_wallet_tx_projection(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_wallet_tx_projection(raw);
+  }
+
+  @protected
   Descriptor dco_decode_descriptor(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2504,6 +2579,15 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   List<Balance> dco_decode_list_balance(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_balance).toList();
+  }
+
+  @protected
+  List<WalletTxOutCompact?>
+      dco_decode_list_opt_box_autoadd_wallet_tx_out_compact(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_opt_box_autoadd_wallet_tx_out_compact)
+        .toList();
   }
 
   @protected
@@ -2579,6 +2663,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  List<WalletTxProjection> dco_decode_list_wallet_tx_projection(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_wallet_tx_projection).toList();
+  }
+
+  @protected
   LwkError dco_decode_lwk_error(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2635,6 +2725,24 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   int? dco_decode_opt_box_autoadd_u_8(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_u_8(raw);
+  }
+
+  @protected
+  WalletTxOutCompact? dco_decode_opt_box_autoadd_wallet_tx_out_compact(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_wallet_tx_out_compact(raw);
+  }
+
+  @protected
+  WalletTxProjection? dco_decode_opt_box_autoadd_wallet_tx_projection(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_wallet_tx_projection(raw);
   }
 
   @protected
@@ -2862,6 +2970,51 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  WalletTxChain dco_decode_wallet_tx_chain(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return WalletTxChain.values[raw as int];
+  }
+
+  @protected
+  WalletTxOutCompact dco_decode_wallet_tx_out_compact(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    return WalletTxOutCompact(
+      outpoint: dco_decode_out_point(arr[0]),
+      scriptPubkey: dco_decode_String(arr[1]),
+      standardAddress: dco_decode_String(arr[2]),
+      confidentialAddress: dco_decode_String(arr[3]),
+      value: dco_decode_u_64(arr[4]),
+      asset: dco_decode_String(arr[5]),
+      isSpent: dco_decode_bool(arr[6]),
+      height: dco_decode_opt_box_autoadd_u_32(arr[7]),
+      chain: dco_decode_wallet_tx_chain(arr[8]),
+    );
+  }
+
+  @protected
+  WalletTxProjection dco_decode_wallet_tx_projection(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 10)
+      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
+    return WalletTxProjection(
+      txid: dco_decode_String(arr[0]),
+      timestamp: dco_decode_opt_box_autoadd_u_32(arr[1]),
+      kind: dco_decode_String(arr[2]),
+      balances: dco_decode_list_balance(arr[3]),
+      fee: dco_decode_u_64(arr[4]),
+      height: dco_decode_opt_box_autoadd_u_32(arr[5]),
+      unblindedUrl: dco_decode_opt_String(arr[6]),
+      vsize: dco_decode_usize(arr[7]),
+      inputs: dco_decode_list_opt_box_autoadd_wallet_tx_out_compact(arr[8]),
+      outputs: dco_decode_list_opt_box_autoadd_wallet_tx_out_compact(arr[9]),
+    );
+  }
+
+  @protected
   LiquidTransaction
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
           SseDeserializer deserializer) {
@@ -3025,6 +3178,20 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  WalletTxOutCompact sse_decode_box_autoadd_wallet_tx_out_compact(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_wallet_tx_out_compact(deserializer));
+  }
+
+  @protected
+  WalletTxProjection sse_decode_box_autoadd_wallet_tx_projection(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_wallet_tx_projection(deserializer));
+  }
+
+  @protected
   Descriptor sse_decode_descriptor(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_ctDescriptor = sse_decode_String(deserializer);
@@ -3076,6 +3243,20 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     var ans_ = <Balance>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_balance(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<WalletTxOutCompact?>
+      sse_decode_list_opt_box_autoadd_wallet_tx_out_compact(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <WalletTxOutCompact?>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_opt_box_autoadd_wallet_tx_out_compact(deserializer));
     }
     return ans_;
   }
@@ -3218,6 +3399,19 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  List<WalletTxProjection> sse_decode_list_wallet_tx_projection(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <WalletTxProjection>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_wallet_tx_projection(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   LwkError sse_decode_lwk_error(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_msg = sse_decode_String(deserializer);
@@ -3309,6 +3503,30 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_u_8(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  WalletTxOutCompact? sse_decode_opt_box_autoadd_wallet_tx_out_compact(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_wallet_tx_out_compact(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  WalletTxProjection? sse_decode_opt_box_autoadd_wallet_tx_projection(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_wallet_tx_projection(deserializer));
     } else {
       return null;
     }
@@ -3527,6 +3745,67 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  WalletTxChain sse_decode_wallet_tx_chain(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return WalletTxChain.values[inner];
+  }
+
+  @protected
+  WalletTxOutCompact sse_decode_wallet_tx_out_compact(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_outpoint = sse_decode_out_point(deserializer);
+    var var_scriptPubkey = sse_decode_String(deserializer);
+    var var_standardAddress = sse_decode_String(deserializer);
+    var var_confidentialAddress = sse_decode_String(deserializer);
+    var var_value = sse_decode_u_64(deserializer);
+    var var_asset = sse_decode_String(deserializer);
+    var var_isSpent = sse_decode_bool(deserializer);
+    var var_height = sse_decode_opt_box_autoadd_u_32(deserializer);
+    var var_chain = sse_decode_wallet_tx_chain(deserializer);
+    return WalletTxOutCompact(
+        outpoint: var_outpoint,
+        scriptPubkey: var_scriptPubkey,
+        standardAddress: var_standardAddress,
+        confidentialAddress: var_confidentialAddress,
+        value: var_value,
+        asset: var_asset,
+        isSpent: var_isSpent,
+        height: var_height,
+        chain: var_chain);
+  }
+
+  @protected
+  WalletTxProjection sse_decode_wallet_tx_projection(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_txid = sse_decode_String(deserializer);
+    var var_timestamp = sse_decode_opt_box_autoadd_u_32(deserializer);
+    var var_kind = sse_decode_String(deserializer);
+    var var_balances = sse_decode_list_balance(deserializer);
+    var var_fee = sse_decode_u_64(deserializer);
+    var var_height = sse_decode_opt_box_autoadd_u_32(deserializer);
+    var var_unblindedUrl = sse_decode_opt_String(deserializer);
+    var var_vsize = sse_decode_usize(deserializer);
+    var var_inputs =
+        sse_decode_list_opt_box_autoadd_wallet_tx_out_compact(deserializer);
+    var var_outputs =
+        sse_decode_list_opt_box_autoadd_wallet_tx_out_compact(deserializer);
+    return WalletTxProjection(
+        txid: var_txid,
+        timestamp: var_timestamp,
+        kind: var_kind,
+        balances: var_balances,
+        fee: var_fee,
+        height: var_height,
+        unblindedUrl: var_unblindedUrl,
+        vsize: var_vsize,
+        inputs: var_inputs,
+        outputs: var_outputs);
+  }
+
+  @protected
   int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerLiquidTransaction(
       LiquidTransaction raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -3624,6 +3903,12 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   void cst_encode_unit(void raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw;
+  }
+
+  @protected
+  int cst_encode_wallet_tx_chain(WalletTxChain raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
   }
 
   @protected
@@ -3796,6 +4081,20 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_wallet_tx_out_compact(
+      WalletTxOutCompact self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_wallet_tx_out_compact(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_wallet_tx_projection(
+      WalletTxProjection self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_wallet_tx_projection(self, serializer);
+  }
+
+  @protected
   void sse_encode_descriptor(Descriptor self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.ctDescriptor, serializer);
@@ -3840,6 +4139,16 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_balance(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_opt_box_autoadd_wallet_tx_out_compact(
+      List<WalletTxOutCompact?> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_opt_box_autoadd_wallet_tx_out_compact(item, serializer);
     }
   }
 
@@ -3958,6 +4267,16 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
+  void sse_encode_list_wallet_tx_projection(
+      List<WalletTxProjection> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_wallet_tx_projection(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_lwk_error(LwkError self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.msg, serializer);
@@ -4044,6 +4363,28 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_u_8(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_wallet_tx_out_compact(
+      WalletTxOutCompact? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_wallet_tx_out_compact(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_wallet_tx_projection(
+      WalletTxProjection? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_wallet_tx_projection(self, serializer);
     }
   }
 
@@ -4198,6 +4539,46 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.assetId, serializer);
     sse_encode_u_64(self.value, serializer);
+  }
+
+  @protected
+  void sse_encode_wallet_tx_chain(
+      WalletTxChain self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_wallet_tx_out_compact(
+      WalletTxOutCompact self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_out_point(self.outpoint, serializer);
+    sse_encode_String(self.scriptPubkey, serializer);
+    sse_encode_String(self.standardAddress, serializer);
+    sse_encode_String(self.confidentialAddress, serializer);
+    sse_encode_u_64(self.value, serializer);
+    sse_encode_String(self.asset, serializer);
+    sse_encode_bool(self.isSpent, serializer);
+    sse_encode_opt_box_autoadd_u_32(self.height, serializer);
+    sse_encode_wallet_tx_chain(self.chain, serializer);
+  }
+
+  @protected
+  void sse_encode_wallet_tx_projection(
+      WalletTxProjection self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.txid, serializer);
+    sse_encode_opt_box_autoadd_u_32(self.timestamp, serializer);
+    sse_encode_String(self.kind, serializer);
+    sse_encode_list_balance(self.balances, serializer);
+    sse_encode_u_64(self.fee, serializer);
+    sse_encode_opt_box_autoadd_u_32(self.height, serializer);
+    sse_encode_opt_String(self.unblindedUrl, serializer);
+    sse_encode_usize(self.vsize, serializer);
+    sse_encode_list_opt_box_autoadd_wallet_tx_out_compact(
+        self.inputs, serializer);
+    sse_encode_list_opt_box_autoadd_wallet_tx_out_compact(
+        self.outputs, serializer);
   }
 }
 
