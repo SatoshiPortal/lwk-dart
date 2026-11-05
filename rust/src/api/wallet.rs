@@ -761,6 +761,55 @@ mod tests {
     }
 
     #[test]
+    fn signing_with_a_key_that_owns_no_input_fails() {
+        // BIP39 test vector unrelated to the wallet.
+        const FOREIGN_MNEMONIC: &str =
+            "legal winner thank year wave sausage worth useful legal winner thank yellow";
+        let foreign_seed = bip39::Mnemonic::parse_in(bip39::Language::English, FOREIGN_MNEMONIC)
+            .unwrap()
+            .to_seed("")
+            .to_vec();
+        let network = LiquidNetwork::Testnet;
+        let descriptor =
+            Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
+        let wallet = offline_wallet("sign-foreign-key", descriptor);
+        let pset = pset_spending_first_address(&wallet);
+
+        let results = [
+            (
+                "sign_tx",
+                wallet.sign_tx(network, pset.clone(), FOREIGN_MNEMONIC.to_owned()),
+            ),
+            (
+                "signed_pset_with_extra_details",
+                wallet.signed_pset_with_extra_details(
+                    network,
+                    pset.clone(),
+                    FOREIGN_MNEMONIC.to_owned(),
+                ),
+            ),
+            (
+                "sign_tx_with_seed",
+                wallet.sign_tx_with_seed(network, pset.clone(), foreign_seed.clone()),
+            ),
+            (
+                "signed_pset_with_extra_details_with_seed",
+                wallet.signed_pset_with_extra_details_with_seed(network, pset, foreign_seed),
+            ),
+        ];
+        let accepted: Vec<&str> = results
+            .iter()
+            .filter(|(_, result)| result.is_ok())
+            .map(|(name, _)| *name)
+            .collect();
+        assert!(accepted.is_empty(), "returned a transaction: {accepted:?}");
+        for (name, result) in results {
+            let msg = result.unwrap_err().msg;
+            assert!(msg.contains("added no signature"), "{name}: {msg}");
+        }
+    }
+
+    #[test]
     fn signing_rejects_a_seed_of_invalid_length() {
         let network = LiquidNetwork::Testnet;
         let descriptor =
