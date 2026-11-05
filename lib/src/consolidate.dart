@@ -50,14 +50,18 @@ class LiquidBatchBroadcastResult {
   final String? error;
 }
 
+/// Broadcasts each PSET over TLS, or over plaintext for a `tcp://` URL on
+/// regtest.
 Future<List<LiquidBatchBroadcastResult>> batchBroadcast({
   required List<String> signedPsets,
+  required LiquidNetwork network,
   required String electrumUrl,
 }) async {
   final results = <LiquidBatchBroadcastResult>[];
   for (final s in signedPsets) {
     try {
       final txid = await Blockchain.broadcastSignedPset(
+        network: network,
         electrumUrl: electrumUrl,
         signedPset: s,
       );
