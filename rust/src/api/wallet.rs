@@ -130,14 +130,19 @@ impl Wallet {
     }
 
     /// Initializes a wallet from a specific db path and descriptor
+    ///
+    /// The policy asset id is only for the regtest network, whose node may use another policy
+    /// asset than lwk's default; mainnet and testnet reject it.
     pub fn init(
         network: LiquidNetwork,
         dbpath: String,
         descriptor: Descriptor,
+        policy_asset: Option<String>,
     ) -> anyhow::Result<Wallet, LwkError> {
+        let network = network.elements_network(policy_asset)?;
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
-        let wollet = lwk_wollet::WolletBuilder::new(network.into(), descriptor)
+        let wollet = lwk_wollet::WolletBuilder::new(network, descriptor)
             .with_legacy_fs_store(dbpath.clone())?
             .build()?;
         let opaque = RustOpaque::new(Mutex::new(wollet));
@@ -475,6 +480,12 @@ impl Wallet {
                 sideswap_types::network::Network::LiquidTestnet,
                 sideswap_payjoin::BASE_URL_TESTNET,
             ),
+            // SideSwap runs no regtest server, and its regtest policy asset is its own.
+            LiquidNetwork::Regtest => {
+                return Err(LwkError {
+                    msg: "Payjoin is not available on regtest".to_string(),
+                })
+            }
         };
 
         // Use provided base_url or fall back to default
@@ -613,6 +624,11 @@ impl Wallet {
         self.sign_tx_with_seed_common(network, pset, seed, false)
     }
 
+    /// Get the policy asset (L-BTC) id of the wallet's network
+    pub fn policy_asset(&self) -> anyhow::Result<String, LwkError> {
+        Ok(self.get_wallet()?.policy_asset().to_string())
+    }
+
     /// Get utxos of the wallet
     pub fn utxos(&self) -> anyhow::Result<Vec<TxOut>, LwkError> {
         let wallet_tx_outs = self.get_wallet()?.utxos()?;
@@ -686,6 +702,7 @@ mod tests {
             LiquidNetwork::Testnet,
             dbpath.display().to_string(),
             descriptor,
+            None,
         )
         .unwrap();
         OfflineWallet {
@@ -936,7 +953,7 @@ mod tests {
         let electrum_url = "les.bullbitcoin.com:995".to_string();
         let network = LiquidNetwork::Mainnet;
         let desc = Descriptor::new_confidential(network, mnemonic).unwrap();
-        let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc, None).unwrap();
         let _ = wallet.sync(electrum_url.clone(), true, None, None);
         let _txs = wallet.txs();
         for tx in _txs.unwrap() {
@@ -979,7 +996,7 @@ mod tests {
         let network = LiquidNetwork::Testnet;
 
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
-        let wallet = Wallet::init(network, "/tmp/lwk_consolidate".to_string(), desc).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk_consolidate".to_string(), desc, None).unwrap();
         wallet.sync(electrum_url, true, None, None).unwrap();
 
         let count = wallet.utxos().unwrap().len();
@@ -1005,7 +1022,7 @@ mod tests {
         let network = LiquidNetwork::Testnet;
 
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
-        let wallet = Wallet::init(network, "/tmp/lwk_build_custom_tx".to_string(), desc).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk_build_custom_tx".to_string(), desc, None).unwrap();
         wallet.sync(electrum_url, true, None, None).unwrap();
 
         let utxos = wallet.utxos().unwrap();
@@ -1216,7 +1233,7 @@ mod tests {
         let asset = "b612eb46313a2cd6ebabd8b7a8eed5696e29898b87a43bff41c94f51acef9d73";
 
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
-        let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk".to_string(), desc, None).unwrap();
         wallet
             .sync(electrum_url.to_owned(), true, None, None)
             .unwrap();
@@ -1281,7 +1298,7 @@ mod tests {
         let asset = "b612eb46313a2cd6ebabd8b7a8eed5696e29898b87a43bff41c94f51acef9d73";
 
         let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
-        let wallet = Wallet::init(network, "/tmp/lwk_send_all".to_string(), desc).unwrap();
+        let wallet = Wallet::init(network, "/tmp/lwk_send_all".to_string(), desc, None).unwrap();
         wallet
             .sync(electrum_url.to_owned(), true, None, None)
             .unwrap();
