@@ -608,8 +608,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   ffi.Pointer<wire_cst_list_prim_u_8_loose> cst_encode_list_prim_u_8_loose(
       List<int> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_prim_u_8_loose(raw.length);
-    ans.ref.ptr.asTypedList(raw.length).setAll(0, checkedU8List(raw));
+    final bytes = checkedU8List(raw);
+    final ans = wire.cst_new_list_prim_u_8_loose(bytes.length);
+    ans.ref.ptr.asTypedList(bytes.length).setAll(0, bytes);
     return ans;
   }
 
