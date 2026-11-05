@@ -812,6 +812,49 @@ mod tests {
     }
 
     #[test]
+    fn signing_a_pset_already_signed_by_the_same_key_fails() {
+        let network = LiquidNetwork::Testnet;
+        let descriptor =
+            Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
+        let wallet = offline_wallet("sign-twice", descriptor);
+        let mut signed =
+            PartiallySignedTransaction::from_str(&pset_spending_first_address(&wallet)).unwrap();
+        let added = SwSigner::new(ABANDON_MNEMONIC, false)
+            .unwrap()
+            .sign(&mut signed)
+            .unwrap();
+        assert_eq!(added, 1);
+        let signed = signed.to_string();
+
+        let results = [
+            (
+                "sign_tx",
+                wallet.sign_tx(network, signed.clone(), ABANDON_MNEMONIC.to_owned()),
+            ),
+            (
+                "signed_pset_with_extra_details",
+                wallet.signed_pset_with_extra_details(
+                    network,
+                    signed.clone(),
+                    ABANDON_MNEMONIC.to_owned(),
+                ),
+            ),
+            (
+                "sign_tx_with_seed",
+                wallet.sign_tx_with_seed(network, signed.clone(), abandon_seed()),
+            ),
+            (
+                "signed_pset_with_extra_details_with_seed",
+                wallet.signed_pset_with_extra_details_with_seed(network, signed, abandon_seed()),
+            ),
+        ];
+        for (name, result) in results {
+            let msg = result.unwrap_err().msg;
+            assert!(msg.contains("added no signature"), "{name}: {msg}");
+        }
+    }
+
+    #[test]
     fn signing_rejects_a_seed_of_invalid_length() {
         let network = LiquidNetwork::Testnet;
         let descriptor =
