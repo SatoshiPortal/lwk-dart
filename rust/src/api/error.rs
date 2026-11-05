@@ -115,6 +115,14 @@ impl From<lwk_signer::SignError> for LwkError {
     }
 }
 
+impl From<crate::signer::SeedError> for LwkError {
+    fn from(value: crate::signer::SeedError) -> Self {
+        LwkError {
+            msg: value.to_string(),
+        }
+    }
+}
+
 impl From<String> for LwkError {
     fn from(msg: String) -> Self {
         LwkError { msg }

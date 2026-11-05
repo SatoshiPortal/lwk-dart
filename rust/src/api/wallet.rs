@@ -1,6 +1,6 @@
 use flutter_rust_bridge::frb;
 use lwk_common::Signer;
-use lwk_signer::SwSigner;
+use lwk_signer::{SignError, SwSigner};
 use lwk_wollet::{full_scan_to_index_with_electrum_client, ElectrumOptions};
 // use lwk_wollet::elements_miniscript::descriptor;
 use flutter_rust_bridge::RustOpaqueNom as RustOpaque;
@@ -16,6 +16,8 @@ use std::str::FromStr;
 pub use std::sync::Mutex;
 use std::sync::MutexGuard;
 use zeroize::Zeroizing;
+
+use crate::signer::SeedSigner;
 
 use super::descriptor::Descriptor;
 use super::error::LwkError;
@@ -552,6 +554,27 @@ impl Wallet {
     ) -> anyhow::Result<String, LwkError> {
         let mnemonic = Zeroizing::new(mnemonic);
         let signer: SwSigner = SwSigner::new(&mnemonic, network.is_mainnet())?;
+        self.sign_and_finalize(&signer, pset, add_details)
+    }
+
+    fn sign_tx_with_seed_common(
+        &self,
+        network: LiquidNetwork,
+        pset: String,
+        seed: Vec<u8>,
+        add_details: bool,
+    ) -> anyhow::Result<String, LwkError> {
+        let seed = Zeroizing::new(seed);
+        let signer = SeedSigner::new(&seed, network.is_mainnet())?;
+        self.sign_and_finalize(&signer, pset, add_details)
+    }
+
+    fn sign_and_finalize<S: Signer<Error = SignError>>(
+        &self,
+        signer: &S,
+        pset: String,
+        add_details: bool,
+    ) -> anyhow::Result<String, LwkError> {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         if add_details {
             self.get_wallet()?.add_details(&mut pset)?;
@@ -572,6 +595,16 @@ impl Wallet {
         self.sign_tx_common(network, pset, mnemonic, false)
     }
 
+    /// Sign a wallet transaction with a 64-byte BIP39 seed instead of mnemonic words
+    pub fn sign_tx_with_seed(
+        &self,
+        network: LiquidNetwork,
+        pset: String,
+        seed: Vec<u8>,
+    ) -> anyhow::Result<String, LwkError> {
+        self.sign_tx_with_seed_common(network, pset, seed, false)
+    }
+
     /// Get utxos of the wallet
     pub fn utxos(&self) -> anyhow::Result<Vec<TxOut>, LwkError> {
         let wallet_tx_outs = self.get_wallet()?.utxos()?;
@@ -587,6 +620,16 @@ impl Wallet {
         mnemonic: String,
     ) -> anyhow::Result<String, LwkError> {
         self.sign_tx_common(network, pset, mnemonic, true)
+    }
+
+    /// Sign a pset with extra details with a 64-byte BIP39 seed instead of mnemonic words
+    pub fn signed_pset_with_extra_details_with_seed(
+        &self,
+        network: LiquidNetwork,
+        pset: String,
+        seed: Vec<u8>,
+    ) -> anyhow::Result<String, LwkError> {
+        self.sign_tx_with_seed_common(network, pset, seed, true)
     }
 }
 
