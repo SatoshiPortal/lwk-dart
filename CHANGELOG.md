@@ -8,6 +8,10 @@
   same descriptor and signatures through both paths. A seed of any other length
   is rejected, so 16 or 32 bytes of BIP39 entropy passed by mistake cannot
   derive another wallet
+- fix: reject `List<int>` byte arguments (`seed`, `txBytes`) holding a value
+  outside 0..255 with a `RangeError` at the FFI boundary. The generated codec
+  kept only the low 8 bits, so a seed of 64 × 256 derived the keys of the all-zero
+  seed
 
 ## 0.7.0
 
