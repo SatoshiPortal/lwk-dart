@@ -14,7 +14,7 @@ impl Descriptor {
     /// Createa new wpkh confidential descriptor based on Slip77 blinding key derivation
     pub fn new_confidential(network: LiquidNetwork, mnemonic: String) -> Result<Descriptor, LwkError> {
         let mnemonic = Zeroizing::new(mnemonic);
-        let signer: SwSigner = SwSigner::new(&mnemonic, network.is_mainnet())?.into();
+        let signer: SwSigner = SwSigner::new_with_network(&mnemonic, network.into())?.into();
         let script_variant = lwk_common::Singlesig::Wpkh;
         let blinding_variant = lwk_common::DescriptorBlindingKey::Slip77;
         let desc_str = lwk_common::singlesig_desc(&signer, script_variant, blinding_variant)?;

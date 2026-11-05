@@ -55,7 +55,7 @@ pub use std::collections::{BTreeMap, HashMap};
 use std::str::FromStr;
 pub use std::vec::Vec;
 
-use lwk_wollet::Network as ElementsNetwork;
+use lwk_common::Network as ElementsNetwork;
 use std::convert::TryFrom;
 
 use super::error::LwkError;
@@ -64,12 +64,6 @@ use super::error::LwkError;
 pub enum LiquidNetwork {
     Mainnet,
     Testnet,
-}
-
-impl LiquidNetwork {
-    pub(crate) fn is_mainnet(self) -> bool {
-        self == LiquidNetwork::Mainnet
-    }
 }
 
 impl Into<ElementsNetwork> for LiquidNetwork {
@@ -350,8 +344,10 @@ mod tests {
 
     #[test]
     fn only_liquid_mainnet_uses_mainnet_signing_keys() {
-        assert!(LiquidNetwork::Mainnet.is_mainnet());
-        assert!(!LiquidNetwork::Testnet.is_mainnet());
+        let mainnet: ElementsNetwork = LiquidNetwork::Mainnet.into();
+        let testnet: ElementsNetwork = LiquidNetwork::Testnet.into();
+        assert!(mainnet.is_mainnet());
+        assert!(!testnet.is_mainnet());
     }
 }
 

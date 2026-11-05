@@ -431,7 +431,7 @@ impl Wallet {
         add_details: bool,
     ) -> anyhow::Result<String, LwkError> {
         let mnemonic = Zeroizing::new(mnemonic);
-        let signer: SwSigner = SwSigner::new(&mnemonic, network.is_mainnet())?;
+        let signer: SwSigner = SwSigner::new_with_network(&mnemonic, network.into())?;
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         if add_details {
             self.get_wallet()?.add_details(&mut pset)?;
