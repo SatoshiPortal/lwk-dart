@@ -164,7 +164,11 @@ impl Wallet {
         // domain validation from it, always on for `ssl://` with a domain name.
         // Kept in the signature so the Dart API does not break.
         let _ = validate_domain;
-        let mut electrum_client = super::blockchain::tls_electrum_client(&electrum_url, timeout)?;
+        let host_port = electrum_url
+            .strip_prefix("ssl://")
+            .or_else(|| electrum_url.strip_prefix("tcp://"))
+            .unwrap_or(&electrum_url);
+        let mut electrum_client = super::blockchain::tls_electrum_client(host_port, timeout)?;
         let mut wallet = self.get_wallet()?;
         match full_scan_to_index_with_electrum_client(
             &mut wallet,
