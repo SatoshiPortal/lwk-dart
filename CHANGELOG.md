@@ -12,6 +12,10 @@
   outside 0..255 with a `RangeError` at the FFI boundary. The generated codec
   kept only the low 8 bits, so a seed of 64 × 256 derived the keys of the all-zero
   seed
+- fix (behaviour change): signing with a mnemonic or seed whose key owns no input
+  of the PSET now fails with an `LwkError` (`signTx`, `signedPsetWithExtraDetails`
+  and their seed variants). The PSET was finalized anyway and returned without
+  any signature, as if signing had succeeded
 
 ## 0.7.0
 

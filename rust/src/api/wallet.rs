@@ -579,7 +579,13 @@ impl Wallet {
         if add_details {
             self.get_wallet()?.add_details(&mut pset)?;
         }
-        signer.sign(&mut pset)?;
+        // Finalizing an unsigned input still yields a transaction, which a key owning no input
+        // would return as if it had signed.
+        if signer.sign(&mut pset)? == 0 {
+            return Err(LwkError {
+                msg: "the signer added no signature: its key owns no input of this PSET".to_owned(),
+            });
+        }
         let tx = self.get_wallet()?.finalize(&mut pset)?;
         let finalized_pset = PartiallySignedTransaction::from_tx(tx.clone());
         Ok(finalized_pset.to_string())
