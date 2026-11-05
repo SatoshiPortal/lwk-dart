@@ -16,6 +16,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
 import '../checked_u64.dart';
+import '../checked_u8_list.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
 
 abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
@@ -605,7 +606,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   @protected
   JSAny cst_encode_list_prim_u_8_loose(List<int> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw.jsify()!;
+    return checkedU8List(raw).jsify()!;
   }
 
   @protected
