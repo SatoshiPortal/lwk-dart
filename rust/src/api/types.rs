@@ -319,6 +319,22 @@ mod tests {
     }
 
     #[test]
+    fn address_from_script_decodes_a_hex_script_pubkey() {
+        let address = Address::address_from_script(
+            LiquidNetwork::Mainnet,
+            "0014f22d924b8b7ec66c464fb4bebf0f789b2177a175".to_string(),
+            None,
+        )
+        .unwrap();
+        assert_eq!(address.standard, "ex1q7gkeyjut0mrxc3j0kjlt7rmcnvsh0gt45d3fud");
+
+        assert!(Address::address_from_script(LiquidNetwork::Mainnet, "0g".to_string(), None)
+            .is_err());
+        assert!(Address::address_from_script(LiquidNetwork::Mainnet, "001".to_string(), None)
+            .is_err());
+    }
+
+    #[test]
     fn wallet_balances_preserve_the_full_u64_range() {
         let asset = AssetId::from_str(L_BTC_ASSET_ID).unwrap();
         let balances = WalletBalances::from(AssetIdBTreeMapUInt(BTreeMap::from([(
