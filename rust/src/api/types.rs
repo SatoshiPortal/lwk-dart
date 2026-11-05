@@ -464,10 +464,10 @@ pub struct PsetAmounts {
     pub balances: Balances,
 }
 impl PsetAmounts {
-    pub(super) fn from_balance(balance: PsetBalance, policy_asset: &AssetId) -> Self {
+    pub(super) fn from_balance(balance: &PsetBalance, policy_asset: &AssetId) -> Self {
         PsetAmounts {
             absolute_fees: balance.fees_in(policy_asset),
-            balances: Balances::from(AssetIdBTreeMapInt(balance.balances.as_ref().clone())),
+            balances: Balances::from(AssetIdBTreeMapInt(balance.balances().as_ref().clone())),
         }
     }
 }

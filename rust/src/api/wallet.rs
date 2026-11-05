@@ -1,4 +1,4 @@
-use lwk_common::Signer;
+use lwk_common::{FeeRate, Signer};
 use lwk_signer::SwSigner;
 use lwk_wollet::{full_scan_to_index_with_electrum_client, ElectrumOptions};
 // use lwk_wollet::elements_miniscript::descriptor;
@@ -44,7 +44,9 @@ pub const MAX_FEE_RATE_SATS_PER_KVB: f32 = 100_000.0;
 /// `u64::MAX`. A caller assuming sat/vB and passing `1.0` gets 0.001 sat/vB,
 /// under Liquid's relay floor, so the transaction never confirms and the coins
 /// stay locked in an unconfirmed spend.
-fn validate_fee_rate(fee_rate: f32) -> anyhow::Result<(), LwkError> {
+///
+/// Returns the rate as the `FeeRate` lwk's transaction builder takes.
+fn validate_fee_rate(fee_rate: f32) -> anyhow::Result<FeeRate, LwkError> {
     if !fee_rate.is_finite() {
         return Err(LwkError {
             msg: format!("Fee rate must be a finite number, got {fee_rate}"),
@@ -63,17 +65,20 @@ fn validate_fee_rate(fee_rate: f32) -> anyhow::Result<(), LwkError> {
             ),
         });
     }
-    Ok(())
+    // Unreachable after the checks above, which are stricter than lwk's own.
+    FeeRate::from_sat_kvb(fee_rate).ok_or_else(|| LwkError {
+        msg: format!("Fee rate {fee_rate} sats/kvB is not accepted by lwk"),
+    })
 }
 
 /// Validate a destination address the way lwk validates a normal recipient.
 ///
 /// `LwkAddress::from_str` accepts an address for any network and says nothing
-/// about confidentiality, and `TxBuilder::drain_lbtc_to` takes the address
-/// without validating it — unlike `add_lbtc_recipient`, which routes through
-/// lwk's own `validate_address`. A drain therefore accepted a mainnet address
-/// on a testnet wallet, and an unblinded address that leaks the amount and
-/// recipient of the whole sweep.
+/// about confidentiality. lwk_wollet 0.18's `TxBuilder::drain_lbtc_to` took the
+/// address without validating it, so a drain accepted a mainnet address on a
+/// testnet wallet, and an unblinded address that leaks the amount and recipient
+/// of the whole sweep. `drain_lbtc_to` now validates too; this check is kept so
+/// both paths fail early, before any builder call, with the same message.
 ///
 /// Mirrors lwk_wollet's `validate_address`: parse under the wallet's own
 /// address params, then require a blinding key.
@@ -220,7 +225,7 @@ impl Wallet {
         fee_rate: f32,
         drain: bool,
     ) -> anyhow::Result<String, LwkError> {
-        validate_fee_rate(fee_rate)?;
+        let lwk_fee_rate = validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let network = wallet.network();
         let tx_builder = wallet.tx_builder();
@@ -231,16 +236,16 @@ impl Wallet {
         if drain {
             let pset = tx_builder
                 .drain_lbtc_wallet()
-                .drain_lbtc_to(address)
+                .drain_lbtc_to(&address)?
                 .enable_ct_discount()
-                .fee_rate(Some(fee_rate))
+                .fee_rate(Some(lwk_fee_rate))
                 .finish()?;
             Ok(pset.to_string())
         } else {
             let pset = tx_builder
                 .add_lbtc_recipient(&address, sats)?
                 .enable_ct_discount()
-                .fee_rate(Some(fee_rate))
+                .fee_rate(Some(lwk_fee_rate))
                 .finish()?;
             Ok(pset.to_string())
         }
@@ -259,7 +264,7 @@ impl Wallet {
         high_utxo_threshold: Option<u32>,
         maximum_inputs: Option<u32>,
     ) -> anyhow::Result<Vec<String>, LwkError> {
-        validate_fee_rate(fee_rate)?;
+        let lwk_fee_rate = validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let policy_asset = wallet.policy_asset();
 
@@ -296,9 +301,9 @@ impl Wallet {
             match wallet
                 .tx_builder()
                 .set_wallet_utxos(outpoints)
-                .drain_lbtc_to(address)
+                .drain_lbtc_to(&address)?
                 .enable_ct_discount()
-                .fee_rate(Some(fee_rate))
+                .fee_rate(Some(lwk_fee_rate))
                 .finish()
             {
                 Ok(pset) => psets.push(pset.to_string()),
@@ -329,7 +334,7 @@ impl Wallet {
         drain_to: Option<String>,
         fee_rate: f32,
     ) -> anyhow::Result<String, LwkError> {
-        validate_fee_rate(fee_rate)?;
+        let lwk_fee_rate = validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
 
         let outpoints: Vec<LwkOutPoint> = utxos
@@ -362,21 +367,18 @@ impl Wallet {
 
         if let Some(drain_addr) = drain_to {
             // `drain_lbtc_wallet()` sets a flag (`drain_lbtc`) that
-            // `lwk_wollet` 0.18's TxBuilder::finish never reads — dead
-            // regardless of manual UTXO selection. `drain_lbtc_to` alone
-            // (consumed at tx_builder.rs:1174) is what actually directs
-            // leftover L-BTC to `address`.
-            // Same gap as build_lbtc_tx: drain_lbtc_to does not validate, so
-            // without this a sweep could go to a wrong-network or unblinded
-            // address. The consolidate path above is fine because it drains to
-            // the wallet's own address rather than a caller-supplied one.
+            // `lwk_wollet`'s TxBuilder::finish never reads (still true on LWK
+            // master) — dead regardless of manual UTXO selection.
+            // `drain_lbtc_to` alone is what actually directs leftover L-BTC to
+            // `address`. It validates the address since LWK 0.19; the explicit
+            // check below keeps the error message unchanged.
             let address = validate_out_address(&drain_addr, wallet.network())?;
-            builder = builder.drain_lbtc_to(address);
+            builder = builder.drain_lbtc_to(&address)?;
         }
 
         let pset = builder
             .enable_ct_discount()
-            .fee_rate(Some(fee_rate))
+            .fee_rate(Some(lwk_fee_rate))
             .finish()?;
         Ok(pset.to_string())
     }
@@ -389,7 +391,7 @@ impl Wallet {
         fee_rate: f32,
         asset: String,
     ) -> anyhow::Result<String, LwkError> {
-        validate_fee_rate(fee_rate)?;
+        let lwk_fee_rate = validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let tx_builder = wallet.tx_builder();
         let address = LwkAddress::from_str(&out_address)?;
@@ -404,7 +406,7 @@ impl Wallet {
         let pset = tx_builder
             .add_recipient(&address, sats, asset)?
             .enable_ct_discount()
-            .fee_rate(Some(fee_rate))
+            .fee_rate(Some(lwk_fee_rate))
             .finish()?;
         Ok(pset.to_string())
     }
@@ -415,7 +417,7 @@ impl Wallet {
         let wallet = self.get_wallet()?;
         let pset_details = wallet.get_details(&mut pset)?;
         let policy_asset = wallet.policy_asset();
-        Ok(PsetAmounts::from_balance(pset_details.balance, &policy_asset))
+        Ok(PsetAmounts::from_balance(pset_details.balance(), &policy_asset))
     }
 
     fn sign_tx_common(

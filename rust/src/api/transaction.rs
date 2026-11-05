@@ -440,7 +440,7 @@ mod tests {
         let script = Script::from(hex::decode(P2WPKH_SCRIPT).unwrap());
         let mut input = TxIn::default();
         input.script_sig = script.clone();
-        input.witness.script_witness = vec![vec![0xab, 0xcd]];
+        input.witness.script_witness = vec![vec![0xab, 0xcd]].into();
         let mut output = TxOut::new_fee(1, AssetId::default());
         output.script_pubkey = script;
         let tx = LiquidTransaction {

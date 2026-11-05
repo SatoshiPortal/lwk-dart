@@ -15,9 +15,12 @@ crate-type = ["lib", "staticlib", "cdylib"]
 # transitively in the bull_sdk aggregate, which makes rustls 0.23 panic when it
 # tries to auto-pick a default. We install ring explicitly at runtime.
 rustls = { version = "0.23", default-features = false, features = ["ring"] }
-lwk_wollet = {version = "0.18.0" }
-lwk_signer = { version = "0.18.0" }
-lwk_common = {version = "0.18.0" }
+# LWK master from the SatoshiPortal fork, which adds
+# `SwSigner::from_seed_with_network` (proposed upstream as Blockstream/lwk#196).
+# Switch back to crates.io once Blockstream releases a version including #196.
+lwk_wollet = { git = "https://github.com/SatoshiPortal/lwk", rev = "33b1be3ac2c068837156b6bb9bfce76cfd6870bd" }
+lwk_signer = { git = "https://github.com/SatoshiPortal/lwk", rev = "33b1be3ac2c068837156b6bb9bfce76cfd6870bd" }
+lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "33b1be3ac2c068837156b6bb9bfce76cfd6870bd" }
 thiserror = "2.0.18"
 flutter_rust_bridge = "=2.12.0"
 anyhow = "1.0.68"
@@ -25,6 +28,16 @@ lazy_static = "1.5.0"
 hex = "0.4"
 log = "0.4.22"
 zeroize = "1.8"
+
+# lwk_wollet and lwk_signer require their sibling crates by crates.io version;
+# LWK's own workspace redirects them with a [patch] that does not apply to
+# dependents. Redirect them here too, so the graph holds a single copy of each
+# (two lwk_common copies would make their `Signer` traits incompatible).
+[patch.crates-io]
+lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "33b1be3ac2c068837156b6bb9bfce76cfd6870bd" }
+lwk_jade = { git = "https://github.com/SatoshiPortal/lwk", rev = "33b1be3ac2c068837156b6bb9bfce76cfd6870bd" }
+lwk_prices = { git = "https://github.com/SatoshiPortal/lwk", rev = "33b1be3ac2c068837156b6bb9bfce76cfd6870bd" }
+lwk_registry = { git = "https://github.com/SatoshiPortal/lwk", rev = "33b1be3ac2c068837156b6bb9bfce76cfd6870bd" }
 
 [features]
 bull_sdk = []
