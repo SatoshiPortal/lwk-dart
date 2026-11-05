@@ -2207,7 +2207,7 @@ dependencies = [
 [[package]]
 name = "lwk_common"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=33b1be3ac2c068837156b6bb9bfce76cfd6870bd#33b1be3ac2c068837156b6bb9bfce76cfd6870bd"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=70b3aa03409e4905702a6781c78bd262804e1a3c#70b3aa03409e4905702a6781c78bd262804e1a3c"
 dependencies = [
  "aes-gcm-siv",
  "base64 0.22.1",
@@ -2225,7 +2225,7 @@ dependencies = [
 [[package]]
 name = "lwk_jade"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=33b1be3ac2c068837156b6bb9bfce76cfd6870bd#33b1be3ac2c068837156b6bb9bfce76cfd6870bd"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=70b3aa03409e4905702a6781c78bd262804e1a3c#70b3aa03409e4905702a6781c78bd262804e1a3c"
 dependencies = [
  "elements",
  "elements-miniscript",
@@ -2246,7 +2246,7 @@ dependencies = [
 [[package]]
 name = "lwk_prices"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=33b1be3ac2c068837156b6bb9bfce76cfd6870bd#33b1be3ac2c068837156b6bb9bfce76cfd6870bd"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=70b3aa03409e4905702a6781c78bd262804e1a3c#70b3aa03409e4905702a6781c78bd262804e1a3c"
 dependencies = [
  "futures",
  "reqwest",
@@ -2259,7 +2259,7 @@ dependencies = [
 [[package]]
 name = "lwk_registry"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=33b1be3ac2c068837156b6bb9bfce76cfd6870bd#33b1be3ac2c068837156b6bb9bfce76cfd6870bd"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=70b3aa03409e4905702a6781c78bd262804e1a3c#70b3aa03409e4905702a6781c78bd262804e1a3c"
 dependencies = [
  "elements",
  "futures",
@@ -2276,7 +2276,7 @@ dependencies = [
 [[package]]
 name = "lwk_signer"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=33b1be3ac2c068837156b6bb9bfce76cfd6870bd#33b1be3ac2c068837156b6bb9bfce76cfd6870bd"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=70b3aa03409e4905702a6781c78bd262804e1a3c#70b3aa03409e4905702a6781c78bd262804e1a3c"
 dependencies = [
  "bip39",
  "elements-miniscript",
@@ -2289,7 +2289,7 @@ dependencies = [
 [[package]]
 name = "lwk_wollet"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=33b1be3ac2c068837156b6bb9bfce76cfd6870bd#33b1be3ac2c068837156b6bb9bfce76cfd6870bd"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=70b3aa03409e4905702a6781c78bd262804e1a3c#70b3aa03409e4905702a6781c78bd262804e1a3c"
 dependencies = [
  "aes",
  "aes-gcm",
