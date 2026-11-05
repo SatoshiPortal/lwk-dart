@@ -649,15 +649,41 @@ mod tests {
             .to_vec()
     }
 
-    fn offline_wallet(name: &str, descriptor: Descriptor) -> Wallet {
+    /// A wallet persisted in its own temporary directory, removed when the wallet is dropped.
+    struct OfflineWallet {
+        wallet: Option<Wallet>,
+        dbpath: std::path::PathBuf,
+    }
+
+    impl std::ops::Deref for OfflineWallet {
+        type Target = Wallet;
+
+        fn deref(&self) -> &Wallet {
+            self.wallet.as_ref().expect("present until dropped")
+        }
+    }
+
+    impl Drop for OfflineWallet {
+        fn drop(&mut self) {
+            // Close the wallet store before deleting its directory.
+            drop(self.wallet.take());
+            let _ = std::fs::remove_dir_all(&self.dbpath);
+        }
+    }
+
+    fn offline_wallet(name: &str, descriptor: Descriptor) -> OfflineWallet {
         let dbpath = std::env::temp_dir().join(format!("lwk-dart-{name}-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dbpath);
-        Wallet::init(
+        let wallet = Wallet::init(
             LiquidNetwork::Testnet,
             dbpath.display().to_string(),
             descriptor,
         )
-        .unwrap()
+        .unwrap();
+        OfflineWallet {
+            wallet: Some(wallet),
+            dbpath,
+        }
     }
 
     /// One explicit input paying the wallet's first receive address, keyed for signing, and
