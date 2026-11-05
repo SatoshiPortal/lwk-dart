@@ -704,6 +704,102 @@ mod tests {
         });
     }
 
+    /// POST `{"address": address, "amount": 1}` to a Nigiri-style faucet over plain HTTP.
+    fn request_regtest_faucet(faucet_url: &str, address: &str) {
+        use std::io::{Read, Write};
+        let rest = faucet_url
+            .strip_prefix("http://")
+            .expect("LWK_REGTEST_FAUCET must be an http:// URL");
+        let (host_port, path) = rest.split_at(rest.find('/').unwrap_or(rest.len()));
+        let path = if path.is_empty() { "/" } else { path };
+        let body = format!(r#"{{"address":"{address}","amount":1}}"#);
+        let request = format!(
+            "POST {path} HTTP/1.1\r\nHost: {host_port}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}",
+            body.len()
+        );
+        let mut stream = std::net::TcpStream::connect(host_port).expect("faucet unreachable");
+        stream.write_all(request.as_bytes()).unwrap();
+        let mut response = String::new();
+        stream.read_to_string(&mut response).unwrap();
+        let status = response.lines().next().unwrap_or_default();
+        assert!(status.contains(" 200 "), "faucet replied {response}");
+    }
+
+    /// The wallet's balance of its policy asset.
+    fn policy_balance(wallet: &Wallet) -> u64 {
+        let policy_asset = wallet.policy_asset().unwrap();
+        wallet
+            .balances()
+            .unwrap()
+            .into_iter()
+            .find(|balance| balance.asset_id == policy_asset)
+            .map_or(0, |balance| balance.value)
+    }
+
+    /// Sync until the policy balance exceeds `before`, for at most about 20 seconds.
+    fn sync_until_funded(wallet: &Wallet, electrum_url: &str, before: u64) -> u64 {
+        for _ in 0..20 {
+            wallet
+                .sync(electrum_url.to_owned(), false, None, None)
+                .unwrap();
+            let balance = policy_balance(wallet);
+            if balance > before {
+                return balance;
+            }
+            std::thread::sleep(std::time::Duration::from_secs(1));
+        }
+        panic!("the faucet payment never reached the wallet");
+    }
+
+    /// Fund, spend and broadcast on a local Elements regtest stack such as Nigiri:
+    ///
+    /// ```sh
+    /// nigiri start --liquid
+    /// LWK_REGTEST_ELECTRUM=tcp://127.0.0.1:50001 \
+    /// LWK_REGTEST_FAUCET=http://127.0.0.1:3001/faucet \
+    /// cargo test -- --ignored regtest_round_trip_over_plaintext_electrum
+    /// ```
+    #[test]
+    #[ignore = "needs a local regtest stack; set LWK_REGTEST_ELECTRUM and LWK_REGTEST_FAUCET"]
+    fn regtest_round_trip_over_plaintext_electrum() {
+        let electrum_url =
+            std::env::var("LWK_REGTEST_ELECTRUM").expect("LWK_REGTEST_ELECTRUM must be set");
+        let faucet_url =
+            std::env::var("LWK_REGTEST_FAUCET").expect("LWK_REGTEST_FAUCET must be set");
+        let network = LiquidNetwork::Regtest;
+        with_regtest_wallet("regtest-e2e", None, |wallet| {
+            // The stack may have funded this mnemonic before: count only the new payment.
+            wallet
+                .sync(electrum_url.clone(), false, None, None)
+                .unwrap();
+            let before = policy_balance(wallet);
+            let address = wallet.address_last_unused().unwrap().confidential;
+            request_regtest_faucet(&faucet_url, &address);
+            let funded = sync_until_funded(wallet, &electrum_url, before);
+            println!("policy asset balance: {before} -> {funded} sat");
+
+            let own_address = wallet.address_last_unused().unwrap().confidential;
+            // 1 sat/vB: 0.1 sat/vB is below the regtest node's minimum relay fee.
+            let pset = wallet
+                .build_lbtc_tx(10_000, own_address, 1000.0, false)
+                .unwrap();
+            let signed = wallet
+                .sign_tx(network, pset, ABANDON_MNEMONIC.to_owned())
+                .unwrap();
+            let txid =
+                Blockchain::broadcast_signed_pset(network, electrum_url.clone(), signed).unwrap();
+            println!("txid: {txid}");
+
+            wallet
+                .sync(electrum_url.clone(), false, None, None)
+                .unwrap();
+            assert!(
+                wallet.txs().unwrap().iter().any(|tx| tx.txid == txid),
+                "the broadcast transaction must appear after a resync"
+            );
+        });
+    }
+
     #[test]
     fn fee_rate_rejects_values_that_cannot_be_meant() {
         // lwk turns each of these into a silently wrong fee rather than an error.
