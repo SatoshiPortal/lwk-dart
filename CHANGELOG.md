@@ -1,3 +1,18 @@
+## Unreleased
+
+- feat (BREAKING): add `LiquidNetwork.regtest` for a local Elements regtest node
+  such as Nigiri. It uses testnet keys (`tpub`, coin type 1), `el`/`ert`
+  addresses and lwk's default regtest policy asset
+  `5ac9f65c0efcc4775e0baec4ec03abdde22473cd3cf33c0419ca290e0751b225`.
+  Exhaustive `switch`es over `LiquidNetwork` need the new case. Payjoin is
+  refused on regtest, where SideSwap has no server; Electrum sync and broadcast
+  still connect over TLS only
+- feat: `Wallet.init` takes an optional `policyAsset` for a regtest node with
+  another policy asset; mainnet and testnet reject it. `Wallet.policyAsset()`
+  returns the wallet's policy asset
+- feat: `Address.validate` returns `LiquidNetwork.regtest` for Elements regtest
+  addresses instead of failing, and `Address.addressFromScript` builds them
+
 ## 0.7.0
 
 - fix (BREAKING): `Wallet.balances()` and `SizeAndFees.absoluteFees` now return
