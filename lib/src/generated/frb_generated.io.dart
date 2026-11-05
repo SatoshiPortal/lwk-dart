@@ -2124,6 +2124,34 @@ class LwkCoreWire implements BaseWire {
           void Function(
               int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
+  void wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+    int port_,
+    int network,
+    ffi.Pointer<wire_cst_list_prim_u_8_loose> seed,
+  ) {
+    return _wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+      port_,
+      network,
+      seed,
+    );
+  }
+
+  late final _wire__crate__api__descriptor__descriptor_new_confidential_from_seedPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Int32,
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential_from_seed',
+  );
+  late final _wire__crate__api__descriptor__descriptor_new_confidential_from_seed =
+      _wire__crate__api__descriptor__descriptor_new_confidential_from_seedPtr
+          .asFunction<
+              void Function(
+                  int, int, ffi.Pointer<wire_cst_list_prim_u_8_loose>)>();
+
   void wire__crate__api__transaction__extract_tx_bytes(
     int port_,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> pset,
@@ -2609,6 +2637,41 @@ class LwkCoreWire implements BaseWire {
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>();
 
+  void wire__crate__api__wallet__wallet_sign_tx_with_seed(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+    int network,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> pset,
+    ffi.Pointer<wire_cst_list_prim_u_8_loose> seed,
+  ) {
+    return _wire__crate__api__wallet__wallet_sign_tx_with_seed(
+      port_,
+      that,
+      network,
+      pset,
+      seed,
+    );
+  }
+
+  late final _wire__crate__api__wallet__wallet_sign_tx_with_seedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Int64,
+            ffi.Pointer<wire_cst_wallet>,
+            ffi.Int32,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx_with_seed');
+  late final _wire__crate__api__wallet__wallet_sign_tx_with_seed =
+      _wire__crate__api__wallet__wallet_sign_tx_with_seedPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+          )>();
+
   void wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
     int port_,
     ffi.Pointer<wire_cst_wallet> that,
@@ -2646,6 +2709,46 @@ class LwkCoreWire implements BaseWire {
                 int,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>();
+
+  void
+      wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+    int network,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> pset,
+    ffi.Pointer<wire_cst_list_prim_u_8_loose> seed,
+  ) {
+    return _wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+      port_,
+      that,
+      network,
+      pset,
+      seed,
+    );
+  }
+
+  late final _wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seedPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Pointer<wire_cst_wallet>,
+                ffi.Int32,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed',
+  );
+  late final _wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed =
+      _wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seedPtr
+          .asFunction<
+              void Function(
+                int,
+                ffi.Pointer<wire_cst_wallet>,
+                int,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
               )>();
 
   void wire__crate__api__wallet__wallet_sync(
@@ -3398,3 +3501,5 @@ const double MAX_FEE_RATE_SATS_PER_KVB = 100000.0;
 const int HIGH_UTXO_THRESHOLD = 125;
 
 const int MAXIMUM_INPUTS = 250;
+
+const int SEED_LENGTH = 64;
