@@ -336,6 +336,10 @@ void frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential(int64_
                                                                           int32_t network,
                                                                           struct wire_cst_list_prim_u_8_strict *mnemonic);
 
+void frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential_from_seed(int64_t port_,
+                                                                                    int32_t network,
+                                                                                    struct wire_cst_list_prim_u_8_loose *seed);
+
 void frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes(int64_t port_,
                                                                 struct wire_cst_list_prim_u_8_strict *pset);
 
@@ -420,11 +424,23 @@ void frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx(int64_t port_,
                                                          struct wire_cst_list_prim_u_8_strict *pset,
                                                          struct wire_cst_list_prim_u_8_strict *mnemonic);
 
+void frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx_with_seed(int64_t port_,
+                                                                   struct wire_cst_wallet *that,
+                                                                   int32_t network,
+                                                                   struct wire_cst_list_prim_u_8_strict *pset,
+                                                                   struct wire_cst_list_prim_u_8_loose *seed);
+
 void frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details(int64_t port_,
                                                                                 struct wire_cst_wallet *that,
                                                                                 int32_t network,
                                                                                 struct wire_cst_list_prim_u_8_strict *pset,
                                                                                 struct wire_cst_list_prim_u_8_strict *mnemonic);
+
+void frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(int64_t port_,
+                                                                                          struct wire_cst_wallet *that,
+                                                                                          int32_t network,
+                                                                                          struct wire_cst_list_prim_u_8_strict *pset,
+                                                                                          struct wire_cst_list_prim_u_8_loose *seed);
 
 void frbgen_lwk_wire__crate__api__wallet__wallet_sync(int64_t port_,
                                                       struct wire_cst_wallet *that,
@@ -532,6 +548,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_tx_bytes);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__blockchain__blockchain_test);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential_from_seed);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_fee);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_bytes);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__transaction__LiquidTransaction_from_pset);
@@ -591,7 +608,9 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_descriptor);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_init);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx_with_seed);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details);
+    dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_sync);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_txs);
     dummy_var ^= ((int64_t) (void*) frbgen_lwk_wire__crate__api__wallet__wallet_utxos);

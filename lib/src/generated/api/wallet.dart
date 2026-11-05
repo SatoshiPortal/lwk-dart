@@ -9,7 +9,7 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
-// These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `move_payjoin_signatures`, `sign_tx_common`, `validate_fee_rate`, `validate_out_address`
+// These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `move_payjoin_signatures`, `sign_and_finalize`, `sign_tx_common`, `sign_tx_with_seed_common`, `validate_fee_rate`, `validate_out_address`
 
 // Rust type: RustOpaqueNom<Mutex < lwk_wollet :: Wollet >>
 abstract class MutexWollet implements RustOpaqueInterface {}
@@ -157,6 +157,14 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletSignTx(
           that: this, network: network, pset: pset, mnemonic: mnemonic);
 
+  /// Sign a wallet transaction with a BIP39 seed (16 to 64 bytes) instead of mnemonic words
+  Future<String> signTxWithSeed(
+          {required LiquidNetwork network,
+          required String pset,
+          required List<int> seed}) =>
+      LwkCore.instance.api.crateApiWalletWalletSignTxWithSeed(
+          that: this, network: network, pset: pset, seed: seed);
+
   /// Sign a pset with extra details (used for asset transactions)
   Future<String> signedPsetWithExtraDetails(
           {required LiquidNetwork network,
@@ -164,6 +172,15 @@ class Wallet {
           required String mnemonic}) =>
       LwkCore.instance.api.crateApiWalletWalletSignedPsetWithExtraDetails(
           that: this, network: network, pset: pset, mnemonic: mnemonic);
+
+  /// Sign a pset with extra details with a BIP39 seed (16 to 64 bytes) instead of mnemonic words
+  Future<String> signedPsetWithExtraDetailsWithSeed(
+          {required LiquidNetwork network,
+          required String pset,
+          required List<int> seed}) =>
+      LwkCore.instance.api
+          .crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
+              that: this, network: network, pset: pset, seed: seed);
 
   /// Syncs the wallet db with its latest state fetched from the electrum server
   /// Using None for stop_at_index will sync normally with a stop gap of 20

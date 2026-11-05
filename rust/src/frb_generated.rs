@@ -40,7 +40,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 511360800;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1960007279;
 
 // Section: executor
 
@@ -1549,6 +1549,32 @@ fn wire__crate__api__descriptor__descriptor_new_confidential_impl(
         },
     )
 }
+fn wire__crate__api__descriptor__descriptor_new_confidential_from_seed_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
+    seed: impl CstDecode<Vec<u8>>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "descriptor_new_confidential_from_seed",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_network = network.cst_decode();
+            let api_seed = seed.cst_decode();
+            move |context| {
+                transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                    let output_ok = crate::api::descriptor::Descriptor::new_confidential_from_seed(
+                        api_network,
+                        api_seed,
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__crate__api__transaction__extract_tx_bytes_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     pset: impl CstDecode<String>,
@@ -2050,6 +2076,38 @@ fn wire__crate__api__wallet__wallet_sign_tx_impl(
         },
     )
 }
+fn wire__crate__api__wallet__wallet_sign_tx_with_seed_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<crate::api::wallet::Wallet>,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
+    pset: impl CstDecode<String>,
+    seed: impl CstDecode<Vec<u8>>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "wallet_sign_tx_with_seed",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_network = network.cst_decode();
+            let api_pset = pset.cst_decode();
+            let api_seed = seed.cst_decode();
+            move |context| {
+                transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                    let output_ok = crate::api::wallet::Wallet::sign_tx_with_seed(
+                        &api_that,
+                        api_network,
+                        api_pset,
+                        api_seed,
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__crate__api__wallet__wallet_signed_pset_with_extra_details_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<crate::api::wallet::Wallet>,
@@ -2076,6 +2134,39 @@ fn wire__crate__api__wallet__wallet_signed_pset_with_extra_details_impl(
                         api_pset,
                         api_mnemonic,
                     )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<crate::api::wallet::Wallet>,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
+    pset: impl CstDecode<String>,
+    seed: impl CstDecode<Vec<u8>>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "wallet_signed_pset_with_extra_details_with_seed",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_network = network.cst_decode();
+            let api_pset = pset.cst_decode();
+            let api_seed = seed.cst_decode();
+            move |context| {
+                transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                    let output_ok =
+                        crate::api::wallet::Wallet::signed_pset_with_extra_details_with_seed(
+                            &api_that,
+                            api_network,
+                            api_pset,
+                            api_seed,
+                        )?;
                     Ok(output_ok)
                 })())
             }
@@ -4996,6 +5087,17 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+        port_: i64,
+        network: i32,
+        seed: *mut wire_cst_list_prim_u_8_loose,
+    ) {
+        wire__crate__api__descriptor__descriptor_new_confidential_from_seed_impl(
+            port_, network, seed,
+        )
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__transaction__extract_tx_bytes(
         port_: i64,
         pset: *mut wire_cst_list_prim_u_8_strict,
@@ -5209,6 +5311,17 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx_with_seed(
+        port_: i64,
+        that: *mut wire_cst_wallet,
+        network: i32,
+        pset: *mut wire_cst_list_prim_u_8_strict,
+        seed: *mut wire_cst_list_prim_u_8_loose,
+    ) {
+        wire__crate__api__wallet__wallet_sign_tx_with_seed_impl(port_, that, network, pset, seed)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
         port_: i64,
         that: *mut wire_cst_wallet,
@@ -5218,6 +5331,19 @@ mod io {
     ) {
         wire__crate__api__wallet__wallet_signed_pset_with_extra_details_impl(
             port_, that, network, pset, mnemonic,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+        port_: i64,
+        that: *mut wire_cst_wallet,
+        network: i32,
+        pset: *mut wire_cst_list_prim_u_8_strict,
+        seed: *mut wire_cst_list_prim_u_8_loose,
+    ) {
+        wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed_impl(
+            port_, that, network, pset, seed,
         )
     }
 
@@ -6879,6 +7005,17 @@ mod web {
     }
 
     #[wasm_bindgen]
+    pub fn wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+        port_: flutter_rust_bridge::for_generated::MessagePort,
+        network: i32,
+        seed: Box<[u8]>,
+    ) {
+        wire__crate__api__descriptor__descriptor_new_confidential_from_seed_impl(
+            port_, network, seed,
+        )
+    }
+
+    #[wasm_bindgen]
     pub fn wire__crate__api__transaction__extract_tx_bytes(
         port_: flutter_rust_bridge::for_generated::MessagePort,
         pset: String,
@@ -7092,6 +7229,17 @@ mod web {
     }
 
     #[wasm_bindgen]
+    pub fn wire__crate__api__wallet__wallet_sign_tx_with_seed(
+        port_: flutter_rust_bridge::for_generated::MessagePort,
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        network: i32,
+        pset: String,
+        seed: Box<[u8]>,
+    ) {
+        wire__crate__api__wallet__wallet_sign_tx_with_seed_impl(port_, that, network, pset, seed)
+    }
+
+    #[wasm_bindgen]
     pub fn wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
         port_: flutter_rust_bridge::for_generated::MessagePort,
         that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
@@ -7101,6 +7249,19 @@ mod web {
     ) {
         wire__crate__api__wallet__wallet_signed_pset_with_extra_details_impl(
             port_, that, network, pset, mnemonic,
+        )
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+        port_: flutter_rust_bridge::for_generated::MessagePort,
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        network: i32,
+        pset: String,
+        seed: Box<[u8]>,
+    ) {
+        wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed_impl(
+            port_, that, network, pset, seed,
         )
     }
 

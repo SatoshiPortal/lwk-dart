@@ -1438,6 +1438,12 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire__crate__api__descriptor__descriptor_new_confidential(
           port_, network, mnemonic);
 
+  void wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+          NativePortType port_, int network, JSAny seed) =>
+      wasmModule
+          .wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+              port_, network, seed);
+
   void wire__crate__api__transaction__extract_tx_bytes(
           NativePortType port_, String pset) =>
       wasmModule.wire__crate__api__transaction__extract_tx_bytes(port_, pset);
@@ -1555,6 +1561,11 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire__crate__api__wallet__wallet_sign_tx(
           port_, that, network, pset, mnemonic);
 
+  void wire__crate__api__wallet__wallet_sign_tx_with_seed(NativePortType port_,
+          JSAny that, int network, String pset, JSAny seed) =>
+      wasmModule.wire__crate__api__wallet__wallet_sign_tx_with_seed(
+          port_, that, network, pset, seed);
+
   void wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
           NativePortType port_,
           JSAny that,
@@ -1564,6 +1575,16 @@ class LwkCoreWire implements BaseWire {
       wasmModule
           .wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
               port_, that, network, pset, mnemonic);
+
+  void wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+          NativePortType port_,
+          JSAny that,
+          int network,
+          String pset,
+          JSAny seed) =>
+      wasmModule
+          .wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+              port_, that, network, pset, seed);
 
   void wire__crate__api__wallet__wallet_sync(
           NativePortType port_,
@@ -1779,6 +1800,10 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
   external void wire__crate__api__descriptor__descriptor_new_confidential(
       NativePortType port_, int network, String mnemonic);
 
+  external void
+      wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+          NativePortType port_, int network, JSAny seed);
+
   external void wire__crate__api__transaction__extract_tx_bytes(
       NativePortType port_, String pset);
 
@@ -1866,12 +1891,23 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
   external void wire__crate__api__wallet__wallet_sign_tx(NativePortType port_,
       JSAny that, int network, String pset, String mnemonic);
 
+  external void wire__crate__api__wallet__wallet_sign_tx_with_seed(
+      NativePortType port_, JSAny that, int network, String pset, JSAny seed);
+
   external void wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
       NativePortType port_,
       JSAny that,
       int network,
       String pset,
       String mnemonic);
+
+  external void
+      wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+          NativePortType port_,
+          JSAny that,
+          int network,
+          String pset,
+          JSAny seed);
 
   external void wire__crate__api__wallet__wallet_sync(
       NativePortType port_,
