@@ -39,6 +39,15 @@ added signatures count. A key that owns only some inputs still signs those and r
 transaction; checking that every input is signed remains the caller's
 responsibility.
 
+## Electrum Transport
+
+Mainnet and testnet always connect to Electrum over TLS, even when the URL
+starts with `tcp://`: a plaintext connection would let the network observe the
+wallet's addresses and tamper with its view of the chain and its broadcasts.
+Plaintext is allowed only for a `tcp://` URL on `LiquidNetwork.regtest`, for a
+local test node such as Nigiri. `Wallet.sync` takes the network from the
+wallet; the `Blockchain` broadcast and test functions take it as a parameter.
+
 ## Dependencies And Releases
 
 Cargo and Dart lockfiles are part of the reviewed dependency set and should be

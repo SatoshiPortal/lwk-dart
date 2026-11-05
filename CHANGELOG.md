@@ -22,13 +22,22 @@
   addresses and lwk's default regtest policy asset
   `5ac9f65c0efcc4775e0baec4ec03abdde22473cd3cf33c0419ca290e0751b225`.
   Exhaustive `switch`es over `LiquidNetwork` need the new case. Payjoin is
-  refused on regtest, where SideSwap has no server; Electrum sync and broadcast
-  still connect over TLS only
+  refused on regtest, where SideSwap has no server
 - feat: `Wallet.init` takes an optional `policyAsset` for a regtest node with
   another policy asset; mainnet and testnet reject it. `Wallet.policyAsset()`
   returns the wallet's policy asset
 - feat: `Address.validate` returns `LiquidNetwork.regtest` for Elements regtest
   addresses instead of failing, and `Address.addressFromScript` builds them
+- feat (BREAKING): a `tcp://` Electrum URL connects over plaintext on regtest,
+  whose local servers such as Nigiri's serve Electrum without TLS.
+  `Blockchain.broadcastTxBytes`, `Blockchain.broadcastSignedPset`,
+  `Blockchain.test` and `batchBroadcast` take a required `network` for this;
+  `Wallet.sync` uses the wallet's network. Mainnet and testnet always use TLS,
+  even for a `tcp://` URL. An `ssl://` URL or one without a scheme uses TLS on
+  every network
+- fix: `Blockchain.broadcastTxBytes`, `Blockchain.broadcastSignedPset` and
+  `Blockchain.test` strip an `ssl://` or `tcp://` prefix like `Wallet.sync`,
+  instead of failing to connect
 
 ## 0.7.0
 

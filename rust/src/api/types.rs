@@ -113,6 +113,17 @@ impl LiquidNetwork {
     }
 }
 
+/// Every custom Elements network is regtest: [`LiquidNetwork::elements_network`] builds no other.
+impl From<ElementsNetwork> for LiquidNetwork {
+    fn from(network: ElementsNetwork) -> Self {
+        match network {
+            ElementsNetwork::Liquid => LiquidNetwork::Mainnet,
+            ElementsNetwork::TestnetLiquid => LiquidNetwork::Testnet,
+            ElementsNetwork::CustomElements(_) => LiquidNetwork::Regtest,
+        }
+    }
+}
+
 impl Into<ElementsNetwork> for LiquidNetwork {
     fn into(self) -> ElementsNetwork {
         match self {
