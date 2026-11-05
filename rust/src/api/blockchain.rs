@@ -66,3 +66,15 @@ impl Blockchain {
         Ok(txid.to_string())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn tls_to_an_ip_address_is_rejected() {
+        // Rejected while parsing the URL, before any connection attempt.
+        let err = tls_electrum_client("127.0.0.1:50002", None).unwrap_err();
+        assert!(err.msg.contains("SslWithoutDomain"), "{}", err.msg);
+    }
+}

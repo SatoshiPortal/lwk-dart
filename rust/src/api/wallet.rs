@@ -530,6 +530,23 @@ mod tests {
     }
 
     #[test]
+    fn sync_accepts_an_electrum_url_with_or_without_a_scheme() {
+        let mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+        let network = LiquidNetwork::Testnet;
+        let desc = Descriptor::new_confidential(network, mnemonic.to_string()).unwrap();
+        let dbpath = std::env::temp_dir().join(format!("lwk_sync_scheme_{}", std::process::id()));
+        let wallet = Wallet::init(network, dbpath.to_string_lossy().into_owned(), desc).unwrap();
+
+        // Nothing listens on port 1: each URL must get as far as connecting,
+        // rather than failing to parse.
+        for url in ["localhost:1", "ssl://localhost:1", "tcp://localhost:1"] {
+            let err = wallet.sync(url.to_string(), true, None, Some(1)).unwrap_err();
+            assert!(err.msg.contains("ConnectionRefused"), "{url}: {}", err.msg);
+        }
+        let _ = std::fs::remove_dir_all(dbpath);
+    }
+
+    #[test]
     #[ignore = "live mainnet integration test; set LWK_MAINNET_TEST_MNEMONIC"]
     fn testable_wallets() {
         let mnemonic = std::env::var("LWK_MAINNET_TEST_MNEMONIC")
