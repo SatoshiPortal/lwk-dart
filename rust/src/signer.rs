@@ -5,8 +5,6 @@
 //! wordlist and a passphrase, and derive the same keys as the mnemonic path for an English
 //! mnemonic without passphrase.
 
-use std::ops::RangeInclusive;
-
 use lwk_common::Signer;
 use lwk_signer::{SignError, SwSigner};
 use lwk_wollet::bitcoin::bip32::{self, DerivationPath, Xpriv, Xpub};
@@ -15,13 +13,16 @@ use lwk_wollet::bitcoin::Network;
 use lwk_wollet::elements::pset::PartiallySignedTransaction;
 use lwk_wollet::elements_miniscript::slip77::MasterBlindingKey;
 
-/// Seed lengths accepted by BIP32, in bytes. A BIP39 seed is always 64 bytes.
-pub const SEED_LENGTH: RangeInclusive<usize> = 16..=64;
+/// Length of a BIP39 seed, in bytes.
+///
+/// BIP32 alone would accept 16 to 64 bytes, but 16 and 32 are also BIP39 entropy lengths:
+/// passing the entropy instead of the seed would silently derive a different wallet.
+pub const SEED_LENGTH: usize = 64;
 
 /// Why a seed cannot back a signer.
 #[derive(Debug, thiserror::Error)]
 pub enum SeedError {
-    #[error("seed is {0} bytes, BIP32 requires 16 to 64 bytes")]
+    #[error("seed is {0} bytes, a BIP39 seed is 64 bytes")]
     InvalidLength(usize),
     #[error("cannot derive a master key from the seed: {0}")]
     Bip32(#[from] bip32::Error),
@@ -38,7 +39,7 @@ pub struct SeedSigner {
 impl SeedSigner {
     /// Mirrors `SwSigner::new`: mainnet keys for Liquid, testnet keys otherwise.
     pub fn new(seed: &[u8], is_mainnet: bool) -> Result<Self, SeedError> {
-        if !SEED_LENGTH.contains(&seed.len()) {
+        if seed.len() != SEED_LENGTH {
             return Err(SeedError::InvalidLength(seed.len()));
         }
         let network = if is_mainnet {
@@ -83,8 +84,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn rejects_seeds_outside_the_bip32_length_range() {
-        for len in [0, 15, 65, 128] {
+    fn accepts_only_a_64_byte_seed() {
+        // 16 and 32 bytes are BIP39 entropy lengths, which must not pass for a seed.
+        for len in [0, 15, 16, 32, 63, 65, 128] {
             assert!(
                 matches!(
                     SeedSigner::new(&vec![1u8; len], false),
@@ -93,9 +95,7 @@ mod tests {
                 "a {len}-byte seed must be refused"
             );
         }
-        for len in [16, 32, 64] {
-            assert!(SeedSigner::new(&vec![1u8; len], false).is_ok());
-        }
+        assert!(SeedSigner::new(&[1u8; SEED_LENGTH], false).is_ok());
     }
 
     #[test]

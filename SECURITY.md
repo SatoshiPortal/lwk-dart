@@ -15,6 +15,11 @@ from a seed. Applications with stronger memory-erasure requirements should
 isolate signing in a hardware signer or a dedicated process. Complete
 zeroization also requires support in `lwk_signer` and its key types.
 
+The seed functions take the 64-byte BIP39 seed (PBKDF2 of the mnemonic and
+passphrase), never the mnemonic entropy. Any other length is rejected: BIP32
+would accept 16 or 32 bytes of entropy as a seed and silently derive another
+wallet.
+
 Any mnemonic that has ever been committed to a repository must be considered
 public. Do not fund addresses derived from it.
 

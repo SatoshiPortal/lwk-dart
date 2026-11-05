@@ -595,7 +595,7 @@ impl Wallet {
         self.sign_tx_common(network, pset, mnemonic, false)
     }
 
-    /// Sign a wallet transaction with a BIP39 seed (16 to 64 bytes) instead of mnemonic words
+    /// Sign a wallet transaction with a 64-byte BIP39 seed instead of mnemonic words
     pub fn sign_tx_with_seed(
         &self,
         network: LiquidNetwork,
@@ -622,7 +622,7 @@ impl Wallet {
         self.sign_tx_common(network, pset, mnemonic, true)
     }
 
-    /// Sign a pset with extra details with a BIP39 seed (16 to 64 bytes) instead of mnemonic words
+    /// Sign a pset with extra details with a 64-byte BIP39 seed instead of mnemonic words
     pub fn signed_pset_with_extra_details_with_seed(
         &self,
         network: LiquidNetwork,
@@ -736,10 +736,17 @@ mod tests {
         let wallet = offline_wallet("sign-short-seed", descriptor);
         let pset = pset_spending_first_address(&wallet);
 
-        let err = wallet
-            .sign_tx_with_seed(network, pset, vec![0u8; 15])
-            .unwrap_err();
-        assert!(err.msg.contains("16 to 64 bytes"), "{}", err.msg);
+        // 16 and 32 bytes are BIP39 entropy lengths, the likeliest mistake for a seed.
+        for len in [15, 16, 32, 63, 65] {
+            let err = wallet
+                .sign_tx_with_seed(network, pset.clone(), vec![0u8; len])
+                .unwrap_err();
+            assert!(err.msg.contains("a BIP39 seed is 64 bytes"), "{}", err.msg);
+            let err = wallet
+                .signed_pset_with_extra_details_with_seed(network, pset.clone(), vec![0u8; len])
+                .unwrap_err();
+            assert!(err.msg.contains("a BIP39 seed is 64 bytes"), "{}", err.msg);
+        }
     }
 
     #[test]

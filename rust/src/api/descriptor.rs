@@ -22,7 +22,7 @@ impl Descriptor {
     }
 
     /// Create a new wpkh confidential descriptor based on Slip77 blinding key derivation,
-    /// from a BIP39 seed (16 to 64 bytes) instead of English mnemonic words.
+    /// from a 64-byte BIP39 seed instead of English mnemonic words.
     ///
     /// The seed encodes the mnemonic language and passphrase, which `new_confidential` cannot
     /// carry. An English mnemonic without passphrase gives the same descriptor through both.
@@ -109,11 +109,11 @@ mod tests {
 
     #[test]
     fn rejects_a_seed_of_invalid_length() {
-        for len in [0, 15, 65] {
+        for len in [0, 15, 16, 32, 63, 65] {
             let err =
                 Descriptor::new_confidential_from_seed(LiquidNetwork::Mainnet, vec![0u8; len])
                     .unwrap_err();
-            assert!(err.msg.contains("16 to 64 bytes"), "{}", err.msg);
+            assert!(err.msg.contains("a BIP39 seed is 64 bytes"), "{}", err.msg);
         }
     }
 }
