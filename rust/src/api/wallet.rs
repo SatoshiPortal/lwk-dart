@@ -579,7 +579,13 @@ impl Wallet {
         if add_details {
             self.get_wallet()?.add_details(&mut pset)?;
         }
-        signer.sign(&mut pset)?;
+        // Finalizing an unsigned input still yields a transaction, which a key owning no input
+        // would return as if it had signed.
+        if signer.sign(&mut pset)? == 0 {
+            return Err(LwkError {
+                msg: "the signer added no signature: its key owns no input of this PSET".to_owned(),
+            });
+        }
         let tx = self.get_wallet()?.finalize(&mut pset)?;
         let finalized_pset = PartiallySignedTransaction::from_tx(tx.clone());
         Ok(finalized_pset.to_string())
@@ -752,6 +758,55 @@ mod tests {
             .signed_pset_with_extra_details_with_seed(network, pset, abandon_seed())
             .unwrap();
         assert_eq!(details_with_seed, details_with_mnemonic);
+    }
+
+    #[test]
+    fn signing_with_a_key_that_owns_no_input_fails() {
+        // BIP39 test vector unrelated to the wallet.
+        const FOREIGN_MNEMONIC: &str =
+            "legal winner thank year wave sausage worth useful legal winner thank yellow";
+        let foreign_seed = bip39::Mnemonic::parse_in(bip39::Language::English, FOREIGN_MNEMONIC)
+            .unwrap()
+            .to_seed("")
+            .to_vec();
+        let network = LiquidNetwork::Testnet;
+        let descriptor =
+            Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
+        let wallet = offline_wallet("sign-foreign-key", descriptor);
+        let pset = pset_spending_first_address(&wallet);
+
+        let results = [
+            (
+                "sign_tx",
+                wallet.sign_tx(network, pset.clone(), FOREIGN_MNEMONIC.to_owned()),
+            ),
+            (
+                "signed_pset_with_extra_details",
+                wallet.signed_pset_with_extra_details(
+                    network,
+                    pset.clone(),
+                    FOREIGN_MNEMONIC.to_owned(),
+                ),
+            ),
+            (
+                "sign_tx_with_seed",
+                wallet.sign_tx_with_seed(network, pset.clone(), foreign_seed.clone()),
+            ),
+            (
+                "signed_pset_with_extra_details_with_seed",
+                wallet.signed_pset_with_extra_details_with_seed(network, pset, foreign_seed),
+            ),
+        ];
+        let accepted: Vec<&str> = results
+            .iter()
+            .filter(|(_, result)| result.is_ok())
+            .map(|(name, _)| *name)
+            .collect();
+        assert!(accepted.is_empty(), "returned a transaction: {accepted:?}");
+        for (name, result) in results {
+            let msg = result.unwrap_err().msg;
+            assert!(msg.contains("added no signature"), "{name}: {msg}");
+        }
     }
 
     #[test]

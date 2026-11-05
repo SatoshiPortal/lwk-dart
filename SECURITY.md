@@ -32,6 +32,12 @@ assets, amounts, fees, change outputs, and sighash policy before signing.
 `lwk_signer` and `elements-miniscript`; it does not independently enforce a
 wallet policy for arbitrary PSETs.
 
+Signing fails when the mnemonic or seed adds no signature to the PSET, so a
+key that owns none of its inputs cannot return an unsigned transaction as if it
+were signed. A key that owns only some inputs still signs those and returns the
+transaction; checking that every input is signed remains the caller's
+responsibility.
+
 ## Dependencies And Releases
 
 Cargo and Dart lockfiles are part of the reviewed dependency set and should be
