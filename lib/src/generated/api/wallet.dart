@@ -142,12 +142,25 @@ class Wallet {
       );
 
   /// Initializes a wallet from a specific db path and descriptor
+  ///
+  /// The policy asset id is only for the regtest network, whose node may use another policy
+  /// asset than lwk's default; mainnet and testnet reject it.
   static Future<Wallet> init(
           {required LiquidNetwork network,
           required String dbpath,
-          required Descriptor descriptor}) =>
+          required Descriptor descriptor,
+          String? policyAsset}) =>
       LwkCore.instance.api.crateApiWalletWalletInit(
-          network: network, dbpath: dbpath, descriptor: descriptor);
+          network: network,
+          dbpath: dbpath,
+          descriptor: descriptor,
+          policyAsset: policyAsset);
+
+  /// Get the policy asset (L-BTC) id of the wallet's network
+  Future<String> policyAsset() =>
+      LwkCore.instance.api.crateApiWalletWalletPolicyAsset(
+        that: this,
+      );
 
   /// Sign a wallet transaction, returns (pset, signed_bytes)
   Future<String> signTx(

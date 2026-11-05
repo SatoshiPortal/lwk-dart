@@ -73,7 +73,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 511360800;
+  int get rustContentHash => -1106858286;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -303,7 +303,10 @@ abstract class LwkCoreApi extends BaseApi {
   Future<Wallet> crateApiWalletWalletInit(
       {required LiquidNetwork network,
       required String dbpath,
-      required Descriptor descriptor});
+      required Descriptor descriptor,
+      String? policyAsset});
+
+  Future<String> crateApiWalletWalletPolicyAsset({required Wallet that});
 
   Future<String> crateApiWalletWalletSignTx(
       {required Wallet that,
@@ -2103,28 +2106,53 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   Future<Wallet> crateApiWalletWalletInit(
       {required LiquidNetwork network,
       required String dbpath,
-      required Descriptor descriptor}) {
+      required Descriptor descriptor,
+      String? policyAsset}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_liquid_network(network);
         var arg1 = cst_encode_String(dbpath);
         var arg2 = cst_encode_box_autoadd_descriptor(descriptor);
+        var arg3 = cst_encode_opt_String(policyAsset);
         return wire.wire__crate__api__wallet__wallet_init(
-            port_, arg0, arg1, arg2);
+            port_, arg0, arg1, arg2, arg3);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_wallet,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kCrateApiWalletWalletInitConstMeta,
-      argValues: [network, dbpath, descriptor],
+      argValues: [network, dbpath, descriptor, policyAsset],
       apiImpl: this,
     ));
   }
 
   TaskConstMeta get kCrateApiWalletWalletInitConstMeta => const TaskConstMeta(
         debugName: "wallet_init",
-        argNames: ["network", "dbpath", "descriptor"],
+        argNames: ["network", "dbpath", "descriptor", "policyAsset"],
+      );
+
+  @override
+  Future<String> crateApiWalletWalletPolicyAsset({required Wallet that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_box_autoadd_wallet(that);
+        return wire.wire__crate__api__wallet__wallet_policy_asset(port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_String,
+        decodeErrorData: dco_decode_lwk_error,
+      ),
+      constMeta: kCrateApiWalletWalletPolicyAssetConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletWalletPolicyAssetConstMeta =>
+      const TaskConstMeta(
+        debugName: "wallet_policy_asset",
+        argNames: ["that"],
       );
 
   @override
