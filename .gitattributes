@@ -1,0 +1,15 @@
+# Generated files, collapsed in GitHub diffs. Regenerate them instead of editing by hand.
+
+# flutter_rust_bridge outputs (flutter_rust_bridge.yaml, codegen.sh)
+lib/src/generated/** linguist-generated=true
+rust/src/frb_generated.rs linguist-generated=true
+ios/Classes/frb_generated.h linguist-generated=true
+macos/Classes/frb_generated.h linguist-generated=true
+
+# Flutter tool plugin registrants
+linux/flutter/generated_plugin_registrant.cc linguist-generated=true
+linux/flutter/generated_plugin_registrant.h linguist-generated=true
+linux/flutter/generated_plugins.cmake linguist-generated=true
+windows/flutter/generated_plugin_registrant.cc linguist-generated=true
+windows/flutter/generated_plugin_registrant.h linguist-generated=true
+windows/flutter/generated_plugins.cmake linguist-generated=true
