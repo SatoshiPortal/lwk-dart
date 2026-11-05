@@ -9,7 +9,7 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
-// These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `move_payjoin_signatures`, `sign_tx_common`, `validate_fee_rate`, `validate_out_address`
+// These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `sign_tx_common`, `validate_fee_rate`, `validate_out_address`
 
 // Rust type: RustOpaqueNom<Mutex < lwk_wollet :: Wollet >>
 abstract class MutexWollet implements RustOpaqueInterface {}
@@ -85,33 +85,6 @@ class Wallet {
           outAddress: outAddress,
           feeRate: feeRate,
           drain: drain);
-
-  /// Build a PayJoin transaction for a specific asset, even if the wallet does not contain L-BTC UTXOs.
-  /// The asset must be one of the assets supported by SideSwap, such as USDt or DePix.
-  /// This creates a coin-join PSET. The PSET includes the asset wallet inputs and change,
-  /// and the asset output to `out_address`, the L-BTC server's input and change and the asset fee output to the server.
-  /// The server fee is included in the return value for the user to review.
-  ///
-  /// To make a PayJoin transaction:
-  /// - call build_payjoin_tx
-  /// - review server fee
-  /// - call signed_pset_with_extra_details, extract_tx and broadcast_tx.
-  /// See the `test_payjoin` test for an example of how to use it:
-  Future<PayjoinTx> buildPayjoinTx(
-          {required BigInt sats,
-          required String outAddress,
-          required String asset,
-          required LiquidNetwork network,
-          String? baseUrl,
-          required bool isSendAll}) =>
-      LwkCore.instance.api.crateApiWalletWalletBuildPayjoinTx(
-          that: this,
-          sats: sats,
-          outAddress: outAddress,
-          asset: asset,
-          network: network,
-          baseUrl: baseUrl,
-          isSendAll: isSendAll);
 
   /// Build N unsigned PSETs that consolidate the wallet's confirmed L-BTC UTXOs.
   ///

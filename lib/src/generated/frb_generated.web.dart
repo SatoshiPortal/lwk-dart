@@ -162,9 +162,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<TxOut> dco_decode_list_tx_out(dynamic raw);
 
   @protected
-  List<TxOutSecrets> dco_decode_list_tx_out_secrets(dynamic raw);
-
-  @protected
   List<TxOutput> dco_decode_list_tx_output(dynamic raw);
 
   @protected
@@ -202,9 +199,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   OutPoint dco_decode_out_point(dynamic raw);
-
-  @protected
-  PayjoinTx dco_decode_payjoin_tx(dynamic raw);
 
   @protected
   PsetAmounts dco_decode_pset_amounts(dynamic raw);
@@ -382,10 +376,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<TxOut> sse_decode_list_tx_out(SseDeserializer deserializer);
 
   @protected
-  List<TxOutSecrets> sse_decode_list_tx_out_secrets(
-      SseDeserializer deserializer);
-
-  @protected
   List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer);
 
   @protected
@@ -427,9 +417,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   OutPoint sse_decode_out_point(SseDeserializer deserializer);
-
-  @protected
-  PayjoinTx sse_decode_payjoin_tx(SseDeserializer deserializer);
 
   @protected
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer);
@@ -645,12 +632,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   }
 
   @protected
-  JSAny cst_encode_list_tx_out_secrets(List<TxOutSecrets> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw.map(cst_encode_tx_out_secrets).toList().jsify()!;
-  }
-
-  @protected
   JSAny cst_encode_list_tx_output(List<TxOutput> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.map(cst_encode_tx_output).toList().jsify()!;
@@ -726,17 +707,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   JSAny cst_encode_out_point(OutPoint raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [cst_encode_String(raw.txid), cst_encode_u_32(raw.vout)].jsify()!;
-  }
-
-  @protected
-  JSAny cst_encode_payjoin_tx(PayjoinTx raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return [
-      cst_encode_String(raw.pset),
-      cst_encode_u_64(raw.networkFee),
-      cst_encode_u_64(raw.assetFee),
-      cst_encode_list_tx_out_secrets(raw.unblindedOutputs)
-    ].jsify()!;
   }
 
   @protected
@@ -1060,10 +1030,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_list_tx_out(List<TxOut> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_tx_out_secrets(
-      List<TxOutSecrets> self, SseSerializer serializer);
-
-  @protected
   void sse_encode_list_tx_output(List<TxOutput> self, SseSerializer serializer);
 
   @protected
@@ -1107,9 +1073,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_out_point(OutPoint self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_payjoin_tx(PayjoinTx self, SseSerializer serializer);
 
   @protected
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer);
@@ -1516,18 +1479,6 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire__crate__api__wallet__wallet_build_lbtc_tx(
           port_, that, sats, out_address, fee_rate, drain);
 
-  void wire__crate__api__wallet__wallet_build_payjoin_tx(
-          NativePortType port_,
-          JSAny that,
-          JSAny sats,
-          String out_address,
-          String asset,
-          int network,
-          String? base_url,
-          bool is_send_all) =>
-      wasmModule.wire__crate__api__wallet__wallet_build_payjoin_tx(port_, that,
-          sats, out_address, asset, network, base_url, is_send_all);
-
   void wire__crate__api__wallet__wallet_consolidate(
           NativePortType port_,
           JSAny that,
@@ -1836,16 +1787,6 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       String out_address,
       double fee_rate,
       bool drain);
-
-  external void wire__crate__api__wallet__wallet_build_payjoin_tx(
-      NativePortType port_,
-      JSAny that,
-      JSAny sats,
-      String out_address,
-      String asset,
-      int network,
-      String? base_url,
-      bool is_send_all);
 
   external void wire__crate__api__wallet__wallet_consolidate(
       NativePortType port_,

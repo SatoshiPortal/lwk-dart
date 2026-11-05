@@ -40,7 +40,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 511360800;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1034561037;
 
 // Section: executor
 
@@ -1875,47 +1875,6 @@ fn wire__crate__api__wallet__wallet_build_lbtc_tx_impl(
         },
     )
 }
-fn wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<crate::api::wallet::Wallet>,
-    sats: impl CstDecode<u64>,
-    out_address: impl CstDecode<String>,
-    asset: impl CstDecode<String>,
-    network: impl CstDecode<crate::api::types::LiquidNetwork>,
-    base_url: impl CstDecode<Option<String>>,
-    is_send_all: impl CstDecode<bool>,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "wallet_build_payjoin_tx",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let api_that = that.cst_decode();
-            let api_sats = sats.cst_decode();
-            let api_out_address = out_address.cst_decode();
-            let api_asset = asset.cst_decode();
-            let api_network = network.cst_decode();
-            let api_base_url = base_url.cst_decode();
-            let api_is_send_all = is_send_all.cst_decode();
-            move |context| {
-                transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
-                    let output_ok = crate::api::wallet::Wallet::build_payjoin_tx(
-                        &api_that,
-                        api_sats,
-                        api_out_address,
-                        api_asset,
-                        api_network,
-                        api_base_url,
-                        api_is_send_all,
-                    )?;
-                    Ok(output_ok)
-                })())
-            }
-        },
-    )
-}
 fn wire__crate__api__wallet__wallet_consolidate_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<crate::api::wallet::Wallet>,
@@ -2477,18 +2436,6 @@ impl SseDecode for Vec<crate::api::types::TxOut> {
     }
 }
 
-impl SseDecode for Vec<crate::api::types::TxOutSecrets> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = Vec::with_capacity(len_ as usize);
-        for idx_ in 0..len_ {
-            ans_.push(<crate::api::types::TxOutSecrets>::sse_decode(deserializer));
-        }
-        return ans_;
-    }
-}
-
 impl SseDecode for Vec<crate::api::transaction::TxOutput> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2637,23 +2584,6 @@ impl SseDecode for crate::api::types::OutPoint {
         return crate::api::types::OutPoint {
             txid: var_txid,
             vout: var_vout,
-        };
-    }
-}
-
-impl SseDecode for crate::api::types::PayjoinTx {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_pset = <String>::sse_decode(deserializer);
-        let mut var_networkFee = <u64>::sse_decode(deserializer);
-        let mut var_assetFee = <u64>::sse_decode(deserializer);
-        let mut var_unblindedOutputs =
-            <Vec<crate::api::types::TxOutSecrets>>::sse_decode(deserializer);
-        return crate::api::types::PayjoinTx {
-            pset: var_pset,
-            network_fee: var_networkFee,
-            asset_fee: var_assetFee,
-            unblinded_outputs: var_unblindedOutputs,
         };
     }
 }
@@ -3062,26 +2992,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::types::OutPoint>
     for crate::api::types::OutPoint
 {
     fn into_into_dart(self) -> crate::api::types::OutPoint {
-        self
-    }
-}
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::types::PayjoinTx {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        [
-            self.pset.into_into_dart().into_dart(),
-            self.network_fee.into_into_dart().into_dart(),
-            self.asset_fee.into_into_dart().into_dart(),
-            self.unblinded_outputs.into_into_dart().into_dart(),
-        ]
-        .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::types::PayjoinTx {}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::types::PayjoinTx>
-    for crate::api::types::PayjoinTx
-{
-    fn into_into_dart(self) -> crate::api::types::PayjoinTx {
         self
     }
 }
@@ -3569,16 +3479,6 @@ impl SseEncode for Vec<crate::api::types::TxOut> {
     }
 }
 
-impl SseEncode for Vec<crate::api::types::TxOutSecrets> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(self.len() as _, serializer);
-        for item in self {
-            <crate::api::types::TxOutSecrets>::sse_encode(item, serializer);
-        }
-    }
-}
-
 impl SseEncode for Vec<crate::api::transaction::TxOutput> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3701,16 +3601,6 @@ impl SseEncode for crate::api::types::OutPoint {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.txid, serializer);
         <u32>::sse_encode(self.vout, serializer);
-    }
-}
-
-impl SseEncode for crate::api::types::PayjoinTx {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.pset, serializer);
-        <u64>::sse_encode(self.network_fee, serializer);
-        <u64>::sse_encode(self.asset_fee, serializer);
-        <Vec<crate::api::types::TxOutSecrets>>::sse_encode(self.unblinded_outputs, serializer);
     }
 }
 
@@ -4165,16 +4055,6 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<Vec<crate::api::types::TxOutSecrets>> for *mut wire_cst_list_tx_out_secrets {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<crate::api::types::TxOutSecrets> {
-            let vec = unsafe {
-                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
-                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
-            };
-            vec.into_iter().map(CstDecode::cst_decode).collect()
-        }
-    }
     impl CstDecode<Vec<crate::api::transaction::TxOutput>> for *mut wire_cst_list_tx_output {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<crate::api::transaction::TxOutput> {
@@ -4219,17 +4099,6 @@ mod io {
             crate::api::types::OutPoint {
                 txid: self.txid.cst_decode(),
                 vout: self.vout.cst_decode(),
-            }
-        }
-    }
-    impl CstDecode<crate::api::types::PayjoinTx> for wire_cst_payjoin_tx {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> crate::api::types::PayjoinTx {
-            crate::api::types::PayjoinTx {
-                pset: self.pset.cst_decode(),
-                network_fee: self.network_fee.cst_decode(),
-                asset_fee: self.asset_fee.cst_decode(),
-                unblinded_outputs: self.unblinded_outputs.cst_decode(),
             }
         }
     }
@@ -4436,21 +4305,6 @@ mod io {
         }
     }
     impl Default for wire_cst_out_point {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_payjoin_tx {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                pset: core::ptr::null_mut(),
-                network_fee: Default::default(),
-                asset_fee: Default::default(),
-                unblinded_outputs: core::ptr::null_mut(),
-            }
-        }
-    }
-    impl Default for wire_cst_payjoin_tx {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -5131,29 +4985,6 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_build_payjoin_tx(
-        port_: i64,
-        that: *mut wire_cst_wallet,
-        sats: u64,
-        out_address: *mut wire_cst_list_prim_u_8_strict,
-        asset: *mut wire_cst_list_prim_u_8_strict,
-        network: i32,
-        base_url: *mut wire_cst_list_prim_u_8_strict,
-        is_send_all: bool,
-    ) {
-        wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
-            port_,
-            that,
-            sats,
-            out_address,
-            asset,
-            network,
-            base_url,
-            is_send_all,
-        )
-    }
-
-    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_consolidate(
         port_: i64,
         that: *mut wire_cst_wallet,
@@ -5499,20 +5330,6 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_lwk_cst_new_list_tx_out_secrets(
-        len: i32,
-    ) -> *mut wire_cst_list_tx_out_secrets {
-        let wrap = wire_cst_list_tx_out_secrets {
-            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_tx_out_secrets>::new_with_null_ptr(),
-                len,
-            ),
-            len,
-        };
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
-    }
-
-    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_cst_new_list_tx_output(len: i32) -> *mut wire_cst_list_tx_output {
         let wrap = wire_cst_list_tx_output {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
@@ -5636,12 +5453,6 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_list_tx_out_secrets {
-        ptr: *mut wire_cst_tx_out_secrets,
-        len: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
     pub struct wire_cst_list_tx_output {
         ptr: *mut wire_cst_tx_output,
         len: i32,
@@ -5668,14 +5479,6 @@ mod io {
     pub struct wire_cst_out_point {
         txid: *mut wire_cst_list_prim_u_8_strict,
         vout: u32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_payjoin_tx {
-        pset: *mut wire_cst_list_prim_u_8_strict,
-        network_fee: u64,
-        asset_fee: u64,
-        unblinded_outputs: *mut wire_cst_list_tx_out_secrets,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -5986,18 +5789,6 @@ mod web {
                 .collect()
         }
     }
-    impl CstDecode<Vec<crate::api::types::TxOutSecrets>>
-        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
-    {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<crate::api::types::TxOutSecrets> {
-            self.dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
-                .unwrap()
-                .iter()
-                .map(CstDecode::cst_decode)
-                .collect()
-        }
-    }
     impl CstDecode<Vec<crate::api::transaction::TxOutput>>
         for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
     {
@@ -6076,28 +5867,6 @@ mod web {
             crate::api::types::OutPoint {
                 txid: self_.get(0).cst_decode(),
                 vout: self_.get(1).cst_decode(),
-            }
-        }
-    }
-    impl CstDecode<crate::api::types::PayjoinTx>
-        for flutter_rust_bridge::for_generated::wasm_bindgen::JsValue
-    {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> crate::api::types::PayjoinTx {
-            let self_ = self
-                .dyn_into::<flutter_rust_bridge::for_generated::js_sys::Array>()
-                .unwrap();
-            assert_eq!(
-                self_.length(),
-                4,
-                "Expected 4 elements, got {}",
-                self_.length()
-            );
-            crate::api::types::PayjoinTx {
-                pset: self_.get(0).cst_decode(),
-                network_fee: self_.get(1).cst_decode(),
-                asset_fee: self_.get(2).cst_decode(),
-                unblinded_outputs: self_.get(3).cst_decode(),
             }
         }
     }
@@ -7010,29 +6779,6 @@ mod web {
             out_address,
             fee_rate,
             drain,
-        )
-    }
-
-    #[wasm_bindgen]
-    pub fn wire__crate__api__wallet__wallet_build_payjoin_tx(
-        port_: flutter_rust_bridge::for_generated::MessagePort,
-        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
-        sats: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
-        out_address: String,
-        asset: String,
-        network: i32,
-        base_url: Option<String>,
-        is_send_all: bool,
-    ) {
-        wire__crate__api__wallet__wallet_build_payjoin_tx_impl(
-            port_,
-            that,
-            sats,
-            out_address,
-            asset,
-            network,
-            base_url,
-            is_send_all,
         )
     }
 

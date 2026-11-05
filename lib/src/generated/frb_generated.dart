@@ -73,7 +73,7 @@ class LwkCore extends BaseEntrypoint<LwkCoreApi, LwkCoreApiImpl, LwkCoreWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 511360800;
+  int get rustContentHash => 1034561037;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -279,15 +279,6 @@ abstract class LwkCoreApi extends BaseApi {
       required String outAddress,
       required double feeRate,
       required bool drain});
-
-  Future<PayjoinTx> crateApiWalletWalletBuildPayjoinTx(
-      {required Wallet that,
-      required BigInt sats,
-      required String outAddress,
-      required String asset,
-      required LiquidNetwork network,
-      String? baseUrl,
-      required bool isSendAll});
 
   Future<List<String>> crateApiWalletWalletConsolidate(
       {required Wallet that,
@@ -1975,51 +1966,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       );
 
   @override
-  Future<PayjoinTx> crateApiWalletWalletBuildPayjoinTx(
-      {required Wallet that,
-      required BigInt sats,
-      required String outAddress,
-      required String asset,
-      required LiquidNetwork network,
-      String? baseUrl,
-      required bool isSendAll}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        var arg0 = cst_encode_box_autoadd_wallet(that);
-        var arg1 = cst_encode_u_64(sats);
-        var arg2 = cst_encode_String(outAddress);
-        var arg3 = cst_encode_String(asset);
-        var arg4 = cst_encode_liquid_network(network);
-        var arg5 = cst_encode_opt_String(baseUrl);
-        var arg6 = cst_encode_bool(isSendAll);
-        return wire.wire__crate__api__wallet__wallet_build_payjoin_tx(
-            port_, arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-      },
-      codec: DcoCodec(
-        decodeSuccessData: dco_decode_payjoin_tx,
-        decodeErrorData: dco_decode_lwk_error,
-      ),
-      constMeta: kCrateApiWalletWalletBuildPayjoinTxConstMeta,
-      argValues: [that, sats, outAddress, asset, network, baseUrl, isSendAll],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiWalletWalletBuildPayjoinTxConstMeta =>
-      const TaskConstMeta(
-        debugName: "wallet_build_payjoin_tx",
-        argNames: [
-          "that",
-          "sats",
-          "outAddress",
-          "asset",
-          "network",
-          "baseUrl",
-          "isSendAll"
-        ],
-      );
-
-  @override
   Future<List<String>> crateApiWalletWalletConsolidate(
       {required Wallet that,
       required double feeRate,
@@ -2555,12 +2501,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  List<TxOutSecrets> dco_decode_list_tx_out_secrets(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_tx_out_secrets).toList();
-  }
-
-  @protected
   List<TxOutput> dco_decode_list_tx_output(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_tx_output).toList();
@@ -2646,20 +2586,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     return OutPoint(
       txid: dco_decode_String(arr[0]),
       vout: dco_decode_u_32(arr[1]),
-    );
-  }
-
-  @protected
-  PayjoinTx dco_decode_payjoin_tx(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
-    return PayjoinTx(
-      pset: dco_decode_String(arr[0]),
-      networkFee: dco_decode_u_64(arr[1]),
-      assetFee: dco_decode_u_64(arr[2]),
-      unblindedOutputs: dco_decode_list_tx_out_secrets(arr[3]),
     );
   }
 
@@ -3167,19 +3093,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  List<TxOutSecrets> sse_decode_list_tx_out_secrets(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <TxOutSecrets>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_tx_out_secrets(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
   List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -3320,20 +3233,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     var var_txid = sse_decode_String(deserializer);
     var var_vout = sse_decode_u_32(deserializer);
     return OutPoint(txid: var_txid, vout: var_vout);
-  }
-
-  @protected
-  PayjoinTx sse_decode_payjoin_tx(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_pset = sse_decode_String(deserializer);
-    var var_networkFee = sse_decode_u_64(deserializer);
-    var var_assetFee = sse_decode_u_64(deserializer);
-    var var_unblindedOutputs = sse_decode_list_tx_out_secrets(deserializer);
-    return PayjoinTx(
-        pset: var_pset,
-        networkFee: var_networkFee,
-        assetFee: var_assetFee,
-        unblindedOutputs: var_unblindedOutputs);
   }
 
   @protected
@@ -3918,16 +3817,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   }
 
   @protected
-  void sse_encode_list_tx_out_secrets(
-      List<TxOutSecrets> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_tx_out_secrets(item, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_list_tx_output(
       List<TxOutput> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4052,15 +3941,6 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.txid, serializer);
     sse_encode_u_32(self.vout, serializer);
-  }
-
-  @protected
-  void sse_encode_payjoin_tx(PayjoinTx self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.pset, serializer);
-    sse_encode_u_64(self.networkFee, serializer);
-    sse_encode_u_64(self.assetFee, serializer);
-    sse_encode_list_tx_out_secrets(self.unblindedOutputs, serializer);
   }
 
   @protected
