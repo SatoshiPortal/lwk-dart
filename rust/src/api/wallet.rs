@@ -1,6 +1,6 @@
 use lwk_common::{FeeRate, Signer};
 use lwk_signer::SwSigner;
-use lwk_wollet::{full_scan_to_index_with_electrum_client, ElectrumOptions};
+use lwk_wollet::full_scan_to_index_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
 use flutter_rust_bridge::RustOpaqueNom as RustOpaque;
 // use log::{info, warn};
@@ -9,7 +9,6 @@ use lwk_wollet::elements::{
     OutPoint as LwkOutPoint, Txid as LwkTxid,
 };
 use lwk_wollet::AddressResult;
-use lwk_wollet::ElectrumClient;
 use lwk_wollet::WolletDescriptor;
 use std::str::FromStr;
 pub use std::sync::Mutex;
@@ -149,6 +148,10 @@ impl Wallet {
 
     /// Syncs the wallet db with its latest state fetched from the electrum server
     /// Using None for stop_at_index will sync normally with a stop gap of 20
+    ///
+    /// ⚠️ `validate_domain` is ignored: the TLS certificate is always validated
+    /// against the server's domain name, and a TLS server addressed by IP is
+    /// rejected. LWK's `ElectrumClientBuilder` offers no way to disable it.
     pub fn sync(
         &self,
         electrum_url: String,
@@ -157,15 +160,11 @@ impl Wallet {
         timeout: Option<u8>,
     ) -> anyhow::Result<(), LwkError> {
         super::ensure_crypto_provider();
-        let url = electrum_url
-            .strip_prefix("ssl://")
-            .or_else(|| electrum_url.strip_prefix("tcp://"))
-            .unwrap_or(&electrum_url)
-            .to_string();
-        let mut electrum_client: ElectrumClient = ElectrumClient::with_options(
-            &lwk_wollet::ElectrumUrl::Tls(url, validate_domain),
-            ElectrumOptions { timeout: timeout },
-        )?;
+        // ⚠️ Dropped here: `ElectrumClientBuilder` parses the URL and derives
+        // domain validation from it, always on for `ssl://` with a domain name.
+        // Kept in the signature so the Dart API does not break.
+        let _ = validate_domain;
+        let mut electrum_client = super::blockchain::tls_electrum_client(&electrum_url, timeout)?;
         let mut wallet = self.get_wallet()?;
         match full_scan_to_index_with_electrum_client(
             &mut wallet,

@@ -1,4 +1,5 @@
 use std::str::FromStr;
+use std::time::Duration;
 
 use lwk_wollet::{
     blocking::BlockchainBackend,
@@ -6,17 +7,38 @@ use lwk_wollet::{
         pset::{serialize::Deserialize, PartiallySignedTransaction},
         Transaction, Txid,
     },
-    ElectrumClient,
+    ElectrumClient, ElectrumClientBuilder,
 };
 
 use super::error::LwkError;
 
+/// Connect to an Electrum server over TLS.
+///
+/// `host_port` has no scheme, e.g. `example.com:50002`. The certificate is
+/// always validated against the domain name: `ElectrumClientBuilder` derives
+/// that from the `ssl://` URL and offers no way to turn it off, so a TLS server
+/// addressed by IP is rejected. `timeout` is in seconds.
+pub(crate) fn tls_electrum_client(
+    host_port: &str,
+    timeout: Option<u8>,
+) -> Result<ElectrumClient, LwkError> {
+    let mut builder = ElectrumClientBuilder::new(&format!("ssl://{host_port}"));
+    if let Some(timeout) = timeout {
+        builder = builder.timeout(Duration::from_secs(timeout.into()));
+    }
+    Ok(builder.build()?)
+}
+
 pub struct Blockchain {}
 
 impl Blockchain {
+    /// Check that a TLS connection to the Electrum server can be opened.
+    ///
+    /// ⚠️ The certificate is now validated against the server's domain name,
+    /// which this check used to skip; a TLS server addressed by IP fails.
     pub fn test(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
         super::ensure_crypto_provider();
-        ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, false))?;
+        tls_electrum_client(&electrum_url, None)?;
         Ok(())
     }
     /// Broadcast transaction bytes
@@ -25,8 +47,7 @@ impl Blockchain {
         tx_bytes: Vec<u8>,
     ) -> anyhow::Result<String, LwkError> {
         super::ensure_crypto_provider();
-        let electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, true))?;
+        let electrum_client = tls_electrum_client(&electrum_url, None)?;
         let tx = Transaction::deserialize(&tx_bytes)?;
         let txid: Txid = electrum_client.broadcast(&tx)?;
         Ok(txid.to_string())
@@ -38,8 +59,7 @@ impl Blockchain {
         signed_pset: String,
     ) -> anyhow::Result<String, LwkError> {
         super::ensure_crypto_provider();
-        let electrum_client: ElectrumClient =
-            ElectrumClient::new(&lwk_wollet::ElectrumUrl::Tls(electrum_url, true))?;
+        let electrum_client = tls_electrum_client(&electrum_url, None)?;
         let pset = PartiallySignedTransaction::from_str(&signed_pset)?;
         let tx = pset.extract_tx()?;
         let txid: Txid = electrum_client.broadcast(&tx)?;
