@@ -1,3 +1,27 @@
+## Unreleased
+
+- build (BREAKING): depend on LWK master from the SatoshiPortal fork
+  (`SatoshiPortal/lwk` at `33b1be3`, Blockstream/lwk master plus
+  `SwSigner::from_seed_with_network`, proposed upstream as Blockstream/lwk#196)
+  instead of `lwk_*` 0.18.1 from crates.io; elements moves to 0.27 and
+  electrum-client to 0.25.1. Switch back to crates.io once Blockstream releases
+  #196
+- refactor (BREAKING): remove the SideSwap payjoin: `Wallet.buildPayjoinTx` and
+  `PayjoinTx` are gone, along with the `sideswap_*` dependencies, which pin
+  elements 0.25
+- fix (BREAKING): `Wallet.sync` ignores `validateDomain`, and `Blockchain.test`
+  now validates the certificate: LWK's `ElectrumClientBuilder` always validates
+  the TLS certificate against the domain name and rejects a TLS server
+  addressed by IP. The parameter is kept so callers still compile
+- chore: build Electrum clients with `ElectrumClientBuilder`, sign with
+  `SwSigner::new_with_network`, and read `PsetDetails`/`PsetBalance` through
+  accessors; the Dart API still takes the fee rate as a `double` in sats/kvB,
+  with the same validation
+- chore: an invalid script hex in `Address.addressFromScript` now reports the
+  `hex` crate's error message
+- test: pin key and address derivation, script hex encoding, Electrum URL
+  handling and the fee rate conversion
+
 ## 0.7.0
 
 - fix (BREAKING): `Wallet.balances()` and `SizeAndFees.absoluteFees` now return
