@@ -6,24 +6,40 @@
 import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'types.dart';
+
+// These functions are ignored because they are not marked as `pub`: `electrum_url`
 
 class Blockchain {
   const Blockchain();
 
   /// Broadcast a signed pset
+  ///
+  /// The connection uses TLS with domain validation, except for a `tcp://` URL on regtest.
   static Future<String> broadcastSignedPset(
-          {required String electrumUrl, required String signedPset}) =>
+          {required LiquidNetwork network,
+          required String electrumUrl,
+          required String signedPset}) =>
       LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastSignedPset(
-          electrumUrl: electrumUrl, signedPset: signedPset);
+          network: network, electrumUrl: electrumUrl, signedPset: signedPset);
 
   /// Broadcast transaction bytes
+  ///
+  /// The connection uses TLS with domain validation, except for a `tcp://` URL on regtest.
   static Future<String> broadcastTxBytes(
-          {required String electrumUrl, required List<int> txBytes}) =>
+          {required LiquidNetwork network,
+          required String electrumUrl,
+          required List<int> txBytes}) =>
       LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastTxBytes(
-          electrumUrl: electrumUrl, txBytes: txBytes);
+          network: network, electrumUrl: electrumUrl, txBytes: txBytes);
 
-  Future<void> test({required String electrumUrl}) => LwkCore.instance.api
-      .crateApiBlockchainBlockchainTest(that: this, electrumUrl: electrumUrl);
+  /// Check that an Electrum server is reachable, without validating its TLS domain.
+  ///
+  /// The connection uses TLS, except for a `tcp://` URL on regtest.
+  Future<void> test(
+          {required LiquidNetwork network, required String electrumUrl}) =>
+      LwkCore.instance.api.crateApiBlockchainBlockchainTest(
+          that: this, network: network, electrumUrl: electrumUrl);
 
   @override
   int get hashCode => 0;
