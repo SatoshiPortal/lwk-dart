@@ -32,12 +32,14 @@ void main() {
     "import 'frb_generated.dart';\nimport '../checked_u64.dart';\nimport '../checked_u8_list.dart';",
   );
   // Byte-list arguments are `List<int>`: the codec keeps only the low 8 bits.
+  // Check before allocating, or the native buffer leaks when the check throws.
   replaceOnce(
     ioPath,
     '''final ans = wire.cst_new_list_prim_u_8_loose(raw.length);
     ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);''',
-    '''final ans = wire.cst_new_list_prim_u_8_loose(raw.length);
-    ans.ref.ptr.asTypedList(raw.length).setAll(0, checkedU8List(raw));''',
+    '''final bytes = checkedU8List(raw);
+    final ans = wire.cst_new_list_prim_u_8_loose(bytes.length);
+    ans.ref.ptr.asTypedList(bytes.length).setAll(0, bytes);''',
   );
   replaceExactly(
     ioPath,
