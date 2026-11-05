@@ -3,7 +3,6 @@ use std::str::FromStr;
 use lwk_wollet::elements::{
     pset::{serialize::Deserialize, PartiallySignedTransaction}, 
     Transaction as ElementsTransaction,
-    hex::ToHex,
 };
 use flutter_rust_bridge::frb;
 
@@ -123,7 +122,7 @@ impl PartiallySignedElementsTransaction {
     pub fn get_input_utxo_script(&self, index: usize) -> Option<String> {
         self.inner.inputs().get(index).and_then(|input| {
             input.witness_utxo.as_ref().map(|utxo| {
-                utxo.script_pubkey.to_hex()
+                hex::encode(utxo.script_pubkey.as_bytes())
             })
         })
     }
@@ -145,7 +144,7 @@ impl PartiallySignedElementsTransaction {
     #[frb(sync)]
     pub fn get_output_script(&self, index: usize) -> Option<String> {
         self.inner.outputs().get(index).map(|output| {
-            output.script_pubkey.to_hex()
+            hex::encode(output.script_pubkey.as_bytes())
         })
     }
 
@@ -168,7 +167,7 @@ impl PartiallySignedElementsTransaction {
         self.inner.inputs().get(index).map(|input| {
             PsetInput {
                 witness_utxo_script: input.witness_utxo.as_ref().map(|utxo| {
-                    utxo.script_pubkey.to_hex()
+                    hex::encode(utxo.script_pubkey.as_bytes())
                 }),
                 witness_utxo_amount: input.witness_utxo.as_ref().and_then(|utxo| {
                     if let lwk_wollet::elements::confidential::Value::Explicit(value) = utxo.value {
@@ -193,7 +192,7 @@ impl PartiallySignedElementsTransaction {
         self.inner.inputs().iter().map(|input| {
             PsetInput {
                 witness_utxo_script: input.witness_utxo.as_ref().map(|utxo| {
-                    utxo.script_pubkey.to_hex()
+                    hex::encode(utxo.script_pubkey.as_bytes())
                 }),
                 witness_utxo_amount: input.witness_utxo.as_ref().and_then(|utxo| {
                     if let lwk_wollet::elements::confidential::Value::Explicit(value) = utxo.value {
@@ -217,7 +216,7 @@ impl PartiallySignedElementsTransaction {
     pub fn get_output(&self, index: usize) -> Option<PsetOutput> {
         self.inner.outputs().get(index).map(|output| {
             PsetOutput {
-                script_pubkey: output.script_pubkey.to_hex(),
+                script_pubkey: hex::encode(output.script_pubkey.as_bytes()),
                 amount: output.amount,
                 asset: output.asset.map(|asset| asset.to_string()),
                 blinding_key: output.blinding_key.as_ref().map(|key| key.to_string()),
@@ -229,7 +228,7 @@ impl PartiallySignedElementsTransaction {
     pub fn get_outputs(&self) -> Vec<PsetOutput> {
         self.inner.outputs().iter().map(|output| {
             PsetOutput {
-                script_pubkey: output.script_pubkey.to_hex(),
+                script_pubkey: hex::encode(output.script_pubkey.as_bytes()),
                 amount: output.amount,
                 asset: output.asset.map(|asset| asset.to_string()),
                 blinding_key: output.blinding_key.as_ref().map(|key| key.to_string()),
@@ -310,7 +309,7 @@ impl LiquidTransaction {
 
     #[frb(sync)]
     pub fn get_output_script_pubkey(&self, index: usize) -> Option<String> {
-        self.inner.output.get(index).map(|out| out.script_pubkey.to_hex())
+        self.inner.output.get(index).map(|out| hex::encode(out.script_pubkey.as_bytes()))
     }
 
     #[frb(sync)]
@@ -357,7 +356,7 @@ impl LiquidTransaction {
             TxInput {
                 txid: input.previous_output.txid.to_string(),
                 vout: input.previous_output.vout,
-                script_sig: input.script_sig.to_hex(),
+                script_sig: hex::encode(input.script_sig.as_bytes()),
                 sequence: input.sequence.0,
                 witness: input.witness.script_witness.iter().map(|w| hex::encode(w)).collect(),
                 is_pegin: input.is_pegin,
@@ -371,7 +370,7 @@ impl LiquidTransaction {
             TxInput {
                 txid: input.previous_output.txid.to_string(),
                 vout: input.previous_output.vout,
-                script_sig: input.script_sig.to_hex(),
+                script_sig: hex::encode(input.script_sig.as_bytes()),
                 sequence: input.sequence.0,
                 witness: input.witness.script_witness.iter().map(|w| hex::encode(w)).collect(),
                 is_pegin: input.is_pegin,
@@ -383,7 +382,7 @@ impl LiquidTransaction {
     pub fn get_output(&self, index: usize) -> Option<TxOutput> {
         self.inner.output.get(index).map(|out| {
             TxOutput {
-                script_pubkey: out.script_pubkey.to_hex(),
+                script_pubkey: hex::encode(out.script_pubkey.as_bytes()),
                 asset: if let lwk_wollet::elements::confidential::Asset::Explicit(asset) = out.asset {
                     Some(asset.to_string())
                 } else {
@@ -407,7 +406,7 @@ impl LiquidTransaction {
     pub fn get_outputs(&self) -> Vec<TxOutput> {
         self.inner.output.iter().map(|out| {
             TxOutput {
-                script_pubkey: out.script_pubkey.to_hex(),
+                script_pubkey: hex::encode(out.script_pubkey.as_bytes()),
                 asset: if let lwk_wollet::elements::confidential::Asset::Explicit(asset) = out.asset {
                     Some(asset.to_string())
                 } else {

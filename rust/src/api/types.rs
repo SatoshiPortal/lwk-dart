@@ -46,7 +46,6 @@ use lwk_common::PsetBalance;
 use lwk_wollet::{
     elements::{
         self,
-        hex::{FromHex, ToHex},
         pset::PartiallySignedTransaction,
         Address as LwkAddress, AddressParams, AssetId, Script,
     },
@@ -196,7 +195,7 @@ impl From<elements::TxOutSecrets> for TxOutSecrets {
 impl From<WalletTxOut> for TxOut {
     fn from(wallet_tx_out: WalletTxOut) -> Self {
         TxOut {
-            script_pubkey: wallet_tx_out.script_pubkey.to_hex(),
+            script_pubkey: hex::encode(wallet_tx_out.script_pubkey.as_bytes()),
             height: wallet_tx_out.height,
             unblinded: wallet_tx_out.unblinded.into(),
             outpoint: OutPoint {
@@ -269,8 +268,8 @@ impl Address {
             };
             Some(pubkey)
         };
-        let script_pubkey = match Script::from_hex(&script) {
-            Ok(result) => result,
+        let script_pubkey = match hex::decode(&script) {
+            Ok(result) => Script::from(result),
             Err(e) => return Err(LwkError { msg: e.to_string() }),
         };
 
@@ -410,7 +409,7 @@ impl From<WalletTx> for Tx {
 
         for output in &wallet_tx.outputs {
             if let Some(output) = output {
-                let script_pubkey = output.script_pubkey.to_hex();
+                let script_pubkey = hex::encode(output.script_pubkey.as_bytes());
                 outputs.push(TxOut {
                     script_pubkey,
                     height: output.height,
