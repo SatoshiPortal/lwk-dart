@@ -140,6 +140,10 @@ class Wallet {
 
   /// Syncs the wallet db with its latest state fetched from the electrum server
   /// Using None for stop_at_index will sync normally with a stop gap of 20
+  ///
+  /// ⚠️ `validate_domain` is ignored: the TLS certificate is always validated
+  /// against the server's domain name, and a TLS server addressed by IP is
+  /// rejected. LWK's `ElectrumClientBuilder` offers no way to disable it.
   Future<void> sync_(
           {required String electrumUrl,
           required bool validateDomain,

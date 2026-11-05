@@ -7,6 +7,8 @@ import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
+// These functions are ignored because they are not marked as `pub`: `tls_electrum_client`
+
 class Blockchain {
   const Blockchain();
 
@@ -22,6 +24,10 @@ class Blockchain {
       LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastTxBytes(
           electrumUrl: electrumUrl, txBytes: txBytes);
 
+  /// Check that a TLS connection to the Electrum server can be opened.
+  ///
+  /// ⚠️ The certificate is now validated against the server's domain name,
+  /// which this check used to skip; a TLS server addressed by IP fails.
   Future<void> test({required String electrumUrl}) => LwkCore.instance.api
       .crateApiBlockchainBlockchainTest(that: this, electrumUrl: electrumUrl);
 
