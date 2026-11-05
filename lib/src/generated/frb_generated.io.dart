@@ -2013,11 +2013,13 @@ class LwkCoreWire implements BaseWire {
 
   void wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
     int port_,
+    int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> signed_pset,
   ) {
     return _wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
       port_,
+      network,
       electrum_url,
       signed_pset,
     );
@@ -2028,6 +2030,7 @@ class LwkCoreWire implements BaseWire {
           ffi.NativeFunction<
               ffi.Void Function(
                 ffi.Int64,
+                ffi.Int32,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
               )>>(
@@ -2038,17 +2041,20 @@ class LwkCoreWire implements BaseWire {
           .asFunction<
               void Function(
                 int,
+                int,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
               )>();
 
   void wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
     int port_,
+    int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
     ffi.Pointer<wire_cst_list_prim_u_8_loose> tx_bytes,
   ) {
     return _wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
       port_,
+      network,
       electrum_url,
       tx_bytes,
     );
@@ -2059,6 +2065,7 @@ class LwkCoreWire implements BaseWire {
           ffi.NativeFunction<
               ffi.Void Function(
                 ffi.Int64,
+                ffi.Int32,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_loose>,
               )>>(
@@ -2069,6 +2076,7 @@ class LwkCoreWire implements BaseWire {
           .asFunction<
               void Function(
                 int,
+                int,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_loose>,
               )>();
@@ -2076,11 +2084,13 @@ class LwkCoreWire implements BaseWire {
   void wire__crate__api__blockchain__blockchain_test(
     int port_,
     ffi.Pointer<wire_cst_blockchain> that,
+    int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
   ) {
     return _wire__crate__api__blockchain__blockchain_test(
       port_,
       that,
+      network,
       electrum_url,
     );
   }
@@ -2090,6 +2100,7 @@ class LwkCoreWire implements BaseWire {
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_blockchain>,
+            ffi.Int32,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>>('frbgen_lwk_wire__crate__api__blockchain__blockchain_test');
   late final _wire__crate__api__blockchain__blockchain_test =
@@ -2097,6 +2108,7 @@ class LwkCoreWire implements BaseWire {
           void Function(
             int,
             ffi.Pointer<wire_cst_blockchain>,
+            int,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>();
 

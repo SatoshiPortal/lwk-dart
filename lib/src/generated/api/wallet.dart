@@ -197,6 +197,8 @@ class Wallet {
 
   /// Syncs the wallet db with its latest state fetched from the electrum server
   /// Using None for stop_at_index will sync normally with a stop gap of 20
+  ///
+  /// The connection uses TLS, except for a `tcp://` URL on a regtest wallet.
   Future<void> sync_(
           {required String electrumUrl,
           required bool validateDomain,

@@ -329,15 +329,18 @@ void frbgen_lwk_wire__crate__api__types__address_validate(int64_t port_,
                                                           struct wire_cst_list_prim_u_8_strict *address_string);
 
 void frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_signed_pset(int64_t port_,
+                                                                               int32_t network,
                                                                                struct wire_cst_list_prim_u_8_strict *electrum_url,
                                                                                struct wire_cst_list_prim_u_8_strict *signed_pset);
 
 void frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(int64_t port_,
+                                                                            int32_t network,
                                                                             struct wire_cst_list_prim_u_8_strict *electrum_url,
                                                                             struct wire_cst_list_prim_u_8_loose *tx_bytes);
 
 void frbgen_lwk_wire__crate__api__blockchain__blockchain_test(int64_t port_,
                                                               struct wire_cst_blockchain *that,
+                                                              int32_t network,
                                                               struct wire_cst_list_prim_u_8_strict *electrum_url);
 
 void frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential(int64_t port_,

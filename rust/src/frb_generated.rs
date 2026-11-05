@@ -1449,6 +1449,7 @@ fn wire__crate__api__types__address_validate_impl(
 }
 fn wire__crate__api__blockchain__blockchain_broadcast_signed_pset_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
     electrum_url: impl CstDecode<String>,
     signed_pset: impl CstDecode<String>,
 ) {
@@ -1459,11 +1460,13 @@ fn wire__crate__api__blockchain__blockchain_broadcast_signed_pset_impl(
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
+            let api_network = network.cst_decode();
             let api_electrum_url = electrum_url.cst_decode();
             let api_signed_pset = signed_pset.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
                     let output_ok = crate::api::blockchain::Blockchain::broadcast_signed_pset(
+                        api_network,
                         api_electrum_url,
                         api_signed_pset,
                     )?;
@@ -1475,6 +1478,7 @@ fn wire__crate__api__blockchain__blockchain_broadcast_signed_pset_impl(
 }
 fn wire__crate__api__blockchain__blockchain_broadcast_tx_bytes_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
     electrum_url: impl CstDecode<String>,
     tx_bytes: impl CstDecode<Vec<u8>>,
 ) {
@@ -1485,11 +1489,13 @@ fn wire__crate__api__blockchain__blockchain_broadcast_tx_bytes_impl(
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
+            let api_network = network.cst_decode();
             let api_electrum_url = electrum_url.cst_decode();
             let api_tx_bytes = tx_bytes.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
                     let output_ok = crate::api::blockchain::Blockchain::broadcast_tx_bytes(
+                        api_network,
                         api_electrum_url,
                         api_tx_bytes,
                     )?;
@@ -1502,6 +1508,7 @@ fn wire__crate__api__blockchain__blockchain_broadcast_tx_bytes_impl(
 fn wire__crate__api__blockchain__blockchain_test_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<crate::api::blockchain::Blockchain>,
+    network: impl CstDecode<crate::api::types::LiquidNetwork>,
     electrum_url: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -1512,11 +1519,15 @@ fn wire__crate__api__blockchain__blockchain_test_impl(
         },
         move || {
             let api_that = that.cst_decode();
+            let api_network = network.cst_decode();
             let api_electrum_url = electrum_url.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
-                    let output_ok =
-                        crate::api::blockchain::Blockchain::test(&api_that, api_electrum_url)?;
+                    let output_ok = crate::api::blockchain::Blockchain::test(
+                        &api_that,
+                        api_network,
+                        api_electrum_url,
+                    )?;
                     Ok(output_ok)
                 })())
             }
@@ -5076,11 +5087,13 @@ mod io {
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
         port_: i64,
+        network: i32,
         electrum_url: *mut wire_cst_list_prim_u_8_strict,
         signed_pset: *mut wire_cst_list_prim_u_8_strict,
     ) {
         wire__crate__api__blockchain__blockchain_broadcast_signed_pset_impl(
             port_,
+            network,
             electrum_url,
             signed_pset,
         )
@@ -5089,11 +5102,13 @@ mod io {
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_lwk_wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
         port_: i64,
+        network: i32,
         electrum_url: *mut wire_cst_list_prim_u_8_strict,
         tx_bytes: *mut wire_cst_list_prim_u_8_loose,
     ) {
         wire__crate__api__blockchain__blockchain_broadcast_tx_bytes_impl(
             port_,
+            network,
             electrum_url,
             tx_bytes,
         )
@@ -5103,9 +5118,10 @@ mod io {
     pub extern "C" fn frbgen_lwk_wire__crate__api__blockchain__blockchain_test(
         port_: i64,
         that: *mut wire_cst_blockchain,
+        network: i32,
         electrum_url: *mut wire_cst_list_prim_u_8_strict,
     ) {
-        wire__crate__api__blockchain__blockchain_test_impl(port_, that, electrum_url)
+        wire__crate__api__blockchain__blockchain_test_impl(port_, that, network, electrum_url)
     }
 
     #[unsafe(no_mangle)]
@@ -7003,11 +7019,13 @@ mod web {
     #[wasm_bindgen]
     pub fn wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
         port_: flutter_rust_bridge::for_generated::MessagePort,
+        network: i32,
         electrum_url: String,
         signed_pset: String,
     ) {
         wire__crate__api__blockchain__blockchain_broadcast_signed_pset_impl(
             port_,
+            network,
             electrum_url,
             signed_pset,
         )
@@ -7016,11 +7034,13 @@ mod web {
     #[wasm_bindgen]
     pub fn wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
         port_: flutter_rust_bridge::for_generated::MessagePort,
+        network: i32,
         electrum_url: String,
         tx_bytes: Box<[u8]>,
     ) {
         wire__crate__api__blockchain__blockchain_broadcast_tx_bytes_impl(
             port_,
+            network,
             electrum_url,
             tx_bytes,
         )
@@ -7030,9 +7050,10 @@ mod web {
     pub fn wire__crate__api__blockchain__blockchain_test(
         port_: flutter_rust_bridge::for_generated::MessagePort,
         that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        network: i32,
         electrum_url: String,
     ) {
-        wire__crate__api__blockchain__blockchain_test_impl(port_, that, electrum_url)
+        wire__crate__api__blockchain__blockchain_test_impl(port_, that, network, electrum_url)
     }
 
     #[wasm_bindgen]

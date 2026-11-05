@@ -222,13 +222,19 @@ abstract class LwkCoreApi extends BaseApi {
       {required String addressString});
 
   Future<String> crateApiBlockchainBlockchainBroadcastSignedPset(
-      {required String electrumUrl, required String signedPset});
+      {required LiquidNetwork network,
+      required String electrumUrl,
+      required String signedPset});
 
   Future<String> crateApiBlockchainBlockchainBroadcastTxBytes(
-      {required String electrumUrl, required List<int> txBytes});
+      {required LiquidNetwork network,
+      required String electrumUrl,
+      required List<int> txBytes});
 
   Future<void> crateApiBlockchainBlockchainTest(
-      {required Blockchain that, required String electrumUrl});
+      {required Blockchain that,
+      required LiquidNetwork network,
+      required String electrumUrl});
 
   Future<Descriptor> crateApiDescriptorDescriptorNewConfidential(
       {required LiquidNetwork network, required String mnemonic});
@@ -1528,21 +1534,24 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
 
   @override
   Future<String> crateApiBlockchainBlockchainBroadcastSignedPset(
-      {required String electrumUrl, required String signedPset}) {
+      {required LiquidNetwork network,
+      required String electrumUrl,
+      required String signedPset}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_String(electrumUrl);
-        var arg1 = cst_encode_String(signedPset);
+        var arg0 = cst_encode_liquid_network(network);
+        var arg1 = cst_encode_String(electrumUrl);
+        var arg2 = cst_encode_String(signedPset);
         return wire
             .wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
-                port_, arg0, arg1);
+                port_, arg0, arg1, arg2);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_String,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kCrateApiBlockchainBlockchainBroadcastSignedPsetConstMeta,
-      argValues: [electrumUrl, signedPset],
+      argValues: [network, electrumUrl, signedPset],
       apiImpl: this,
     ));
   }
@@ -1550,25 +1559,28 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   TaskConstMeta get kCrateApiBlockchainBlockchainBroadcastSignedPsetConstMeta =>
       const TaskConstMeta(
         debugName: "blockchain_broadcast_signed_pset",
-        argNames: ["electrumUrl", "signedPset"],
+        argNames: ["network", "electrumUrl", "signedPset"],
       );
 
   @override
   Future<String> crateApiBlockchainBlockchainBroadcastTxBytes(
-      {required String electrumUrl, required List<int> txBytes}) {
+      {required LiquidNetwork network,
+      required String electrumUrl,
+      required List<int> txBytes}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        var arg0 = cst_encode_String(electrumUrl);
-        var arg1 = cst_encode_list_prim_u_8_loose(txBytes);
+        var arg0 = cst_encode_liquid_network(network);
+        var arg1 = cst_encode_String(electrumUrl);
+        var arg2 = cst_encode_list_prim_u_8_loose(txBytes);
         return wire.wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
-            port_, arg0, arg1);
+            port_, arg0, arg1, arg2);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_String,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kCrateApiBlockchainBlockchainBroadcastTxBytesConstMeta,
-      argValues: [electrumUrl, txBytes],
+      argValues: [network, electrumUrl, txBytes],
       apiImpl: this,
     ));
   }
@@ -1576,25 +1588,28 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   TaskConstMeta get kCrateApiBlockchainBlockchainBroadcastTxBytesConstMeta =>
       const TaskConstMeta(
         debugName: "blockchain_broadcast_tx_bytes",
-        argNames: ["electrumUrl", "txBytes"],
+        argNames: ["network", "electrumUrl", "txBytes"],
       );
 
   @override
   Future<void> crateApiBlockchainBlockchainTest(
-      {required Blockchain that, required String electrumUrl}) {
+      {required Blockchain that,
+      required LiquidNetwork network,
+      required String electrumUrl}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_blockchain(that);
-        var arg1 = cst_encode_String(electrumUrl);
+        var arg1 = cst_encode_liquid_network(network);
+        var arg2 = cst_encode_String(electrumUrl);
         return wire.wire__crate__api__blockchain__blockchain_test(
-            port_, arg0, arg1);
+            port_, arg0, arg1, arg2);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_unit,
         decodeErrorData: dco_decode_lwk_error,
       ),
       constMeta: kCrateApiBlockchainBlockchainTestConstMeta,
-      argValues: [that, electrumUrl],
+      argValues: [that, network, electrumUrl],
       apiImpl: this,
     ));
   }
@@ -1602,7 +1617,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
   TaskConstMeta get kCrateApiBlockchainBlockchainTestConstMeta =>
       const TaskConstMeta(
         debugName: "blockchain_test",
-        argNames: ["that", "electrumUrl"],
+        argNames: ["that", "network", "electrumUrl"],
       );
 
   @override
