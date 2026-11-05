@@ -84,3 +84,39 @@ impl Blockchain {
         Ok(txid.to_string())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const HOST: &str = "example.com:50002";
+
+    #[test]
+    fn plaintext_only_for_a_tcp_url_on_regtest() {
+        let url = |network, scheme: &str, validate_domain| {
+            electrum_url(network, &format!("{scheme}{HOST}"), validate_domain)
+        };
+        for validate_domain in [true, false] {
+            assert_eq!(
+                url(LiquidNetwork::Regtest, "tcp://", validate_domain),
+                ElectrumUrl::Plaintext(HOST.to_string())
+            );
+            for scheme in ["ssl://", ""] {
+                assert_eq!(
+                    url(LiquidNetwork::Regtest, scheme, validate_domain),
+                    ElectrumUrl::Tls(HOST.to_string(), validate_domain),
+                    "regtest {scheme:?}"
+                );
+            }
+            for network in [LiquidNetwork::Mainnet, LiquidNetwork::Testnet] {
+                for scheme in ["tcp://", "ssl://", ""] {
+                    assert_eq!(
+                        url(network, scheme, validate_domain),
+                        ElectrumUrl::Tls(HOST.to_string(), validate_domain),
+                        "{network:?} {scheme:?} must keep TLS"
+                    );
+                }
+            }
+        }
+    }
+}
