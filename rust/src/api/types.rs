@@ -482,18 +482,6 @@ impl TryFrom<String> for SizeAndFees {
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
-pub struct PayjoinTx {
-    /// Partially signed transaction
-    pub pset: String,
-    /// LiquidNetwork fee
-    pub network_fee: u64,
-    /// Asset fee amount paid to the server
-    pub asset_fee: u64,
-    /// All unblinded outputs
-    pub unblinded_outputs: Vec<TxOutSecrets>,
-}
-
 // #[test]
 // fn test_address_from_script() {
 //     // The script provided: 0014ac45b647d82582d4ed416e5b84fd418789025dc5
