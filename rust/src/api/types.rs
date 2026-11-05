@@ -113,6 +113,17 @@ impl LiquidNetwork {
     }
 }
 
+/// Every custom Elements network is regtest: [`LiquidNetwork::elements_network`] builds no other.
+impl From<ElementsNetwork> for LiquidNetwork {
+    fn from(network: ElementsNetwork) -> Self {
+        match network {
+            ElementsNetwork::Liquid => LiquidNetwork::Mainnet,
+            ElementsNetwork::TestnetLiquid => LiquidNetwork::Testnet,
+            ElementsNetwork::CustomElements(_) => LiquidNetwork::Regtest,
+        }
+    }
+}
+
 impl Into<ElementsNetwork> for LiquidNetwork {
     fn into(self) -> ElementsNetwork {
         match self {
@@ -392,6 +403,22 @@ mod tests {
                 .to_string(),
             L_TEST_ASSET_ID
         );
+    }
+
+    #[test]
+    fn lwk_networks_map_back_to_their_liquid_network() {
+        for network in [
+            LiquidNetwork::Mainnet,
+            LiquidNetwork::Testnet,
+            LiquidNetwork::Regtest,
+        ] {
+            assert_eq!(LiquidNetwork::from(lwk_network(network)), network);
+        }
+        let custom = "b2e15d0d7a0c94e4e2ce0fe6e8691b9e451377f6e46e8045a86f7c4b5d4f0f23";
+        let custom = LiquidNetwork::Regtest
+            .elements_network(Some(custom.to_string()))
+            .unwrap();
+        assert_eq!(LiquidNetwork::from(custom), LiquidNetwork::Regtest);
     }
 
     #[test]
