@@ -1,3 +1,12 @@
+## Unreleased
+
+- feat: add `Descriptor.newConfidentialFromSeed`, `Wallet.signTxWithSeed` and
+  `Wallet.signedPsetWithExtraDetailsWithSeed`, which take the BIP39 seed
+  (16 to 64 bytes) instead of mnemonic words. The mnemonic functions only parse
+  English words and always derive the seed with an empty passphrase; the seed
+  carries any BIP39 language and passphrase. An English mnemonic without
+  passphrase yields the same descriptor and signatures through both paths
+
 ## 0.7.0
 
 - fix (BREAKING): `Wallet.balances()` and `SizeAndFees.absoluteFees` now return

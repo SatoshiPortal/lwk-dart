@@ -7,12 +7,13 @@ cryptographically secure BIP39 generator, keep mnemonics outside source code,
 logs, crash reports, and analytics, and provide any live-test mnemonic through
 an environment variable or secret store.
 
-Mnemonic strings received by Rust are zeroized after use. This cannot erase
-immutable Dart `String` objects or guarantee erasure of the `Mnemonic` and
-`Xpriv` retained internally by the upstream `lwk_signer::SwSigner`. Applications
-with stronger memory-erasure requirements should isolate signing in a hardware
-signer or a dedicated process. Complete zeroization also requires support in
-`lwk_signer` and its key types.
+Mnemonic strings and BIP39 seeds received by Rust are zeroized after use. This
+cannot erase immutable Dart `String` objects or the caller's copy of a seed, nor
+guarantee erasure of the `Mnemonic` and `Xpriv` retained internally by the
+upstream `lwk_signer::SwSigner`, or of the SLIP77 master blinding key derived
+from a seed. Applications with stronger memory-erasure requirements should
+isolate signing in a hardware signer or a dedicated process. Complete
+zeroization also requires support in `lwk_signer` and its key types.
 
 Any mnemonic that has ever been committed to a repository must be considered
 public. Do not fund addresses derived from it.
