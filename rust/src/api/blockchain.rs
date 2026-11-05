@@ -34,8 +34,8 @@ pub struct Blockchain {}
 impl Blockchain {
     /// Check that a TLS connection to the Electrum server can be opened.
     ///
-    /// ⚠️ The certificate is now validated against the server's domain name,
-    /// which this check used to skip; a TLS server addressed by IP fails.
+    /// ⚠️ Like `Wallet.sync`, it always validates the certificate against the
+    /// server's domain name, so a self-signed or IP-addressed server fails.
     pub fn test(&self, electrum_url: String) -> anyhow::Result<(), LwkError> {
         super::ensure_crypto_provider();
         tls_electrum_client(&electrum_url, None)?;
