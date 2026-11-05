@@ -2343,6 +2343,7 @@ name = "lwk"
 version = "0.3.0"
 dependencies = [
  "anyhow",
+ "bip39",
  "flutter_rust_bridge",
  "flutter_rust_bridge_codegen",
  "hex",

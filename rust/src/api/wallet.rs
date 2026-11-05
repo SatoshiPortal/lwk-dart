@@ -640,6 +640,141 @@ mod tests {
     use crate::api::transaction::extract_tx_bytes;
 
     use super::*;
+    const ABANDON_MNEMONIC: &str = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+
+    fn abandon_seed() -> Vec<u8> {
+        bip39::Mnemonic::parse_in(bip39::Language::English, ABANDON_MNEMONIC)
+            .unwrap()
+            .to_seed("")
+            .to_vec()
+    }
+
+    /// A wallet persisted in its own temporary directory, removed when the wallet is dropped.
+    struct OfflineWallet {
+        wallet: Option<Wallet>,
+        dbpath: std::path::PathBuf,
+    }
+
+    impl std::ops::Deref for OfflineWallet {
+        type Target = Wallet;
+
+        fn deref(&self) -> &Wallet {
+            self.wallet.as_ref().expect("present until dropped")
+        }
+    }
+
+    impl Drop for OfflineWallet {
+        fn drop(&mut self) {
+            // Close the wallet store before deleting its directory.
+            drop(self.wallet.take());
+            let _ = std::fs::remove_dir_all(&self.dbpath);
+        }
+    }
+
+    fn offline_wallet(name: &str, descriptor: Descriptor) -> OfflineWallet {
+        let dbpath = std::env::temp_dir().join(format!("lwk-dart-{name}-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dbpath);
+        let wallet = Wallet::init(
+            LiquidNetwork::Testnet,
+            dbpath.display().to_string(),
+            descriptor,
+        )
+        .unwrap();
+        OfflineWallet {
+            wallet: Some(wallet),
+            dbpath,
+        }
+    }
+
+    /// One explicit input paying the wallet's first receive address, keyed for signing, and
+    /// one explicit output back to that address. Built offline, no chain data needed.
+    fn pset_spending_first_address(wallet: &Wallet) -> String {
+        use lwk_wollet::bitcoin::bip32::DerivationPath;
+        use lwk_wollet::elements::pset::{Input, Output};
+        use lwk_wollet::elements::{confidential, OutPoint, TxOut as ElementsTxOut, TxOutWitness};
+
+        let wollet = wallet.get_wallet().unwrap();
+        let script = wollet.address(Some(0)).unwrap().address().script_pubkey();
+        let asset = wollet.policy_asset();
+        drop(wollet);
+
+        let mnemonic_signer = SwSigner::new(ABANDON_MNEMONIC, false).unwrap();
+        let path = DerivationPath::from_str("m/84h/1h/0h/0/0").unwrap();
+        let public_key = lwk_wollet::bitcoin::PublicKey::new(
+            mnemonic_signer.derive_xpub(&path).unwrap().public_key,
+        );
+
+        let mut input = Input::from_prevout(
+            OutPoint::from_str(
+                "0000000000000000000000000000000000000000000000000000000000000001:0",
+            )
+            .unwrap(),
+        );
+        input.witness_utxo = Some(ElementsTxOut {
+            asset: confidential::Asset::Explicit(asset),
+            value: confidential::Value::Explicit(100_000),
+            nonce: confidential::Nonce::Null,
+            script_pubkey: script.clone(),
+            witness: TxOutWitness::default(),
+        });
+        input
+            .bip32_derivation
+            .insert(public_key, (mnemonic_signer.fingerprint(), path));
+
+        let mut pset = PartiallySignedTransaction::new_v2();
+        pset.add_input(input);
+        pset.add_output(Output::new_explicit(script, 99_000, asset, None));
+        pset.add_output(Output::from_txout(ElementsTxOut::new_fee(1_000, asset)));
+        pset.to_string()
+    }
+
+    #[test]
+    fn signing_with_the_seed_matches_signing_with_the_mnemonic() {
+        let network = LiquidNetwork::Testnet;
+        let descriptor =
+            Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
+        let wallet = offline_wallet("sign-seed", descriptor);
+        let pset = pset_spending_first_address(&wallet);
+
+        let with_mnemonic = wallet
+            .sign_tx(network, pset.clone(), ABANDON_MNEMONIC.to_owned())
+            .unwrap();
+        let with_seed = wallet
+            .sign_tx_with_seed(network, pset.clone(), abandon_seed())
+            .unwrap();
+        assert_ne!(with_mnemonic, pset, "the input must have been signed");
+        assert_eq!(with_seed, with_mnemonic);
+
+        let details_with_mnemonic = wallet
+            .signed_pset_with_extra_details(network, pset.clone(), ABANDON_MNEMONIC.to_owned())
+            .unwrap();
+        let details_with_seed = wallet
+            .signed_pset_with_extra_details_with_seed(network, pset, abandon_seed())
+            .unwrap();
+        assert_eq!(details_with_seed, details_with_mnemonic);
+    }
+
+    #[test]
+    fn signing_rejects_a_seed_of_invalid_length() {
+        let network = LiquidNetwork::Testnet;
+        let descriptor =
+            Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
+        let wallet = offline_wallet("sign-short-seed", descriptor);
+        let pset = pset_spending_first_address(&wallet);
+
+        // 16 and 32 bytes are BIP39 entropy lengths, the likeliest mistake for a seed.
+        for len in [15, 16, 32, 63, 65] {
+            let err = wallet
+                .sign_tx_with_seed(network, pset.clone(), vec![0u8; len])
+                .unwrap_err();
+            assert!(err.msg.contains("a BIP39 seed is 64 bytes"), "{}", err.msg);
+            let err = wallet
+                .signed_pset_with_extra_details_with_seed(network, pset.clone(), vec![0u8; len])
+                .unwrap_err();
+            assert!(err.msg.contains("a BIP39 seed is 64 bytes"), "{}", err.msg);
+        }
+    }
+
     #[test]
     fn fee_rate_rejects_values_that_cannot_be_meant() {
         // lwk turns each of these into a silently wrong fee rather than an error.

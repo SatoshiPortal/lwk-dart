@@ -78,3 +78,30 @@ impl Signer for SeedSigner {
         self.signer.sign_message(message, path)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn accepts_only_a_64_byte_seed() {
+        // 16 and 32 bytes are BIP39 entropy lengths, which must not pass for a seed.
+        for len in [0, 15, 16, 32, 63, 65, 128] {
+            assert!(
+                matches!(
+                    SeedSigner::new(&vec![1u8; len], false),
+                    Err(SeedError::InvalidLength(l)) if l == len
+                ),
+                "a {len}-byte seed must be refused"
+            );
+        }
+        assert!(SeedSigner::new(&[1u8; SEED_LENGTH], false).is_ok());
+    }
+
+    #[test]
+    fn derives_keys_for_the_requested_network() {
+        let seed = [7u8; 64];
+        assert!(SeedSigner::new(&seed, true).unwrap().is_mainnet().unwrap());
+        assert!(!SeedSigner::new(&seed, false).unwrap().is_mainnet().unwrap());
+    }
+}

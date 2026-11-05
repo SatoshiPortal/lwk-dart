@@ -44,3 +44,83 @@ impl Descriptor {
         })
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use bip39::{Language, Mnemonic};
+
+    use super::*;
+
+    const ABANDON_MNEMONIC: &str = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
+
+    // Expected descriptors computed outside lwk and outside this crate, by a standalone Python
+    // script using only the standard library: BIP39 seed by PBKDF2-HMAC-SHA512 over the NFKD
+    // mnemonic, BIP32 master key and hardened derivation of m/84'/1776'/0' with its own
+    // secp256k1 arithmetic, SLIP77 master blinding key by SLIP-0021 HMACs from the seed, and
+    // the BIP380 descriptor checksum. The same script reproduces the "abandon ... about"
+    // descriptor that `new_confidential` returns, on mainnet and testnet.
+    const TREZOR_MAINNET_DESCRIPTOR: &str = "ct(slip77(e974a8dfcbd463d5d7f934fa35916ab1edd15ad5b4d1a9dde4bd89eec0bcc872),elwpkh([b4e3f5ed/84h/1776h/0h]xpub6CzUJ282mBSqDR69LkEEFWr11oY6gcy47Mt6Hfoeb2Tgzq8AN6asRYv9LjwC6f9a6pDqswqHdtnJmuniNqDP7ZgBoPqy55az9tGUHk4KPoc/<0;1>/*))#xvqkzrvl";
+    const JAPANESE_MAINNET_DESCRIPTOR: &str = "ct(slip77(45ca5d9811bccd804a5b51aaf262a6b5be46f0fee838fcc5d1451b3c23944f54),elwpkh([d9a4c6ac/84h/1776h/0h]xpub6CxzR79MsXkn6uYBAQXiFxPxHLCTkLSgjfi2GrYkAo2NgUY3KCh3a6tgMnJMNV7ZdUvpLV2Dsp4nB5t3rFhNbGExFBb5euGVcqhKZkPx9PF/<0;1>/*))#2q0d70qc";
+
+    fn seed(language: Language, entropy: &[u8], passphrase: &str) -> Vec<u8> {
+        Mnemonic::from_entropy_in(language, entropy)
+            .unwrap()
+            .to_seed(passphrase)
+            .to_vec()
+    }
+
+    #[test]
+    fn seed_of_an_english_mnemonic_gives_the_mnemonic_descriptor() {
+        let english = seed(Language::English, &[0u8; 16], "");
+        for network in [LiquidNetwork::Mainnet, LiquidNetwork::Testnet] {
+            let from_mnemonic =
+                Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
+            let from_seed =
+                Descriptor::new_confidential_from_seed(network, english.clone()).unwrap();
+            assert_eq!(from_seed.ct_descriptor, from_mnemonic.ct_descriptor);
+        }
+    }
+
+    #[test]
+    fn passphrase_seed_gives_the_expected_descriptor() {
+        let network = LiquidNetwork::Mainnet;
+        // BIP39 reference vector: entropy 00..00, passphrase "TREZOR".
+        let with_passphrase = seed(Language::English, &[0u8; 16], "TREZOR");
+        assert_eq!(
+            hex::encode(&with_passphrase),
+            "c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04"
+        );
+        let from_passphrase =
+            Descriptor::new_confidential_from_seed(network, with_passphrase).unwrap();
+        assert_eq!(from_passphrase.ct_descriptor, TREZOR_MAINNET_DESCRIPTOR);
+        let from_mnemonic =
+            Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
+        assert_ne!(from_passphrase.ct_descriptor, from_mnemonic.ct_descriptor);
+    }
+
+    #[test]
+    fn japanese_seed_gives_the_expected_descriptor() {
+        let network = LiquidNetwork::Mainnet;
+        // First vector of the Japanese BIP39 test vectors (github.com/bip32JP/bip32JP.github.io,
+        // test_JP_BIP39.json): the same zero entropy as "abandon ... about".
+        let mnemonic = Mnemonic::from_entropy_in(Language::Japanese, &[0u8; 16]).unwrap();
+        let japanese = mnemonic.to_seed("㍍ガバヴァぱばぐゞちぢ十人十色");
+        assert_eq!(
+            hex::encode(japanese),
+            "a262d6fb6122ecf45be09c50492b31f92e9beb7d9a845987a02cefda57a15f9c467a17872029a9e92299b5cbdf306e3a0ee620245cbd508959b6cb7ca637bd55"
+        );
+
+        let from_seed = Descriptor::new_confidential_from_seed(network, japanese.to_vec()).unwrap();
+        assert_eq!(from_seed.ct_descriptor, JAPANESE_MAINNET_DESCRIPTOR);
+    }
+
+    #[test]
+    fn rejects_a_seed_of_invalid_length() {
+        for len in [0, 15, 16, 32, 63, 65] {
+            let err =
+                Descriptor::new_confidential_from_seed(LiquidNetwork::Mainnet, vec![0u8; len])
+                    .unwrap_err();
+            assert!(err.msg.contains("a BIP39 seed is 64 bytes"), "{}", err.msg);
+        }
+    }
+}
