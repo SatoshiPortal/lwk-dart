@@ -34,7 +34,8 @@ wallet policy for arbitrary PSETs.
 
 Signing fails when the mnemonic or seed adds no signature to the PSET, so a
 key that owns none of its inputs cannot return an unsigned transaction as if it
-were signed. A key that owns only some inputs still signs those and returns the
+were signed. This includes a PSET whose inputs this key already signed: only
+added signatures count. A key that owns only some inputs still signs those and returns the
 transaction; checking that every input is signed remains the caller's
 responsibility.
 

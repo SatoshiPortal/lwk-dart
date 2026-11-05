@@ -580,10 +580,12 @@ impl Wallet {
             self.get_wallet()?.add_details(&mut pset)?;
         }
         // Finalizing an unsigned input still yields a transaction, which a key owning no input
-        // would return as if it had signed.
+        // would return as if it had signed. lwk counts only the signatures it adds, so a PSET
+        // this key already signed is refused too.
         if signer.sign(&mut pset)? == 0 {
             return Err(LwkError {
-                msg: "the signer added no signature: its key owns no input of this PSET".to_owned(),
+                msg: "the signer added no signature: its key owns no unsigned input of this PSET"
+                    .to_owned(),
             });
         }
         let tx = self.get_wallet()?.finalize(&mut pset)?;
