@@ -14,6 +14,7 @@ import 'dart:convert';
 import 'dart:ffi' as ffi;
 import 'frb_generated.dart';
 import '../checked_u64.dart';
+import '../checked_u8_list.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_io.dart';
 
 abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
@@ -608,7 +609,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       List<int> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_prim_u_8_loose(raw.length);
-    ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
+    ans.ref.ptr.asTypedList(raw.length).setAll(0, checkedU8List(raw));
     return ans;
   }
 
