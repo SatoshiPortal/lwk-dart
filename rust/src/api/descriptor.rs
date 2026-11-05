@@ -123,4 +123,20 @@ mod tests {
             assert!(err.msg.contains("a BIP39 seed is 64 bytes"), "{}", err.msg);
         }
     }
+
+    #[test]
+    fn regtest_uses_the_testnet_descriptor() {
+        // Elements regtest, like lwk, uses testnet keys: tpub and coin type 1.
+        let regtest =
+            Descriptor::new_confidential(LiquidNetwork::Regtest, ABANDON_MNEMONIC.to_owned())
+                .unwrap();
+        let testnet =
+            Descriptor::new_confidential(LiquidNetwork::Testnet, ABANDON_MNEMONIC.to_owned())
+                .unwrap();
+        assert_eq!(regtest.ct_descriptor, testnet.ct_descriptor);
+        assert_eq!(
+            regtest.ct_descriptor,
+            "ct(slip77(9c8e4f05c7711a98c838be228bcb84924d4570ca53f35fa1c793e58841d47023),elwpkh([73c5da0a/84h/1h/0h]tpubDC8msFGeGuwnKG9Upg7DM2b4DaRqg3CUZa5g8v2SRQ6K4NSkxUgd7HsL2XVWbVm39yBA4LAxysQAm397zwQSQoQgewGiYZqrA9DsP4zbQ1M/<0;1>/*))#xte2lx9x"
+        );
+    }
 }

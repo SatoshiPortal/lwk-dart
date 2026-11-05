@@ -892,6 +892,96 @@ mod tests {
         }
     }
 
+    /// A regtest wallet built offline in its own temporary directory, removed afterwards.
+    fn with_regtest_wallet(name: &str, policy_asset: Option<String>, test: impl FnOnce(&Wallet)) {
+        let dbpath = std::env::temp_dir().join(format!("lwk-dart-{name}-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dbpath);
+        let descriptor =
+            Descriptor::new_confidential(LiquidNetwork::Regtest, ABANDON_MNEMONIC.to_owned())
+                .unwrap();
+        let wallet = Wallet::init(
+            LiquidNetwork::Regtest,
+            dbpath.display().to_string(),
+            descriptor,
+            policy_asset,
+        )
+        .unwrap();
+        test(&wallet);
+        drop(wallet);
+        let _ = std::fs::remove_dir_all(&dbpath);
+    }
+
+    #[test]
+    fn regtest_wallet_is_built_offline() {
+        with_regtest_wallet("regtest-default", None, |wallet| {
+            assert_eq!(
+                wallet.policy_asset().unwrap(),
+                super::super::types::L_REGTEST_ASSET_ID
+            );
+            let address = wallet.address(0).unwrap();
+            assert!(address.confidential.starts_with("el1"), "{}", address.confidential);
+            assert!(address.standard.starts_with("ert1"), "{}", address.standard);
+            assert_eq!(
+                Address::validate(address.confidential.clone()).unwrap(),
+                LiquidNetwork::Regtest
+            );
+            // An unsynced wallet reports its policy asset, at zero.
+            let balances = wallet.balances().unwrap();
+            assert_eq!(balances.len(), 1);
+            assert_eq!(balances[0].asset_id, super::super::types::L_REGTEST_ASSET_ID);
+            assert_eq!(balances[0].value, 0);
+
+            // A regtest wallet only pays regtest addresses.
+            let testnet = "tlq1qq2xvpcvfup5j8zscjq05u2wxxjcyewk7979f3mmz5l7uw5pqmx6xf5xy50hsn6vhkm5euwt72x878eq6zxx2z58hd7zrsg9qn";
+            let network = wallet.get_wallet().unwrap().network();
+            assert!(validate_out_address(&address.confidential, network).is_ok());
+            assert!(validate_out_address(testnet, network).is_err());
+        });
+    }
+
+    #[test]
+    fn regtest_wallet_takes_the_node_policy_asset() {
+        let custom = "b2e15d0d7a0c94e4e2ce0fe6e8691b9e451377f6e46e8045a86f7c4b5d4f0f23";
+        with_regtest_wallet("regtest-custom", Some(custom.to_string()), |wallet| {
+            assert_eq!(wallet.policy_asset().unwrap(), custom);
+        });
+    }
+
+    #[test]
+    fn testnet_and_mainnet_wallets_reject_a_policy_asset() {
+        let dbpath = std::env::temp_dir().join(format!("lwk-dart-fixed-asset-{}", std::process::id()));
+        for network in [LiquidNetwork::Mainnet, LiquidNetwork::Testnet] {
+            let descriptor =
+                Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
+            let result = Wallet::init(
+                network,
+                dbpath.display().to_string(),
+                descriptor,
+                Some(super::super::types::L_REGTEST_ASSET_ID.to_string()),
+            );
+            assert!(result.is_err());
+        }
+        assert!(!dbpath.exists(), "rejected before touching the store");
+    }
+
+    #[test]
+    fn payjoin_is_refused_on_regtest() {
+        with_regtest_wallet("regtest-payjoin", None, |wallet| {
+            let address = wallet.address(0).unwrap().confidential;
+            let err = wallet
+                .build_payjoin_tx(
+                    1_000,
+                    address,
+                    super::super::types::L_REGTEST_ASSET_ID.to_string(),
+                    LiquidNetwork::Regtest,
+                    None,
+                    false,
+                )
+                .unwrap_err();
+            assert!(err.msg.contains("regtest"), "{}", err.msg);
+        });
+    }
+
     #[test]
     fn fee_rate_rejects_values_that_cannot_be_meant() {
         // lwk turns each of these into a silently wrong fee rather than an error.
