@@ -26,7 +26,7 @@ class Descriptor {
           network: network, mnemonic: mnemonic);
 
   /// Create a new wpkh confidential descriptor based on Slip77 blinding key derivation,
-  /// from a BIP39 seed (16 to 64 bytes) instead of English mnemonic words.
+  /// from a 64-byte BIP39 seed instead of English mnemonic words.
   ///
   /// The seed encodes the mnemonic language and passphrase, which `new_confidential` cannot
   /// carry. An English mnemonic without passphrase gives the same descriptor through both.

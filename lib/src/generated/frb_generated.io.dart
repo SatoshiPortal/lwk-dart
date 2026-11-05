@@ -3502,3 +3502,5 @@ const double MAX_FEE_RATE_SATS_PER_KVB = 100000.0;
 const int HIGH_UTXO_THRESHOLD = 125;
 
 const int MAXIMUM_INPUTS = 250;
+
+const int SEED_LENGTH = 64;

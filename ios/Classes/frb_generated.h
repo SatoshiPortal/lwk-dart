@@ -33,6 +33,14 @@ typedef struct _Dart_Handle* Dart_Handle;
  */
 #define MAXIMUM_INPUTS 250
 
+/**
+ * Length of a BIP39 seed, in bytes.
+ *
+ * BIP32 alone would accept 16 to 64 bytes, but 16 and 32 are also BIP39 entropy lengths:
+ * passing the entropy instead of the seed would silently derive a different wallet.
+ */
+#define SEED_LENGTH 64
+
 typedef struct wire_cst_list_prim_u_8_loose {
   uint8_t *ptr;
   int32_t len;

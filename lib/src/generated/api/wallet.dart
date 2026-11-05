@@ -157,7 +157,7 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletSignTx(
           that: this, network: network, pset: pset, mnemonic: mnemonic);
 
-  /// Sign a wallet transaction with a BIP39 seed (16 to 64 bytes) instead of mnemonic words
+  /// Sign a wallet transaction with a 64-byte BIP39 seed instead of mnemonic words
   Future<String> signTxWithSeed(
           {required LiquidNetwork network,
           required String pset,
@@ -173,7 +173,7 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletSignedPsetWithExtraDetails(
           that: this, network: network, pset: pset, mnemonic: mnemonic);
 
-  /// Sign a pset with extra details with a BIP39 seed (16 to 64 bytes) instead of mnemonic words
+  /// Sign a pset with extra details with a 64-byte BIP39 seed instead of mnemonic words
   Future<String> signedPsetWithExtraDetailsWithSeed(
           {required LiquidNetwork network,
           required String pset,
