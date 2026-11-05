@@ -26,8 +26,8 @@ class Blockchain {
 
   /// Check that a TLS connection to the Electrum server can be opened.
   ///
-  /// ⚠️ The certificate is now validated against the server's domain name,
-  /// which this check used to skip; a TLS server addressed by IP fails.
+  /// ⚠️ Like `Wallet.sync`, it always validates the certificate against the
+  /// server's domain name, so a self-signed or IP-addressed server fails.
   Future<void> test({required String electrumUrl}) => LwkCore.instance.api
       .crateApiBlockchainBlockchainTest(that: this, electrumUrl: electrumUrl);
 
