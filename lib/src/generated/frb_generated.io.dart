@@ -2578,12 +2578,14 @@ class LwkCoreWire implements BaseWire {
     int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> dbpath,
     ffi.Pointer<wire_cst_descriptor> descriptor,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> policy_asset,
   ) {
     return _wire__crate__api__wallet__wallet_init(
       port_,
       network,
       dbpath,
       descriptor,
+      policy_asset,
     );
   }
 
@@ -2594,6 +2596,7 @@ class LwkCoreWire implements BaseWire {
             ffi.Int32,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Pointer<wire_cst_descriptor>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>>('frbgen_lwk_wire__crate__api__wallet__wallet_init');
   late final _wire__crate__api__wallet__wallet_init =
       _wire__crate__api__wallet__wallet_initPtr.asFunction<
@@ -2602,7 +2605,23 @@ class LwkCoreWire implements BaseWire {
             int,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Pointer<wire_cst_descriptor>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>();
+
+  void wire__crate__api__wallet__wallet_policy_asset(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+  ) {
+    return _wire__crate__api__wallet__wallet_policy_asset(port_, that);
+  }
+
+  late final _wire__crate__api__wallet__wallet_policy_assetPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_policy_asset');
+  late final _wire__crate__api__wallet__wallet_policy_asset =
+      _wire__crate__api__wallet__wallet_policy_assetPtr
+          .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
 
   void wire__crate__api__wallet__wallet_sign_tx(
     int port_,

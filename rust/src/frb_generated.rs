@@ -40,7 +40,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1960007279;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1906269300;
 
 // Section: executor
 
@@ -2023,6 +2023,7 @@ fn wire__crate__api__wallet__wallet_init_impl(
     network: impl CstDecode<crate::api::types::LiquidNetwork>,
     dbpath: impl CstDecode<String>,
     descriptor: impl CstDecode<crate::api::descriptor::Descriptor>,
+    policy_asset: impl CstDecode<Option<String>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
@@ -2034,10 +2035,36 @@ fn wire__crate__api__wallet__wallet_init_impl(
             let api_network = network.cst_decode();
             let api_dbpath = dbpath.cst_decode();
             let api_descriptor = descriptor.cst_decode();
+            let api_policy_asset = policy_asset.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
-                    let output_ok =
-                        crate::api::wallet::Wallet::init(api_network, api_dbpath, api_descriptor)?;
+                    let output_ok = crate::api::wallet::Wallet::init(
+                        api_network,
+                        api_dbpath,
+                        api_descriptor,
+                        api_policy_asset,
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__crate__api__wallet__wallet_policy_asset_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<crate::api::wallet::Wallet>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "wallet_policy_asset",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            move |context| {
+                transform_result_dco::<_, _, crate::api::error::LwkError>((move || {
+                    let output_ok = crate::api::wallet::Wallet::policy_asset(&api_that)?;
                     Ok(output_ok)
                 })())
             }
@@ -2283,6 +2310,7 @@ impl CstDecode<crate::api::types::LiquidNetwork> for i32 {
         match self {
             0 => crate::api::types::LiquidNetwork::Mainnet,
             1 => crate::api::types::LiquidNetwork::Testnet,
+            2 => crate::api::types::LiquidNetwork::Regtest,
             _ => unreachable!("Invalid variant for LiquidNetwork: {}", self),
         }
     }
@@ -2451,6 +2479,7 @@ impl SseDecode for crate::api::types::LiquidNetwork {
         return match inner {
             0 => crate::api::types::LiquidNetwork::Mainnet,
             1 => crate::api::types::LiquidNetwork::Testnet,
+            2 => crate::api::types::LiquidNetwork::Regtest,
             _ => unreachable!("Invalid variant for LiquidNetwork: {}", inner),
         };
     }
@@ -3109,6 +3138,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::types::LiquidNetwork {
         match self {
             Self::Mainnet => 0.into_dart(),
             Self::Testnet => 1.into_dart(),
+            Self::Regtest => 2.into_dart(),
             _ => unreachable!(),
         }
     }
@@ -3561,6 +3591,7 @@ impl SseEncode for crate::api::types::LiquidNetwork {
             match self {
                 crate::api::types::LiquidNetwork::Mainnet => 0,
                 crate::api::types::LiquidNetwork::Testnet => 1,
+                crate::api::types::LiquidNetwork::Regtest => 2,
                 _ => {
                     unimplemented!("");
                 }
@@ -5295,8 +5326,17 @@ mod io {
         network: i32,
         dbpath: *mut wire_cst_list_prim_u_8_strict,
         descriptor: *mut wire_cst_descriptor,
+        policy_asset: *mut wire_cst_list_prim_u_8_strict,
     ) {
-        wire__crate__api__wallet__wallet_init_impl(port_, network, dbpath, descriptor)
+        wire__crate__api__wallet__wallet_init_impl(port_, network, dbpath, descriptor, policy_asset)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_lwk_wire__crate__api__wallet__wallet_policy_asset(
+        port_: i64,
+        that: *mut wire_cst_wallet,
+    ) {
+        wire__crate__api__wallet__wallet_policy_asset_impl(port_, that)
     }
 
     #[unsafe(no_mangle)]
@@ -7213,8 +7253,17 @@ mod web {
         network: i32,
         dbpath: String,
         descriptor: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+        policy_asset: Option<String>,
     ) {
-        wire__crate__api__wallet__wallet_init_impl(port_, network, dbpath, descriptor)
+        wire__crate__api__wallet__wallet_init_impl(port_, network, dbpath, descriptor, policy_asset)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire__crate__api__wallet__wallet_policy_asset(
+        port_: flutter_rust_bridge::for_generated::MessagePort,
+        that: flutter_rust_bridge::for_generated::wasm_bindgen::JsValue,
+    ) {
+        wire__crate__api__wallet__wallet_policy_asset_impl(port_, that)
     }
 
     #[wasm_bindgen]

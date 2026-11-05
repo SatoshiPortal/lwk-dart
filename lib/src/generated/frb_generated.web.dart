@@ -1552,10 +1552,14 @@ class LwkCoreWire implements BaseWire {
           NativePortType port_, JSAny that) =>
       wasmModule.wire__crate__api__wallet__wallet_descriptor(port_, that);
 
-  void wire__crate__api__wallet__wallet_init(
-          NativePortType port_, int network, String dbpath, JSAny descriptor) =>
+  void wire__crate__api__wallet__wallet_init(NativePortType port_, int network,
+          String dbpath, JSAny descriptor, String? policy_asset) =>
       wasmModule.wire__crate__api__wallet__wallet_init(
-          port_, network, dbpath, descriptor);
+          port_, network, dbpath, descriptor, policy_asset);
+
+  void wire__crate__api__wallet__wallet_policy_asset(
+          NativePortType port_, JSAny that) =>
+      wasmModule.wire__crate__api__wallet__wallet_policy_asset(port_, that);
 
   void wire__crate__api__wallet__wallet_sign_tx(NativePortType port_,
           JSAny that, int network, String pset, String mnemonic) =>
@@ -1886,8 +1890,11 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
   external void wire__crate__api__wallet__wallet_descriptor(
       NativePortType port_, JSAny that);
 
-  external void wire__crate__api__wallet__wallet_init(
-      NativePortType port_, int network, String dbpath, JSAny descriptor);
+  external void wire__crate__api__wallet__wallet_init(NativePortType port_,
+      int network, String dbpath, JSAny descriptor, String? policy_asset);
+
+  external void wire__crate__api__wallet__wallet_policy_asset(
+      NativePortType port_, JSAny that);
 
   external void wire__crate__api__wallet__wallet_sign_tx(NativePortType port_,
       JSAny that, int network, String pset, String mnemonic);
