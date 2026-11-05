@@ -53,6 +53,15 @@ mod tests {
 
     const ABANDON_MNEMONIC: &str = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
 
+    // Expected descriptors computed outside lwk and outside this crate, by a standalone Python
+    // script using only the standard library: BIP39 seed by PBKDF2-HMAC-SHA512 over the NFKD
+    // mnemonic, BIP32 master key and hardened derivation of m/84'/1776'/0' with its own
+    // secp256k1 arithmetic, SLIP77 master blinding key by SLIP-0021 HMACs from the seed, and
+    // the BIP380 descriptor checksum. The same script reproduces the "abandon ... about"
+    // descriptor that `new_confidential` returns, on mainnet and testnet.
+    const TREZOR_MAINNET_DESCRIPTOR: &str = "ct(slip77(e974a8dfcbd463d5d7f934fa35916ab1edd15ad5b4d1a9dde4bd89eec0bcc872),elwpkh([b4e3f5ed/84h/1776h/0h]xpub6CzUJ282mBSqDR69LkEEFWr11oY6gcy47Mt6Hfoeb2Tgzq8AN6asRYv9LjwC6f9a6pDqswqHdtnJmuniNqDP7ZgBoPqy55az9tGUHk4KPoc/<0;1>/*))#xvqkzrvl";
+    const JAPANESE_MAINNET_DESCRIPTOR: &str = "ct(slip77(45ca5d9811bccd804a5b51aaf262a6b5be46f0fee838fcc5d1451b3c23944f54),elwpkh([d9a4c6ac/84h/1776h/0h]xpub6CxzR79MsXkn6uYBAQXiFxPxHLCTkLSgjfi2GrYkAo2NgUY3KCh3a6tgMnJMNV7ZdUvpLV2Dsp4nB5t3rFhNbGExFBb5euGVcqhKZkPx9PF/<0;1>/*))#2q0d70qc";
+
     fn seed(language: Language, entropy: &[u8], passphrase: &str) -> Vec<u8> {
         Mnemonic::from_entropy_in(language, entropy)
             .unwrap()
@@ -73,7 +82,7 @@ mod tests {
     }
 
     #[test]
-    fn passphrase_changes_the_descriptor() {
+    fn passphrase_seed_gives_the_expected_descriptor() {
         let network = LiquidNetwork::Mainnet;
         // BIP39 reference vector: entropy 00..00, passphrase "TREZOR".
         let with_passphrase = seed(Language::English, &[0u8; 16], "TREZOR");
@@ -83,13 +92,14 @@ mod tests {
         );
         let from_passphrase =
             Descriptor::new_confidential_from_seed(network, with_passphrase).unwrap();
+        assert_eq!(from_passphrase.ct_descriptor, TREZOR_MAINNET_DESCRIPTOR);
         let from_mnemonic =
             Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
         assert_ne!(from_passphrase.ct_descriptor, from_mnemonic.ct_descriptor);
     }
 
     #[test]
-    fn japanese_mnemonic_is_supported_through_its_seed() {
+    fn japanese_seed_gives_the_expected_descriptor() {
         let network = LiquidNetwork::Mainnet;
         // First vector of the Japanese BIP39 test vectors (github.com/bip32JP/bip32JP.github.io,
         // test_JP_BIP39.json): the same zero entropy as "abandon ... about".
@@ -101,10 +111,7 @@ mod tests {
         );
 
         let from_seed = Descriptor::new_confidential_from_seed(network, japanese.to_vec()).unwrap();
-        let again = Descriptor::new_confidential_from_seed(network, japanese.to_vec()).unwrap();
-        let english = Descriptor::new_confidential(network, ABANDON_MNEMONIC.to_owned()).unwrap();
-        assert_eq!(from_seed.ct_descriptor, again.ct_descriptor);
-        assert_ne!(from_seed.ct_descriptor, english.ct_descriptor);
+        assert_eq!(from_seed.ct_descriptor, JAPANESE_MAINNET_DESCRIPTOR);
     }
 
     #[test]
