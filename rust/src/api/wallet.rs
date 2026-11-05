@@ -500,6 +500,13 @@ mod tests {
     }
 
     #[test]
+    fn fee_rate_reaches_lwk_in_sats_per_kvb_unchanged() {
+        for rate in [0.1, 100.0, 1000.0, MAX_FEE_RATE_SATS_PER_KVB] {
+            assert_eq!(validate_fee_rate(rate).unwrap().to_sat_kvb(), rate);
+        }
+    }
+
+    #[test]
     fn out_address_must_match_the_wallet_network() {
         // Liquid testnet confidential address, from lwk_wollet's own test.
         let testnet = "tlq1qq2xvpcvfup5j8zscjq05u2wxxjcyewk7979f3mmz5l7uw5pqmx6xf5xy50hsn6vhkm5euwt72x878eq6zxx2z58hd7zrsg9qn";
