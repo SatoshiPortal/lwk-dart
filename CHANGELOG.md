@@ -6,7 +6,7 @@
 - feat (BREAKING): Electrum broadcast/test APIs and `batchBroadcast` require `network`; plaintext is allowed only for `tcp://` on regtest, while TLS always validates the server domain
 
 - build (BREAKING): depend on LWK master from the SatoshiPortal fork
-  (`SatoshiPortal/lwk` at `70b3aa0`, Blockstream/lwk master `3220184` plus
+  (`SatoshiPortal/lwk` at `652007d`, Blockstream/lwk master `3858cc3` plus
   `SwSigner::from_seed_with_network`, proposed upstream as Blockstream/lwk#196)
   instead of `lwk_*` 0.18.1 from crates.io; elements moves to 0.27 and
   electrum-client to 0.25.1. Switch back to crates.io once Blockstream releases
