@@ -4,13 +4,18 @@ import 'package:lwk/lwk.dart';
 ///
 /// Takes [network] rather than a raw asset-id string so callers can't typo or
 /// mismatch mainnet/testnet asset IDs — the correct one is looked up
-/// internally via [getLbtcAssetId]/[getLtestAssetId].
+/// internally via [getLbtcAssetId]/[getLtestAssetId], or from the wallet on
+/// regtest.
 Future<int> confirmedLbtcUtxoCount(
   Wallet wallet, {
   required LiquidNetwork network,
 }) async {
-  final lbtcAssetId =
-      network == LiquidNetwork.mainnet ? getLbtcAssetId() : getLtestAssetId();
+  final lbtcAssetId = switch (network) {
+    LiquidNetwork.mainnet => getLbtcAssetId(),
+    LiquidNetwork.testnet => getLtestAssetId(),
+    // A regtest policy asset depends on the node, so ask the wallet.
+    LiquidNetwork.regtest => await wallet.policyAsset(),
+  };
   final utxos = await wallet.utxos();
   return utxos
       .where((u) => u.unblinded.asset == lbtcAssetId && u.height != null)
@@ -45,14 +50,18 @@ class LiquidBatchBroadcastResult {
   final String? error;
 }
 
+/// Broadcasts each PSET over TLS, or over plaintext for a `tcp://` URL on
+/// regtest.
 Future<List<LiquidBatchBroadcastResult>> batchBroadcast({
   required List<String> signedPsets,
+  required LiquidNetwork network,
   required String electrumUrl,
 }) async {
   final results = <LiquidBatchBroadcastResult>[];
   for (final s in signedPsets) {
     try {
       final txid = await Blockchain.broadcastSignedPset(
+        network: network,
         electrumUrl: electrumUrl,
         signedPset: s,
       );

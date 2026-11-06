@@ -8,6 +8,10 @@ pub const L_BTC_ASSET_ID: &str =
 pub const L_TEST_ASSET_ID: &str =
     "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
 
+/// Default policy asset of an Elements regtest node (`chain=liquidregtest`), as in lwk
+pub const L_REGTEST_ASSET_ID: &str =
+    "5ac9f65c0efcc4775e0baec4ec03abdde22473cd3cf33c0419ca290e0751b225";
+
 /// Get balance value for a specific asset ID from a list of balances
 #[frb(sync)]
 pub fn get_balance_by_asset_id(balances: Vec<WalletBalance>, asset_id: String) -> u64 {
@@ -64,6 +68,55 @@ use super::error::LwkError;
 pub enum LiquidNetwork {
     Mainnet,
     Testnet,
+    /// Local Elements regtest, with testnet keys and `el`/`ert` addresses.
+    ///
+    /// Its policy asset is the node's own: the default is lwk's, a wallet can take another.
+    Regtest,
+}
+
+impl LiquidNetwork {
+    pub(crate) fn address_params(self) -> &'static AddressParams {
+        match self {
+            LiquidNetwork::Mainnet => &AddressParams::LIQUID,
+            LiquidNetwork::Testnet => &AddressParams::LIQUID_TESTNET,
+            LiquidNetwork::Regtest => &AddressParams::ELEMENTS,
+        }
+    }
+
+    /// The lwk network, with `policy_asset` replacing the default regtest policy asset.
+    ///
+    /// Mainnet and testnet have a fixed policy asset, so `policy_asset` is rejected there.
+    pub(crate) fn elements_network(
+        self,
+        policy_asset: Option<String>,
+    ) -> anyhow::Result<ElementsNetwork, LwkError> {
+        match (self, policy_asset) {
+            (network, None) => Ok(network.into()),
+            (LiquidNetwork::Regtest, Some(policy_asset)) => {
+                let policy_asset = AssetId::from_str(&policy_asset)?;
+                Ok(ElementsNetwork::CustomElements(
+                    lwk_common::ElementsParamsBuilder::new()
+                        .with_policy_asset(policy_asset)
+                        .build()
+                        .map_err(|e| LwkError { msg: e.to_string() })?,
+                ))
+            }
+            (network, Some(_)) => Err(LwkError {
+                msg: format!("{network:?} has a fixed policy asset"),
+            }),
+        }
+    }
+}
+
+/// Every custom Elements network is regtest: [`LiquidNetwork::elements_network`] builds no other.
+impl From<ElementsNetwork> for LiquidNetwork {
+    fn from(network: ElementsNetwork) -> Self {
+        match network {
+            ElementsNetwork::Liquid => LiquidNetwork::Mainnet,
+            ElementsNetwork::TestnetLiquid => LiquidNetwork::Testnet,
+            ElementsNetwork::CustomElements(_) => LiquidNetwork::Regtest,
+        }
+    }
 }
 
 impl Into<ElementsNetwork> for LiquidNetwork {
@@ -71,6 +124,7 @@ impl Into<ElementsNetwork> for LiquidNetwork {
         match self {
             LiquidNetwork::Mainnet => ElementsNetwork::Liquid,
             LiquidNetwork::Testnet => ElementsNetwork::TestnetLiquid,
+            LiquidNetwork::Regtest => ElementsNetwork::default_regtest(),
         }
     }
 }
@@ -240,6 +294,8 @@ impl Address {
             Ok(LiquidNetwork::Mainnet)
         } else if address.params == &AddressParams::LIQUID_TESTNET {
             Ok(LiquidNetwork::Testnet)
+        } else if address.params == &AddressParams::ELEMENTS {
+            Ok(LiquidNetwork::Regtest)
         } else {
             Err(LwkError {
                 msg: "Unsupported address network".to_string(),
@@ -267,14 +323,8 @@ impl Address {
             Err(e) => return Err(LwkError { msg: e.to_string() }),
         };
 
-        let address = LwkAddress::from_script(
-            &script_pubkey,
-            blinding_pubkey,
-            match network {
-                LiquidNetwork::Mainnet => &AddressParams::LIQUID,
-                LiquidNetwork::Testnet => &AddressParams::LIQUID_TESTNET,
-            },
-        );
+        let address =
+            LwkAddress::from_script(&script_pubkey, blinding_pubkey, network.address_params());
         if let Some(address) = address {
             Ok(Address {
                 standard: address.to_unconfidential().to_string(),
@@ -308,7 +358,7 @@ mod tests {
             Address::validate(testnet.to_string()).unwrap(),
             LiquidNetwork::Testnet
         );
-        assert!(Address::validate(elements_regtest.to_string()).is_err());
+        assert_eq!(Address::validate(elements_regtest.to_string()).unwrap(), LiquidNetwork::Regtest);
     }
 
     #[test]
