@@ -1,9 +1,23 @@
 ## Unreleased
 
-- feat: derive descriptors and sign from a 64-byte BIP39 seed with `Descriptor.newConfidentialFromSeed`, `Wallet.signTxWithSeed` and `Wallet.signedPsetWithExtraDetailsWithSeed`, using LWK's native seed signer; this supports non-English wordlists and passphrases while preserving English mnemonic derivation and signatures
-- fix: reject byte-list elements outside 0..255 before native allocation; reject signing when no signature is added, including already-signed PSETs
-- feat (BREAKING): add `LiquidNetwork.regtest`, Elements address parameters and an optional regtest `Wallet.init(policyAsset: ...)` override; exhaustive network switches must handle regtest
-- feat (BREAKING): Electrum broadcast/test APIs and `batchBroadcast` require `network`; plaintext is allowed only for `tcp://` on regtest, while TLS always validates the server domain
+- feat: derive descriptors and sign from a 64-byte BIP39 seed with
+  `Descriptor.newConfidentialFromSeed`, `Wallet.signTxWithSeed` and
+  `Wallet.signedPsetWithExtraDetailsWithSeed`, using LWK's native seed signer;
+  this supports non-English wordlists and passphrases while preserving English
+  mnemonic derivation and signatures
+- fix: reject byte-list elements outside 0..255 before native allocation
+- change (BREAKING): signing now fails when no signature is added, including
+  re-signing a PSET already signed by the same key
+- feat (BREAKING): add `LiquidNetwork.regtest`, Elements address parameters and
+  an optional regtest `Wallet.init(policyAsset: ...)` override; exhaustive
+  network switches must handle regtest
+- change (BREAKING): `Address.validate` now returns `LiquidNetwork.regtest` for
+  Elements regtest addresses, reversing 0.7.0's rejection of addresses outside
+  Liquid mainnet and testnet
+- feat (BREAKING): `Blockchain.test`, `Blockchain.broadcastTxBytes`,
+  `Blockchain.broadcastSignedPset` and `batchBroadcast` require `network`;
+  plaintext is allowed only for `tcp://` on regtest, while TLS always validates
+  the server domain
 
 - build (BREAKING): depend on LWK master from the SatoshiPortal fork
   (`SatoshiPortal/lwk` at `652007d`, Blockstream/lwk master `3858cc3` plus
@@ -11,6 +25,13 @@
   instead of `lwk_*` 0.18.1 from crates.io; elements moves to 0.27 and
   electrum-client to 0.25.1. Switch back to crates.io once Blockstream releases
   #196
+- build (BREAKING): dependent Rust workspaces, including BULL's `bull_sdk`,
+  must copy this crate's `[patch.crates-io]` block into their workspace root
+  `Cargo.toml`: `lwk_common`, `lwk_jade`, `lwk_prices` and `lwk_registry` must
+  all use the same SatoshiPortal/lwk revision `652007d`. Cargo ignores patches
+  in dependencies; without these overrides, two copies of `lwk_common` make
+  the `Signer` traits incompatible. `bull_sdk` must add this block when
+  adopting the upgrade
 - refactor (BREAKING): remove the SideSwap payjoin: `Wallet.buildPayjoinTx` and
   `PayjoinTx` are gone, along with the `sideswap_*` dependencies, which pin
   elements 0.25
