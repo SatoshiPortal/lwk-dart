@@ -60,3 +60,6 @@ rustflags = [
     "-C", "link-arg=-undefined",
     "-C", "link-arg=dynamic_lookup",
 ]
+
+[dev-dependencies]
+bip39 = { version = "2", features = ["japanese"] }

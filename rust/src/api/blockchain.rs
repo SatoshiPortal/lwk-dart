@@ -88,6 +88,27 @@ mod tests {
     use super::*;
 
     #[test]
+    fn plaintext_only_for_a_tcp_url_on_regtest() {
+        for network in [
+            LiquidNetwork::Mainnet,
+            LiquidNetwork::Testnet,
+            LiquidNetwork::Regtest,
+        ] {
+            for scheme in ["", "ssl://", "tcp://"] {
+                let expected = if network == LiquidNetwork::Regtest && scheme == "tcp://" {
+                    "tcp://example.com:50002"
+                } else {
+                    "ssl://example.com:50002"
+                };
+                assert_eq!(
+                    electrum_url(network, &format!("{scheme}example.com:50002")),
+                    expected
+                );
+            }
+        }
+    }
+
+    #[test]
     fn tls_to_an_ip_address_is_rejected() {
         // Rejected while parsing the URL, before any connection attempt.
         let err = electrum_client(LiquidNetwork::Mainnet, "127.0.0.1:50002", None).unwrap_err();
