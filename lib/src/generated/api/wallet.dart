@@ -9,7 +9,7 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
-// These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `sign_tx_common`, `validate_fee_rate`, `validate_out_address`
+// These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `sign_and_finalize`, `sign_tx_common`, `sign_tx_with_seed_common`, `validate_fee_rate`, `validate_out_address`
 
 // Rust type: RustOpaqueNom<Mutex < lwk_wollet :: Wollet >>
 abstract class MutexWollet implements RustOpaqueInterface {}
@@ -115,12 +115,25 @@ class Wallet {
       );
 
   /// Initializes a wallet from a specific db path and descriptor
+  ///
+  /// The policy asset id is only for the regtest network, whose node may use another policy
+  /// asset than lwk's default; mainnet and testnet reject it.
   static Future<Wallet> init(
           {required LiquidNetwork network,
           required String dbpath,
-          required Descriptor descriptor}) =>
+          required Descriptor descriptor,
+          String? policyAsset}) =>
       LwkCore.instance.api.crateApiWalletWalletInit(
-          network: network, dbpath: dbpath, descriptor: descriptor);
+          network: network,
+          dbpath: dbpath,
+          descriptor: descriptor,
+          policyAsset: policyAsset);
+
+  /// Get the policy asset (L-BTC) id of the wallet's network
+  Future<String> policyAsset() =>
+      LwkCore.instance.api.crateApiWalletWalletPolicyAsset(
+        that: this,
+      );
 
   /// Sign a wallet transaction, returns (pset, signed_bytes)
   Future<String> signTx(
@@ -130,6 +143,14 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletSignTx(
           that: this, network: network, pset: pset, mnemonic: mnemonic);
 
+  /// Sign a wallet transaction with a 64-byte BIP39 seed instead of mnemonic words
+  Future<String> signTxWithSeed(
+          {required LiquidNetwork network,
+          required String pset,
+          required List<int> seed}) =>
+      LwkCore.instance.api.crateApiWalletWalletSignTxWithSeed(
+          that: this, network: network, pset: pset, seed: seed);
+
   /// Sign a pset with extra details (used for asset transactions)
   Future<String> signedPsetWithExtraDetails(
           {required LiquidNetwork network,
@@ -138,6 +159,15 @@ class Wallet {
       LwkCore.instance.api.crateApiWalletWalletSignedPsetWithExtraDetails(
           that: this, network: network, pset: pset, mnemonic: mnemonic);
 
+  /// Sign a pset with extra details with a 64-byte BIP39 seed instead of mnemonic words
+  Future<String> signedPsetWithExtraDetailsWithSeed(
+          {required LiquidNetwork network,
+          required String pset,
+          required List<int> seed}) =>
+      LwkCore.instance.api
+          .crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
+              that: this, network: network, pset: pset, seed: seed);
+
   /// Syncs the wallet db with its latest state fetched from the electrum server
   /// Using None for stop_at_index will sync normally with a stop gap of 20
   ///
@@ -145,6 +175,7 @@ class Wallet {
   /// validation is always on for Liquid. The TLS certificate must be valid
   /// for the server's domain name, so a self-signed or IP-addressed server
   /// is rejected.
+  /// The connection uses TLS, except for a `tcp://` URL on a regtest wallet.
   Future<void> sync_(
           {required String electrumUrl,
           required bool validateDomain,
