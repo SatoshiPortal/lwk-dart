@@ -1,5 +1,10 @@
 ## Unreleased
 
+- feat: derive descriptors and sign from a 64-byte BIP39 seed with `Descriptor.newConfidentialFromSeed`, `Wallet.signTxWithSeed` and `Wallet.signedPsetWithExtraDetailsWithSeed`, using LWK's native seed signer; this supports non-English wordlists and passphrases while preserving English mnemonic derivation and signatures
+- fix: reject byte-list elements outside 0..255 before native allocation; reject signing when no signature is added, including already-signed PSETs
+- feat (BREAKING): add `LiquidNetwork.regtest`, Elements address parameters and an optional regtest `Wallet.init(policyAsset: ...)` override; exhaustive network switches must handle regtest
+- feat (BREAKING): Electrum broadcast/test APIs and `batchBroadcast` require `network`; plaintext is allowed only for `tcp://` on regtest, while TLS always validates the server domain
+
 - build (BREAKING): depend on LWK master from the SatoshiPortal fork
   (`SatoshiPortal/lwk` at `70b3aa0`, Blockstream/lwk master `3220184` plus
   `SwSigner::from_seed_with_network`, proposed upstream as Blockstream/lwk#196)
