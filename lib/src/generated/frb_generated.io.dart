@@ -14,6 +14,7 @@ import 'dart:convert';
 import 'dart:ffi' as ffi;
 import 'frb_generated.dart';
 import '../checked_u64.dart';
+import '../checked_u8_list.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_io.dart';
 
 abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
@@ -160,9 +161,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<TxOut> dco_decode_list_tx_out(dynamic raw);
 
   @protected
-  List<TxOutSecrets> dco_decode_list_tx_out_secrets(dynamic raw);
-
-  @protected
   List<TxOutput> dco_decode_list_tx_output(dynamic raw);
 
   @protected
@@ -200,9 +198,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   OutPoint dco_decode_out_point(dynamic raw);
-
-  @protected
-  PayjoinTx dco_decode_payjoin_tx(dynamic raw);
 
   @protected
   PsetAmounts dco_decode_pset_amounts(dynamic raw);
@@ -380,10 +375,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<TxOut> sse_decode_list_tx_out(SseDeserializer deserializer);
 
   @protected
-  List<TxOutSecrets> sse_decode_list_tx_out_secrets(
-      SseDeserializer deserializer);
-
-  @protected
   List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer);
 
   @protected
@@ -425,9 +416,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   OutPoint sse_decode_out_point(SseDeserializer deserializer);
-
-  @protected
-  PayjoinTx sse_decode_payjoin_tx(SseDeserializer deserializer);
 
   @protected
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer);
@@ -607,8 +595,9 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   ffi.Pointer<wire_cst_list_prim_u_8_loose> cst_encode_list_prim_u_8_loose(
       List<int> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_prim_u_8_loose(raw.length);
-    ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
+    final bytes = checkedU8List(raw);
+    final ans = wire.cst_new_list_prim_u_8_loose(bytes.length);
+    ans.ref.ptr.asTypedList(bytes.length).setAll(0, bytes);
     return ans;
   }
 
@@ -670,17 +659,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
     final ans = wire.cst_new_list_tx_out(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_tx_out(raw[i], ans.ref.ptr[i]);
-    }
-    return ans;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_list_tx_out_secrets> cst_encode_list_tx_out_secrets(
-      List<TxOutSecrets> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_tx_out_secrets(raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_tx_out_secrets(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -854,16 +832,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
       OutPoint apiObj, wire_cst_out_point wireObj) {
     wireObj.txid = cst_encode_String(apiObj.txid);
     wireObj.vout = cst_encode_u_32(apiObj.vout);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_payjoin_tx(
-      PayjoinTx apiObj, wire_cst_payjoin_tx wireObj) {
-    wireObj.pset = cst_encode_String(apiObj.pset);
-    wireObj.network_fee = cst_encode_u_64(apiObj.networkFee);
-    wireObj.asset_fee = cst_encode_u_64(apiObj.assetFee);
-    wireObj.unblinded_outputs =
-        cst_encode_list_tx_out_secrets(apiObj.unblindedOutputs);
   }
 
   @protected
@@ -1154,10 +1122,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_list_tx_out(List<TxOut> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_tx_out_secrets(
-      List<TxOutSecrets> self, SseSerializer serializer);
-
-  @protected
   void sse_encode_list_tx_output(List<TxOutput> self, SseSerializer serializer);
 
   @protected
@@ -1201,9 +1165,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_out_point(OutPoint self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_payjoin_tx(PayjoinTx self, SseSerializer serializer);
 
   @protected
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer);
@@ -2011,11 +1972,13 @@ class LwkCoreWire implements BaseWire {
 
   void wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
     int port_,
+    int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> signed_pset,
   ) {
     return _wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
       port_,
+      network,
       electrum_url,
       signed_pset,
     );
@@ -2026,6 +1989,7 @@ class LwkCoreWire implements BaseWire {
           ffi.NativeFunction<
               ffi.Void Function(
                 ffi.Int64,
+                ffi.Int32,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
               )>>(
@@ -2036,17 +2000,20 @@ class LwkCoreWire implements BaseWire {
           .asFunction<
               void Function(
                 int,
+                int,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
               )>();
 
   void wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
     int port_,
+    int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
     ffi.Pointer<wire_cst_list_prim_u_8_loose> tx_bytes,
   ) {
     return _wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
       port_,
+      network,
       electrum_url,
       tx_bytes,
     );
@@ -2057,6 +2024,7 @@ class LwkCoreWire implements BaseWire {
           ffi.NativeFunction<
               ffi.Void Function(
                 ffi.Int64,
+                ffi.Int32,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_loose>,
               )>>(
@@ -2067,6 +2035,7 @@ class LwkCoreWire implements BaseWire {
           .asFunction<
               void Function(
                 int,
+                int,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_loose>,
               )>();
@@ -2074,11 +2043,13 @@ class LwkCoreWire implements BaseWire {
   void wire__crate__api__blockchain__blockchain_test(
     int port_,
     ffi.Pointer<wire_cst_blockchain> that,
+    int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> electrum_url,
   ) {
     return _wire__crate__api__blockchain__blockchain_test(
       port_,
       that,
+      network,
       electrum_url,
     );
   }
@@ -2088,6 +2059,7 @@ class LwkCoreWire implements BaseWire {
           ffi.Void Function(
             ffi.Int64,
             ffi.Pointer<wire_cst_blockchain>,
+            ffi.Int32,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>>('frbgen_lwk_wire__crate__api__blockchain__blockchain_test');
   late final _wire__crate__api__blockchain__blockchain_test =
@@ -2095,6 +2067,7 @@ class LwkCoreWire implements BaseWire {
           void Function(
             int,
             ffi.Pointer<wire_cst_blockchain>,
+            int,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>();
 
@@ -2123,6 +2096,34 @@ class LwkCoreWire implements BaseWire {
       _wire__crate__api__descriptor__descriptor_new_confidentialPtr.asFunction<
           void Function(
               int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+
+  void wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+    int port_,
+    int network,
+    ffi.Pointer<wire_cst_list_prim_u_8_loose> seed,
+  ) {
+    return _wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+      port_,
+      network,
+      seed,
+    );
+  }
+
+  late final _wire__crate__api__descriptor__descriptor_new_confidential_from_seedPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Int32,
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__descriptor__descriptor_new_confidential_from_seed',
+  );
+  late final _wire__crate__api__descriptor__descriptor_new_confidential_from_seed =
+      _wire__crate__api__descriptor__descriptor_new_confidential_from_seedPtr
+          .asFunction<
+              void Function(
+                  int, int, ffi.Pointer<wire_cst_list_prim_u_8_loose>)>();
 
   void wire__crate__api__transaction__extract_tx_bytes(
     int port_,
@@ -2423,53 +2424,6 @@ class LwkCoreWire implements BaseWire {
             bool,
           )>();
 
-  void wire__crate__api__wallet__wallet_build_payjoin_tx(
-    int port_,
-    ffi.Pointer<wire_cst_wallet> that,
-    int sats,
-    ffi.Pointer<wire_cst_list_prim_u_8_strict> out_address,
-    ffi.Pointer<wire_cst_list_prim_u_8_strict> asset,
-    int network,
-    ffi.Pointer<wire_cst_list_prim_u_8_strict> base_url,
-    bool is_send_all,
-  ) {
-    return _wire__crate__api__wallet__wallet_build_payjoin_tx(
-      port_,
-      that,
-      sats,
-      out_address,
-      asset,
-      network,
-      base_url,
-      is_send_all,
-    );
-  }
-
-  late final _wire__crate__api__wallet__wallet_build_payjoin_txPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Int64,
-            ffi.Pointer<wire_cst_wallet>,
-            ffi.Uint64,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Int32,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Bool,
-          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_build_payjoin_tx');
-  late final _wire__crate__api__wallet__wallet_build_payjoin_tx =
-      _wire__crate__api__wallet__wallet_build_payjoin_txPtr.asFunction<
-          void Function(
-            int,
-            ffi.Pointer<wire_cst_wallet>,
-            int,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            int,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            bool,
-          )>();
-
   void wire__crate__api__wallet__wallet_consolidate(
     int port_,
     ffi.Pointer<wire_cst_wallet> that,
@@ -2548,12 +2502,14 @@ class LwkCoreWire implements BaseWire {
     int network,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> dbpath,
     ffi.Pointer<wire_cst_descriptor> descriptor,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> policy_asset,
   ) {
     return _wire__crate__api__wallet__wallet_init(
       port_,
       network,
       dbpath,
       descriptor,
+      policy_asset,
     );
   }
 
@@ -2564,6 +2520,7 @@ class LwkCoreWire implements BaseWire {
             ffi.Int32,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Pointer<wire_cst_descriptor>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>>('frbgen_lwk_wire__crate__api__wallet__wallet_init');
   late final _wire__crate__api__wallet__wallet_init =
       _wire__crate__api__wallet__wallet_initPtr.asFunction<
@@ -2572,7 +2529,23 @@ class LwkCoreWire implements BaseWire {
             int,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Pointer<wire_cst_descriptor>,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>();
+
+  void wire__crate__api__wallet__wallet_policy_asset(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+  ) {
+    return _wire__crate__api__wallet__wallet_policy_asset(port_, that);
+  }
+
+  late final _wire__crate__api__wallet__wallet_policy_assetPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_cst_wallet>)>>(
+      'frbgen_lwk_wire__crate__api__wallet__wallet_policy_asset');
+  late final _wire__crate__api__wallet__wallet_policy_asset =
+      _wire__crate__api__wallet__wallet_policy_assetPtr
+          .asFunction<void Function(int, ffi.Pointer<wire_cst_wallet>)>();
 
   void wire__crate__api__wallet__wallet_sign_tx(
     int port_,
@@ -2607,6 +2580,41 @@ class LwkCoreWire implements BaseWire {
             int,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
+
+  void wire__crate__api__wallet__wallet_sign_tx_with_seed(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+    int network,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> pset,
+    ffi.Pointer<wire_cst_list_prim_u_8_loose> seed,
+  ) {
+    return _wire__crate__api__wallet__wallet_sign_tx_with_seed(
+      port_,
+      that,
+      network,
+      pset,
+      seed,
+    );
+  }
+
+  late final _wire__crate__api__wallet__wallet_sign_tx_with_seedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Int64,
+            ffi.Pointer<wire_cst_wallet>,
+            ffi.Int32,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+          )>>('frbgen_lwk_wire__crate__api__wallet__wallet_sign_tx_with_seed');
+  late final _wire__crate__api__wallet__wallet_sign_tx_with_seed =
+      _wire__crate__api__wallet__wallet_sign_tx_with_seedPtr.asFunction<
+          void Function(
+            int,
+            ffi.Pointer<wire_cst_wallet>,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_list_prim_u_8_loose>,
           )>();
 
   void wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
@@ -2646,6 +2654,46 @@ class LwkCoreWire implements BaseWire {
                 int,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
                 ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>();
+
+  void
+      wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+    int port_,
+    ffi.Pointer<wire_cst_wallet> that,
+    int network,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> pset,
+    ffi.Pointer<wire_cst_list_prim_u_8_loose> seed,
+  ) {
+    return _wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+      port_,
+      that,
+      network,
+      pset,
+      seed,
+    );
+  }
+
+  late final _wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seedPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Pointer<wire_cst_wallet>,
+                ffi.Int32,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+              )>>(
+    'frbgen_lwk_wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed',
+  );
+  late final _wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed =
+      _wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seedPtr
+          .asFunction<
+              void Function(
+                int,
+                ffi.Pointer<wire_cst_wallet>,
+                int,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_prim_u_8_loose>,
               )>();
 
   void wire__crate__api__wallet__wallet_sync(
@@ -3045,19 +3093,6 @@ class LwkCoreWire implements BaseWire {
   late final _cst_new_list_tx_out = _cst_new_list_tx_outPtr
       .asFunction<ffi.Pointer<wire_cst_list_tx_out> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_tx_out_secrets> cst_new_list_tx_out_secrets(
-    int len,
-  ) {
-    return _cst_new_list_tx_out_secrets(len);
-  }
-
-  late final _cst_new_list_tx_out_secretsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_tx_out_secrets> Function(
-              ffi.Int32)>>('frbgen_lwk_cst_new_list_tx_out_secrets');
-  late final _cst_new_list_tx_out_secrets = _cst_new_list_tx_out_secretsPtr
-      .asFunction<ffi.Pointer<wire_cst_list_tx_out_secrets> Function(int)>();
-
   ffi.Pointer<wire_cst_list_tx_output> cst_new_list_tx_output(int len) {
     return _cst_new_list_tx_output(len);
   }
@@ -3346,13 +3381,6 @@ final class wire_cst_list_tx_input extends ffi.Struct {
   external int len;
 }
 
-final class wire_cst_list_tx_out_secrets extends ffi.Struct {
-  external ffi.Pointer<wire_cst_tx_out_secrets> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
 final class wire_cst_list_tx_output extends ffi.Struct {
   external ffi.Pointer<wire_cst_tx_output> ptr;
 
@@ -3362,18 +3390,6 @@ final class wire_cst_list_tx_output extends ffi.Struct {
 
 final class wire_cst_lwk_error extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> msg;
-}
-
-final class wire_cst_payjoin_tx extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> pset;
-
-  @ffi.Uint64()
-  external int network_fee;
-
-  @ffi.Uint64()
-  external int asset_fee;
-
-  external ffi.Pointer<wire_cst_list_tx_out_secrets> unblinded_outputs;
 }
 
 final class wire_cst_pset_amounts extends ffi.Struct {

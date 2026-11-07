@@ -8,6 +8,10 @@ pub const L_BTC_ASSET_ID: &str =
 pub const L_TEST_ASSET_ID: &str =
     "144c654344aa716d6f3abcc1ca90e5641e4e2a7f633bc09fe3baf64585819a49";
 
+/// Default policy asset of an Elements regtest node (`chain=liquidregtest`), as in lwk
+pub const L_REGTEST_ASSET_ID: &str =
+    "5ac9f65c0efcc4775e0baec4ec03abdde22473cd3cf33c0419ca290e0751b225";
+
 /// Get balance value for a specific asset ID from a list of balances
 #[frb(sync)]
 pub fn get_balance_by_asset_id(balances: Vec<WalletBalance>, asset_id: String) -> u64 {
@@ -46,7 +50,6 @@ use lwk_common::PsetBalance;
 use lwk_wollet::{
     elements::{
         self,
-        hex::{FromHex, ToHex},
         pset::PartiallySignedTransaction,
         Address as LwkAddress, AddressParams, AssetId, Script,
     },
@@ -56,7 +59,7 @@ pub use std::collections::{BTreeMap, HashMap};
 use std::str::FromStr;
 pub use std::vec::Vec;
 
-use lwk_wollet::Network as ElementsNetwork;
+use lwk_common::Network as ElementsNetwork;
 use std::convert::TryFrom;
 
 use super::error::LwkError;
@@ -65,11 +68,54 @@ use super::error::LwkError;
 pub enum LiquidNetwork {
     Mainnet,
     Testnet,
+    /// Local Elements regtest, with testnet keys and `el`/`ert` addresses.
+    ///
+    /// Its policy asset is the node's own: the default is lwk's, a wallet can take another.
+    Regtest,
 }
 
 impl LiquidNetwork {
-    pub(crate) fn is_mainnet(self) -> bool {
-        self == LiquidNetwork::Mainnet
+    pub(crate) fn address_params(self) -> &'static AddressParams {
+        match self {
+            LiquidNetwork::Mainnet => &AddressParams::LIQUID,
+            LiquidNetwork::Testnet => &AddressParams::LIQUID_TESTNET,
+            LiquidNetwork::Regtest => &AddressParams::ELEMENTS,
+        }
+    }
+
+    /// The lwk network, with `policy_asset` replacing the default regtest policy asset.
+    ///
+    /// Mainnet and testnet have a fixed policy asset, so `policy_asset` is rejected there.
+    pub(crate) fn elements_network(
+        self,
+        policy_asset: Option<String>,
+    ) -> anyhow::Result<ElementsNetwork, LwkError> {
+        match (self, policy_asset) {
+            (network, None) => Ok(network.into()),
+            (LiquidNetwork::Regtest, Some(policy_asset)) => {
+                let policy_asset = AssetId::from_str(&policy_asset)?;
+                Ok(ElementsNetwork::CustomElements(
+                    lwk_common::ElementsParamsBuilder::new()
+                        .with_policy_asset(policy_asset)
+                        .build()
+                        .map_err(|e| LwkError { msg: e.to_string() })?,
+                ))
+            }
+            (network, Some(_)) => Err(LwkError {
+                msg: format!("{network:?} has a fixed policy asset"),
+            }),
+        }
+    }
+}
+
+/// Every custom Elements network is regtest: [`LiquidNetwork::elements_network`] builds no other.
+impl From<ElementsNetwork> for LiquidNetwork {
+    fn from(network: ElementsNetwork) -> Self {
+        match network {
+            ElementsNetwork::Liquid => LiquidNetwork::Mainnet,
+            ElementsNetwork::TestnetLiquid => LiquidNetwork::Testnet,
+            ElementsNetwork::CustomElements(_) => LiquidNetwork::Regtest,
+        }
     }
 }
 
@@ -78,6 +124,7 @@ impl Into<ElementsNetwork> for LiquidNetwork {
         match self {
             LiquidNetwork::Mainnet => ElementsNetwork::Liquid,
             LiquidNetwork::Testnet => ElementsNetwork::TestnetLiquid,
+            LiquidNetwork::Regtest => ElementsNetwork::default_regtest(),
         }
     }
 }
@@ -196,7 +243,7 @@ impl From<elements::TxOutSecrets> for TxOutSecrets {
 impl From<WalletTxOut> for TxOut {
     fn from(wallet_tx_out: WalletTxOut) -> Self {
         TxOut {
-            script_pubkey: wallet_tx_out.script_pubkey.to_hex(),
+            script_pubkey: hex::encode(wallet_tx_out.script_pubkey.as_bytes()),
             height: wallet_tx_out.height,
             unblinded: wallet_tx_out.unblinded.into(),
             outpoint: OutPoint {
@@ -247,6 +294,8 @@ impl Address {
             Ok(LiquidNetwork::Mainnet)
         } else if address.params == &AddressParams::LIQUID_TESTNET {
             Ok(LiquidNetwork::Testnet)
+        } else if address.params == &AddressParams::ELEMENTS {
+            Ok(LiquidNetwork::Regtest)
         } else {
             Err(LwkError {
                 msg: "Unsupported address network".to_string(),
@@ -269,19 +318,13 @@ impl Address {
             };
             Some(pubkey)
         };
-        let script_pubkey = match Script::from_hex(&script) {
-            Ok(result) => result,
+        let script_pubkey = match hex::decode(&script) {
+            Ok(result) => Script::from(result),
             Err(e) => return Err(LwkError { msg: e.to_string() }),
         };
 
-        let address = LwkAddress::from_script(
-            &script_pubkey,
-            blinding_pubkey,
-            match network {
-                LiquidNetwork::Mainnet => &AddressParams::LIQUID,
-                LiquidNetwork::Testnet => &AddressParams::LIQUID_TESTNET,
-            },
-        );
+        let address =
+            LwkAddress::from_script(&script_pubkey, blinding_pubkey, network.address_params());
         if let Some(address) = address {
             Ok(Address {
                 standard: address.to_unconfidential().to_string(),
@@ -315,16 +358,125 @@ mod tests {
             Address::validate(testnet.to_string()).unwrap(),
             LiquidNetwork::Testnet
         );
-        assert!(Address::validate(elements_regtest.to_string()).is_err());
+        assert_eq!(
+            Address::validate(elements_regtest.to_string()).unwrap(),
+            LiquidNetwork::Regtest
+        );
+        // Bitcoin addresses are no Liquid network.
+        assert!(
+            Address::validate("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4".to_string()).is_err()
+        );
+    }
+
+    fn lwk_network(network: LiquidNetwork) -> ElementsNetwork {
+        network.into()
+    }
+
+    #[test]
+    fn networks_map_to_their_lwk_network() {
+        assert_eq!(lwk_network(LiquidNetwork::Mainnet), ElementsNetwork::Liquid);
+        assert_eq!(
+            lwk_network(LiquidNetwork::Testnet),
+            ElementsNetwork::TestnetLiquid
+        );
+        let regtest: ElementsNetwork = LiquidNetwork::Regtest.into();
+        assert_eq!(regtest, ElementsNetwork::default_regtest());
+        assert_eq!(regtest.policy_asset().to_string(), L_REGTEST_ASSET_ID);
+        assert_eq!(regtest.address_params(), &AddressParams::ELEMENTS);
+        assert!(!regtest.is_mainnet());
+
+        assert_eq!(
+            lwk_network(LiquidNetwork::Mainnet)
+                .policy_asset()
+                .to_string(),
+            L_BTC_ASSET_ID
+        );
+        assert_eq!(
+            lwk_network(LiquidNetwork::Testnet)
+                .policy_asset()
+                .to_string(),
+            L_TEST_ASSET_ID
+        );
+    }
+
+    #[test]
+    fn lwk_networks_map_back_to_their_liquid_network() {
+        for network in [
+            LiquidNetwork::Mainnet,
+            LiquidNetwork::Testnet,
+            LiquidNetwork::Regtest,
+        ] {
+            assert_eq!(LiquidNetwork::from(lwk_network(network)), network);
+        }
+        let custom = "b2e15d0d7a0c94e4e2ce0fe6e8691b9e451377f6e46e8045a86f7c4b5d4f0f23";
+        let custom = LiquidNetwork::Regtest
+            .elements_network(Some(custom.to_string()))
+            .unwrap();
+        assert_eq!(LiquidNetwork::from(custom), LiquidNetwork::Regtest);
+    }
+
+    #[test]
+    fn only_regtest_takes_another_policy_asset() {
+        let custom = "b2e15d0d7a0c94e4e2ce0fe6e8691b9e451377f6e46e8045a86f7c4b5d4f0f23";
+        let network = LiquidNetwork::Regtest
+            .elements_network(Some(custom.to_string()))
+            .unwrap();
+        assert_eq!(network.policy_asset().to_string(), custom);
+        assert_eq!(network.address_params(), &AddressParams::ELEMENTS);
+        assert_eq!(
+            LiquidNetwork::Regtest.elements_network(None).unwrap(),
+            ElementsNetwork::default_regtest()
+        );
+
+        assert!(LiquidNetwork::Regtest
+            .elements_network(Some("not an asset id".to_string()))
+            .is_err());
+        for network in [LiquidNetwork::Mainnet, LiquidNetwork::Testnet] {
+            assert!(network.elements_network(Some(custom.to_string())).is_err());
+            assert_eq!(
+                network.elements_network(None).unwrap(),
+                lwk_network(network)
+            );
+        }
+    }
+
+    #[test]
+    fn address_from_script_uses_the_network_address_params() {
+        // P2WPKH script of an arbitrary key hash.
+        let script = "0014751e76e8199196d454941c45d1b3a323f1433bd6";
+        let expected = [
+            (LiquidNetwork::Mainnet, "ex1q"),
+            (LiquidNetwork::Testnet, "tex1q"),
+            (LiquidNetwork::Regtest, "ert1q"),
+        ];
+        for (network, prefix) in expected {
+            let address = Address::address_from_script(network, script.to_string(), None).unwrap();
+            assert!(address.standard.starts_with(prefix), "{}", address.standard);
+            assert_eq!(Address::validate(address.standard).unwrap(), network);
+        }
+    }
+
+    #[test]
+    fn address_from_script_decodes_a_hex_script_pubkey() {
+        let address = Address::address_from_script(
+            LiquidNetwork::Mainnet,
+            "0014f22d924b8b7ec66c464fb4bebf0f789b2177a175".to_string(),
+            None,
+        )
+        .unwrap();
+        assert_eq!(address.standard, "ex1q7gkeyjut0mrxc3j0kjlt7rmcnvsh0gt45d3fud");
+
+        assert!(Address::address_from_script(LiquidNetwork::Mainnet, "0g".to_string(), None)
+            .is_err());
+        assert!(Address::address_from_script(LiquidNetwork::Mainnet, "001".to_string(), None)
+            .is_err());
     }
 
     #[test]
     fn wallet_balances_preserve_the_full_u64_range() {
         let asset = AssetId::from_str(L_BTC_ASSET_ID).unwrap();
-        let balances = WalletBalances::from(AssetIdBTreeMapUInt(BTreeMap::from([(
-            asset,
-            u64::MAX,
-        )])));
+        let balances =
+            WalletBalances::from(AssetIdBTreeMapUInt(BTreeMap::from([(asset, u64::MAX)])));
 
         assert_eq!(balances[0].value, u64::MAX);
         assert_eq!(
@@ -335,8 +487,10 @@ mod tests {
 
     #[test]
     fn only_liquid_mainnet_uses_mainnet_signing_keys() {
-        assert!(LiquidNetwork::Mainnet.is_mainnet());
-        assert!(!LiquidNetwork::Testnet.is_mainnet());
+        let mainnet: ElementsNetwork = LiquidNetwork::Mainnet.into();
+        let testnet: ElementsNetwork = LiquidNetwork::Testnet.into();
+        assert!(mainnet.is_mainnet());
+        assert!(!testnet.is_mainnet());
     }
 }
 
@@ -394,7 +548,7 @@ impl From<WalletTx> for Tx {
 
         for output in &wallet_tx.outputs {
             if let Some(output) = output {
-                let script_pubkey = output.script_pubkey.to_hex();
+                let script_pubkey = hex::encode(output.script_pubkey.as_bytes());
                 outputs.push(TxOut {
                     script_pubkey,
                     height: output.height,
@@ -449,10 +603,10 @@ pub struct PsetAmounts {
     pub balances: Balances,
 }
 impl PsetAmounts {
-    pub(super) fn from_balance(balance: PsetBalance, policy_asset: &AssetId) -> Self {
+    pub(super) fn from_balance(balance: &PsetBalance, policy_asset: &AssetId) -> Self {
         PsetAmounts {
             absolute_fees: balance.fees_in(policy_asset),
-            balances: Balances::from(AssetIdBTreeMapInt(balance.balances.as_ref().clone())),
+            balances: Balances::from(AssetIdBTreeMapInt(balance.balances().as_ref().clone())),
         }
     }
 }
@@ -480,18 +634,6 @@ impl TryFrom<String> for SizeAndFees {
             absolute_fees: all_fees.into(),
         })
     }
-}
-
-#[derive(Clone, Debug, PartialEq)]
-pub struct PayjoinTx {
-    /// Partially signed transaction
-    pub pset: String,
-    /// LiquidNetwork fee
-    pub network_fee: u64,
-    /// Asset fee amount paid to the server
-    pub asset_fee: u64,
-    /// All unblinded outputs
-    pub unblinded_outputs: Vec<TxOutSecrets>,
 }
 
 // #[test]

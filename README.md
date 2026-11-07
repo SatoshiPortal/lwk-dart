@@ -30,7 +30,7 @@ Docker is required for linux builds.
 
 ```bash
 dart pub global activate ffigen
-cargo install flutter_rust_bridge_codegen --version 2.9.0
+cargo install flutter_rust_bridge_codegen --version 2.12.0
 cargo install cargo-expand
 cargo install cargo-ndk
 @if [ $$(uname) == "Darwin" ] ; then cargo install cargo-lipo ; fi
@@ -87,4 +87,17 @@ Run the following:
 
 ```bash
 export CPATH="$(clang -v 2>&1 | grep "Selected GCC installation" | rev | cut -d' ' -f1 | rev)/include"
+```
+
+## BIP39 seeds and Liquid regtest
+
+Applications can derive a 64-byte BIP39 seed from any supported wordlist and passphrase, then call `Descriptor.newConfidentialFromSeed`, `Wallet.signTxWithSeed` or `Wallet.signedPsetWithExtraDetailsWithSeed`. Pass seed bytes, not mnemonic entropy. The existing English mnemonic APIs remain available. See `SECURITY.md` for buffer-erasure limits and transaction-review requirements.
+
+`LiquidNetwork.regtest` uses Elements regtest addresses and the default policy asset `5ac9f65c0efcc4775e0baec4ec03abdde22473cd3cf33c0419ca290e0751b225`. For a differently configured node, pass its asset ID through `Wallet.init(policyAsset: ...)`; mainnet and testnet reject overrides.
+
+For a local Nigiri Liquid stack, sync and broadcast with `tcp://127.0.0.1:50001` and `network: LiquidNetwork.regtest`. Only an explicit regtest TCP URL uses plaintext. Use a fee rate of `1000.0` sats/kvB (1 sat/vB). Enable mining on the local stack, or mine a block manually after broadcast. The optional integration test derives a wallet from a public test seed, receives faucet funds, syncs, builds and signs a PSET, broadcasts it, and waits for confirmation:
+
+```sh
+cd rust
+LWK_REGTEST_ELECTRUM=tcp://127.0.0.1:50001 LWK_REGTEST_FAUCET=http://127.0.0.1:3001/faucet cargo test regtest_round_trip_over_plaintext_electrum -- --ignored
 ```
