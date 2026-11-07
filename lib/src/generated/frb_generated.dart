@@ -12,6 +12,7 @@ import 'api/wallet.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
+import '../checked_u8_list.dart';
 import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
@@ -1558,6 +1559,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       {required LiquidNetwork network,
       required String electrumUrl,
       required List<int> txBytes}) {
+    checkedU8List(txBytes);
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_liquid_network(network);
@@ -2195,6 +2197,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       required LiquidNetwork network,
       required String pset,
       required List<int> seed}) {
+    checkedU8List(seed);
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_wallet(that);
@@ -2258,6 +2261,7 @@ class LwkCoreApiImpl extends LwkCoreApiImplPlatform implements LwkCoreApi {
       required LiquidNetwork network,
       required String pset,
       required List<int> seed}) {
+    checkedU8List(seed);
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 = cst_encode_box_autoadd_wallet(that);
