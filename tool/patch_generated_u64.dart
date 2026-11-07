@@ -23,8 +23,57 @@ void replaceExactly(String path, String before, String after, int count) {
 }
 
 void main() {
+  const dartPath = 'lib/src/generated/frb_generated.dart';
   const ioPath = 'lib/src/generated/frb_generated.io.dart';
   const webPath = 'lib/src/generated/frb_generated.web.dart';
+
+  // A byte-list codec check is too late if earlier arguments allocated.
+  // Validate the complete input before the handler can encode any argument.
+  replaceOnce(
+    dartPath,
+    "import 'frb_generated.dart';",
+    "import 'frb_generated.dart';\nimport '../checked_u8_list.dart';",
+  );
+  replaceOnce(
+    dartPath,
+    '''  Future<String> crateApiBlockchainBlockchainBroadcastTxBytes(
+      {required LiquidNetwork network,
+      required String electrumUrl,
+      required List<int> txBytes}) {''',
+    '''  Future<String> crateApiBlockchainBlockchainBroadcastTxBytes(
+      {required LiquidNetwork network,
+      required String electrumUrl,
+      required List<int> txBytes}) {
+    checkedU8List(txBytes);''',
+  );
+  replaceOnce(
+    dartPath,
+    '''  Future<String> crateApiWalletWalletSignTxWithSeed(
+      {required Wallet that,
+      required LiquidNetwork network,
+      required String pset,
+      required List<int> seed}) {''',
+    '''  Future<String> crateApiWalletWalletSignTxWithSeed(
+      {required Wallet that,
+      required LiquidNetwork network,
+      required String pset,
+      required List<int> seed}) {
+    checkedU8List(seed);''',
+  );
+  replaceOnce(
+    dartPath,
+    '''  Future<String> crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
+      {required Wallet that,
+      required LiquidNetwork network,
+      required String pset,
+      required List<int> seed}) {''',
+    '''  Future<String> crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
+      {required Wallet that,
+      required LiquidNetwork network,
+      required String pset,
+      required List<int> seed}) {
+    checkedU8List(seed);''',
+  );
 
   replaceOnce(
     ioPath,
