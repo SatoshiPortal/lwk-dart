@@ -67,16 +67,8 @@ impl From<lwk_wollet::elements::bitcoin::transaction::ParseOutPointError> for Lw
     }
 }
 
-impl From<lwk_wollet::elements::hashes::hex::HexToBytesError> for LwkError {
-    fn from(value: lwk_wollet::elements::hashes::hex::HexToBytesError) -> Self {
-        LwkError {
-            msg: format!("{:?}", value),
-        }
-    }
-}
-
-impl From<lwk_wollet::elements::hashes::hex::HexToArrayError> for LwkError {
-    fn from(value: lwk_wollet::elements::hashes::hex::HexToArrayError) -> Self {
+impl From<lwk_wollet::elements::hex::DecodeFixedLengthBytesError> for LwkError {
+    fn from(value: lwk_wollet::elements::hex::DecodeFixedLengthBytesError) -> Self {
         LwkError {
             msg: format!("{:?}", value),
         }

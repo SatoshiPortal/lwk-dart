@@ -46,7 +46,6 @@ use lwk_common::PsetBalance;
 use lwk_wollet::{
     elements::{
         self,
-        hex::{FromHex, ToHex},
         pset::PartiallySignedTransaction,
         Address as LwkAddress, AddressParams, AssetId, Script,
     },
@@ -56,7 +55,7 @@ pub use std::collections::{BTreeMap, HashMap};
 use std::str::FromStr;
 pub use std::vec::Vec;
 
-use lwk_wollet::Network as ElementsNetwork;
+use lwk_common::Network as ElementsNetwork;
 use std::convert::TryFrom;
 
 use super::error::LwkError;
@@ -65,12 +64,6 @@ use super::error::LwkError;
 pub enum LiquidNetwork {
     Mainnet,
     Testnet,
-}
-
-impl LiquidNetwork {
-    pub(crate) fn is_mainnet(self) -> bool {
-        self == LiquidNetwork::Mainnet
-    }
 }
 
 impl Into<ElementsNetwork> for LiquidNetwork {
@@ -196,7 +189,7 @@ impl From<elements::TxOutSecrets> for TxOutSecrets {
 impl From<WalletTxOut> for TxOut {
     fn from(wallet_tx_out: WalletTxOut) -> Self {
         TxOut {
-            script_pubkey: wallet_tx_out.script_pubkey.to_hex(),
+            script_pubkey: hex::encode(wallet_tx_out.script_pubkey.as_bytes()),
             height: wallet_tx_out.height,
             unblinded: wallet_tx_out.unblinded.into(),
             outpoint: OutPoint {
@@ -269,8 +262,8 @@ impl Address {
             };
             Some(pubkey)
         };
-        let script_pubkey = match Script::from_hex(&script) {
-            Ok(result) => result,
+        let script_pubkey = match hex::decode(&script) {
+            Ok(result) => Script::from(result),
             Err(e) => return Err(LwkError { msg: e.to_string() }),
         };
 
@@ -394,7 +387,7 @@ impl From<WalletTx> for Tx {
 
         for output in &wallet_tx.outputs {
             if let Some(output) = output {
-                let script_pubkey = output.script_pubkey.to_hex();
+                let script_pubkey = hex::encode(output.script_pubkey.as_bytes());
                 outputs.push(TxOut {
                     script_pubkey,
                     height: output.height,
@@ -449,10 +442,10 @@ pub struct PsetAmounts {
     pub balances: Balances,
 }
 impl PsetAmounts {
-    pub(super) fn from_balance(balance: PsetBalance, policy_asset: &AssetId) -> Self {
+    pub(super) fn from_balance(balance: &PsetBalance, policy_asset: &AssetId) -> Self {
         PsetAmounts {
             absolute_fees: balance.fees_in(policy_asset),
-            balances: Balances::from(AssetIdBTreeMapInt(balance.balances.as_ref().clone())),
+            balances: Balances::from(AssetIdBTreeMapInt(balance.balances().as_ref().clone())),
         }
     }
 }
@@ -480,18 +473,6 @@ impl TryFrom<String> for SizeAndFees {
             absolute_fees: all_fees.into(),
         })
     }
-}
-
-#[derive(Clone, Debug, PartialEq)]
-pub struct PayjoinTx {
-    /// Partially signed transaction
-    pub pset: String,
-    /// LiquidNetwork fee
-    pub network_fee: u64,
-    /// Asset fee amount paid to the server
-    pub asset_fee: u64,
-    /// All unblinded outputs
-    pub unblinded_outputs: Vec<TxOutSecrets>,
 }
 
 // #[test]

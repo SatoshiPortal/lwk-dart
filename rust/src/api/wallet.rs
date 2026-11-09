@@ -1,7 +1,6 @@
-use flutter_rust_bridge::frb;
-use lwk_common::Signer;
+use lwk_common::{FeeRate, Signer};
 use lwk_signer::SwSigner;
-use lwk_wollet::{full_scan_to_index_with_electrum_client, ElectrumOptions};
+use lwk_wollet::full_scan_to_index_with_electrum_client;
 // use lwk_wollet::elements_miniscript::descriptor;
 use flutter_rust_bridge::RustOpaqueNom as RustOpaque;
 // use log::{info, warn};
@@ -10,7 +9,6 @@ use lwk_wollet::elements::{
     OutPoint as LwkOutPoint, Txid as LwkTxid,
 };
 use lwk_wollet::AddressResult;
-use lwk_wollet::ElectrumClient;
 use lwk_wollet::WolletDescriptor;
 use std::str::FromStr;
 pub use std::sync::Mutex;
@@ -45,7 +43,9 @@ pub const MAX_FEE_RATE_SATS_PER_KVB: f32 = 100_000.0;
 /// `u64::MAX`. A caller assuming sat/vB and passing `1.0` gets 0.001 sat/vB,
 /// under Liquid's relay floor, so the transaction never confirms and the coins
 /// stay locked in an unconfirmed spend.
-fn validate_fee_rate(fee_rate: f32) -> anyhow::Result<(), LwkError> {
+///
+/// Returns the rate as the `FeeRate` lwk's transaction builder takes.
+fn validate_fee_rate(fee_rate: f32) -> anyhow::Result<FeeRate, LwkError> {
     if !fee_rate.is_finite() {
         return Err(LwkError {
             msg: format!("Fee rate must be a finite number, got {fee_rate}"),
@@ -64,17 +64,20 @@ fn validate_fee_rate(fee_rate: f32) -> anyhow::Result<(), LwkError> {
             ),
         });
     }
-    Ok(())
+    // Unreachable after the checks above, which are stricter than lwk's own.
+    FeeRate::from_sat_kvb(fee_rate).ok_or_else(|| LwkError {
+        msg: format!("Fee rate {fee_rate} sats/kvB is not accepted by lwk"),
+    })
 }
 
 /// Validate a destination address the way lwk validates a normal recipient.
 ///
 /// `LwkAddress::from_str` accepts an address for any network and says nothing
-/// about confidentiality, and `TxBuilder::drain_lbtc_to` takes the address
-/// without validating it — unlike `add_lbtc_recipient`, which routes through
-/// lwk's own `validate_address`. A drain therefore accepted a mainnet address
-/// on a testnet wallet, and an unblinded address that leaks the amount and
-/// recipient of the whole sweep.
+/// about confidentiality. lwk_wollet 0.18's `TxBuilder::drain_lbtc_to` took the
+/// address without validating it, so a drain accepted a mainnet address on a
+/// testnet wallet, and an unblinded address that leaks the amount and recipient
+/// of the whole sweep. `drain_lbtc_to` now validates too; this check is kept so
+/// both paths fail early, before any builder call, with the same message.
 ///
 /// Mirrors lwk_wollet's `validate_address`: parse under the wallet's own
 /// address params, then require a blinding key.
@@ -145,6 +148,11 @@ impl Wallet {
 
     /// Syncs the wallet db with its latest state fetched from the electrum server
     /// Using None for stop_at_index will sync normally with a stop gap of 20
+    ///
+    /// ⚠️ `validate_domain` is ignored and kept only for API compatibility:
+    /// validation is always on for Liquid. The TLS certificate must be valid
+    /// for the server's domain name, so a self-signed or IP-addressed server
+    /// is rejected.
     pub fn sync(
         &self,
         electrum_url: String,
@@ -153,15 +161,15 @@ impl Wallet {
         timeout: Option<u8>,
     ) -> anyhow::Result<(), LwkError> {
         super::ensure_crypto_provider();
-        let url = electrum_url
+        // ⚠️ Dropped here: `ElectrumClientBuilder` parses the URL and derives
+        // domain validation from it, always on for `ssl://` with a domain name.
+        // Kept in the signature so the Dart API does not break.
+        let _ = validate_domain;
+        let host_port = electrum_url
             .strip_prefix("ssl://")
             .or_else(|| electrum_url.strip_prefix("tcp://"))
-            .unwrap_or(&electrum_url)
-            .to_string();
-        let mut electrum_client: ElectrumClient = ElectrumClient::with_options(
-            &lwk_wollet::ElectrumUrl::Tls(url, validate_domain),
-            ElectrumOptions { timeout: timeout },
-        )?;
+            .unwrap_or(&electrum_url);
+        let mut electrum_client = super::blockchain::tls_electrum_client(host_port, timeout)?;
         let mut wallet = self.get_wallet()?;
         match full_scan_to_index_with_electrum_client(
             &mut wallet,
@@ -221,7 +229,7 @@ impl Wallet {
         fee_rate: f32,
         drain: bool,
     ) -> anyhow::Result<String, LwkError> {
-        validate_fee_rate(fee_rate)?;
+        let lwk_fee_rate = validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let network = wallet.network();
         let tx_builder = wallet.tx_builder();
@@ -232,16 +240,16 @@ impl Wallet {
         if drain {
             let pset = tx_builder
                 .drain_lbtc_wallet()
-                .drain_lbtc_to(address)
+                .drain_lbtc_to(&address)?
                 .enable_ct_discount()
-                .fee_rate(Some(fee_rate))
+                .fee_rate(Some(lwk_fee_rate))
                 .finish()?;
             Ok(pset.to_string())
         } else {
             let pset = tx_builder
                 .add_lbtc_recipient(&address, sats)?
                 .enable_ct_discount()
-                .fee_rate(Some(fee_rate))
+                .fee_rate(Some(lwk_fee_rate))
                 .finish()?;
             Ok(pset.to_string())
         }
@@ -260,7 +268,7 @@ impl Wallet {
         high_utxo_threshold: Option<u32>,
         maximum_inputs: Option<u32>,
     ) -> anyhow::Result<Vec<String>, LwkError> {
-        validate_fee_rate(fee_rate)?;
+        let lwk_fee_rate = validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let policy_asset = wallet.policy_asset();
 
@@ -297,9 +305,9 @@ impl Wallet {
             match wallet
                 .tx_builder()
                 .set_wallet_utxos(outpoints)
-                .drain_lbtc_to(address)
+                .drain_lbtc_to(&address)?
                 .enable_ct_discount()
-                .fee_rate(Some(fee_rate))
+                .fee_rate(Some(lwk_fee_rate))
                 .finish()
             {
                 Ok(pset) => psets.push(pset.to_string()),
@@ -330,7 +338,7 @@ impl Wallet {
         drain_to: Option<String>,
         fee_rate: f32,
     ) -> anyhow::Result<String, LwkError> {
-        validate_fee_rate(fee_rate)?;
+        let lwk_fee_rate = validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
 
         let outpoints: Vec<LwkOutPoint> = utxos
@@ -363,21 +371,18 @@ impl Wallet {
 
         if let Some(drain_addr) = drain_to {
             // `drain_lbtc_wallet()` sets a flag (`drain_lbtc`) that
-            // `lwk_wollet` 0.18's TxBuilder::finish never reads — dead
-            // regardless of manual UTXO selection. `drain_lbtc_to` alone
-            // (consumed at tx_builder.rs:1174) is what actually directs
-            // leftover L-BTC to `address`.
-            // Same gap as build_lbtc_tx: drain_lbtc_to does not validate, so
-            // without this a sweep could go to a wrong-network or unblinded
-            // address. The consolidate path above is fine because it drains to
-            // the wallet's own address rather than a caller-supplied one.
+            // `lwk_wollet`'s TxBuilder::finish never reads (still true on LWK
+            // master) — dead regardless of manual UTXO selection.
+            // `drain_lbtc_to` alone is what actually directs leftover L-BTC to
+            // `address`. It validates the address since LWK 0.19; the explicit
+            // check below keeps the error message unchanged.
             let address = validate_out_address(&drain_addr, wallet.network())?;
-            builder = builder.drain_lbtc_to(address);
+            builder = builder.drain_lbtc_to(&address)?;
         }
 
         let pset = builder
             .enable_ct_discount()
-            .fee_rate(Some(fee_rate))
+            .fee_rate(Some(lwk_fee_rate))
             .finish()?;
         Ok(pset.to_string())
     }
@@ -390,7 +395,7 @@ impl Wallet {
         fee_rate: f32,
         asset: String,
     ) -> anyhow::Result<String, LwkError> {
-        validate_fee_rate(fee_rate)?;
+        let lwk_fee_rate = validate_fee_rate(fee_rate)?;
         let wallet = self.get_wallet()?;
         let tx_builder = wallet.tx_builder();
         let address = LwkAddress::from_str(&out_address)?;
@@ -405,133 +410,9 @@ impl Wallet {
         let pset = tx_builder
             .add_recipient(&address, sats, asset)?
             .enable_ct_discount()
-            .fee_rate(Some(fee_rate))
+            .fee_rate(Some(lwk_fee_rate))
             .finish()?;
         Ok(pset.to_string())
-    }
-
-    fn move_payjoin_signatures(pset: &mut PartiallySignedTransaction) -> Result<(), anyhow::Error> {
-        // The SideSwap server returns the signatures in the final_script_witness field.
-        // We need to move them to the partial_sigs field.
-        for (index, input) in pset.inputs_mut().iter_mut().enumerate() {
-            if let Some(final_script) = input.final_script_witness.take() {
-                match final_script.as_slice() {
-                    [signature, public_key] => {
-                        let public_key =
-                            lwk_wollet::elements::bitcoin::PublicKey::from_slice(&public_key)?;
-                        input.partial_sigs.insert(public_key, signature.clone());
-                    }
-                    _ => {
-                        anyhow::bail!("unexpected final_script_witness for input {index}");
-                    }
-                }
-            }
-        }
-        Ok(())
-    }
-
-    /// Build a PayJoin transaction for a specific asset, even if the wallet does not contain L-BTC UTXOs.
-    /// The asset must be one of the assets supported by SideSwap, such as USDt or DePix.
-    /// This creates a coin-join PSET. The PSET includes the asset wallet inputs and change,
-    /// and the asset output to `out_address`, the L-BTC server's input and change and the asset fee output to the server.
-    /// The server fee is included in the return value for the user to review.
-    ///
-    /// To make a PayJoin transaction:
-    /// - call build_payjoin_tx
-    /// - review server fee
-    /// - call signed_pset_with_extra_details, extract_tx and broadcast_tx.
-    /// See the `test_payjoin` test for an example of how to use it:
-    #[frb]
-    pub fn build_payjoin_tx(
-        &self,
-        sats: u64,
-        out_address: String,
-        asset: String,
-        network: LiquidNetwork,
-        base_url: Option<String>,
-        // NOTE: `#[frb(default = false)]` on this param is not supported by frb
-        // 2.12.0's codegen (cargo expand rejects the attribute on a fn param),
-        // so isSendAll is a required bool in Dart. No caller relies on a default.
-        is_send_all: bool,
-    ) -> anyhow::Result<super::types::PayjoinTx, LwkError> {
-        let wallet = self.get_wallet()?;
-
-        let mut next_index: Option<u32> = None;
-
-        let mut change_cb = || -> Result<lwk_wollet::elements::Address, anyhow::Error> {
-            let address = wallet.change(next_index)?;
-            next_index = Some(address.index() + 1);
-            Ok(address.address().clone())
-        };
-
-        let (network, default_base_url) = match network {
-            LiquidNetwork::Mainnet => (
-                sideswap_types::network::Network::Liquid,
-                sideswap_payjoin::BASE_URL_PROD,
-            ),
-            LiquidNetwork::Testnet => (
-                sideswap_types::network::Network::LiquidTestnet,
-                sideswap_payjoin::BASE_URL_TESTNET,
-            ),
-        };
-
-        // Use provided base_url or fall back to default
-        let base_url = base_url.unwrap_or_else(|| default_base_url.to_owned());
-
-        let asset = lwk_wollet::elements::AssetId::from_str(&asset)?;
-        let out_address = lwk_wollet::elements::Address::from_str(&out_address)?;
-
-        let utxos = wallet
-            .utxos()?
-            .into_iter()
-            .map(|utxo| {
-                let wallet_type = if utxo.script_pubkey.is_v0_p2wpkh() {
-                    sideswap_common::utxo_select::WalletType::Native
-                } else {
-                    sideswap_common::utxo_select::WalletType::Nested
-                };
-                sideswap_payjoin::Utxo {
-                    txid: utxo.outpoint.txid,
-                    vout: utxo.outpoint.vout,
-                    asset_id: utxo.unblinded.asset,
-                    value: utxo.unblinded.value,
-                    asset_bf: utxo.unblinded.asset_bf,
-                    value_bf: utxo.unblinded.value_bf,
-                    script_pub_key: utxo.script_pubkey,
-                    wallet_type,
-                }
-            })
-            .collect::<Vec<_>>();
-
-        let mut payjoin = sideswap_payjoin::create_payjoin(
-            &mut change_cb,
-            sideswap_payjoin::CreatePayjoin {
-                network,
-                base_url,
-                user_agent: "lwk-dart".to_owned(),
-                utxos,
-                use_all_utxos: false,
-                recipients: vec![sideswap_common::recipient::Recipient {
-                    address: out_address,
-                    asset_id: asset,
-                    amount: sats,
-                }],
-                deduct_fee: if is_send_all { Some(0) } else { None },
-                fee_asset: asset,
-            },
-        )
-        .map_err(|err| LwkError {
-            msg: err.to_string(),
-        })?;
-
-        Self::move_payjoin_signatures(&mut payjoin.pset)?;
-
-        Ok(super::types::PayjoinTx {
-            pset: payjoin.pset.to_string(),
-            network_fee: payjoin.network_fee,
-            asset_fee: payjoin.asset_fee,
-            unblinded_outputs: payjoin.tx_secrets.into_iter().map(Into::into).collect(),
-        })
     }
 
     /// Decode a transaction given a PSET
@@ -540,7 +421,7 @@ impl Wallet {
         let wallet = self.get_wallet()?;
         let pset_details = wallet.get_details(&mut pset)?;
         let policy_asset = wallet.policy_asset();
-        Ok(PsetAmounts::from_balance(pset_details.balance, &policy_asset))
+        Ok(PsetAmounts::from_balance(pset_details.balance(), &policy_asset))
     }
 
     fn sign_tx_common(
@@ -551,7 +432,7 @@ impl Wallet {
         add_details: bool,
     ) -> anyhow::Result<String, LwkError> {
         let mnemonic = Zeroizing::new(mnemonic);
-        let signer: SwSigner = SwSigner::new(&mnemonic, network.is_mainnet())?;
+        let signer: SwSigner = SwSigner::new_with_network(&mnemonic, network.into())?;
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         if add_details {
             self.get_wallet()?.add_details(&mut pset)?;
