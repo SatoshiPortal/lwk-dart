@@ -6,24 +6,38 @@
 import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'types.dart';
+
+// These functions are ignored because they are not marked as `pub`: `electrum_client`, `electrum_url`
 
 class Blockchain {
   const Blockchain();
 
-  /// Broadcast a signed pset
+  /// Broadcast a signed pset over TLS, or plaintext for `tcp://` on regtest.
   static Future<String> broadcastSignedPset(
-          {required String electrumUrl, required String signedPset}) =>
+          {required LiquidNetwork network,
+          required String electrumUrl,
+          required String signedPset}) =>
       LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastSignedPset(
-          electrumUrl: electrumUrl, signedPset: signedPset);
+          network: network, electrumUrl: electrumUrl, signedPset: signedPset);
 
-  /// Broadcast transaction bytes
+  /// Broadcast transaction bytes over TLS, or plaintext for `tcp://` on regtest.
   static Future<String> broadcastTxBytes(
-          {required String electrumUrl, required List<int> txBytes}) =>
+          {required LiquidNetwork network,
+          required String electrumUrl,
+          required List<int> txBytes}) =>
       LwkCore.instance.api.crateApiBlockchainBlockchainBroadcastTxBytes(
-          electrumUrl: electrumUrl, txBytes: txBytes);
+          network: network, electrumUrl: electrumUrl, txBytes: txBytes);
 
-  Future<void> test({required String electrumUrl}) => LwkCore.instance.api
-      .crateApiBlockchainBlockchainTest(that: this, electrumUrl: electrumUrl);
+  /// Check that a connection to the Electrum server can be opened.
+  /// Plaintext is allowed only for a `tcp://` URL on regtest.
+  ///
+  /// ⚠️ For TLS, like `Wallet.sync`, it always validates the certificate against the
+  /// server's domain name, so a self-signed or IP-addressed server fails.
+  Future<void> test(
+          {required LiquidNetwork network, required String electrumUrl}) =>
+      LwkCore.instance.api.crateApiBlockchainBlockchainTest(
+          that: this, network: network, electrumUrl: electrumUrl);
 
   @override
   int get hashCode => 0;

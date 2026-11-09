@@ -23,13 +23,72 @@ void replaceExactly(String path, String before, String after, int count) {
 }
 
 void main() {
+  const dartPath = 'lib/src/generated/frb_generated.dart';
   const ioPath = 'lib/src/generated/frb_generated.io.dart';
   const webPath = 'lib/src/generated/frb_generated.web.dart';
+
+  // A byte-list codec check is too late if earlier arguments allocated.
+  // Validate the complete input before the handler can encode any argument.
+  replaceOnce(
+    dartPath,
+    "import 'frb_generated.dart';",
+    "import 'frb_generated.dart';\nimport '../checked_u8_list.dart';",
+  );
+  replaceOnce(
+    dartPath,
+    '''  Future<String> crateApiBlockchainBlockchainBroadcastTxBytes(
+      {required LiquidNetwork network,
+      required String electrumUrl,
+      required List<int> txBytes}) {''',
+    '''  Future<String> crateApiBlockchainBlockchainBroadcastTxBytes(
+      {required LiquidNetwork network,
+      required String electrumUrl,
+      required List<int> txBytes}) {
+    checkedU8List(txBytes);''',
+  );
+  replaceOnce(
+    dartPath,
+    '''  Future<String> crateApiWalletWalletSignTxWithSeed(
+      {required Wallet that,
+      required LiquidNetwork network,
+      required String pset,
+      required List<int> seed}) {''',
+    '''  Future<String> crateApiWalletWalletSignTxWithSeed(
+      {required Wallet that,
+      required LiquidNetwork network,
+      required String pset,
+      required List<int> seed}) {
+    checkedU8List(seed);''',
+  );
+  replaceOnce(
+    dartPath,
+    '''  Future<String> crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
+      {required Wallet that,
+      required LiquidNetwork network,
+      required String pset,
+      required List<int> seed}) {''',
+    '''  Future<String> crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
+      {required Wallet that,
+      required LiquidNetwork network,
+      required String pset,
+      required List<int> seed}) {
+    checkedU8List(seed);''',
+  );
 
   replaceOnce(
     ioPath,
     "import 'frb_generated.dart';",
-    "import 'frb_generated.dart';\nimport '../checked_u64.dart';",
+    "import 'frb_generated.dart';\nimport '../checked_u64.dart';\nimport '../checked_u8_list.dart';",
+  );
+  // Byte-list arguments are `List<int>`: the codec keeps only the low 8 bits.
+  // Check before allocating, or the native buffer leaks when the check throws.
+  replaceOnce(
+    ioPath,
+    '''final ans = wire.cst_new_list_prim_u_8_loose(raw.length);
+    ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);''',
+    '''final bytes = checkedU8List(raw);
+    final ans = wire.cst_new_list_prim_u_8_loose(bytes.length);
+    ans.ref.ptr.asTypedList(bytes.length).setAll(0, bytes);''',
   );
   replaceExactly(
     ioPath,
@@ -41,7 +100,18 @@ void main() {
   replaceOnce(
     webPath,
     "import 'frb_generated.dart';",
-    "import 'frb_generated.dart';\nimport '../checked_u64.dart';",
+    "import 'frb_generated.dart';\nimport '../checked_u64.dart';\nimport '../checked_u8_list.dart';",
+  );
+  replaceOnce(
+    webPath,
+    '''JSAny cst_encode_list_prim_u_8_loose(List<int> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.jsify()!;
+  }''',
+    '''JSAny cst_encode_list_prim_u_8_loose(List<int> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return checkedU8List(raw).jsify()!;
+  }''',
   );
   replaceOnce(
     webPath,

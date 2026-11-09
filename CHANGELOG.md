@@ -1,3 +1,52 @@
+## Unreleased
+
+- change: `Wallet.sync_` returns `Future<bool>`: true after an LWK update is applied, false for an unchanged scan; tip-only changes return true and errors still throw. Rust unit-return callers and Dart mocks/implementations must adapt.
+- fix: pin the blocking scanner no-op fix on `SatoshiPortal/lwk` at `f80953d0`. Native and Dart bindings must be updated together.
+
+- feat: derive descriptors and sign from a 64-byte BIP39 seed with
+  `Descriptor.newConfidentialFromSeed`, `Wallet.signTxWithSeed` and
+  `Wallet.signedPsetWithExtraDetailsWithSeed`, using LWK's native seed signer;
+  this supports non-English wordlists and passphrases while preserving English
+  mnemonic derivation and signatures
+- fix: reject byte-list elements outside 0..255 before native allocation
+- change (BREAKING): signing now fails when no signature is added, including
+  re-signing a PSET already signed by the same key
+- feat (BREAKING): add `LiquidNetwork.regtest`, Elements address parameters and
+  an optional regtest `Wallet.init(policyAsset: ...)` override; exhaustive
+  network switches must handle regtest
+- change (BREAKING): `Address.validate` now returns `LiquidNetwork.regtest` for
+  Elements regtest addresses, reversing 0.7.0's rejection of addresses outside
+  Liquid mainnet and testnet
+- feat (BREAKING): `Blockchain.test`, `Blockchain.broadcastTxBytes`,
+  `Blockchain.broadcastSignedPset` and `batchBroadcast` require `network`;
+  plaintext is allowed only for `tcp://` on regtest, while TLS always validates
+  the server domain
+
+- build (BREAKING): depend on LWK at `SatoshiPortal/lwk` revision `f80953d0`, including the native seed signer, merged blocking scanner no-op fix and Blockstream master `7747af34`, instead of `lwk_*` 0.18.1 from crates.io. Elements moves to 0.27 and electrum-client to 0.25.1; LWK’s re-exported `age` moves to 0.12.1 (no lwk-dart API change). Switch back to crates.io once the seed signer and scanner fix are released upstream.
+- build (BREAKING): dependent Rust workspaces, including BULL's `bull_sdk`,
+  must copy this crate's `[patch.crates-io]` block into their workspace root
+  `Cargo.toml`: `lwk_common`, `lwk_jade`, `lwk_prices` and `lwk_registry` must
+  all use the same SatoshiPortal/lwk revision `f80953d0`. Cargo ignores patches
+  in dependencies; without these overrides, two copies of `lwk_common` make
+  the `Signer` traits incompatible. `bull_sdk` must add this block when
+  adopting the upgrade
+- refactor (BREAKING): remove the SideSwap payjoin: `Wallet.buildPayjoinTx` and
+  `PayjoinTx` are gone, along with the `sideswap_*` dependencies, which pin
+  elements 0.25
+- change (BREAKING): TLS certificate validation is always on for Liquid.
+  `Wallet.sync` ignores `validateDomain`, kept only for API compatibility, and
+  `Blockchain.test` now validates the certificate too. This only affects a
+  custom Liquid Electrum server without a certificate valid for its domain
+  name (self-signed, or addressed by IP), which is now rejected
+- chore: build Electrum clients with `ElectrumClientBuilder`, sign with
+  `SwSigner::new_with_network`, and read `PsetDetails`/`PsetBalance` through
+  accessors; the Dart API still takes the fee rate as a `double` in sats/kvB,
+  with the same validation
+- chore: an invalid script hex in `Address.addressFromScript` now reports the
+  `hex` crate's error message
+- test: pin key and address derivation, script hex encoding, Electrum URL
+  handling and the fee rate conversion
+
 ## 0.7.0
 
 - fix (BREAKING): `Wallet.balances()` and `SizeAndFees.absoluteFees` now return
