@@ -101,3 +101,5 @@ For a local Nigiri Liquid stack, sync and broadcast with `tcp://127.0.0.1:50001`
 cd rust
 LWK_REGTEST_ELECTRUM=tcp://127.0.0.1:50001 LWK_REGTEST_FAUCET=http://127.0.0.1:3001/faucet cargo test regtest_round_trip_over_plaintext_electrum -- --ignored
 ```
+
+All LWK dependencies and crates.io patches are pinned to `SatoshiPortal/lwk` at `0ddf4b247bf82b0fadac0106eb743a6447f01197`, which includes the merged blocking scanner no-op fix and native seed signer. Dependent Rust workspaces must copy the four `[patch.crates-io]` entries from `rust/Cargo.toml` into their workspace root with the same URL and revision.

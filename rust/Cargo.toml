@@ -15,12 +15,12 @@ crate-type = ["lib", "staticlib", "cdylib"]
 # transitively in the bull_sdk aggregate, which makes rustls 0.23 panic when it
 # tries to auto-pick a default. We install ring explicitly at runtime.
 rustls = { version = "0.23", default-features = false, features = ["ring"] }
-# LWK master from the SatoshiPortal fork, which adds
-# `SwSigner::from_seed_with_network` (proposed upstream as Blockstream/lwk#196).
-# Switch back to crates.io once Blockstream releases a version including #196.
-lwk_wollet = { git = "https://github.com/SatoshiPortal/lwk", rev = "652007d887858190b07c0430a105cc1053bce0c5" }
-lwk_signer = { git = "https://github.com/SatoshiPortal/lwk", rev = "652007d887858190b07c0430a105cc1053bce0c5" }
-lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "652007d887858190b07c0430a105cc1053bce0c5" }
+# SatoshiPortal LWK with the merged blocking scanner no-op fix.
+# Includes `SwSigner::from_seed_with_network` (Blockstream/lwk#196).
+# Switch back to crates.io once both changes are released upstream.
+lwk_wollet = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
+lwk_signer = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
+lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
 thiserror = "2.0.18"
 flutter_rust_bridge = "=2.12.0"
 anyhow = "1.0.68"
@@ -34,10 +34,10 @@ zeroize = "1.8"
 # dependents. Redirect them here too, so the graph holds a single copy of each
 # (two lwk_common copies would make their `Signer` traits incompatible).
 [patch.crates-io]
-lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "652007d887858190b07c0430a105cc1053bce0c5" }
-lwk_jade = { git = "https://github.com/SatoshiPortal/lwk", rev = "652007d887858190b07c0430a105cc1053bce0c5" }
-lwk_prices = { git = "https://github.com/SatoshiPortal/lwk", rev = "652007d887858190b07c0430a105cc1053bce0c5" }
-lwk_registry = { git = "https://github.com/SatoshiPortal/lwk", rev = "652007d887858190b07c0430a105cc1053bce0c5" }
+lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
+lwk_jade = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
+lwk_prices = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
+lwk_registry = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
 
 [features]
 bull_sdk = []

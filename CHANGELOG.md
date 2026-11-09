@@ -1,5 +1,7 @@
 ## Unreleased
 
+- fix: pin the blocking scanner no-op fix on `SatoshiPortal/lwk` at `0ddf4b24`. Native and Dart bindings must be updated together.
+
 - feat: derive descriptors and sign from a 64-byte BIP39 seed with
   `Descriptor.newConfidentialFromSeed`, `Wallet.signTxWithSeed` and
   `Wallet.signedPsetWithExtraDetailsWithSeed`, using LWK's native seed signer;
@@ -19,16 +21,11 @@
   plaintext is allowed only for `tcp://` on regtest, while TLS always validates
   the server domain
 
-- build (BREAKING): depend on LWK master from the SatoshiPortal fork
-  (`SatoshiPortal/lwk` at `652007d`, Blockstream/lwk master `3858cc3` plus
-  `SwSigner::from_seed_with_network`, proposed upstream as Blockstream/lwk#196)
-  instead of `lwk_*` 0.18.1 from crates.io; elements moves to 0.27 and
-  electrum-client to 0.25.1. Switch back to crates.io once Blockstream releases
-  #196
+- build (BREAKING): depend on LWK at `SatoshiPortal/lwk` revision `0ddf4b24`, including the native seed signer and merged blocking scanner no-op fix, instead of `lwk_*` 0.18.1 from crates.io. Elements moves to 0.27 and electrum-client to 0.25.1. Switch back to crates.io once the seed signer and scanner fix are released upstream.
 - build (BREAKING): dependent Rust workspaces, including BULL's `bull_sdk`,
   must copy this crate's `[patch.crates-io]` block into their workspace root
   `Cargo.toml`: `lwk_common`, `lwk_jade`, `lwk_prices` and `lwk_registry` must
-  all use the same SatoshiPortal/lwk revision `652007d`. Cargo ignores patches
+  all use the same SatoshiPortal/lwk revision `0ddf4b24`. Cargo ignores patches
   in dependencies; without these overrides, two copies of `lwk_common` make
   the `Signer` traits incompatible. `bull_sdk` must add this block when
   adopting the upgrade
