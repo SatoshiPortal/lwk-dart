@@ -18,9 +18,9 @@ rustls = { version = "0.23", default-features = false, features = ["ring"] }
 # SatoshiPortal LWK with the merged blocking scanner no-op fix.
 # Includes `SwSigner::from_seed_with_network` (Blockstream/lwk#196).
 # Switch back to crates.io once both changes are released upstream.
-lwk_wollet = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
-lwk_signer = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
-lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
+lwk_wollet = { git = "https://github.com/SatoshiPortal/lwk", rev = "f80953d0b45af7cb5950128e44ca47e618b114cc" }
+lwk_signer = { git = "https://github.com/SatoshiPortal/lwk", rev = "f80953d0b45af7cb5950128e44ca47e618b114cc" }
+lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "f80953d0b45af7cb5950128e44ca47e618b114cc" }
 thiserror = "2.0.18"
 flutter_rust_bridge = "=2.12.0"
 anyhow = "1.0.68"
@@ -34,10 +34,10 @@ zeroize = "1.8"
 # dependents. Redirect them here too, so the graph holds a single copy of each
 # (two lwk_common copies would make their `Signer` traits incompatible).
 [patch.crates-io]
-lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
-lwk_jade = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
-lwk_prices = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
-lwk_registry = { git = "https://github.com/SatoshiPortal/lwk", rev = "0ddf4b247bf82b0fadac0106eb743a6447f01197" }
+lwk_common = { git = "https://github.com/SatoshiPortal/lwk", rev = "f80953d0b45af7cb5950128e44ca47e618b114cc" }
+lwk_jade = { git = "https://github.com/SatoshiPortal/lwk", rev = "f80953d0b45af7cb5950128e44ca47e618b114cc" }
+lwk_prices = { git = "https://github.com/SatoshiPortal/lwk", rev = "f80953d0b45af7cb5950128e44ca47e618b114cc" }
+lwk_registry = { git = "https://github.com/SatoshiPortal/lwk", rev = "f80953d0b45af7cb5950128e44ca47e618b114cc" }
 
 [features]
 bull_sdk = []

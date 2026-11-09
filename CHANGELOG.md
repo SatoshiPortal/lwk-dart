@@ -1,7 +1,7 @@
 ## Unreleased
 
 - change: `Wallet.sync_` returns `Future<bool>`: true after an LWK update is applied, false for an unchanged scan; tip-only changes return true and errors still throw. Rust unit-return callers and Dart mocks/implementations must adapt.
-- fix: pin the blocking scanner no-op fix on `SatoshiPortal/lwk` at `0ddf4b24`. Native and Dart bindings must be updated together.
+- fix: pin the blocking scanner no-op fix on `SatoshiPortal/lwk` at `f80953d0`. Native and Dart bindings must be updated together.
 
 - feat: derive descriptors and sign from a 64-byte BIP39 seed with
   `Descriptor.newConfidentialFromSeed`, `Wallet.signTxWithSeed` and
@@ -22,11 +22,11 @@
   plaintext is allowed only for `tcp://` on regtest, while TLS always validates
   the server domain
 
-- build (BREAKING): depend on LWK at `SatoshiPortal/lwk` revision `0ddf4b24`, including the native seed signer and merged blocking scanner no-op fix, instead of `lwk_*` 0.18.1 from crates.io. Elements moves to 0.27 and electrum-client to 0.25.1. Switch back to crates.io once the seed signer and scanner fix are released upstream.
+- build (BREAKING): depend on LWK at `SatoshiPortal/lwk` revision `f80953d0`, including the native seed signer, merged blocking scanner no-op fix and Blockstream master `7747af34`, instead of `lwk_*` 0.18.1 from crates.io. Elements moves to 0.27 and electrum-client to 0.25.1; LWK’s re-exported `age` moves to 0.12.1 (no lwk-dart API change). Switch back to crates.io once the seed signer and scanner fix are released upstream.
 - build (BREAKING): dependent Rust workspaces, including BULL's `bull_sdk`,
   must copy this crate's `[patch.crates-io]` block into their workspace root
   `Cargo.toml`: `lwk_common`, `lwk_jade`, `lwk_prices` and `lwk_registry` must
-  all use the same SatoshiPortal/lwk revision `0ddf4b24`. Cargo ignores patches
+  all use the same SatoshiPortal/lwk revision `f80953d0`. Cargo ignores patches
   in dependencies; without these overrides, two copies of `lwk_common` make
   the `Signer` traits incompatible. `bull_sdk` must add this block when
   adopting the upgrade
