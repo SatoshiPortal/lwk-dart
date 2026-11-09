@@ -131,14 +131,19 @@ impl Wallet {
     }
 
     /// Initializes a wallet from a specific db path and descriptor
+    ///
+    /// The policy asset id is only for the regtest network, whose node may use another policy
+    /// asset than lwk's default; mainnet and testnet reject it.
     pub fn init(
         network: LiquidNetwork,
         dbpath: String,
         descriptor: Descriptor,
+        policy_asset: Option<String>,
     ) -> anyhow::Result<Wallet, LwkError> {
+        let network = network.elements_network(policy_asset)?;
         let desc_str = descriptor.ct_descriptor;
         let descriptor = WolletDescriptor::from_str(&desc_str)?;
-        let wollet = lwk_wollet::WolletBuilder::new(network.into(), descriptor)
+        let wollet = lwk_wollet::WolletBuilder::new(network, descriptor)
             .with_legacy_fs_store(dbpath.clone())?
             .build()?;
         let opaque = RustOpaque::new(Mutex::new(wollet));
@@ -153,6 +158,7 @@ impl Wallet {
     /// validation is always on for Liquid. The TLS certificate must be valid
     /// for the server's domain name, so a self-signed or IP-addressed server
     /// is rejected.
+    /// The connection uses TLS, except for a `tcp://` URL on a regtest wallet.
     pub fn sync(
         &self,
         electrum_url: String,
@@ -165,11 +171,9 @@ impl Wallet {
         // domain validation from it, always on for `ssl://` with a domain name.
         // Kept in the signature so the Dart API does not break.
         let _ = validate_domain;
-        let host_port = electrum_url
-            .strip_prefix("ssl://")
-            .or_else(|| electrum_url.strip_prefix("tcp://"))
-            .unwrap_or(&electrum_url);
-        let mut electrum_client = super::blockchain::tls_electrum_client(host_port, timeout)?;
+        let network = LiquidNetwork::from(self.get_wallet()?.network());
+        let mut electrum_client =
+            super::blockchain::electrum_client(network, &electrum_url, timeout)?;
         let mut wallet = self.get_wallet()?;
         match full_scan_to_index_with_electrum_client(
             &mut wallet,
@@ -421,7 +425,10 @@ impl Wallet {
         let wallet = self.get_wallet()?;
         let pset_details = wallet.get_details(&mut pset)?;
         let policy_asset = wallet.policy_asset();
-        Ok(PsetAmounts::from_balance(pset_details.balance(), &policy_asset))
+        Ok(PsetAmounts::from_balance(
+            pset_details.balance(),
+            &policy_asset,
+        ))
     }
 
     fn sign_tx_common(
@@ -433,11 +440,41 @@ impl Wallet {
     ) -> anyhow::Result<String, LwkError> {
         let mnemonic = Zeroizing::new(mnemonic);
         let signer: SwSigner = SwSigner::new_with_network(&mnemonic, network.into())?;
+        self.sign_and_finalize(&signer, pset, add_details)
+    }
+
+    fn sign_tx_with_seed_common(
+        &self,
+        network: LiquidNetwork,
+        pset: String,
+        seed: Vec<u8>,
+        add_details: bool,
+    ) -> anyhow::Result<String, LwkError> {
+        let seed = Zeroizing::new(seed);
+        let seed_bytes: &[u8; 64] = seed.as_slice().try_into().map_err(|_| LwkError {
+            msg: format!("seed is {} bytes, a BIP39 seed is 64 bytes", seed.len()),
+        })?;
+        let signer = SwSigner::from_seed_with_network(seed_bytes, network.into())?;
+        self.sign_and_finalize(&signer, pset, add_details)
+    }
+
+    fn sign_and_finalize(
+        &self,
+        signer: &SwSigner,
+        pset: String,
+        add_details: bool,
+    ) -> anyhow::Result<String, LwkError> {
         let mut pset = PartiallySignedTransaction::from_str(&pset)?;
         if add_details {
             self.get_wallet()?.add_details(&mut pset)?;
         }
-        signer.sign(&mut pset)?;
+        // Do not report success when this key added no signature, including an already-signed PSET.
+        if signer.sign(&mut pset)? == 0 {
+            return Err(LwkError {
+                msg: "the signer added no signature: its key owns no unsigned input of this PSET"
+                    .to_owned(),
+            });
+        }
         let tx = self.get_wallet()?.finalize(&mut pset)?;
         let finalized_pset = PartiallySignedTransaction::from_tx(tx.clone());
         Ok(finalized_pset.to_string())
@@ -451,6 +488,21 @@ impl Wallet {
         mnemonic: String,
     ) -> anyhow::Result<String, LwkError> {
         self.sign_tx_common(network, pset, mnemonic, false)
+    }
+
+    /// Sign a wallet transaction with a 64-byte BIP39 seed instead of mnemonic words
+    pub fn sign_tx_with_seed(
+        &self,
+        network: LiquidNetwork,
+        pset: String,
+        seed: Vec<u8>,
+    ) -> anyhow::Result<String, LwkError> {
+        self.sign_tx_with_seed_common(network, pset, seed, false)
+    }
+
+    /// Get the policy asset (L-BTC) id of the wallet's network
+    pub fn policy_asset(&self) -> anyhow::Result<String, LwkError> {
+        Ok(self.get_wallet()?.policy_asset().to_string())
     }
 
     /// Get utxos of the wallet
@@ -468,6 +520,16 @@ impl Wallet {
         mnemonic: String,
     ) -> anyhow::Result<String, LwkError> {
         self.sign_tx_common(network, pset, mnemonic, true)
+    }
+
+    /// Sign a pset with extra details with a 64-byte BIP39 seed instead of mnemonic words
+    pub fn signed_pset_with_extra_details_with_seed(
+        &self,
+        network: LiquidNetwork,
+        pset: String,
+        seed: Vec<u8>,
+    ) -> anyhow::Result<String, LwkError> {
+        self.sign_tx_with_seed_common(network, pset, seed, true)
     }
 }
 
