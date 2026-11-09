@@ -428,3 +428,35 @@ impl LiquidTransaction {
 }
 
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use lwk_wollet::elements::{AssetId, LockTime, Script, TxIn, TxOut};
+
+    const P2WPKH_SCRIPT: &str = "0014b4620e4b3d559352bdf1f313898fd040c2851850";
+
+    #[test]
+    fn scripts_and_witnesses_are_lowercase_hex() {
+        let script = Script::from(hex::decode(P2WPKH_SCRIPT).unwrap());
+        let mut input = TxIn::default();
+        input.script_sig = script.clone();
+        input.witness.script_witness = vec![vec![0xab, 0xcd]].into();
+        let mut output = TxOut::new_fee(1, AssetId::default());
+        output.script_pubkey = script;
+        let tx = LiquidTransaction {
+            inner: ElementsTransaction {
+                version: 2,
+                lock_time: LockTime::ZERO,
+                input: vec![input],
+                output: vec![output],
+            },
+        };
+
+        assert_eq!(tx.get_output_script_pubkey(0).unwrap(), P2WPKH_SCRIPT);
+        assert_eq!(tx.get_output(0).unwrap().script_pubkey, P2WPKH_SCRIPT);
+        assert_eq!(tx.get_outputs()[0].script_pubkey, P2WPKH_SCRIPT);
+        assert_eq!(tx.get_input(0).unwrap().script_sig, P2WPKH_SCRIPT);
+        assert_eq!(tx.get_inputs()[0].script_sig, P2WPKH_SCRIPT);
+        assert_eq!(tx.get_input(0).unwrap().witness, vec!["abcd".to_string()]);
+    }
+}

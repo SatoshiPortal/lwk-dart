@@ -358,16 +358,125 @@ mod tests {
             Address::validate(testnet.to_string()).unwrap(),
             LiquidNetwork::Testnet
         );
-        assert!(Address::validate(elements_regtest.to_string()).is_err());
+        assert_eq!(
+            Address::validate(elements_regtest.to_string()).unwrap(),
+            LiquidNetwork::Regtest
+        );
+        // Bitcoin addresses are no Liquid network.
+        assert!(
+            Address::validate("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4".to_string()).is_err()
+        );
+    }
+
+    fn lwk_network(network: LiquidNetwork) -> ElementsNetwork {
+        network.into()
+    }
+
+    #[test]
+    fn networks_map_to_their_lwk_network() {
+        assert_eq!(lwk_network(LiquidNetwork::Mainnet), ElementsNetwork::Liquid);
+        assert_eq!(
+            lwk_network(LiquidNetwork::Testnet),
+            ElementsNetwork::TestnetLiquid
+        );
+        let regtest: ElementsNetwork = LiquidNetwork::Regtest.into();
+        assert_eq!(regtest, ElementsNetwork::default_regtest());
+        assert_eq!(regtest.policy_asset().to_string(), L_REGTEST_ASSET_ID);
+        assert_eq!(regtest.address_params(), &AddressParams::ELEMENTS);
+        assert!(!regtest.is_mainnet());
+
+        assert_eq!(
+            lwk_network(LiquidNetwork::Mainnet)
+                .policy_asset()
+                .to_string(),
+            L_BTC_ASSET_ID
+        );
+        assert_eq!(
+            lwk_network(LiquidNetwork::Testnet)
+                .policy_asset()
+                .to_string(),
+            L_TEST_ASSET_ID
+        );
+    }
+
+    #[test]
+    fn lwk_networks_map_back_to_their_liquid_network() {
+        for network in [
+            LiquidNetwork::Mainnet,
+            LiquidNetwork::Testnet,
+            LiquidNetwork::Regtest,
+        ] {
+            assert_eq!(LiquidNetwork::from(lwk_network(network)), network);
+        }
+        let custom = "b2e15d0d7a0c94e4e2ce0fe6e8691b9e451377f6e46e8045a86f7c4b5d4f0f23";
+        let custom = LiquidNetwork::Regtest
+            .elements_network(Some(custom.to_string()))
+            .unwrap();
+        assert_eq!(LiquidNetwork::from(custom), LiquidNetwork::Regtest);
+    }
+
+    #[test]
+    fn only_regtest_takes_another_policy_asset() {
+        let custom = "b2e15d0d7a0c94e4e2ce0fe6e8691b9e451377f6e46e8045a86f7c4b5d4f0f23";
+        let network = LiquidNetwork::Regtest
+            .elements_network(Some(custom.to_string()))
+            .unwrap();
+        assert_eq!(network.policy_asset().to_string(), custom);
+        assert_eq!(network.address_params(), &AddressParams::ELEMENTS);
+        assert_eq!(
+            LiquidNetwork::Regtest.elements_network(None).unwrap(),
+            ElementsNetwork::default_regtest()
+        );
+
+        assert!(LiquidNetwork::Regtest
+            .elements_network(Some("not an asset id".to_string()))
+            .is_err());
+        for network in [LiquidNetwork::Mainnet, LiquidNetwork::Testnet] {
+            assert!(network.elements_network(Some(custom.to_string())).is_err());
+            assert_eq!(
+                network.elements_network(None).unwrap(),
+                lwk_network(network)
+            );
+        }
+    }
+
+    #[test]
+    fn address_from_script_uses_the_network_address_params() {
+        // P2WPKH script of an arbitrary key hash.
+        let script = "0014751e76e8199196d454941c45d1b3a323f1433bd6";
+        let expected = [
+            (LiquidNetwork::Mainnet, "ex1q"),
+            (LiquidNetwork::Testnet, "tex1q"),
+            (LiquidNetwork::Regtest, "ert1q"),
+        ];
+        for (network, prefix) in expected {
+            let address = Address::address_from_script(network, script.to_string(), None).unwrap();
+            assert!(address.standard.starts_with(prefix), "{}", address.standard);
+            assert_eq!(Address::validate(address.standard).unwrap(), network);
+        }
+    }
+
+    #[test]
+    fn address_from_script_decodes_a_hex_script_pubkey() {
+        let address = Address::address_from_script(
+            LiquidNetwork::Mainnet,
+            "0014f22d924b8b7ec66c464fb4bebf0f789b2177a175".to_string(),
+            None,
+        )
+        .unwrap();
+        assert_eq!(address.standard, "ex1q7gkeyjut0mrxc3j0kjlt7rmcnvsh0gt45d3fud");
+
+        assert!(Address::address_from_script(LiquidNetwork::Mainnet, "0g".to_string(), None)
+            .is_err());
+        assert!(Address::address_from_script(LiquidNetwork::Mainnet, "001".to_string(), None)
+            .is_err());
     }
 
     #[test]
     fn wallet_balances_preserve_the_full_u64_range() {
         let asset = AssetId::from_str(L_BTC_ASSET_ID).unwrap();
-        let balances = WalletBalances::from(AssetIdBTreeMapUInt(BTreeMap::from([(
-            asset,
-            u64::MAX,
-        )])));
+        let balances =
+            WalletBalances::from(AssetIdBTreeMapUInt(BTreeMap::from([(asset, u64::MAX)])));
 
         assert_eq!(balances[0].value, u64::MAX);
         assert_eq!(
@@ -378,8 +487,10 @@ mod tests {
 
     #[test]
     fn only_liquid_mainnet_uses_mainnet_signing_keys() {
-        assert!(LiquidNetwork::Mainnet.is_mainnet());
-        assert!(!LiquidNetwork::Testnet.is_mainnet());
+        let mainnet: ElementsNetwork = LiquidNetwork::Mainnet.into();
+        let testnet: ElementsNetwork = LiquidNetwork::Testnet.into();
+        assert!(mainnet.is_mainnet());
+        assert!(!testnet.is_mainnet());
     }
 }
 
