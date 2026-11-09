@@ -16,6 +16,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
 import '../checked_u64.dart';
+import '../checked_u8_list.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
 
 abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
@@ -162,9 +163,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<TxOut> dco_decode_list_tx_out(dynamic raw);
 
   @protected
-  List<TxOutSecrets> dco_decode_list_tx_out_secrets(dynamic raw);
-
-  @protected
   List<TxOutput> dco_decode_list_tx_output(dynamic raw);
 
   @protected
@@ -202,9 +200,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   OutPoint dco_decode_out_point(dynamic raw);
-
-  @protected
-  PayjoinTx dco_decode_payjoin_tx(dynamic raw);
 
   @protected
   PsetAmounts dco_decode_pset_amounts(dynamic raw);
@@ -382,10 +377,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   List<TxOut> sse_decode_list_tx_out(SseDeserializer deserializer);
 
   @protected
-  List<TxOutSecrets> sse_decode_list_tx_out_secrets(
-      SseDeserializer deserializer);
-
-  @protected
   List<TxOutput> sse_decode_list_tx_output(SseDeserializer deserializer);
 
   @protected
@@ -427,9 +418,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   OutPoint sse_decode_out_point(SseDeserializer deserializer);
-
-  @protected
-  PayjoinTx sse_decode_payjoin_tx(SseDeserializer deserializer);
 
   @protected
   PsetAmounts sse_decode_pset_amounts(SseDeserializer deserializer);
@@ -605,7 +593,7 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   @protected
   JSAny cst_encode_list_prim_u_8_loose(List<int> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw.jsify()!;
+    return checkedU8List(raw).jsify()!;
   }
 
   @protected
@@ -642,12 +630,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   JSAny cst_encode_list_tx_out(List<TxOut> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.map(cst_encode_tx_out).toList().jsify()!;
-  }
-
-  @protected
-  JSAny cst_encode_list_tx_out_secrets(List<TxOutSecrets> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw.map(cst_encode_tx_out_secrets).toList().jsify()!;
   }
 
   @protected
@@ -726,17 +708,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   JSAny cst_encode_out_point(OutPoint raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return [cst_encode_String(raw.txid), cst_encode_u_32(raw.vout)].jsify()!;
-  }
-
-  @protected
-  JSAny cst_encode_payjoin_tx(PayjoinTx raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return [
-      cst_encode_String(raw.pset),
-      cst_encode_u_64(raw.networkFee),
-      cst_encode_u_64(raw.assetFee),
-      cst_encode_list_tx_out_secrets(raw.unblindedOutputs)
-    ].jsify()!;
   }
 
   @protected
@@ -1060,10 +1031,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
   void sse_encode_list_tx_out(List<TxOut> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_tx_out_secrets(
-      List<TxOutSecrets> self, SseSerializer serializer);
-
-  @protected
   void sse_encode_list_tx_output(List<TxOutput> self, SseSerializer serializer);
 
   @protected
@@ -1107,9 +1074,6 @@ abstract class LwkCoreApiImplPlatform extends BaseApiImpl<LwkCoreWire> {
 
   @protected
   void sse_encode_out_point(OutPoint self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_payjoin_tx(PayjoinTx self, SseSerializer serializer);
 
   @protected
   void sse_encode_pset_amounts(PsetAmounts self, SseSerializer serializer);
@@ -1419,24 +1383,36 @@ class LwkCoreWire implements BaseWire {
           port_, address_string);
 
   void wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
-          NativePortType port_, String electrum_url, String signed_pset) =>
+          NativePortType port_,
+          int network,
+          String electrum_url,
+          String signed_pset) =>
       wasmModule.wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
-          port_, electrum_url, signed_pset);
+          port_, network, electrum_url, signed_pset);
 
   void wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
-          NativePortType port_, String electrum_url, JSAny tx_bytes) =>
+          NativePortType port_,
+          int network,
+          String electrum_url,
+          JSAny tx_bytes) =>
       wasmModule.wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
-          port_, electrum_url, tx_bytes);
+          port_, network, electrum_url, tx_bytes);
 
   void wire__crate__api__blockchain__blockchain_test(
-          NativePortType port_, JSAny that, String electrum_url) =>
+          NativePortType port_, JSAny that, int network, String electrum_url) =>
       wasmModule.wire__crate__api__blockchain__blockchain_test(
-          port_, that, electrum_url);
+          port_, that, network, electrum_url);
 
   void wire__crate__api__descriptor__descriptor_new_confidential(
           NativePortType port_, int network, String mnemonic) =>
       wasmModule.wire__crate__api__descriptor__descriptor_new_confidential(
           port_, network, mnemonic);
+
+  void wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+          NativePortType port_, int network, JSAny seed) =>
+      wasmModule
+          .wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+              port_, network, seed);
 
   void wire__crate__api__transaction__extract_tx_bytes(
           NativePortType port_, String pset) =>
@@ -1516,18 +1492,6 @@ class LwkCoreWire implements BaseWire {
       wasmModule.wire__crate__api__wallet__wallet_build_lbtc_tx(
           port_, that, sats, out_address, fee_rate, drain);
 
-  void wire__crate__api__wallet__wallet_build_payjoin_tx(
-          NativePortType port_,
-          JSAny that,
-          JSAny sats,
-          String out_address,
-          String asset,
-          int network,
-          String? base_url,
-          bool is_send_all) =>
-      wasmModule.wire__crate__api__wallet__wallet_build_payjoin_tx(port_, that,
-          sats, out_address, asset, network, base_url, is_send_all);
-
   void wire__crate__api__wallet__wallet_consolidate(
           NativePortType port_,
           JSAny that,
@@ -1545,15 +1509,24 @@ class LwkCoreWire implements BaseWire {
           NativePortType port_, JSAny that) =>
       wasmModule.wire__crate__api__wallet__wallet_descriptor(port_, that);
 
-  void wire__crate__api__wallet__wallet_init(
-          NativePortType port_, int network, String dbpath, JSAny descriptor) =>
+  void wire__crate__api__wallet__wallet_init(NativePortType port_, int network,
+          String dbpath, JSAny descriptor, String? policy_asset) =>
       wasmModule.wire__crate__api__wallet__wallet_init(
-          port_, network, dbpath, descriptor);
+          port_, network, dbpath, descriptor, policy_asset);
+
+  void wire__crate__api__wallet__wallet_policy_asset(
+          NativePortType port_, JSAny that) =>
+      wasmModule.wire__crate__api__wallet__wallet_policy_asset(port_, that);
 
   void wire__crate__api__wallet__wallet_sign_tx(NativePortType port_,
           JSAny that, int network, String pset, String mnemonic) =>
       wasmModule.wire__crate__api__wallet__wallet_sign_tx(
           port_, that, network, pset, mnemonic);
+
+  void wire__crate__api__wallet__wallet_sign_tx_with_seed(NativePortType port_,
+          JSAny that, int network, String pset, JSAny seed) =>
+      wasmModule.wire__crate__api__wallet__wallet_sign_tx_with_seed(
+          port_, that, network, pset, seed);
 
   void wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
           NativePortType port_,
@@ -1564,6 +1537,16 @@ class LwkCoreWire implements BaseWire {
       wasmModule
           .wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
               port_, that, network, pset, mnemonic);
+
+  void wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+          NativePortType port_,
+          JSAny that,
+          int network,
+          String pset,
+          JSAny seed) =>
+      wasmModule
+          .wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+              port_, that, network, pset, seed);
 
   void wire__crate__api__wallet__wallet_sync(
           NativePortType port_,
@@ -1768,16 +1751,23 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       NativePortType port_, String address_string);
 
   external void wire__crate__api__blockchain__blockchain_broadcast_signed_pset(
-      NativePortType port_, String electrum_url, String signed_pset);
+      NativePortType port_,
+      int network,
+      String electrum_url,
+      String signed_pset);
 
   external void wire__crate__api__blockchain__blockchain_broadcast_tx_bytes(
-      NativePortType port_, String electrum_url, JSAny tx_bytes);
+      NativePortType port_, int network, String electrum_url, JSAny tx_bytes);
 
   external void wire__crate__api__blockchain__blockchain_test(
-      NativePortType port_, JSAny that, String electrum_url);
+      NativePortType port_, JSAny that, int network, String electrum_url);
 
   external void wire__crate__api__descriptor__descriptor_new_confidential(
       NativePortType port_, int network, String mnemonic);
+
+  external void
+      wire__crate__api__descriptor__descriptor_new_confidential_from_seed(
+          NativePortType port_, int network, JSAny seed);
 
   external void wire__crate__api__transaction__extract_tx_bytes(
       NativePortType port_, String pset);
@@ -1837,16 +1827,6 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       double fee_rate,
       bool drain);
 
-  external void wire__crate__api__wallet__wallet_build_payjoin_tx(
-      NativePortType port_,
-      JSAny that,
-      JSAny sats,
-      String out_address,
-      String asset,
-      int network,
-      String? base_url,
-      bool is_send_all);
-
   external void wire__crate__api__wallet__wallet_consolidate(
       NativePortType port_,
       JSAny that,
@@ -1860,11 +1840,17 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
   external void wire__crate__api__wallet__wallet_descriptor(
       NativePortType port_, JSAny that);
 
-  external void wire__crate__api__wallet__wallet_init(
-      NativePortType port_, int network, String dbpath, JSAny descriptor);
+  external void wire__crate__api__wallet__wallet_init(NativePortType port_,
+      int network, String dbpath, JSAny descriptor, String? policy_asset);
+
+  external void wire__crate__api__wallet__wallet_policy_asset(
+      NativePortType port_, JSAny that);
 
   external void wire__crate__api__wallet__wallet_sign_tx(NativePortType port_,
       JSAny that, int network, String pset, String mnemonic);
+
+  external void wire__crate__api__wallet__wallet_sign_tx_with_seed(
+      NativePortType port_, JSAny that, int network, String pset, JSAny seed);
 
   external void wire__crate__api__wallet__wallet_signed_pset_with_extra_details(
       NativePortType port_,
@@ -1872,6 +1858,14 @@ extension type LwkCoreWasmModule._(JSObject _) implements JSObject {
       int network,
       String pset,
       String mnemonic);
+
+  external void
+      wire__crate__api__wallet__wallet_signed_pset_with_extra_details_with_seed(
+          NativePortType port_,
+          JSAny that,
+          int network,
+          String pset,
+          JSAny seed);
 
   external void wire__crate__api__wallet__wallet_sync(
       NativePortType port_,
