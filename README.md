@@ -102,4 +102,8 @@ cd rust
 LWK_REGTEST_ELECTRUM=tcp://127.0.0.1:50001 LWK_REGTEST_FAUCET=http://127.0.0.1:3001/faucet cargo test regtest_round_trip_over_plaintext_electrum -- --ignored
 ```
 
+## Sync change signal
+
+`await wallet.sync_(...)` returns `true` after applying an LWK update and `false` when the scan has no changes. Tip-only updates return `true` because confirmations can change. Scan and persistence errors still throw; callers must not interpret a failed sync as unchanged. Callers that only await the result may continue ignoring it; typed mocks returning `Future<void>` must adapt.
+
 All LWK dependencies and crates.io patches are pinned to `SatoshiPortal/lwk` at `0ddf4b247bf82b0fadac0106eb743a6447f01197`, which includes the merged blocking scanner no-op fix and native seed signer. Dependent Rust workspaces must copy the four `[patch.crates-io]` entries from `rust/Cargo.toml` into their workspace root with the same URL and revision.

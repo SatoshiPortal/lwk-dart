@@ -1,6 +1,6 @@
 use lwk_common::{FeeRate, Signer};
 use lwk_signer::SwSigner;
-use lwk_wollet::full_scan_to_index_with_electrum_client;
+use lwk_wollet::blocking::BlockchainBackend;
 // use lwk_wollet::elements_miniscript::descriptor;
 use flutter_rust_bridge::RustOpaqueNom as RustOpaque;
 // use log::{info, warn};
@@ -152,6 +152,8 @@ impl Wallet {
     }
 
     /// Syncs the wallet db with its latest state fetched from the electrum server
+    /// Returns true if an LWK update was applied, false if the scan found no changes.
+    /// Tip-only changes count as updates. Scan and persistence errors are propagated.
     /// Using None for stop_at_index will sync normally with a stop gap of 20
     ///
     /// ⚠️ `validate_domain` is ignored and kept only for API compatibility:
@@ -165,7 +167,7 @@ impl Wallet {
         validate_domain: bool,
         stop_at_index: Option<u32>,
         timeout: Option<u8>,
-    ) -> anyhow::Result<(), LwkError> {
+    ) -> anyhow::Result<bool, LwkError> {
         super::ensure_crypto_provider();
         // ⚠️ Dropped here: `ElectrumClientBuilder` parses the URL and derives
         // domain validation from it, always on for `ssl://` with a domain name.
@@ -175,13 +177,12 @@ impl Wallet {
         let mut electrum_client =
             super::blockchain::electrum_client(network, &electrum_url, timeout)?;
         let mut wallet = self.get_wallet()?;
-        match full_scan_to_index_with_electrum_client(
-            &mut wallet,
-            stop_at_index.unwrap_or(0),
-            &mut electrum_client,
-        ) {
-            Ok(_) => Ok(()),
-            Err(e) => Err(e.into()),
+        match electrum_client.full_scan_to_index(&*wallet, stop_at_index.unwrap_or(0))? {
+            Some(update) => {
+                wallet.apply_update(update)?;
+                Ok(true)
+            }
+            None => Ok(false),
         }
     }
 

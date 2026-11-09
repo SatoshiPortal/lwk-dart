@@ -1,5 +1,6 @@
 ## Unreleased
 
+- change: `Wallet.sync_` returns `Future<bool>`: true after an LWK update is applied, false for an unchanged scan; tip-only changes return true and errors still throw. Rust unit-return callers and Dart mocks/implementations must adapt.
 - fix: pin the blocking scanner no-op fix on `SatoshiPortal/lwk` at `0ddf4b24`. Native and Dart bindings must be updated together.
 
 - feat: derive descriptors and sign from a 64-byte BIP39 seed with
