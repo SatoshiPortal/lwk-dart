@@ -5,7 +5,9 @@
 
 import '../frb_generated.dart';
 import 'error.dart';
+
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+
 import 'types.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`
@@ -21,13 +23,15 @@ Future<SizeAndFees> getSizeAndAbsoluteFees({required String pset}) =>
 abstract class LiquidTransaction implements RustOpaqueInterface {
   BigInt fee();
 
-  static LiquidTransaction fromBytes({required List<int> txBytes}) =>
-      LwkCore.instance.api
-          .crateApiTransactionLiquidTransactionFromBytes(txBytes: txBytes);
+  static LiquidTransaction fromBytes({required List<int> txBytes}) => LwkCore
+      .instance
+      .api
+      .crateApiTransactionLiquidTransactionFromBytes(txBytes: txBytes);
 
-  static LiquidTransaction fromPset({required String psetString}) =>
-      LwkCore.instance.api
-          .crateApiTransactionLiquidTransactionFromPset(psetString: psetString);
+  static LiquidTransaction fromPset({required String psetString}) => LwkCore
+      .instance
+      .api
+      .crateApiTransactionLiquidTransactionFromPset(psetString: psetString);
 
   TxInput? getInput({required BigInt index});
 
@@ -69,11 +73,12 @@ abstract class PartiallySignedElementsTransaction
     implements RustOpaqueInterface {
   LiquidTransaction extractTx();
 
-  static PartiallySignedElementsTransaction fromString(
-          {required String psetString}) =>
-      LwkCore.instance.api
-          .crateApiTransactionPartiallySignedElementsTransactionFromString(
-              psetString: psetString);
+  static PartiallySignedElementsTransaction fromString({
+    required String psetString,
+  }) => LwkCore.instance.api
+      .crateApiTransactionPartiallySignedElementsTransactionFromString(
+        psetString: psetString,
+      );
 
   PsetInput? getInput({required BigInt index});
 

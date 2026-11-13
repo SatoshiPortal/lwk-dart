@@ -6,7 +6,9 @@
 import '../frb_generated.dart';
 import 'descriptor.dart';
 import 'error.dart';
+
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+
 import 'types.dart';
 
 // These functions are ignored because they are not marked as `pub`: `batch_sizes`, `get_wallet`, `sign_and_finalize`, `sign_tx_common`, `sign_tx_with_seed_common`, `validate_fee_rate`, `validate_out_address`
@@ -18,9 +20,7 @@ abstract class MutexWollet implements RustOpaqueInterface {}
 class Wallet {
   final MutexWollet inner;
 
-  const Wallet({
-    required this.inner,
-  });
+  const Wallet({required this.inner});
 
   /// Get an address from a specific index
   Future<Address> address({required int index}) => LwkCore.instance.api
@@ -28,63 +28,60 @@ class Wallet {
 
   /// Get the last unused address from the wallet
   Future<Address> addressLastUnused() =>
-      LwkCore.instance.api.crateApiWalletWalletAddressLastUnused(
-        that: this,
-      );
+      LwkCore.instance.api.crateApiWalletWalletAddressLastUnused(that: this);
 
   /// Get balances for a wallet.
   Future<List<WalletBalance>> balances() =>
-      LwkCore.instance.api.crateApiWalletWalletBalances(
-        that: this,
-      );
+      LwkCore.instance.api.crateApiWalletWalletBalances(that: this);
 
   /// Get the blinding key string for the wallet
   Future<String> blindingKey() =>
-      LwkCore.instance.api.crateApiWalletWalletBlindingKey(
-        that: this,
-      );
+      LwkCore.instance.api.crateApiWalletWalletBlindingKey(that: this);
 
   /// Build a transaction for a specific asset
-  Future<String> buildAssetTx(
-          {required BigInt sats,
-          required String outAddress,
-          required double feeRate,
-          required String asset}) =>
-      LwkCore.instance.api.crateApiWalletWalletBuildAssetTx(
-          that: this,
-          sats: sats,
-          outAddress: outAddress,
-          feeRate: feeRate,
-          asset: asset);
+  Future<String> buildAssetTx({
+    required BigInt sats,
+    required String outAddress,
+    required double feeRate,
+    required String asset,
+  }) => LwkCore.instance.api.crateApiWalletWalletBuildAssetTx(
+    that: this,
+    sats: sats,
+    outAddress: outAddress,
+    feeRate: feeRate,
+    asset: asset,
+  );
 
   /// Build a PSET spending `utxos`, paying `outputs`, with any leftover
   /// L-BTC swept to `drain_to` if set.
   ///
   /// General-purpose builder for custom output shapes
-  Future<String> buildCustomTx(
-          {required List<OutPoint> utxos,
-          required List<TxOutputSpec> outputs,
-          String? drainTo,
-          required double feeRate}) =>
-      LwkCore.instance.api.crateApiWalletWalletBuildCustomTx(
-          that: this,
-          utxos: utxos,
-          outputs: outputs,
-          drainTo: drainTo,
-          feeRate: feeRate);
+  Future<String> buildCustomTx({
+    required List<OutPoint> utxos,
+    required List<TxOutputSpec> outputs,
+    String? drainTo,
+    required double feeRate,
+  }) => LwkCore.instance.api.crateApiWalletWalletBuildCustomTx(
+    that: this,
+    utxos: utxos,
+    outputs: outputs,
+    drainTo: drainTo,
+    feeRate: feeRate,
+  );
 
   /// Build a LBTC transaction
-  Future<String> buildLbtcTx(
-          {required BigInt sats,
-          required String outAddress,
-          required double feeRate,
-          required bool drain}) =>
-      LwkCore.instance.api.crateApiWalletWalletBuildLbtcTx(
-          that: this,
-          sats: sats,
-          outAddress: outAddress,
-          feeRate: feeRate,
-          drain: drain);
+  Future<String> buildLbtcTx({
+    required BigInt sats,
+    required String outAddress,
+    required double feeRate,
+    required bool drain,
+  }) => LwkCore.instance.api.crateApiWalletWalletBuildLbtcTx(
+    that: this,
+    sats: sats,
+    outAddress: outAddress,
+    feeRate: feeRate,
+    drain: drain,
+  );
 
   /// Build N unsigned PSETs that consolidate the wallet's confirmed L-BTC UTXOs.
   ///
@@ -94,15 +91,16 @@ class Wallet {
   ///
   /// Batches whose value doesn't cover the fee (dust batches) are skipped. If
   /// every batch is dust, an error is returned.
-  Future<List<String>> consolidate(
-          {required double feeRate,
-          int? highUtxoThreshold,
-          int? maximumInputs}) =>
-      LwkCore.instance.api.crateApiWalletWalletConsolidate(
-          that: this,
-          feeRate: feeRate,
-          highUtxoThreshold: highUtxoThreshold,
-          maximumInputs: maximumInputs);
+  Future<List<String>> consolidate({
+    required double feeRate,
+    int? highUtxoThreshold,
+    int? maximumInputs,
+  }) => LwkCore.instance.api.crateApiWalletWalletConsolidate(
+    that: this,
+    feeRate: feeRate,
+    highUtxoThreshold: highUtxoThreshold,
+    maximumInputs: maximumInputs,
+  );
 
   /// Decode a transaction given a PSET
   Future<PsetAmounts> decodeTx({required String pset}) =>
@@ -110,63 +108,76 @@ class Wallet {
 
   /// Get the descriptor string for the wallet
   Future<String> descriptor() =>
-      LwkCore.instance.api.crateApiWalletWalletDescriptor(
-        that: this,
-      );
+      LwkCore.instance.api.crateApiWalletWalletDescriptor(that: this);
 
   /// Initializes a wallet from a specific db path and descriptor
   ///
   /// The policy asset id is only for the regtest network, whose node may use another policy
   /// asset than lwk's default; mainnet and testnet reject it.
-  static Future<Wallet> init(
-          {required LiquidNetwork network,
-          required String dbpath,
-          required Descriptor descriptor,
-          String? policyAsset}) =>
-      LwkCore.instance.api.crateApiWalletWalletInit(
-          network: network,
-          dbpath: dbpath,
-          descriptor: descriptor,
-          policyAsset: policyAsset);
+  static Future<Wallet> init({
+    required LiquidNetwork network,
+    required String dbpath,
+    required Descriptor descriptor,
+    String? policyAsset,
+  }) => LwkCore.instance.api.crateApiWalletWalletInit(
+    network: network,
+    dbpath: dbpath,
+    descriptor: descriptor,
+    policyAsset: policyAsset,
+  );
 
   /// Get the policy asset (L-BTC) id of the wallet's network
   Future<String> policyAsset() =>
-      LwkCore.instance.api.crateApiWalletWalletPolicyAsset(
-        that: this,
-      );
+      LwkCore.instance.api.crateApiWalletWalletPolicyAsset(that: this);
 
   /// Sign a wallet transaction, returns (pset, signed_bytes)
-  Future<String> signTx(
-          {required LiquidNetwork network,
-          required String pset,
-          required String mnemonic}) =>
-      LwkCore.instance.api.crateApiWalletWalletSignTx(
-          that: this, network: network, pset: pset, mnemonic: mnemonic);
+  Future<String> signTx({
+    required LiquidNetwork network,
+    required String pset,
+    required String mnemonic,
+  }) => LwkCore.instance.api.crateApiWalletWalletSignTx(
+    that: this,
+    network: network,
+    pset: pset,
+    mnemonic: mnemonic,
+  );
 
   /// Sign a wallet transaction with a 64-byte BIP39 seed instead of mnemonic words
-  Future<String> signTxWithSeed(
-          {required LiquidNetwork network,
-          required String pset,
-          required List<int> seed}) =>
-      LwkCore.instance.api.crateApiWalletWalletSignTxWithSeed(
-          that: this, network: network, pset: pset, seed: seed);
+  Future<String> signTxWithSeed({
+    required LiquidNetwork network,
+    required String pset,
+    required List<int> seed,
+  }) => LwkCore.instance.api.crateApiWalletWalletSignTxWithSeed(
+    that: this,
+    network: network,
+    pset: pset,
+    seed: seed,
+  );
 
   /// Sign a pset with extra details (used for asset transactions)
-  Future<String> signedPsetWithExtraDetails(
-          {required LiquidNetwork network,
-          required String pset,
-          required String mnemonic}) =>
-      LwkCore.instance.api.crateApiWalletWalletSignedPsetWithExtraDetails(
-          that: this, network: network, pset: pset, mnemonic: mnemonic);
+  Future<String> signedPsetWithExtraDetails({
+    required LiquidNetwork network,
+    required String pset,
+    required String mnemonic,
+  }) => LwkCore.instance.api.crateApiWalletWalletSignedPsetWithExtraDetails(
+    that: this,
+    network: network,
+    pset: pset,
+    mnemonic: mnemonic,
+  );
 
   /// Sign a pset with extra details with a 64-byte BIP39 seed instead of mnemonic words
-  Future<String> signedPsetWithExtraDetailsWithSeed(
-          {required LiquidNetwork network,
-          required String pset,
-          required List<int> seed}) =>
-      LwkCore.instance.api
-          .crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
-              that: this, network: network, pset: pset, seed: seed);
+  Future<String> signedPsetWithExtraDetailsWithSeed({
+    required LiquidNetwork network,
+    required String pset,
+    required List<int> seed,
+  }) => LwkCore.instance.api
+      .crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
+        that: this,
+        network: network,
+        pset: pset,
+        seed: seed,
+      );
 
   /// Syncs the wallet db with its latest state fetched from the electrum server
   /// Returns true if an LWK update was applied, false if the scan found no changes.
@@ -178,27 +189,26 @@ class Wallet {
   /// for the server's domain name, so a self-signed or IP-addressed server
   /// is rejected.
   /// The connection uses TLS, except for a `tcp://` URL on a regtest wallet.
-  Future<bool> sync_(
-          {required String electrumUrl,
-          required bool validateDomain,
-          int? stopAtIndex,
-          int? timeout}) =>
-      LwkCore.instance.api.crateApiWalletWalletSync(
-          that: this,
-          electrumUrl: electrumUrl,
-          validateDomain: validateDomain,
-          stopAtIndex: stopAtIndex,
-          timeout: timeout);
+  Future<bool> sync_({
+    required String electrumUrl,
+    required bool validateDomain,
+    int? stopAtIndex,
+    int? timeout,
+  }) => LwkCore.instance.api.crateApiWalletWalletSync(
+    that: this,
+    electrumUrl: electrumUrl,
+    validateDomain: validateDomain,
+    stopAtIndex: stopAtIndex,
+    timeout: timeout,
+  );
 
   /// Get the transaction history of the wallet
-  Future<List<Tx>> txs() => LwkCore.instance.api.crateApiWalletWalletTxs(
-        that: this,
-      );
+  Future<List<Tx>> txs() =>
+      LwkCore.instance.api.crateApiWalletWalletTxs(that: this);
 
   /// Get utxos of the wallet
-  Future<List<TxOut>> utxos() => LwkCore.instance.api.crateApiWalletWalletUtxos(
-        that: this,
-      );
+  Future<List<TxOut>> utxos() =>
+      LwkCore.instance.api.crateApiWalletWalletUtxos(that: this);
 
   @override
   int get hashCode => inner.hashCode;

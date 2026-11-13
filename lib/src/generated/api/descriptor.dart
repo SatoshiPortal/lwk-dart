@@ -5,7 +5,9 @@
 
 import '../frb_generated.dart';
 import 'error.dart';
+
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+
 import 'types.dart';
 
 // These functions are ignored because they are not marked as `pub`: `from_signer`
@@ -15,25 +17,30 @@ import 'types.dart';
 class Descriptor {
   final String ctDescriptor;
 
-  const Descriptor({
-    required this.ctDescriptor,
-  });
+  const Descriptor({required this.ctDescriptor});
 
   /// Createa new wpkh confidential descriptor based on Slip77 blinding key derivation
-  static Future<Descriptor> newConfidential(
-          {required LiquidNetwork network, required String mnemonic}) =>
-      LwkCore.instance.api.crateApiDescriptorDescriptorNewConfidential(
-          network: network, mnemonic: mnemonic);
+  static Future<Descriptor> newConfidential({
+    required LiquidNetwork network,
+    required String mnemonic,
+  }) => LwkCore.instance.api.crateApiDescriptorDescriptorNewConfidential(
+    network: network,
+    mnemonic: mnemonic,
+  );
 
   /// Create a new wpkh confidential descriptor based on Slip77 blinding key derivation,
   /// from a 64-byte BIP39 seed instead of English mnemonic words.
   ///
   /// The seed encodes the mnemonic language and passphrase, which `new_confidential` cannot
   /// carry. An English mnemonic without passphrase gives the same descriptor through both.
-  static Future<Descriptor> newConfidentialFromSeed(
-          {required LiquidNetwork network, required List<int> seed}) =>
+  static Future<Descriptor> newConfidentialFromSeed({
+    required LiquidNetwork network,
+    required List<int> seed,
+  }) =>
       LwkCore.instance.api.crateApiDescriptorDescriptorNewConfidentialFromSeed(
-          network: network, seed: seed);
+        network: network,
+        seed: seed,
+      );
 
   @override
   int get hashCode => ctDescriptor.hashCode;

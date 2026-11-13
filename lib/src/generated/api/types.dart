@@ -5,6 +5,7 @@
 
 import '../frb_generated.dart';
 import 'error.dart';
+
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `address_params`, `elements_network`, `from_balance`
@@ -12,10 +13,13 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `try_from`
 
 /// Get balance value for a specific asset ID from a list of balances
-BigInt getBalanceByAssetId(
-        {required List<WalletBalance> balances, required String assetId}) =>
-    LwkCore.instance.api
-        .crateApiTypesGetBalanceByAssetId(balances: balances, assetId: assetId);
+BigInt getBalanceByAssetId({
+  required List<WalletBalance> balances,
+  required String assetId,
+}) => LwkCore.instance.api.crateApiTypesGetBalanceByAssetId(
+  balances: balances,
+  assetId: assetId,
+);
 
 /// Get L-BTC mainnet balance
 BigInt getLbtcBalance({required List<WalletBalance> balances}) =>
@@ -46,17 +50,21 @@ class Address {
   });
 
   /// Create an address from a scriptpubkey. Always returns 0 as the index is only for wallet generated addresses
-  static Future<Address> addressFromScript(
-          {required LiquidNetwork network,
-          required String script,
-          String? blindingKey}) =>
-      LwkCore.instance.api.crateApiTypesAddressAddressFromScript(
-          network: network, script: script, blindingKey: blindingKey);
+  static Future<Address> addressFromScript({
+    required LiquidNetwork network,
+    required String script,
+    String? blindingKey,
+  }) => LwkCore.instance.api.crateApiTypesAddressAddressFromScript(
+    network: network,
+    script: script,
+    blindingKey: blindingKey,
+  );
 
   /// Validate the address string and return the network
   static Future<LiquidNetwork> validate({required String addressString}) =>
-      LwkCore.instance.api
-          .crateApiTypesAddressValidate(addressString: addressString);
+      LwkCore.instance.api.crateApiTypesAddressValidate(
+        addressString: addressString,
+      );
 
   @override
   int get hashCode =>
@@ -81,10 +89,7 @@ class Balance {
   final String assetId;
   final PlatformInt64 value;
 
-  const Balance({
-    required this.assetId,
-    required this.value,
-  });
+  const Balance({required this.assetId, required this.value});
 
   @override
   int get hashCode => assetId.hashCode ^ value.hashCode;
@@ -106,17 +111,13 @@ enum LiquidNetwork {
   ///
   /// Its policy asset is the node's own: the default is lwk's, a wallet can take another.
   regtest,
-  ;
 }
 
 class OutPoint {
   final String txid;
   final int vout;
 
-  const OutPoint({
-    required this.txid,
-    required this.vout,
-  });
+  const OutPoint({required this.txid, required this.vout});
 
   @override
   int get hashCode => txid.hashCode ^ vout.hashCode;
@@ -135,10 +136,7 @@ class PsetAmounts {
   final BigInt absoluteFees;
   final List<Balance> balances;
 
-  const PsetAmounts({
-    required this.absoluteFees,
-    required this.balances,
-  });
+  const PsetAmounts({required this.absoluteFees, required this.balances});
 
   @override
   int get hashCode => absoluteFees.hashCode ^ balances.hashCode;
@@ -333,10 +331,7 @@ class WalletBalance {
   final String assetId;
   final BigInt value;
 
-  const WalletBalance({
-    required this.assetId,
-    required this.value,
-  });
+  const WalletBalance({required this.assetId, required this.value});
 
   @override
   int get hashCode => assetId.hashCode ^ value.hashCode;
