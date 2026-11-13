@@ -1,19 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-read -r -p "Do you want to set CPATH? (y/N): " response
-
-# Convert response to lowercase to handle Y or y
-response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
-
-if [[ "$response" == "y" ]]; then
-    export CPATH="$(clang -v 2>&1 | grep "Selected GCC installation" | rev | cut -d' ' -f1 | rev)/include"
-else
-    echo "Continuing without setting CPATH."
+if [[ "$(flutter_rust_bridge_codegen --version)" != "flutter_rust_bridge_codegen 2.13.0" ]]; then
+  echo "flutter_rust_bridge_codegen 2.13.0 is required" >&2
+  exit 1
 fi
-
-cd rust
-cargo update
-cd - || exit 1
-
-flutter_rust_bridge_codegen generate
+flutter_rust_bridge_codegen generate "$@"
 fvm dart run tool/patch_generated_u64.dart

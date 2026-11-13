@@ -1320,9 +1320,9 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge"
-version = "2.12.0"
+version = "2.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a0884853aae8a6517b5b58cf36f55da487f2fe110e1686938eb29b6640aae4a5"
+checksum = "24a973d15b8fc7de9fb29cdfbec58a2ac41f6252492d3b882abfdc603e32b34f"
 dependencies = [
  "allo-isolate",
  "android_logger",
@@ -1349,9 +1349,9 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge_codegen"
-version = "2.12.0"
+version = "2.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13823e8157bada9dc828d67cd23e4bcebcfffa9313175dacad0325fc3188940c"
+checksum = "701a8e577f9f5f59f651e1e932add36ee5dfb82d0fa20215225ea177d4dbbe4b"
 dependencies = [
  "anyhow",
  "cargo_metadata",
@@ -1379,6 +1379,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "regex",
+ "semver",
  "serde",
  "serde_json",
  "serde_yaml",
@@ -1394,9 +1395,9 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge_macros"
-version = "2.12.0"
+version = "2.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6b5ce32f35f710ced8c5aa557f023f1a624e737b5460cee2b70fcd3a8df09e1b"
+checksum = "901eec2d226107dad1c55b30f7421c4687bebcf70ed43ca44d1b447ca087b238"
 dependencies = [
  "hex",
  "md-5",
@@ -2334,7 +2335,7 @@ dependencies = [
 [[package]]
 name = "lwk_common"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=f80953d0b45af7cb5950128e44ca47e618b114cc#f80953d0b45af7cb5950128e44ca47e618b114cc"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb#db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb"
 dependencies = [
  "aes-gcm-siv",
  "base64 0.22.1",
@@ -2352,7 +2353,7 @@ dependencies = [
 [[package]]
 name = "lwk_jade"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=f80953d0b45af7cb5950128e44ca47e618b114cc#f80953d0b45af7cb5950128e44ca47e618b114cc"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb#db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb"
 dependencies = [
  "elements",
  "elements-miniscript",
@@ -2373,7 +2374,7 @@ dependencies = [
 [[package]]
 name = "lwk_prices"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=f80953d0b45af7cb5950128e44ca47e618b114cc#f80953d0b45af7cb5950128e44ca47e618b114cc"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb#db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb"
 dependencies = [
  "futures",
  "reqwest",
@@ -2386,7 +2387,7 @@ dependencies = [
 [[package]]
 name = "lwk_registry"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=f80953d0b45af7cb5950128e44ca47e618b114cc#f80953d0b45af7cb5950128e44ca47e618b114cc"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb#db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb"
 dependencies = [
  "elements",
  "futures",
@@ -2403,7 +2404,7 @@ dependencies = [
 [[package]]
 name = "lwk_signer"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=f80953d0b45af7cb5950128e44ca47e618b114cc#f80953d0b45af7cb5950128e44ca47e618b114cc"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb#db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb"
 dependencies = [
  "bip39",
  "elements-miniscript",
@@ -2416,7 +2417,7 @@ dependencies = [
 [[package]]
 name = "lwk_wollet"
 version = "0.20.0"
-source = "git+https://github.com/SatoshiPortal/lwk?rev=f80953d0b45af7cb5950128e44ca47e618b114cc#f80953d0b45af7cb5950128e44ca47e618b114cc"
+source = "git+https://github.com/SatoshiPortal/lwk?rev=db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb#db8eb7b7b9dc2942488425ebd0ee7b2a240ab0eb"
 dependencies = [
  "aes",
  "aes-gcm",

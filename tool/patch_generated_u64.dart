@@ -22,6 +22,22 @@ void replaceExactly(String path, String before, String after, int count) {
   file.writeAsStringSync(source.replaceAll(before, after));
 }
 
+void insertInputCheck(String path, String method, String argument) {
+  final file = File(path);
+  final source = file.readAsStringSync();
+  final pattern = RegExp(
+    r'Future<String>\s+' + RegExp.escape(method) + r'\([^)]*\)\s*\{',
+  );
+  final matches = pattern.allMatches(source).toList();
+  if (matches.length != 1) {
+    throw StateError('Expected exactly one implementation of $method in $path');
+  }
+  final end = matches.single.end;
+  file.writeAsStringSync(
+    source.replaceRange(end, end, '\n    checkedU8List($argument);'),
+  );
+}
+
 void main() {
   const dartPath = 'lib/src/generated/frb_generated.dart';
   const ioPath = 'lib/src/generated/frb_generated.io.dart';
@@ -34,45 +50,16 @@ void main() {
     "import 'frb_generated.dart';",
     "import 'frb_generated.dart';\nimport '../checked_u8_list.dart';",
   );
-  replaceOnce(
+  insertInputCheck(
     dartPath,
-    '''  Future<String> crateApiBlockchainBlockchainBroadcastTxBytes(
-      {required LiquidNetwork network,
-      required String electrumUrl,
-      required List<int> txBytes}) {''',
-    '''  Future<String> crateApiBlockchainBlockchainBroadcastTxBytes(
-      {required LiquidNetwork network,
-      required String electrumUrl,
-      required List<int> txBytes}) {
-    checkedU8List(txBytes);''',
+    'crateApiBlockchainBlockchainBroadcastTxBytes',
+    'txBytes',
   );
-  replaceOnce(
+  insertInputCheck(dartPath, 'crateApiWalletWalletSignTxWithSeed', 'seed');
+  insertInputCheck(
     dartPath,
-    '''  Future<String> crateApiWalletWalletSignTxWithSeed(
-      {required Wallet that,
-      required LiquidNetwork network,
-      required String pset,
-      required List<int> seed}) {''',
-    '''  Future<String> crateApiWalletWalletSignTxWithSeed(
-      {required Wallet that,
-      required LiquidNetwork network,
-      required String pset,
-      required List<int> seed}) {
-    checkedU8List(seed);''',
-  );
-  replaceOnce(
-    dartPath,
-    '''  Future<String> crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
-      {required Wallet that,
-      required LiquidNetwork network,
-      required String pset,
-      required List<int> seed}) {''',
-    '''  Future<String> crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed(
-      {required Wallet that,
-      required LiquidNetwork network,
-      required String pset,
-      required List<int> seed}) {
-    checkedU8List(seed);''',
+    'crateApiWalletWalletSignedPsetWithExtraDetailsWithSeed',
+    'seed',
   );
 
   replaceOnce(

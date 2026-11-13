@@ -12,6 +12,10 @@ If you are using 0.1.3 sweep your wallets before updating.
 
 To access legacy 0.1.3 wallets, use the legacy branch.
 
+## Native Assets
+
+Flutter 3.50 / Dart 3.14 or later invokes `hook/build.dart` to build and bundle the Rust library with Native Assets. CargoKit and downloads of precompiled libraries are no longer used. `LibLwk.init()` initializes the generated bridge through the registered Native Assets code asset. The standalone generated Dart and Rust sources are included for Git consumers; regenerate them with FRB 2.13 after Rust API changes. Apple packaging requires a full Xcode build and remains unverified on Linux.
+
 ## Usage
 
 Initialize the library once, in main()
@@ -30,7 +34,7 @@ Docker is required for linux builds.
 
 ```bash
 dart pub global activate ffigen
-cargo install flutter_rust_bridge_codegen --version 2.12.0
+cargo install flutter_rust_bridge_codegen --version 2.13.0
 cargo install cargo-expand
 cargo install cargo-ndk
 @if [ $$(uname) == "Darwin" ] ; then cargo install cargo-lipo ; fi
