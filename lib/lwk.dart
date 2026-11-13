@@ -1,5 +1,5 @@
 ///A dart/flutter library with language bindings for rust library [lwk](https://github.com/Blockstream/lwk) - Liquid Wallet Kit.
-library lwk;
+library;
 
 // export './src/generated/frb_generated.dart';
 export './src/generated/api/descriptor.dart';
