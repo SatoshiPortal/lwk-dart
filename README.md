@@ -30,7 +30,7 @@ Docker is required for linux builds.
 
 ```bash
 dart pub global activate ffigen
-cargo install flutter_rust_bridge_codegen --version 2.12.0
+cargo install flutter_rust_bridge_codegen --version 2.13.0
 cargo install cargo-expand
 cargo install cargo-ndk
 @if [ $$(uname) == "Darwin" ] ; then cargo install cargo-lipo ; fi
