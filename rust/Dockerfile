@@ -1,4 +1,4 @@
-FROM amd64/rust:slim-bullseye
+FROM amd64/rust:1.100.0-slim-bookworm
 ARG USER_ID
 ARG VERSION
 
