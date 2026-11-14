@@ -31,8 +31,4 @@ Mainnet and testnet always use TLS with domain validation, including when a call
 
 ## Dependencies And Releases
 
-Cargo and Dart lockfiles are part of the reviewed dependency set and should be
-updated deliberately. Release workflows pin the Rust nightly by date, but
-third-party GitHub Actions referenced by version tags remain part of the CI
-trust boundary. Release artifacts must retain their pinned digest checks when
-downloaded by the package.
+Cargo and Dart lockfiles are part of the reviewed dependency set and should be updated deliberately. The Rust crate pins stable Rust 1.100.0 in `rust/rust-toolchain.toml`. Native Assets builds the library locally with `--locked`; the package no longer downloads precompiled release binaries. The legacy Docker build image also pins Rust 1.100.0, but its build path requires separate validation.
