@@ -4,6 +4,5 @@ include: package:lints/recommended.yaml
 
 analyzer:
   exclude:
-    - cargokit/
     - lib/src/generated/
 #     - lib/src/generated/bridge_definitions.freezed.dart
